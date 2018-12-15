@@ -25,11 +25,11 @@ namespace FarmTypeManager
                 helper.ConsoleCommands.Add("whereami", "Outputs the (x,y) coordinates and tile index value for the player's current location.", WhereAmI);
             }
 
-            TimeEvents.AfterDayStarted += TimeEvents_AfterDayStarted;
+            Helper.Events.GameLoop.DayStarted += DayStarted;
         }
 
         /// <summary>Tasks performed after the game begins a new day, including when loading a save.</summary>
-        private void TimeEvents_AfterDayStarted(object sender, EventArgs e)
+        private void DayStarted(object sender, EventArgs e)
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't try to do anything
 
