@@ -16,60 +16,18 @@ namespace FarmTypeManager
         {
             
             /// <summary>Generates foraged items in the game based on the current player's config settings.</summary>
-            /// <param name="config">Mod configuration settings for the current player.</param>
-            public static void ForageGeneration(FarmConfig config)
+            public static void ForageGeneration()
             {
-                if (config.ForageSpawnEnabled != true) { return; } //if forage spawn is disabled, don't do anything
+                if (Utility.Config.ForageSpawnEnabled != true) { return; } //if forage spawn is disabled, don't do anything
 
-                Random rng = new Random(); //random number generator ("Game1.random" exists, but causes some undesired spawn behavior; using this for now...)
+                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (SpawnArea area in config.Forage_Spawn_Settings.Areas) //for each forage spawn area described in the player config file
+                foreach (SpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas) //for each forage spawn area described in the player config file
                 {
-                    List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
-
-                    foreach (string type in area.AutoSpawnTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
-                    {
-                        if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
-                        {
-                            validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, config.QuarryTileIndex));
-                        }
-                        else if (type.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
-                        {
-                            validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, config.Forage_Spawn_Settings.CustomTileIndex));
-                        }
-                        else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if "type is "All", this will just add every valid tile)
-                        {
-                            validTiles.AddRange(Utility.GetTilesByProperty(area.MapName, type));
-                        }
-                    }
-                    foreach (string include in area.IncludeSpawnAreas) //check for valid tiles in each "include" zone for the area
-                    {
-                        validTiles.AddRange(Utility.GetTilesByVectorString(area.MapName, include));
-                    }
-
-                    validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
-
-                    foreach (string exclude in area.ExcludeSpawnAreas) //check for valid tiles in each "exclude" zone for the area (validity doesn't really matter in this part, but should be slightly faster)
-                    {
-                        List<Vector2> excludedTiles = Utility.GetTilesByVectorString(area.MapName, exclude); //get list of excluded tiles
-                        validTiles.RemoveAll(excludedTiles.Contains); //remove any previously valid tiles that match the excluded area
-                    }
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex); //calculate a list of valid tiles for forage in this area
 
                     //calculate how much forage to spawn today
-                    int spawnCount = rng.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
-
-                    //calculate foraging skill multiplier bonus
-                    double skillMultiplier = config.Forage_Spawn_Settings.PercentExtraItemsPerForagingLevel;
-                    skillMultiplier = (skillMultiplier / 100); //converted to percent, e.g. default config is "10" (10% per level) so it converts to "0.1"
-                    int highestSkillLevel = 0; //highest foraging skill level among all existing farmers, not just the host
-                    foreach (Farmer farmer in Game1.getAllFarmers())
-                    {
-                        highestSkillLevel = Math.Max(highestSkillLevel, farmer.ForagingLevel); //record the new level if it's higher than before
-                    }
-                    skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. with default config: "1.0" at level 0, "1.7" at level 7, etc
-
-                    //calculate final forage amount
-                    spawnCount = (int)Math.Round(skillMultiplier * (double)spawnCount);
+                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Forage_Spawn_Settings.PercentExtraItemsPerForagingLevel, Skills.Foraging);
 
                     //begin to spawn forage
                     while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
@@ -85,27 +43,27 @@ namespace FarmTypeManager
                         switch (Game1.currentSeason)
                         {
                             case "spring":
-                                if (config.Forage_Spawn_Settings.SpringItemIndex.Length > 0)
+                                if (Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0)
                                 {
-                                    randomForageType = config.Forage_Spawn_Settings.SpringItemIndex[rng.Next(config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the spring list
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SpringItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the spring list
                                 }
                                 break;
                             case "summer":
-                                if (config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
+                                if (Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
                                 {
-                                    randomForageType = config.Forage_Spawn_Settings.SummerItemIndex[rng.Next(config.Forage_Spawn_Settings.SummerItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SummerItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length)];
                                 }
                                 break;
                             case "fall":
-                                if (config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
+                                if (Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
                                 {
-                                    randomForageType = config.Forage_Spawn_Settings.FallItemIndex[rng.Next(config.Forage_Spawn_Settings.FallItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.FallItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length)];
                                 }
                                 break;
                             case "winter":
-                                if (config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
+                                if (Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
                                 {
-                                    randomForageType = config.Forage_Spawn_Settings.WinterItemIndex[rng.Next(config.Forage_Spawn_Settings.WinterItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.WinterItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length)];
                                 }
                                 break;
                         }
@@ -119,81 +77,39 @@ namespace FarmTypeManager
             }
             
             /// <summary>Generates ore in the game based on the current player's config settings.</summary>
-            /// <param name="config">Mod configuration settings for the current player.</param>
-            public static void OreGeneration(FarmConfig config)
+            public static void OreGeneration()
             {
-                if (config.OreSpawnEnabled != true) { return; } //if ore spawn is disabled, don't do anything
+                if (Utility.Config.OreSpawnEnabled != true) { return; } //if ore spawn is disabled, don't do anything
 
-                Random rng = new Random(); //random number generator ("Game1.random" exists, but causes some undesired spawn behavior; using this for now...)
+                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (OreSpawnArea area in config.Ore_Spawn_Settings.Areas) //for each ore spawn area described in the player config file
+                foreach (OreSpawnArea area in Utility.Config.Ore_Spawn_Settings.Areas) //for each ore spawn area described in the player config file
                 {
-                    List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
-
-                    foreach (string type in area.AutoSpawnTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
-                    {
-                        if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
-                        {
-                            validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, config.QuarryTileIndex));
-                        }
-                        else if (type.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
-                        {
-                            validTiles.AddRange(Utility.GetTilesByIndex(area.MapName, config.Ore_Spawn_Settings.CustomTileIndex));
-                        }
-                        else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if "type is "All", this will just add every valid tile)
-                        {
-                            validTiles.AddRange(Utility.GetTilesByProperty(area.MapName, type));
-                        }
-                    }
-                    foreach (string include in area.IncludeSpawnAreas) //check for valid tiles in each "include" zone for the area
-                    {
-                        validTiles.AddRange(Utility.GetTilesByVectorString(area.MapName, include));
-                    }
-
-                    validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
-
-                    foreach (string exclude in area.ExcludeSpawnAreas) //check for valid tiles in each "exclude" zone for the area (validity doesn't really matter in this part, but should be slightly faster)
-                    {
-                        List<Vector2> excludedTiles = Utility.GetTilesByVectorString(area.MapName, exclude); //get list of excluded tiles
-                        validTiles.RemoveAll(excludedTiles.Contains); //remove any previously valid tiles that match the excluded area
-                    }
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex); //calculate a list of valid tiles for ore in this area
 
                     //calculate how much ore to spawn today
-                    int spawnCount = rng.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
-
-                    //calculate mining skill multiplier bonus
-                    double skillMultiplier = config.Ore_Spawn_Settings.PercentExtraOrePerMiningLevel;
-                    skillMultiplier = (skillMultiplier / 100); //converted to percent, e.g. default config is "10" (10% per level) so it converts to "0.1"
-                    int highestSkillLevel = 0; //highest mining skill level among all existing farmers, not just the host
-                    foreach (Farmer farmer in Game1.getAllFarmers())
-                    {
-                        highestSkillLevel = Math.Max(highestSkillLevel, farmer.MiningLevel); //record the new level if it's higher than before
-                    }
-                    skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. with default config: "1.0" at level 0, "1.7" at level 7, etc
-
-                    //calculate final ore amount
-                    spawnCount = (int)Math.Round(skillMultiplier * (double)spawnCount);
+                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Ore_Spawn_Settings.PercentExtraOrePerMiningLevel, Skills.Mining);
 
                     //figure out which config section to use (if the spawn area's data is null, use the "global" data instead)
-                    Dictionary<string, int> skillReq = area.SkillRequired ?? config.Ore_Spawn_Settings.MiningSkillRequired;
-                    Dictionary<string, int> startChance = area.StartingSpawnChance ?? config.Ore_Spawn_Settings.StartingChance;
-                    Dictionary<string, int> tenChance = area.LevelTenSpawnChance ?? config.Ore_Spawn_Settings.LevelTenChance;
+                    Dictionary<string, int> skillReq = area.MiningLevelRequired ?? Utility.Config.Ore_Spawn_Settings.MiningLevelRequired;
+                    Dictionary<string, int> startChance = area.StartingSpawnChance ?? Utility.Config.Ore_Spawn_Settings.StartingSpawnChance;
+                    Dictionary<string, int> tenChance = area.LevelTenSpawnChance ?? Utility.Config.Ore_Spawn_Settings.LevelTenSpawnChance;
                     //also use the "global" data if the area data is non-null but empty (which can happen accidentally when the json file is manually edited)
                     if (skillReq.Count < 1)
                     {
-                        skillReq = config.Ore_Spawn_Settings.MiningSkillRequired;
+                        skillReq = Utility.Config.Ore_Spawn_Settings.MiningLevelRequired;
                     }
                     if (startChance.Count < 1)
                     {
-                        startChance = config.Ore_Spawn_Settings.StartingChance;
+                        startChance = Utility.Config.Ore_Spawn_Settings.StartingSpawnChance;
                     }
                     if (tenChance.Count < 1)
                     {
-                        tenChance = config.Ore_Spawn_Settings.LevelTenChance;
+                        tenChance = Utility.Config.Ore_Spawn_Settings.LevelTenSpawnChance;
                     }
 
                     //calculate the final spawn chance for each type of ore
-                    Dictionary<string, int> oreChances = AdjustedSpawnChances(highestSkillLevel, skillReq, startChance, tenChance);
+                    Dictionary<string, int> oreChances = AdjustedSpawnChances(Skills.Mining, skillReq, startChance, tenChance);
                     
                     if (oreChances.Count < 1) { return; } //if there's no chance of spawning any ore for some reason, just stop here
 
@@ -298,17 +214,23 @@ namespace FarmTypeManager
                 return;
             }
 
-            /// <summary>Produces a dictionary containing the final, adjusted spawn chance of each item in the provided dictionaries. (Part of the convoluted object spawning process for ore.)</summary>
-            /// <param name="skillLevel">The players' highest level in the related skill (e.g. Mining for ore spawn chances).</param>
-            /// <param name="skillRequired">A dictionary of object names and the skill level required to spawn them.</param>
+            /// <summary>Produces a dictionary containing the final, adjusted spawn chance of each object in the provided dictionaries. (Part of the convoluted object spawning process for ore.)</summary>
+            /// <param name="skill">The player skill that affects spawn chances (e.g. Mining for ore spawn chances).</param>
+            /// <param name="levelRequired">A dictionary of object names and the skill level required to spawn them.</param>
             /// <param name="startChances">A dictionary of object names and their weighted chances to spawn at their lowest required skill level (e.g. chance of spawning stone if you're level 0).</param>
             /// <param name="maxChances">A dictionary of object names and their weighted chances to spawn at skill level 10.</param>
             /// <returns></returns>
-            private static Dictionary<string, int> AdjustedSpawnChances(int skillLevel, Dictionary<string, int> skillRequired, Dictionary<string, int> startChances, Dictionary<string, int> maxChances)
+            private static Dictionary<string, int> AdjustedSpawnChances(Skills skill, Dictionary<string, int> levelRequired, Dictionary<string, int> startChances, Dictionary<string, int> maxChances)
             {
                 Dictionary<string, int> adjustedChances = new Dictionary<string, int>();
 
-                foreach (KeyValuePair<string, int> objType in skillRequired)
+                int skillLevel = 0; //highest skill level among all existing farmers, not just the host
+                foreach (Farmer farmer in Game1.getAllFarmers())
+                {
+                    skillLevel = Math.Max(skillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the new level if it's higher than before
+                }
+
+                foreach (KeyValuePair<string, int> objType in levelRequired)
                 {
                     int chance = 0; //chance of spawning this object
                     if (objType.Value > skillLevel)
@@ -351,6 +273,42 @@ namespace FarmTypeManager
 
                 return adjustedChances;
             }
+
+            /// <summary>Calculates the final number of objects to spawn today in the current spawning process, based on config settings and player levels in a relevant skill.</summary>
+            /// <param name="min">Minimum number of objects to spawn today (before skill multiplier).</param>
+            /// <param name="max">Maximum number of objects to spawn today (before skill multiplier).</param>
+            /// <param name="percent">Additive multiplier for each of the player's levels in the relevant skill (e.g. 10 would represent +10% objects per level).</param>
+            /// <param name="skill">Enumerator for the skill on which the "percent" additive multiplier is based.</param>
+            /// <returns>The final number of objects to spawn today in the current spawning process.</returns>
+            private static int AdjustedSpawnCount(int min, int max, int percent, Skills skill)
+            {
+                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
+                int spawnCount = rng.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
+
+                //calculate skill multiplier bonus
+                double skillMultiplier = percent;
+                skillMultiplier = (skillMultiplier / 100); //converted to percent, e.g. default config is "10" (10% per level) so it converts to "0.1"
+                int highestSkillLevel = 0; //highest skill level among all existing farmers, not just the host
+                foreach (Farmer farmer in Game1.getAllFarmers())
+                {
+                    highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the new level if it's higher than before
+                }
+                skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. with default config: "1.0" at level 0, "1.7" at level 7, etc
+
+                //calculate final forage amount
+                spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplier (e.g. this is "1" if the multiplier is "1.7")
+                double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the current multiplier (e.g. this is "0.7" if the multiplier is "1.7")
+
+                if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object
+                {
+                    spawnCount++;
+                }
+
+                return spawnCount;
+            }
+
+            /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
+            public enum Skills {Farming, Fishing, Foraging, Mining, Combat, Luck}
         }
     }
 }

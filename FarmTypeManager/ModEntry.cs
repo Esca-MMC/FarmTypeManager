@@ -12,8 +12,6 @@ namespace FarmTypeManager
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry : Mod
     {
-        private FarmConfig Config; //data contained in the per-character configuration file, used for various mod settings
-
         ///<summary>Tasks performed when the mod initially loads.</summary>
         public override void Entry(IModHelper helper)
         {
@@ -33,16 +31,16 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't try to do anything
 
-            Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file ([null] if it doesn't exist)
-            if (Config == null) //no config file for this save?
+            Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file ([null] if it doesn't exist)
+            if (Utility.Config == null) //no config file for this save?
             {
-                Config = new FarmConfig(); //load the default config settings
-                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Config); //create a config file for the current save
+                Utility.Config = new FarmConfig(); //load the default config settings
+                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create a config file for the current save
             }
 
             //run the various main processes
-            ObjectSpawner.ForageGeneration(Config);
-            ObjectSpawner.OreGeneration(Config);
+            ObjectSpawner.ForageGeneration();
+            ObjectSpawner.OreGeneration();
         }
 
         ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile index, and tile "Type" property (e.g. "Grass" or "Dirt").</summary>
