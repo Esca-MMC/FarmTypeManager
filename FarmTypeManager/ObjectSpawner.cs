@@ -296,10 +296,11 @@ namespace FarmTypeManager
                 skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. with default config: "1.0" at level 0, "1.7" at level 7, etc
 
                 //calculate final forage amount
-                spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplier (e.g. this is "1" if the multiplier is "1.7")
-                double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the current multiplier (e.g. this is "0.7" if the multiplier is "1.7")
+                skillMultiplier *= spawnCount; //multiply the initial random spawn count by the skill multiplier
+                spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplied value (e.g. this is "1" if the multiplier is "1.7")
+                double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the multiplied value (e.g. this is "0.7" if the multiplier is "1.7")
 
-                if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object
+                if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
                 {
                     spawnCount++;
                 }
