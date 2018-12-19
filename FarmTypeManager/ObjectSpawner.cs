@@ -6,6 +6,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
 {
@@ -22,22 +23,22 @@ namespace FarmTypeManager
 
                 Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (SpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas) //for each forage spawn area described in the player config file
+                foreach (SpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas)
                 {
-                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex); //calculate a list of valid tiles for forage in this area
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
 
                     //calculate how much forage to spawn today
-                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Forage_Spawn_Settings.PercentExtraItemsPerForagingLevel, Skills.Foraging);
+                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Skills.Foraging);
 
                     //begin to spawn forage
                     while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
                     {
-                        //this section spawns 1 forage item at a random valid location
+                        //this section spawns 1 forage object at a random valid location
 
                         spawnCount--; //reduce by 1, since one will be spawned
                         int randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
                         Vector2 randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
-                        validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed by forage now
+                        validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
                         int randomForageType = -1; //will stay at -1 if the current season has no forage items listed, or be set to a random item's index number
                         switch (Game1.currentSeason)
@@ -75,6 +76,89 @@ namespace FarmTypeManager
                     }
                 }
             }
+
+            /// <summary>Generates hardwood objects (stumps and logs) in the game based on the current player's config settings.</summary>
+            public static void HardwoodGeneration()
+            {
+                if (Utility.Config.HardwoodSpawnEnabled != true) { return; } //if hardwood spawn is disabled, don't do anything
+
+                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
+
+                foreach (HardwoodSpawnArea area in Utility.Config.Hardwood_Spawn_Settings.Areas)
+                {
+                    Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
+                    if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (e.g. stumps and logs), so display an error message and skip this area
+                    {
+                        Utility.Monitor.Log($"Issue: Hardwood stumps/logs cannot be spawned in the {area.MapName} map. Only \"farm\" maps are currently supported.", LogLevel.Info);
+                        continue;
+                    }
+
+                    if (area.StumpFrequency < 1 && area.LogFrequency < 1) //if both stumps AND logs are set to zero for some reason, display a warning about it & stop trying to spawn things in this area
+                    {
+                        Utility.Monitor.Log($"Issue: StumpFrequency and LogFrequency are both set to 0 in the {area.MapName} map area. No hardwood will spawn there.", LogLevel.Info);
+                        continue;
+                    }
+
+                    /*if (area.FindExistingHardwoodLocations == true) //if enabled, ensure that any existing stumps and/or logs are added to the include area list
+                    {
+                        List<Vector2> existingHardwood = new List<Vector2>(); //will contain x,y coordinates for tiles that contain a pre-existing stump and/or log
+
+                        //loop through each tile on the map and locate existing stumps/logs
+                        foreach (ResourceClump clump in loc.resourceClumps)
+                        {
+                            
+                            if ((clump.parentSheetIndex.Value == 600 && area.StumpFrequency > 0) || (clump.parentSheetIndex.Value == 602 && area.LogFrequency > 0)) //if the current "clump" is a stump/log and stump/log spawning is enabled in this area
+                            {
+                                bool alreadyListed = false;
+                                foreach (string include in area.IncludeAreas)
+                                {
+                                    //TBD: check for existing copies of this location
+                                }
+                                if (!alreadyListed)
+                                {
+                                    //TBD: add matching string to include area list
+                                }
+                            }
+                        }
+                    }*/
+
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for hardwood in this area
+
+                    //calculate how much hardwood to spawn today
+                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Hardwood_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Skills.Foraging);
+
+                    //begin to spawn hardwood
+                    while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for hardwood & still hardwood to be spawned
+                    {
+                        //this section spawns 1 hardwood object at a random valid location
+
+                        spawnCount--; //reduce by 1, since one will be spawned
+
+                        int randomIndex;
+                        Vector2 randomTile;
+                        bool tileConfirmed = false; //false until a valid large (2x2) object location is confirmed
+                        do
+                        {
+                            randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
+                            randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
+                            validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
+                            tileConfirmed = Utility.IsValidLargeSpawnLocation(area.MapName, randomTile); //is the tile valid for large objects?
+                        } while (validTiles.Count > 0 && !tileConfirmed);
+
+                        if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
+
+                        //spawn the hardwood at the given tile
+                        if (rng.Next(area.StumpFrequency + area.LogFrequency) < area.StumpFrequency) //randomly select between stump or log, based on the config settings for their spawn frequency
+                        {
+                            loc.addResourceClumpAndRemoveUnderlyingTerrain(600, 2, 2, randomTile); //generate a stump
+                        }
+                        else
+                        {
+                            loc.addResourceClumpAndRemoveUnderlyingTerrain(602, 2, 2, randomTile); //generate a log
+                        }
+                    }
+                }
+            }
             
             /// <summary>Generates ore in the game based on the current player's config settings.</summary>
             public static void OreGeneration()
@@ -83,12 +167,12 @@ namespace FarmTypeManager
 
                 Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (OreSpawnArea area in Utility.Config.Ore_Spawn_Settings.Areas) //for each ore spawn area described in the player config file
+                foreach (OreSpawnArea area in Utility.Config.Ore_Spawn_Settings.Areas)
                 {
-                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex); //calculate a list of valid tiles for ore in this area
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
 
                     //calculate how much ore to spawn today
-                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Ore_Spawn_Settings.PercentExtraOrePerMiningLevel, Skills.Mining);
+                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Skills.Mining);
 
                     //figure out which config section to use (if the spawn area's data is null, use the "global" data instead)
                     Dictionary<string, int> skillReq = area.MiningLevelRequired ?? Utility.Config.Ore_Spawn_Settings.MiningLevelRequired;
@@ -111,7 +195,7 @@ namespace FarmTypeManager
                     //calculate the final spawn chance for each type of ore
                     Dictionary<string, int> oreChances = AdjustedSpawnChances(Skills.Mining, skillReq, startChance, tenChance);
                     
-                    if (oreChances.Count < 1) { return; } //if there's no chance of spawning any ore for some reason, just stop here
+                    if (oreChances.Count < 1) { continue; } //if there's no chance of spawning any ore for some reason, just stop working on this area now
 
                     //begin to spawn ore
                     int randomIndex;
@@ -124,7 +208,7 @@ namespace FarmTypeManager
                         spawnCount--; //reduce by 1, since one will be spawned
                         randomIndex = rng.Next(validTiles.Count); //get the array index for a random tile
                         randomTile = validTiles[randomIndex]; //get the tile's x,y coordinates
-                        validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed by ore now
+                        validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
                         int totalWeight = 0; //the upper limit for the random number that picks ore type (i.e. the sum of all ore chances)
                         foreach (KeyValuePair<string, int> ore in oreChances)

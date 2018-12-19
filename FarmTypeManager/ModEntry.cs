@@ -40,6 +40,7 @@ namespace FarmTypeManager
 
             //run the various main processes
             ObjectSpawner.ForageGeneration();
+            ObjectSpawner.HardwoodGeneration();
             ObjectSpawner.OreGeneration();
         }
 

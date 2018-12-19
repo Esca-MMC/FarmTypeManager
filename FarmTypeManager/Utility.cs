@@ -106,7 +106,7 @@ namespace FarmTypeManager
             string[] xyxy = vectorString.Split(new char[] { ',', '/', ';' }); //split the string into separate strings based on various delimiter symbols
             if (xyxy.Length != 4) //if "xyxy" didn't split into the right number of strings, it's probably formatted poorly
             {
-                Monitor.Log($"This include/exclude area in your player file isn't formatted correctly: \"{vectorString}\" ({locationName})", LogLevel.Info);
+                Monitor.Log($"Issue: This include/exclude area for the {locationName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
             }
             else
             {
@@ -127,7 +127,7 @@ namespace FarmTypeManager
                 }
                 else
                 {
-                    Monitor.Log($"This include/exclude area in your player file isn't formatted correctly: \"{vectorString}\" ({locationName})", LogLevel.Info);
+                    Monitor.Log($"Issue: This include/exclude area for the {locationName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
                 }
             }
 
@@ -152,8 +152,9 @@ namespace FarmTypeManager
         /// <summary>Generates a list of all valid tiles for object spawning in the provided SpawnArea.</summary>
         /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
         /// <param name="customTileIndex">The list of custom tile indices for this spawn process (e.g. forage or ore generation). Found in the relevant section of Utility.Config.</param>
+        /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
         /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-        public static List<Vector2> GenerateTileList(SpawnArea area, int[] customTileIndex)
+        public static List<Vector2> GenerateTileList(SpawnArea area, int[] customTileIndex, bool isLarge)
         {
             List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
 
@@ -172,20 +173,51 @@ namespace FarmTypeManager
                     validTiles.AddRange(Utility.GetTilesByProperty(area.MapName, type));
                 }
             }
-            foreach (string include in area.IncludeSpawnAreas) //check for valid tiles in each "include" zone for the area
+            foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
             {
                 validTiles.AddRange(Utility.GetTilesByVectorString(area.MapName, include));
             }
 
             validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
 
-            foreach (string exclude in area.ExcludeSpawnAreas) //check for valid tiles in each "exclude" zone for the area (validity isn't technically relevant here, but simpler to code, and tiles' validity cannot currently change during this process)
+            foreach (string exclude in area.ExcludeAreas) //check for valid tiles in each "exclude" zone for the area (validity isn't technically relevant here, but simpler to code, and tiles' validity cannot currently change during this process)
             {
                 List<Vector2> excludedTiles = Utility.GetTilesByVectorString(area.MapName, exclude); //get list of valid tiles in the excluded area
                 validTiles.RemoveAll(excludedTiles.Contains); //remove any previously valid tiles that match the excluded area
             }
 
+            if (isLarge) //if working with 2x2 sized objects, e.g. stumps and logs
+            {
+                int x = 0;
+                while (x < validTiles.Count) //loop until every remaining tile is valid for large objects
+                {
+                    if (!IsValidLargeSpawnLocation(area.MapName, validTiles[x])) //if the current tile is invalid for large objects
+                    {
+                        validTiles.Remove(validTiles[x]); //remove the tile from the list (NOTE: this affects the list's index and item count, so don't increment x here)
+                    }
+                    else //if the tile is valid
+                    {
+                        x++; //move on to the next tile in the list
+                    }
+                }
+            }
+
             return validTiles;
+        }
+
+        public static bool IsValidLargeSpawnLocation(string mapName, Vector2 tile)
+        {
+            bool valid = false;
+
+            GameLocation loc = Game1.getLocationFromName(mapName); //variable for the current location being worked on 
+
+            //if any of the necessary tiles for a 2x2 object are invalid, remove this tile from the list (note: the tile in the list is treated as the top left corner of the object)
+            if (loc.isTileLocationTotallyClearAndPlaceable((int)tile.X, (int)tile.Y) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X + 1, (int)tile.Y) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X, (int)tile.Y + 1) && loc.isTileLocationTotallyClearAndPlaceable((int)tile.X + 1, (int)tile.Y + 1))
+            {
+                valid = true;
+            }
+
+            return valid;
         }
 
         /// <summary>Safely encapsulates IMonitor.Log() for this mod's static classes. Must be given an IMonitor in the ModEntry class to produce output.</summary>
