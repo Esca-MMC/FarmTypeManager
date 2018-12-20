@@ -29,7 +29,7 @@ namespace FarmTypeManager
         /// <summary>Tasks performed after the game begins a new day, including when loading a save.</summary>
         private void DayStarted(object sender, EventArgs e)
         {
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't try to do anything
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
             Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file ([null] if it doesn't exist)
             if (Utility.Config == null) //no config file for this save?
@@ -42,18 +42,31 @@ namespace FarmTypeManager
             ObjectSpawner.ForageGeneration();
             ObjectSpawner.HardwoodGeneration();
             ObjectSpawner.OreGeneration();
+
+            if (Utility.HasConfigChanged) //if any changes have been made to the player's config settings, save them to the config file
+            {
+                //NOTE: This will reformat any changes the player has made with the default SMAPI formatting,
+                //      so be sure to note this in the readme to minimize user confusion.
+                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
+            }
+            
         }
 
-        ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile index, and tile "Type" property (e.g. "Grass" or "Dirt").</summary>
+        ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile "Type" property (e.g. "Grass" or "Dirt"), tile "Diggable" status, and tile index.</summary>
         private void WhereAmI(string command, string[] args)
         {
-            string locName = Game1.currentLocation.Name;
+            GameLocation loc = Game1.currentLocation;
             int x = Game1.player.getTileX();
             int y = Game1.player.getTileY();
-            int index = Game1.currentLocation.getTileIndexAt(x, y, "Back");
-            string type = Game1.currentLocation.doesTileHaveProperty(x, y, "Type", "Back") ?? "[none]";
-            Monitor.Log($"Tile (x,y): {x},{y}. Map name: {locName}", LogLevel.Info);
-            Monitor.Log($"Tile index: {index}. Terrain type: {type}", LogLevel.Info);
+            int index = loc.getTileIndexAt(x, y, "Back");
+            string type = loc.doesTileHaveProperty(x, y, "Type", "Back") ?? "[none]";
+            string diggable = loc.doesTileHaveProperty(x, y, "Diggable", "Back");
+            if (diggable == "T") { diggable = "Yes"; } else { diggable = "No"; };
+            Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
+            Monitor.Log($"Map name: {loc.Name}", LogLevel.Info);
+            Monitor.Log($"Terrain type: {type}", LogLevel.Info);
+            Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
+            Monitor.Log($"Tile image index: {index}", LogLevel.Info);
         }
     }
 }

@@ -245,7 +245,10 @@ namespace FarmTypeManager
             }
         }
 
-        /// <summary>//Data contained in the per-character configuration file, including various mod settings.</summary>
-        public static FarmConfig Config;
+        /// <summary>Data contained in the per-character configuration file, including various mod settings.</summary>
+        public static FarmConfig Config { get; set; }
+
+        /// <summary>Whether the mod has made any changes to the config settings for the current player (which requires the player's config file to the updated).</summary>
+        public static bool HasConfigChanged { get; set; } = false;
     }
 }

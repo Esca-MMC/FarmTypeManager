@@ -99,28 +99,42 @@ namespace FarmTypeManager
                         continue;
                     }
 
-                    /*if (area.FindExistingHardwoodLocations == true) //if enabled, ensure that any existing stumps and/or logs are added to the include area list
+                    if (area.FindExistingHardwoodLocations == true) //if enabled, ensure that any existing stumps and/or logs are added to the include area list
                     {
-                        List<Vector2> existingHardwood = new List<Vector2>(); //will contain x,y coordinates for tiles that contain a pre-existing stump and/or log
+                        List<string> existingHardwood = new List<string>(); //any new stump/log location strings to be added to area.IncludeAreas
 
-                        //loop through each tile on the map and locate existing stumps/logs
-                        foreach (ResourceClump clump in loc.resourceClumps)
+                        foreach (ResourceClump clump in loc.resourceClumps) //go through the map's set of resource clumps (stumps, logs, etc)
                         {
-                            
                             if ((clump.parentSheetIndex.Value == 600 && area.StumpFrequency > 0) || (clump.parentSheetIndex.Value == 602 && area.LogFrequency > 0)) //if the current "clump" is a stump/log and stump/log spawning is enabled in this area
                             {
-                                bool alreadyListed = false;
-                                foreach (string include in area.IncludeAreas)
+                                string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
+                                bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
+
+                                foreach (string include in area.IncludeAreas) //check each existing include string
                                 {
-                                    //TBD: check for existing copies of this location
+                                    if (include == newInclude)
+                                    {
+                                        alreadyListed = true; //this tile is already specifically listed
+                                        break;
+                                    }
                                 }
-                                if (!alreadyListed)
+
+                                if (!alreadyListed) //if this stump/log isn't already specifically listed in the include areas
                                 {
-                                    //TBD: add matching string to include area list
+                                    existingHardwood.Add(newInclude); //add the string to the list of new include strings
                                 }
                             }
                         }
-                    }*/
+
+                        if (existingHardwood.Count > 0) //if any existing stumps/logs need to be included
+                        {
+                            area.IncludeAreas = area.IncludeAreas.Concat(existingHardwood).ToArray(); //add the new include strings to the end of the existing set
+                        }
+
+                        area.FindExistingHardwoodLocations = false; //disable this process so it doesn't happen every day (using it repeatedly while spawning new stumps/logs would fill the whole map over time...)
+
+                        Utility.HasConfigChanged = true; //indicate that the player's config settings have changed, so their config file should be updated
+                    }
 
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for hardwood in this area
 
