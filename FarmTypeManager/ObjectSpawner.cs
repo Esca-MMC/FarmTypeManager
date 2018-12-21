@@ -25,6 +25,13 @@ namespace FarmTypeManager
 
                 foreach (SpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas)
                 {
+                    //validate the map name for the area
+                    if (Game1.getLocationFromName(area.MapName) == null)
+                    {
+                        Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No forage will be spawned there.", LogLevel.Info);
+                        continue;
+                    }
+
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
 
                     //calculate how much forage to spawn today
@@ -86,16 +93,23 @@ namespace FarmTypeManager
 
                 foreach (HardwoodSpawnArea area in Utility.Config.Hardwood_Spawn_Settings.Areas)
                 {
+                    //validate the map name for the area
+                    if (Game1.getLocationFromName(area.MapName) == null)
+                    {
+                        Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No hardwood will be spawned there.", LogLevel.Info);
+                        continue;
+                    }
+
                     Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
                     if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (e.g. stumps and logs), so display an error message and skip this area
                     {
-                        Utility.Monitor.Log($"Issue: Hardwood stumps/logs cannot be spawned in the {area.MapName} map. Only \"farm\" maps are currently supported.", LogLevel.Info);
+                        Utility.Monitor.Log($"Issue: Hardwood stumps/logs cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
                         continue;
                     }
 
                     if (area.StumpFrequency < 1 && area.LogFrequency < 1) //if both stumps AND logs are set to zero for some reason, display a warning about it & stop trying to spawn things in this area
                     {
-                        Utility.Monitor.Log($"Issue: StumpFrequency and LogFrequency are both set to 0 in the {area.MapName} map area. No hardwood will spawn there.", LogLevel.Info);
+                        Utility.Monitor.Log($"Issue: StumpFrequency and LogFrequency are both set to 0 in the \"{area.MapName}\" map area. No hardwood will spawn there.", LogLevel.Info);
                         continue;
                     }
 
@@ -136,7 +150,7 @@ namespace FarmTypeManager
                         Utility.HasConfigChanged = true; //indicate that the player's config settings have changed, so their config file should be updated
                     }
 
-                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for hardwood in this area
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Hardwood_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for hardwood in this area
 
                     //calculate how much hardwood to spawn today
                     int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Hardwood_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Skills.Foraging);
@@ -183,6 +197,13 @@ namespace FarmTypeManager
 
                 foreach (OreSpawnArea area in Utility.Config.Ore_Spawn_Settings.Areas)
                 {
+                    //validate the map name for the area
+                    if (Game1.getLocationFromName(area.MapName) == null)
+                    {
+                        Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No ore will be spawned there.", LogLevel.Info);
+                        continue;
+                    }
+
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
 
                     //calculate how much ore to spawn today
