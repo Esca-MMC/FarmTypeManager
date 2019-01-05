@@ -60,7 +60,7 @@ namespace FarmTypeManager
 
             //run the various main processes
             ObjectSpawner.ForageGeneration();
-            ObjectSpawner.HardwoodGeneration();
+            ObjectSpawner.LargeObjectGeneration();
             ObjectSpawner.OreGeneration();
 
             if (Utility.HasConfigChanged) //if any changes have been made to the player's config settings, save them to the config file

@@ -35,7 +35,7 @@ namespace FarmTypeManager
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
 
                     //calculate how much forage to spawn today
-                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Skills.Foraging);
+                    int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
 
                     //begin to spawn forage
                     while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
@@ -84,81 +84,88 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>Generates hardwood objects (stumps and logs) in the game based on the current player's config settings.</summary>
-            public static void HardwoodGeneration()
+            /// <summary>Generates large objects (e.g. stumps and logs) in the game based on the current player's config settings.</summary>
+            public static void LargeObjectGeneration()
             {
-                if (Utility.Config.HardwoodSpawnEnabled != true) { return; } //if hardwood spawn is disabled, don't do anything
+                if (Utility.Config.LargeObjectSpawnEnabled != true) { return; } //if large object spawn is disabled, don't do anything
 
                 Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
-                foreach (HardwoodSpawnArea area in Utility.Config.Hardwood_Spawn_Settings.Areas)
+                foreach (LargeObjectSpawnArea area in Utility.Config.Large_Object_Spawn_Settings.Areas)
                 {
                     //validate the map name for the area
                     if (Game1.getLocationFromName(area.MapName) == null)
                     {
-                        Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No hardwood will be spawned there.", LogLevel.Info);
+                        Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Info);
                         continue;
                     }
 
                     Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
-                    if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (e.g. stumps and logs), so display an error message and skip this area
+                    if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (i.e. large objects), so display an error message and skip this area
                     {
-                        Utility.Monitor.Log($"Issue: Hardwood stumps/logs cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
+                        Utility.Monitor.Log($"Issue: Large objects cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
                         continue;
                     }
 
-                    if (area.StumpFrequency < 1 && area.LogFrequency < 1) //if both stumps AND logs are set to zero for some reason, display a warning about it & stop trying to spawn things in this area
-                    {
-                        Utility.Monitor.Log($"Issue: StumpFrequency and LogFrequency are both set to 0 in the \"{area.MapName}\" map area. No hardwood will spawn there.", LogLevel.Info);
-                        continue;
-                    }
+                    List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes); //get a list of index numbers for relevant object types in this area
 
-                    if (area.FindExistingHardwoodLocations == true) //if enabled, ensure that any existing stumps and/or logs are added to the include area list
+                    if (area.FindExistingObjectLocations == true) //if enabled, ensure that any existing objects are added to the include area list
                     {
-                        List<string> existingHardwood = new List<string>(); //any new stump/log location strings to be added to area.IncludeAreas
+                        List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
 
                         foreach (ResourceClump clump in loc.resourceClumps) //go through the map's set of resource clumps (stumps, logs, etc)
                         {
-                            if ((clump.parentSheetIndex.Value == 600 && area.StumpFrequency > 0) || (clump.parentSheetIndex.Value == 602 && area.LogFrequency > 0)) //if the current "clump" is a stump/log and stump/log spawning is enabled in this area
+                            bool validObjectType = false; //whether the current object is listed in this area's config
+                            foreach (int ID in objectIDs) //check the list of valid index numbers for this area
                             {
-                                string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
-                                bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
-
-                                foreach (string include in area.IncludeAreas) //check each existing include string
+                                if (clump.parentSheetIndex.Value == ID) 
                                 {
-                                    if (include == newInclude)
-                                    {
-                                        alreadyListed = true; //this tile is already specifically listed
-                                        break;
-                                    }
+                                    validObjectType = true; //this clump's ID matches one of the listed object IDs
+                                    break;
                                 }
+                            }
+                            if (validObjectType == false)
+                            {
+                                break; //if this clump isn't listed in the config, skip it
+                            }
 
-                                if (!alreadyListed) //if this stump/log isn't already specifically listed in the include areas
+                            string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
+                            bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
+
+                            foreach (string include in area.IncludeAreas) //check each existing include string
+                            {
+                                if (include == newInclude)
                                 {
-                                    existingHardwood.Add(newInclude); //add the string to the list of new include strings
+                                    alreadyListed = true; //this tile is already specifically listed
+                                    break;
                                 }
+                            }
+
+                            if (!alreadyListed) //if this object isn't already specifically listed in the include areas
+                            {
+                                existingObjects.Add(newInclude); //add the string to the list of new include strings
                             }
                         }
 
-                        if (existingHardwood.Count > 0) //if any existing stumps/logs need to be included
+                        if (existingObjects.Count > 0) //if any existing objects need to be included
                         {
-                            area.IncludeAreas = area.IncludeAreas.Concat(existingHardwood).ToArray(); //add the new include strings to the end of the existing set
+                            area.IncludeAreas = area.IncludeAreas.Concat(existingObjects).ToArray(); //add the new include strings to the end of the existing set
                         }
 
-                        area.FindExistingHardwoodLocations = false; //disable this process so it doesn't happen every day (using it repeatedly while spawning new stumps/logs would fill the whole map over time...)
+                        area.FindExistingObjectLocations = false; //disable this process so it doesn't happen every day (using it repeatedly while spawning new objects would fill the whole map over time...)
 
                         Utility.HasConfigChanged = true; //indicate that the player's config settings have changed, so their config file should be updated
                     }
 
-                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Hardwood_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for hardwood in this area
+                    List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Large_Object_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for large objects in this area
 
-                    //calculate how much hardwood to spawn today
-                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Hardwood_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Skills.Foraging);
-
-                    //begin to spawn hardwood
-                    while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for hardwood & still hardwood to be spawned
+                    //calculate how many objects to spawn today
+                    int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
+                    
+                    //begin to spawn objects
+                    while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for objects & still objects to be spawned
                     {
-                        //this section spawns 1 hardwood object at a random valid location
+                        //this section spawns 1 large object at a random valid location
 
                         spawnCount--; //reduce by 1, since one will be spawned
 
@@ -175,15 +182,7 @@ namespace FarmTypeManager
 
                         if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
-                        //spawn the hardwood at the given tile
-                        if (rng.Next(area.StumpFrequency + area.LogFrequency) < area.StumpFrequency) //randomly select between stump or log, based on the config settings for their spawn frequency
-                        {
-                            loc.addResourceClumpAndRemoveUnderlyingTerrain(600, 2, 2, randomTile); //generate a stump
-                        }
-                        else
-                        {
-                            loc.addResourceClumpAndRemoveUnderlyingTerrain(602, 2, 2, randomTile); //generate a log
-                        }
+                        loc.addResourceClumpAndRemoveUnderlyingTerrain(objectIDs[rng.Next(objectIDs.Count)], 2, 2, randomTile); //generate an object using the list of valid index numbers
                     }
                 }
             }
@@ -207,7 +206,7 @@ namespace FarmTypeManager
                     List<Vector2> validTiles = Utility.GenerateTileList(area, Utility.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
 
                     //calculate how much ore to spawn today
-                    int spawnCount = AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Skills.Mining);
+                    int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, Utility.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Utility.Skills.Mining);
 
                     //figure out which config section to use (if the spawn area's data is null, use the "global" data instead)
                     Dictionary<string, int> skillReq = area.MiningLevelRequired ?? Utility.Config.Ore_Spawn_Settings.MiningLevelRequired;
@@ -228,7 +227,7 @@ namespace FarmTypeManager
                     }
 
                     //calculate the final spawn chance for each type of ore
-                    Dictionary<string, int> oreChances = AdjustedSpawnChances(Skills.Mining, skillReq, startChance, tenChance);
+                    Dictionary<string, int> oreChances = Utility.AdjustedSpawnChances(Utility.Skills.Mining, skillReq, startChance, tenChance);
                     
                     if (oreChances.Count < 1) { continue; } //if there's no chance of spawning any ore for some reason, just stop working on this area now
 
@@ -255,7 +254,7 @@ namespace FarmTypeManager
                         {
                             if (randomOreNum < ore.Value) //this ore "wins"
                             {
-                                SpawnOre(ore.Key, area.MapName, randomTile);
+                                Utility.SpawnOre(ore.Key, area.MapName, randomTile);
                                 break;
                             }
                             else //this ore "loses"
@@ -266,169 +265,6 @@ namespace FarmTypeManager
                     }
                 }
             }
-
-            /// <summary>Generates ore and places it on the specified map and tile.</summary>
-            /// <param name="oreName">A string representing the name of the ore type to be spawned, e.g. "</param>
-            /// <param name="mapName">The name of the GameLocation where the ore should be spawned.</param>
-            /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            private static void SpawnOre(string oreName, string mapName, Vector2 tile)
-            {
-                Random rng = new Random();
-                StardewValley.Object ore = null; //ore object, to be spawned into the world later
-                switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
-                {
-                    case "stone":
-                        ore = new StardewValley.Object(tile, 668 + (rng.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
-                        ore.MinutesUntilReady = 2; //durability, i.e. number of hits with basic pickaxe required to break the ore (each pickaxe level being +1 damage)
-                        break;
-                    case "geode":
-                        ore = new StardewValley.Object(tile, 75, 1); //"regular" geode rock, as spawned on vanilla hilltop quarries 
-                        ore.MinutesUntilReady = 3;
-                        break;
-                    case "frozengeode":
-                        ore = new StardewValley.Object(tile, 76, 1); //frozen geode rock
-                        ore.MinutesUntilReady = 5;
-                        break;
-                    case "magmageode":
-                        ore = new StardewValley.Object(tile, 77, 1); //magma geode rock
-                        ore.MinutesUntilReady = 8; //TODO: replace this guess w/ actual vanilla durability
-                        break;
-                    case "gem":
-                        ore = new StardewValley.Object(tile, (rng.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
-                        ore.MinutesUntilReady = 5; //based on "gemstone" durability, but applies to every type for simplicity's sake
-                        break;
-                    case "copper":
-                        ore = new StardewValley.Object(tile, 751, 1); //copper ore
-                        ore.MinutesUntilReady = 3;
-                        break;
-                    case "iron":
-                        ore = new StardewValley.Object(tile, 290, 1); //iron ore
-                        ore.MinutesUntilReady = 4;
-                        break;
-                    case "gold":
-                        ore = new StardewValley.Object(tile, 764, 1); //gold ore
-                        ore.MinutesUntilReady = 8;
-                        break;
-                    case "iridium":
-                        ore = new StardewValley.Object(tile, 765, 1); //iridium ore
-                        ore.MinutesUntilReady = 16; //TODO: confirm this is still the case (it's based on SDV 1.11 code)
-                        break;
-                    case "mystic":
-                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false); //mystic ore, i.e. high-end cavern rock with iridium + gold
-                        ore.MinutesUntilReady = 16; //TODO: replace this guess w/ actual vanilla durability
-                        break;
-                    default: break;
-                }
-
-                if (ore != null)
-                {
-                    GameLocation loc = Game1.getLocationFromName(mapName);
-                    loc.setObject(tile, ore); //actually spawn the ore object into the world
-                }
-                else
-                {
-                    Utility.Monitor.Log($"The ore to be spawned (\"{oreName}\") doesn't match any known ore types. Make sure that name isn't misspelled in your player config file.", LogLevel.Info);
-                }
-
-                return;
-            }
-
-            /// <summary>Produces a dictionary containing the final, adjusted spawn chance of each object in the provided dictionaries. (Part of the convoluted object spawning process for ore.)</summary>
-            /// <param name="skill">The player skill that affects spawn chances (e.g. Mining for ore spawn chances).</param>
-            /// <param name="levelRequired">A dictionary of object names and the skill level required to spawn them.</param>
-            /// <param name="startChances">A dictionary of object names and their weighted chances to spawn at their lowest required skill level (e.g. chance of spawning stone if you're level 0).</param>
-            /// <param name="maxChances">A dictionary of object names and their weighted chances to spawn at skill level 10.</param>
-            /// <returns></returns>
-            private static Dictionary<string, int> AdjustedSpawnChances(Skills skill, Dictionary<string, int> levelRequired, Dictionary<string, int> startChances, Dictionary<string, int> maxChances)
-            {
-                Dictionary<string, int> adjustedChances = new Dictionary<string, int>();
-
-                int skillLevel = 0; //highest skill level among all existing farmers, not just the host
-                foreach (Farmer farmer in Game1.getAllFarmers())
-                {
-                    skillLevel = Math.Max(skillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the new level if it's higher than before
-                }
-
-                foreach (KeyValuePair<string, int> objType in levelRequired)
-                {
-                    int chance = 0; //chance of spawning this object
-                    if (objType.Value > skillLevel)
-                    {
-                        //skill is too low to spawn this object; leave it at 0%
-                    }
-                    else if (objType.Value == skillLevel)
-                    {
-                        chance = startChances[objType.Key]; //skill is the minimum required; use the starting chance
-                    }
-                    else if (skillLevel >= 10)
-                    {
-                        chance = maxChances[objType.Key]; //level 10 skill; use the max level chance
-                    }
-                    else //skill is somewhere in between "starting" and "level 10", so do math to set the chance somewhere in between them (i forgot the term for this kind of averaging, sry)
-                    {
-                        int count = 0;
-                        long chanceMath = 0; //used in case the chances are very large numbers for some reason
-                        for (int x = objType.Value; x < 10; x++) //loop from [minimum skill level for this object] to [max level - 1], for vague math reasons
-                        {
-                            if (skillLevel > x)
-                            {
-                                chanceMath += maxChances[objType.Key]; //add level 10 chance
-                            }
-                            else
-                            {
-                                chanceMath += startChances[objType.Key]; //add starting chance
-                            }
-                            count++;
-                        }
-                        chanceMath = (long)Math.Round((double)chanceMath / (double)count); //divide to get the average
-                        chance = Convert.ToInt32(chanceMath); //convert back to a reasonable number range once the math is done
-                    }
-
-                    if (chance > 0) //don't bother adding any objects with 0% or negative spawn chance
-                    {
-                        adjustedChances.Add(objType.Key, chance); //add the object name & chance to the list of adjusted chances
-                    }
-                }
-
-                return adjustedChances;
-            }
-
-            /// <summary>Calculates the final number of objects to spawn today in the current spawning process, based on config settings and player levels in a relevant skill.</summary>
-            /// <param name="min">Minimum number of objects to spawn today (before skill multiplier).</param>
-            /// <param name="max">Maximum number of objects to spawn today (before skill multiplier).</param>
-            /// <param name="percent">Additive multiplier for each of the player's levels in the relevant skill (e.g. 10 would represent +10% objects per level).</param>
-            /// <param name="skill">Enumerator for the skill on which the "percent" additive multiplier is based.</param>
-            /// <returns>The final number of objects to spawn today in the current spawning process.</returns>
-            private static int AdjustedSpawnCount(int min, int max, int percent, Skills skill)
-            {
-                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
-                int spawnCount = rng.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
-
-                //calculate skill multiplier bonus
-                double skillMultiplier = percent;
-                skillMultiplier = (skillMultiplier / 100); //converted to percent, e.g. default config is "10" (10% per level) so it converts to "0.1"
-                int highestSkillLevel = 0; //highest skill level among all existing farmers, not just the host
-                foreach (Farmer farmer in Game1.getAllFarmers())
-                {
-                    highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the new level if it's higher than before
-                }
-                skillMultiplier = 1.0 + (skillMultiplier * highestSkillLevel); //final multiplier; e.g. with default config: "1.0" at level 0, "1.7" at level 7, etc
-
-                //calculate final forage amount
-                skillMultiplier *= spawnCount; //multiply the initial random spawn count by the skill multiplier
-                spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplied value (e.g. this is "1" if the multiplier is "1.7")
-                double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the multiplied value (e.g. this is "0.7" if the multiplier is "1.7")
-
-                if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
-                {
-                    spawnCount++;
-                }
-
-                return spawnCount;
-            }
-
-            /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
-            public enum Skills {Farming, Fishing, Foraging, Mining, Combat, Luck}
         }
     }
 }

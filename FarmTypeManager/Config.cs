@@ -17,11 +17,11 @@ namespace FarmTypeManager
     class FarmConfig
     {
         public bool ForageSpawnEnabled { get; set; }
-        public bool HardwoodSpawnEnabled { get; set; }
+        public bool LargeObjectSpawnEnabled { get; set; }
         public bool OreSpawnEnabled { get; set; }
 
         public ForageSettings Forage_Spawn_Settings { get; set; }
-        public HardwoodSettings Hardwood_Spawn_Settings { get; set; }
+        public LargeObjectSettings Large_Object_Spawn_Settings { get; set; }
         public OreSettings Ore_Spawn_Settings { get; set; }
 
         public int[] QuarryTileIndex { get; set; }
@@ -30,12 +30,12 @@ namespace FarmTypeManager
         {
             //basic on/off toggles
             ForageSpawnEnabled = false;
-            HardwoodSpawnEnabled = false;
+            LargeObjectSpawnEnabled = false;
             OreSpawnEnabled = false;
 
             //settings for each generation type (assigned in the constructor for each of these "Settings" objects; see those for details)
             Forage_Spawn_Settings = new ForageSettings();
-            Hardwood_Spawn_Settings = new HardwoodSettings();
+            Large_Object_Spawn_Settings = new LargeObjectSettings();
             Ore_Spawn_Settings = new OreSettings();
 
             //a list of every tilesheet index commonly used by "quarry" tiles on maps, e.g. the vanilla hilltop (mining) farm
@@ -74,17 +74,15 @@ namespace FarmTypeManager
         }
     }
 
-    //contains configuration settings for [re]spawning hardwood sources (large stumps and logs)
-    public class HardwoodSettings
+    //contains configuration settings for spawning large objects (e.g. stumps and logs)
+    public class LargeObjectSettings
     {
-        public int PercentExtraSpawnsPerForagingLevel { get; set; }
-        public HardwoodSpawnArea[] Areas { get; set; }
+        public LargeObjectSpawnArea[] Areas { get; set; }
         public int[] CustomTileIndex { get; set; }
 
-        public HardwoodSettings()
+        public LargeObjectSettings()
         {
-            PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra hardwood objects per level of forage skill; default is 0%, but it's included for those who want variable spawn rates
-            Areas = new HardwoodSpawnArea[] { new HardwoodSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], 1, 0, false) }; //a set of "HardwoodSpawnArea" objects, describing where hardwood objects can spawn on each map
+            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], new string[] { "Stump" }, false, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
             CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
         }
     }
@@ -174,25 +172,27 @@ namespace FarmTypeManager
         }
     }
 
-    //a subclass of "SpawnArea" specifically for hardwood generation purposes, including settings for the presence/ratio of stump and log spawns in each area
-    public class HardwoodSpawnArea : SpawnArea
+    //a subclass of "SpawnArea" specifically for large object generation purposes, including settings for which object types to spawn & a one-time switch to find and respawn pre-existing objects
+    public class LargeObjectSpawnArea : SpawnArea
     {
-        public int StumpFrequency { get; set; }
-        public int LogFrequency { get; set; }
-        public bool FindExistingHardwoodLocations { get; set; }
+        public string[] ObjectTypes { get; set; }
+        public bool FindExistingObjectLocations { get; set; }
+        public int PercentExtraSpawnsPerSkillLevel { get; set; }
+        public string RelatedSkill { get; set; }
 
-        public HardwoodSpawnArea()
+        public LargeObjectSpawnArea()
             : base()
         {
 
         }
 
-        public HardwoodSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, int stump, int log, bool find)
+        public LargeObjectSpawnArea(string name, int min, int max, string[] types, string[] include, string[] exclude, string[] objTypes, bool find, int extra, string skill)
             : base(name, min, max, types, include, exclude) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
         {
-            StumpFrequency = stump;
-            LogFrequency = log;
-            FindExistingHardwoodLocations = find;
+            ObjectTypes = objTypes;
+            FindExistingObjectLocations = find;
+            PercentExtraSpawnsPerSkillLevel = extra;
+            RelatedSkill = skill;
         }
     }
 
