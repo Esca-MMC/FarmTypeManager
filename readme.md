@@ -187,6 +187,7 @@ QuarryTileIndex | Integer(s) | A list of index numbers for "quarry" tiles in the
 ### Mod Settings
 These settings are in the **config.json** file, which is in the mod's main folder: (``Stardew Valley/Mods/FarmTypeManager``)
 They change the behavior of the mod itself, rather than one specific farm.
+
 Name | Valid settings | Description
 -----|----------------|------------
 EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
