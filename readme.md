@@ -31,14 +31,13 @@ Note: This mod will be disabled in multiplayer when you play as a farmhand (i.e.
 Below are a few examples of changes you can make to your character's configuration file, spawning various things on your farm or the other in-game maps.
 
 ### Spawn forage and respawn stumps on the farm
-![Your farm's stumps will respawn every day.](docs/images/ftm_example_1.png)
 ```
 "ForageSpawnEnabled": true,
 "LargeObjectSpawnEnabled": true,
 ```
+![Your farm's stumps will respawn every day.](docs/images/ftm_example_1.png)
 
-### Randomly spawn new logs ands boulders on the farm
-![Most days, logs and/or boulders will spawn on the farm.](docs/images/ftm_example_2.png)
+### Randomly spawn new logs and boulders on the farm
 ```
 "LargeObjectSpawnEnabled": true,
 ```
@@ -60,9 +59,9 @@ Below are a few examples of changes you can make to your character's configurati
         "ExcludeAreas": []
       }
 ```
+![Most days, logs and/or boulders will spawn on the farm.](docs/images/ftm_example_2.png)
 
 ### Spawn ore in a specific area of Cindersap Forest
-![Ore will spawn in a specific area of the Forest map.](docs/images/ftm_example_3.png)
 ```
 "OreSpawnEnabled": true,
 ```
@@ -82,9 +81,9 @@ Below are a few examples of changes you can make to your character's configurati
         "ExcludeAreas": []
       }
 ```
+![Ore will spawn in a specific area of the Forest map.](docs/images/ftm_example_3.png)
 
 ### Spawn LOTS of forage on the farm, but not near the house
-![Forage will spawn everywhere on the Farm map, except around the house.](docs/images/ftm_example_4.png)
 ```
 "ForageSpawnEnabled": true,
 ```
@@ -100,6 +99,7 @@ Below are a few examples of changes you can make to your character's configurati
         "ExcludeAreas": [ "69,17;57,10" ]
       }
 ```
+![Forage will spawn everywhere on the Farm map, except around the house.](docs/images/ftm_example_4.png)
 
 ## Commands
 This mod adds the command `whereami` to SMAPI's console. Enter it there to display information about the current map, including: 
