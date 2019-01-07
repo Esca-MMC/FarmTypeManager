@@ -84,8 +84,8 @@ namespace FarmTypeManager
             string type = loc.doesTileHaveProperty(x, y, "Type", "Back") ?? "[none]";
             string diggable = loc.doesTileHaveProperty(x, y, "Diggable", "Back");
             if (diggable == "T") { diggable = "Yes"; } else { diggable = "No"; };
-            Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
             Monitor.Log($"Map name: {loc.Name}", LogLevel.Info);
+			Monitor.Log($"Your location (x,y): {x},{y}", LogLevel.Info);
             Monitor.Log($"Terrain type: {type}", LogLevel.Info);
             Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
             Monitor.Log($"Tile image index: {index}", LogLevel.Info);

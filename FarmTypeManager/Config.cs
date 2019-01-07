@@ -50,8 +50,8 @@ namespace FarmTypeManager
     //contains configuration settings for forage item generation behavior
     public class ForageSettings
     {
-        public int PercentExtraSpawnsPerForagingLevel { get; set; }
         public SpawnArea[] Areas { get; set; }
+        public int PercentExtraSpawnsPerForagingLevel { get; set; }
         public int[] SpringItemIndex { get; set; }
         public int[] SummerItemIndex { get; set; }
         public int[] FallItemIndex { get; set; }
@@ -61,9 +61,9 @@ namespace FarmTypeManager
         //default constructor: configure default forage generation settings
         public ForageSettings()
         {
-            PercentExtraSpawnsPerForagingLevel = 10; //multiplier to give extra forage per level of foraging skill; default is +10% per level, which means twice as much forage at level 10
             Areas = new SpawnArea[] { new SpawnArea("Farm", 0, 3, new string[] { "Grass", "Diggable" }, new string[0], new string[0]) }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
-            
+            PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
+
             //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
             SpringItemIndex = new int[] { 16, 20, 22, 257 };
             SummerItemIndex = new int[] { 396, 398, 402, 404 };
@@ -82,7 +82,7 @@ namespace FarmTypeManager
 
         public LargeObjectSettings()
         {
-            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], new string[] { "Stump" }, false, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
+            Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea("Farm", 999, 999, new string[0], new string[0], new string[0], new string[] { "Stump" }, true, 0, "Foraging") }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
             CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
         }
     }
@@ -90,8 +90,9 @@ namespace FarmTypeManager
     //contains configuration settings for ore generation behavior
     public class OreSettings
     {
-        public int PercentExtraSpawnsPerMiningLevel { get; set; }
+        
         public OreSpawnArea[] Areas { get; set; }
+        public int PercentExtraSpawnsPerMiningLevel { get; set; }
         public Dictionary<string, int> MiningLevelRequired { get; set; }
         public Dictionary<string, int> StartingSpawnChance { get; set; }
         public Dictionary<string, int> LevelTenSpawnChance { get; set; }
@@ -100,9 +101,10 @@ namespace FarmTypeManager
         //default constructor: configure default ore generation settings
         public OreSettings()
         {
-            PercentExtraSpawnsPerMiningLevel = 10; //multiplier to give extra ore per level of mining skill; default is +10% per level, which means twice as much ore at level 10
-            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
             
+            Areas = new OreSpawnArea[] { new OreSpawnArea("Farm", 1, 5, new string[] { "Quarry" }, new string[0], new string[0], null, null, null) }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
+            PercentExtraSpawnsPerMiningLevel = 0; //multiplier to give extra ore per level of mining skill; default is +0%, since the native game lacks this mechanic
+
             //mining skill level required to spawn each ore type; defaults are based on the vanilla "hilltop" map settings, though some types didn't spawn at all
             MiningLevelRequired = new Dictionary<string, int>();
             MiningLevelRequired.Add("Stone", 0);
