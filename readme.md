@@ -15,7 +15,7 @@ This mod allows you to customize the features from Stardew Valley's different fa
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
-2. **Download FarmTypeManager** from [the Releases page on GitHub] or from [Nexus Mods].
+2. **Download FarmTypeManager** from [the Releases page on GitHub](https://github.com/Esca-MMC/FarmTypeManager/releases) or from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3231/).
 3. **Unzip FarmTypeManager** into your `Stardew Valley/Mods` folder.
 
 ## Setup
@@ -121,7 +121,7 @@ This section covers the simple on/off switches you can use to enable default con
 
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-ForageSpawnEnabled | true, **false** | Enables or disables spawning forageable plants. | When set to **true** with other default settings, this will work similarly to the Forest Farm, randomly spawning a few random forage items on the farm each day.
+ForageSpawnEnabled | true, **false** | Enables or disables spawning forageable plants. | When set to **true** with other default settings, this will work similarly to the Forest Farm, randomly spawning a few forage items on the farm each day.
 LargeObjectSpawnEnabled | true, **false** | Enables or disable spawning large objects (e.g. stumps). | When set to **true** with other default settings, this will find any existing large stumps on your farm and cause those to respawn each day.
 OreSpawnEnabled | true, **false** | Enables or disables spawning ore. | When set to **true** with other default settings, this will work similarly to the Hill-top Farm, spawning various kinds of ore on any "Quarry" terrain your farm may have. (If you're not using the Hill-top Farm or a custom farm with similar-looking quarries, nothing will happen. You'll need to change the **AutoSpawnTerrainTypes** or **IncludeAreas** settings in the ore section.)
 
@@ -185,8 +185,7 @@ Name | Valid settings | Description | Notes
 QuarryTileIndex | Integer(s) | A list of index numbers for "quarry" tiles in the game's tilesheet images. | These have been manually chosen to match the "quarry" tiles in the game's Hill-top Farm and custom maps that use similar mining areas. They're provided here so that people familiar with editing Stardew maps can customize this mod's "Quarry" terrain setting.
 
 ### Mod Settings
-These settings are in the **config.json** file, which is in the mod's main folder: (``Stardew Valley/Mods/FarmTypeManager``)
-They change the behavior of the mod itself, rather than one specific farm.
+These settings are in the **config.json** file, which is in the mod's main folder: ``Stardew Valley/Mods/FarmTypeManager``. They change the behavior of the mod itself, rather than one specific farm.
 
 Name | Valid settings | Description
 -----|----------------|------------
