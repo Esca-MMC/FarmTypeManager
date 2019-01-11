@@ -177,7 +177,7 @@ namespace FarmTypeManager
                             randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
                             randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                             validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
-                            tileConfirmed = Utility.IsValidLargeSpawnLocation(area.MapName, randomTile); //is the tile valid for large objects?
+                            tileConfirmed = Utility.IsTileValid(area.MapName, randomTile, true); //is the tile still valid for large objects?
                         } while (validTiles.Count > 0 && !tileConfirmed);
 
                         if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
