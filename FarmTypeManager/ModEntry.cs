@@ -35,8 +35,9 @@ namespace FarmTypeManager
             if (Utility.Config == null) //no default.json config file
             {
                 Utility.Config = new FarmConfig(); //load the (built-in) default config settings
-                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create a default.json config file
             }
+
+            Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create or update the default.json config file
 
             Utility.Config = null; //prevent errors later in the loading process
 
