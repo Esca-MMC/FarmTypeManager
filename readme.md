@@ -102,7 +102,8 @@ Below are a few examples of changes you can make to your character's configurati
 ```
 ![Forage will spawn everywhere on the Farm map, except around the house.](docs/images/ftm_example_4.png)
 
-### Spawn some [modded plants](https://www.nexusmods.com/stardewvalley/mods/1598) on the [mod-enabled summit](https://www.nexusmods.com/stardewvalley/mods/2073), but only after the first year & after rainy days
+### Spawn [modded plants](https://www.nexusmods.com/stardewvalley/mods/1598) on the [mod-enabled summit](https://www.nexusmods.com/stardewvalley/mods/2073), but only after rainy days & after year 1
+```
 "ForageSpawnEnabled": true,
 ```
 ```
@@ -130,9 +131,6 @@ Below are a few examples of changes you can make to your character's configurati
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "LimitedNumberOfSpawns": null
-        }
-	  }
-```
 ```
 ![Custom forage spawned on a mod-enabled map with specific time and weather conditions.](docs/images/ftm_example_5.png)
 
