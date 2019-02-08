@@ -66,7 +66,6 @@ Below are a few examples of changes you can make to your character's configurati
 ```
 ```
 "Ore_Spawn_Settings": {
-   "Ore_Spawn_Settings": {
     "Areas": [
       {
         "MiningLevelRequired": null,
