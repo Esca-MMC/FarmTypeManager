@@ -89,7 +89,7 @@ Below are a few examples of changes you can make to your character's configurati
 "Forage_Spawn_Settings": {
     "Areas": [
       {
-	    "SpringItemIndex": null,
+	"SpringItemIndex": null,
         "SummerItemIndex": null,
         "FallItemIndex": null,
         "WinterItemIndex": null,
