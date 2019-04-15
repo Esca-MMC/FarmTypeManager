@@ -494,9 +494,13 @@ namespace FarmTypeManager
         /// <returns>True if objects are allowed to spawn. False if any extra conditions should prevent spawning.</returns>
         public static bool CheckExtraConditions(SpawnArea area)
         {
+            Monitor.Log($"Checking extra conditions for the {area.MapName} area...", LogLevel.Trace);
+
             //check years
             if (area.ExtraConditions.Years != null && area.ExtraConditions.Years.Length > 0)
             {
+                Monitor.Log("Years condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validYear = false;
 
                 foreach (string year in area.ExtraConditions.Years)
@@ -506,7 +510,7 @@ namespace FarmTypeManager
                         if (year.Equals("All", StringComparison.OrdinalIgnoreCase) || year.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
                         {
                             validYear = true;
-                            break; //skip the rest of the "day" checks
+                            break; //skip the rest of the "year" checks
                         }
                         else if (year.Contains("+")) //contains a plus, so parse it as a single year & any years after it, e.g. "2+"
                         {
@@ -548,8 +552,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                    if (validYear != true)
+                if (validYear)
                 {
+                    Monitor.Log("The current year matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current year did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false;
                 }
             }
@@ -557,6 +566,8 @@ namespace FarmTypeManager
             //check seasons
             if (area.ExtraConditions.Seasons != null && area.ExtraConditions.Seasons.Length > 0)
             {
+                Monitor.Log("Seasons condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validSeason = false;
 
                 foreach (string season in area.ExtraConditions.Seasons)
@@ -573,8 +584,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validSeason != true) //if no valid listing for the current season was found
+                if (validSeason)
                 {
+                    Monitor.Log("The current season matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current season did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -582,6 +598,8 @@ namespace FarmTypeManager
             //check days
             if (area.ExtraConditions.Days != null && area.ExtraConditions.Days.Length > 0)
             {
+                Monitor.Log("Days condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validDay = false;
 
                 foreach (string day in area.ExtraConditions.Days)
@@ -633,8 +651,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validDay != true) //if no valid listing for the current day was found
+                if (validDay)
                 {
+                    Monitor.Log("The current day matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("The current day did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -642,6 +665,8 @@ namespace FarmTypeManager
             //check yesterday's weather
             if (area.ExtraConditions.WeatherYesterday != null && area.ExtraConditions.WeatherYesterday.Length > 0)
             {
+                Monitor.Log("Yesterday's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherYesterday) //for each listed weather name
@@ -694,8 +719,14 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for yesterday's weather was found
+
+                if (validWeather)
                 {
+                    Monitor.Log("Yesterday's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Yesterday's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -703,6 +734,8 @@ namespace FarmTypeManager
             //check today's weather
             if (area.ExtraConditions.WeatherToday != null && area.ExtraConditions.WeatherToday.Length > 0)
             {
+                Monitor.Log("Today's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherToday) //for each listed weather name
@@ -754,8 +787,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for today's weather was found
+                if (validWeather)
                 {
+                    Monitor.Log("Today's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Today's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -763,6 +801,8 @@ namespace FarmTypeManager
             //check tomorrow's weather
             if (area.ExtraConditions.WeatherTomorrow != null && area.ExtraConditions.WeatherTomorrow.Length > 0)
             {
+                Monitor.Log("Tomorrow's Weather condition(s) found. Checking...", LogLevel.Trace);
+
                 bool validWeather = false;
 
                 foreach (string weather in area.ExtraConditions.WeatherTomorrow) //for each listed weather name
@@ -815,8 +855,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (validWeather != true) //if no valid listing for yesterday's weather was found
+                if (validWeather)
                 {
+                    Monitor.Log("Tomorrow's weather matched a setting. Spawn allowed.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Tomorrow's weather did NOT match any settings. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
@@ -825,12 +870,15 @@ namespace FarmTypeManager
             //check number of spawns (NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (blocked by another condition)
             if (area.ExtraConditions.LimitedNumberOfSpawns != null)
             {
+                Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);
                 if (area.ExtraConditions.LimitedNumberOfSpawns > 0) //still has spawns remaining
                 {
+                    Monitor.Log($"Spawns remaining: {area.ExtraConditions.LimitedNumberOfSpawns} (including today). Spawn allowed.", LogLevel.Trace);
                     area.ExtraConditions.LimitedNumberOfSpawns--; //decrement (note that it's necessary to save this update to the config file; this is done elsewhere)
                 }
                 else //no spawns remaining
                 {
+                    Monitor.Log($"Spawns remaining: {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn disabled.", LogLevel.Trace);
                     return false; //prevent spawning
                 }
             }
