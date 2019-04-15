@@ -276,12 +276,11 @@ namespace FarmTypeManager
         /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
         public static void SpawnOre(string oreName, string mapName, Vector2 tile)
         {
-            Random rng = new Random();
             StardewValley.Object ore = null; //ore object, to be spawned into the world later
             switch (oreName.ToLower()) //avoid any casing issues in method calls by making this lower-case
             {
                 case "stone":
-                    ore = new StardewValley.Object(tile, 668 + (rng.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
+                    ore = new StardewValley.Object(tile, 668 + (RNG.Next(2) * 2), 1); //either of the two random stones spawned in the vanilla hilltop quarry
                     ore.MinutesUntilReady = 2; //durability, i.e. number of hits with basic pickaxe required to break the ore (each pickaxe level being +1 damage)
                     break;
                 case "geode":
@@ -297,7 +296,7 @@ namespace FarmTypeManager
                     ore.MinutesUntilReady = 8; //TODO: replace this guess w/ actual vanilla durability
                     break;
                 case "gem":
-                    ore = new StardewValley.Object(tile, (rng.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
+                    ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
                     ore.MinutesUntilReady = 5; //based on "gemstone" durability, but applies to every type for simplicity's sake
                     break;
                 case "copper":
@@ -404,8 +403,7 @@ namespace FarmTypeManager
         /// <returns>The final number of objects to spawn today in the current spawning process.</returns>
         public static int AdjustedSpawnCount(int min, int max, int percent, Utility.Skills skill)
         {
-            Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
-            int spawnCount = rng.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
+            int spawnCount = RNG.Next(min, max + 1); //random number from min to max (higher number is exclusive, so +1 to adjust for it)
 
             //calculate skill multiplier bonus
             double skillMultiplier = percent;
@@ -422,7 +420,7 @@ namespace FarmTypeManager
             spawnCount = (int)skillMultiplier; //store the integer portion of the current multiplied value (e.g. this is "1" if the multiplier is "1.7")
             double remainder = skillMultiplier - (int)skillMultiplier; //store the decimal portion of the multiplied value (e.g. this is "0.7" if the multiplier is "1.7")
 
-            if (rng.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
+            if (RNG.NextDouble() < remainder) //use remainder as a % chance to spawn one extra object (e.g. if the final count would be "1.7", there's a 70% chance of spawning 2 objects)
             {
                 spawnCount++;
             }
@@ -929,6 +927,9 @@ namespace FarmTypeManager
 
         /// <summary>Data contained in the per-character configuration file, including various mod settings.</summary>
         public static FarmConfig Config { get; set; } = null;
+
+        /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
+        public static Random RNG { get; } = new Random();
 
         /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
         public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }

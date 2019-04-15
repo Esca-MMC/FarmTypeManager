@@ -28,8 +28,6 @@ namespace FarmTypeManager
                     return; 
                 } 
 
-                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
-
                 foreach (ForageSpawnArea area in Utility.Config.Forage_Spawn_Settings.Areas)
                 {
                     //validate the map name for the area
@@ -61,7 +59,7 @@ namespace FarmTypeManager
                     while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
                     {
                         spawnCount--; //reduce by 1, since one will be spawned
-                        int randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
+                        int randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random valid tile
                         Vector2 randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                         validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
@@ -73,13 +71,13 @@ namespace FarmTypeManager
                                 {
                                     if (area.SpringItemIndex.Length > 0) //if the override includes any items
                                     {
-                                        randomForageType = area.SpringItemIndex[rng.Next(area.SpringItemIndex.Length)]; //get a random index from the override list
+                                        randomForageType = area.SpringItemIndex[Utility.RNG.Next(area.SpringItemIndex.Length)]; //get a random index from the override list
                                     }
                                     //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
                                 }
                                 else if (Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if the main index list includes any items
                                 {
-                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SpringItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the main list
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SpringItemIndex[Utility.RNG.Next(Utility.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the main list
                                 }
                                 break;
                             case "summer":
@@ -87,12 +85,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.SummerItemIndex.Length > 0)
                                     {
-                                        randomForageType = area.SummerItemIndex[rng.Next(area.SummerItemIndex.Length)];
+                                        randomForageType = area.SummerItemIndex[Utility.RNG.Next(area.SummerItemIndex.Length)];
                                     }
                                 }
                                 else if (Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
                                 {
-                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SummerItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.SummerItemIndex[Utility.RNG.Next(Utility.Config.Forage_Spawn_Settings.SummerItemIndex.Length)];
                                 }
                                 break;
                             case "fall":
@@ -100,12 +98,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.FallItemIndex.Length > 0)
                                     {
-                                        randomForageType = area.FallItemIndex[rng.Next(area.FallItemIndex.Length)];
+                                        randomForageType = area.FallItemIndex[Utility.RNG.Next(area.FallItemIndex.Length)];
                                     }
                                 }
                                 else if (Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
                                 {
-                                    randomForageType = Utility.Config.Forage_Spawn_Settings.FallItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.FallItemIndex[Utility.RNG.Next(Utility.Config.Forage_Spawn_Settings.FallItemIndex.Length)];
                                 }
                                 break;
                             case "winter":
@@ -113,12 +111,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.WinterItemIndex.Length > 0)
                                     {
-                                        randomForageType = area.WinterItemIndex[rng.Next(area.WinterItemIndex.Length)];
+                                        randomForageType = area.WinterItemIndex[Utility.RNG.Next(area.WinterItemIndex.Length)];
                                     }
                                 }
                                 else if (Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
                                 {
-                                    randomForageType = Utility.Config.Forage_Spawn_Settings.WinterItemIndex[rng.Next(Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length)];
+                                    randomForageType = Utility.Config.Forage_Spawn_Settings.WinterItemIndex[Utility.RNG.Next(Utility.Config.Forage_Spawn_Settings.WinterItemIndex.Length)];
                                 }
                                 break;
                         }
@@ -136,7 +134,7 @@ namespace FarmTypeManager
                         }
                     }
 
-                    Utility.Monitor.Log($"Spawn process complete for this area ({area.MapName}). Next area...", LogLevel.Trace);
+                    Utility.Monitor.Log($"Spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
                     Utility.Monitor.Log("", LogLevel.Trace);
                 }
 
@@ -156,8 +154,6 @@ namespace FarmTypeManager
                     Utility.Monitor.Log("Large object spawn is disabled.", LogLevel.Trace);
                     return;
                 }
-
-                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
                 foreach (LargeObjectSpawnArea area in Utility.Config.Large_Object_Spawn_Settings.Areas)
                 {
@@ -259,7 +255,7 @@ namespace FarmTypeManager
                         bool tileConfirmed = false; //false until a valid large (2x2) object location is confirmed
                         do
                         {
-                            randomIndex = rng.Next(validTiles.Count); //get the array index for a random valid tile
+                            randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random valid tile
                             randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                             validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
                             tileConfirmed = Utility.IsTileValid(area, randomTile, true); //is the tile still valid for large objects?
@@ -268,10 +264,10 @@ namespace FarmTypeManager
                         if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
                         Utility.Monitor.Log($"Attempting to spawn large object. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
-                        loc.addResourceClumpAndRemoveUnderlyingTerrain(objectIDs[rng.Next(objectIDs.Count)], 2, 2, randomTile); //generate an object using the list of valid index numbers
+                        loc.addResourceClumpAndRemoveUnderlyingTerrain(objectIDs[Utility.RNG.Next(objectIDs.Count)], 2, 2, randomTile); //generate an object using the list of valid index numbers
                     }
 
-                    Utility.Monitor.Log($"Spawn process complete for this area ({area.MapName}). Next area...", LogLevel.Trace);
+                    Utility.Monitor.Log($"Spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
                     Utility.Monitor.Log("", LogLevel.Trace);
                 }
 
@@ -291,8 +287,6 @@ namespace FarmTypeManager
                     Utility.Monitor.Log("Ore spawn is disabled.", LogLevel.Trace);
                     return;
                 }
-
-                Random rng = new Random(); //DEVNOTE: "Game1.random" exists, but causes some odd spawn behavior; using this for now...
 
                 foreach (OreSpawnArea area in Utility.Config.Ore_Spawn_Settings.Areas)
                 {
@@ -359,7 +353,7 @@ namespace FarmTypeManager
                         //this section spawns 1 ore at a random valid location
 
                         spawnCount--; //reduce by 1, since one will be spawned
-                        randomIndex = rng.Next(validTiles.Count); //get the array index for a random tile
+                        randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random tile
                         randomTile = validTiles[randomIndex]; //get the tile's x,y coordinates
                         validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
@@ -368,7 +362,7 @@ namespace FarmTypeManager
                         {
                             totalWeight += ore.Value; //sum up all the ore chances
                         }
-                        randomOreNum = rng.Next(totalWeight); //generate random number from 0 to [totalWeight - 1]
+                        randomOreNum = Utility.RNG.Next(totalWeight); //generate random number from 0 to [totalWeight - 1]
                         foreach (KeyValuePair<string, int> ore in oreChances)
                         {
                             if (randomOreNum < ore.Value) //this ore "wins"
@@ -385,7 +379,7 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Attempting to spawn ore. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
                     }
 
-                    Utility.Monitor.Log($"Spawn process complete for this area ({area.MapName}). Next area...", LogLevel.Trace);
+                    Utility.Monitor.Log($"Spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
                     Utility.Monitor.Log("", LogLevel.Trace);
                 }
 
