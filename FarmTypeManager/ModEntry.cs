@@ -23,27 +23,6 @@ namespace FarmTypeManager
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
             ModConfig conf; //settings contained in the mod's config.json file
 
-            //attempt to load and update/save the default.json FarmConfig file
-            try
-            {
-                Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
-
-                if (Utility.Config == null) //no default.json config file
-                {
-                    Utility.Config = new FarmConfig(); //load the (built-in) default config settings
-                }
-
-                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create or update the default.json config file
-            }
-            catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
-            {
-                Utility.Monitor.Log($"Warning: Your default config file (default.json) could not be parsed correctly. If you load a character without their own config file, most of this mod's features will be disabled. Please edit the file, or delete it before restarting/loading to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
-                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
-                Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-            }
-
-            Utility.Config = null; //prevent errors later in the loading process
-
             //attempt to load the config.json ModConfig file and activate its settings
             try
             {
@@ -58,7 +37,8 @@ namespace FarmTypeManager
             }
             catch (Exception ex) //if the config.json file can't be parsed correctly, try to explain it in the user's log & then skip any config-related behaviors
             {
-                Utility.Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The original error message is displayed below.", LogLevel.Warn);
+                Utility.Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
+                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
                 Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
             }
         }
@@ -75,7 +55,7 @@ namespace FarmTypeManager
             }
             catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
             {
-                Utility.Monitor.Log($"Warning: Your character's config file ({Constants.SaveFolderName}.json) could not be parsed correctly. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
+                Utility.Monitor.Log($"Warning: Your character's config file ({Constants.SaveFolderName}.json) could not be parsed correctly. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
                 Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
                 return;
