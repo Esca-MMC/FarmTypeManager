@@ -48,43 +48,7 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
-            Utility.Config = null; //avoid any errors elsewhere in the loading process
-            try
-            {
-                Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file (null if it doesn't exist)
-            }
-            catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
-            {
-                Utility.Monitor.Log($"Warning: Your character's config file ({Constants.SaveFolderName}.json) could not be parsed correctly. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
-                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
-                Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                return;
-            }
-
-            if (Utility.Config == null) //no config file for this save
-            {
-                //attempt to load the default.json config file
-                try
-                {
-                    Utility.Config = Helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
-                }
-                catch (Exception ex) //if there's an error while loading the json file, try to explain it in the user's log & then skip any further DayStarted behaviors
-                {
-                    Utility.Monitor.Log($"Warning: Your default config file (default.json) could not be parsed correctly, and your character doesn't have their own config file yet. Most of this mod's features will be disabled. Please edit the file, or delete it and reload your save to generate a new config file. The auto-generated error message is displayed below.", LogLevel.Warn);
-                    Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
-                    Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                    return;
-                }
-
-                if (Utility.Config == null) //no default.json config file
-                {
-                    Utility.Config = new FarmConfig(); //load the (built-in) default config settings
-                }
-
-                Helper.Data.WriteJsonFile($"data/default.json", Utility.Config); //create or update the default.json config file
-            }
-
-            Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config); //create or update the config file for the current save
+            Utility.LoadFarmData(Helper); //load all available data files
 
             //run the methods providing the mod's main features
             ObjectSpawner.ForageGeneration();
@@ -95,20 +59,28 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
         private void DayEnding(object sender, EventArgs e)
         {
-            if (Utility.Config != null) //avoid errors when this process runs prior to loading a config, e.g. when a new farm is created
-            {
-                //update the internal save data
-                Utility.Config.Internal_Save_Data.WeatherForYesterday = Utility.WeatherForToday();
+            if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm list is blank, do nothing (e.g. when called by a newly created farm)
 
-                //save any changes to the player's config file
-                Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", Utility.Config);
+            //update information in each save file
+            foreach (FarmData data in Utility.FarmDataList)
+            {
+                data.Save.WeatherForYesterday = Utility.WeatherForToday(); //update saved weather info
+
+                if (data.Pack != null) //if this data is from a content pack
+                {
+                    data.Pack.WriteJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file for that content pack
+                }
+                else //this data is from this mod's own folders
+                {
+                    Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file in this mod's own folders
+                }
             }
-        }
+    }
 
         /// <summary>Tasks performed when the player returns to the title screen from an active game session.</summary>
         private void ReturnedToTitle(object sender, EventArgs e)
         {
-            Utility.Config = null; //null the config file to avoid any related errors, e.g. re-using the data for a different save
+            Utility.FarmDataList = new List<FarmData>(); //clear this list to avoid any possible errors caused by a previous farm's data
         }
 
         ///<summary>Console command. Outputs the player's current location name, tile x/y coordinates, tile "Type" property (e.g. "Grass" or "Dirt"), tile "Diggable" status, and tile index.</summary>
