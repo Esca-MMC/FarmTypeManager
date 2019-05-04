@@ -15,10 +15,12 @@ namespace FarmTypeManager
         private class ModConfig
         {
             public bool EnableWhereAmICommand { get; set; }
+            public bool EnableContentPacks { get; set; } = true; //added in version 1.4; default used here to automatically fill in values with SMAPI's json interface
 
             public ModConfig()
             {
-                EnableWhereAmICommand = true; //should enable the "whereami" command in the SMAPI console
+                EnableWhereAmICommand = true; //enable the "whereami" command in the SMAPI console
+                EnableContentPacks = true; //enable any content packs for this mod
             }
         }
 

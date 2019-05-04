@@ -1041,67 +1041,80 @@ namespace FarmTypeManager
                 FarmConfig config; //temp for the current config as it's loaded
                 InternalSaveData save; //temp for the current save as it's loaded
 
-                //load data from each relevant content pack
-                foreach (IContentPack pack in helper.ContentPacks.GetOwned())
+                if (MConfig.EnableContentPacks) //if content packs are enabled
                 {
-                    Monitor.Log($"Loading files from content pack: {pack.Manifest.Name}", LogLevel.Trace);
-
-                    //clear each temp object
-                    config = null;
-                    save = null;
-
-                    //attempt to load the farm config from this pack
-                    try
+                    //load data from each relevant content pack
+                    foreach (IContentPack pack in helper.ContentPacks.GetOwned())
                     {
-                        config = pack.ReadJsonFile<FarmConfig>($"content.json"); //load the content pack's farm config (null if it doesn't exist)
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Warning: This content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
-                        Monitor.Log($"Please edit the content.json file or reinstall the content pack. The auto-generated error message is displayed below:", LogLevel.Warn);
-                        Monitor.Log($"----------", LogLevel.Warn);
-                        Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                        continue; //skip to the next content pack
+                        Monitor.Log($"Loading files from content pack: {pack.Manifest.Name}", LogLevel.Trace);
+
+                        //clear each temp object
+                        config = null;
+                        save = null;
+
+                        //attempt to load the farm config from this pack
+                        try
+                        {
+                            config = pack.ReadJsonFile<FarmConfig>($"content.json"); //load the content pack's farm config (null if it doesn't exist)
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"Warning: This content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
+                            Monitor.Log($"Please edit the content.json file or reinstall the content pack. The auto-generated error message is displayed below:", LogLevel.Warn);
+                            Monitor.Log($"----------", LogLevel.Warn);
+                            Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                            continue; //skip to the next content pack
+                        }
+
+                        if (config == null) //no config file found for this farm
+                        {
+                            Monitor.Log($"Warning: The content.json file for this content pack could not be found: {pack.Manifest.Name}", LogLevel.Warn);
+                            Monitor.Log($"Please reinstall the content pack. If you are its author, please create a config file named content.json in the pack's main folder (not the /data/ folder).", LogLevel.Warn);
+                            continue; //skip to the next content pack
+                        }
+
+                        //attempt to load the save data for this pack and specific farm
+                        try
+                        {
+                            save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
+                        }
+                        catch (Exception ex)
+                        {
+                            Monitor.Log($"Warning: Your farm's save data for this content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
+                            Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}_SaveData.save", LogLevel.Warn);
+                            Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
+                            Monitor.Log($"----------", LogLevel.Warn);
+                            Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                            continue; //skip to the next content pack
+                        }
+
+                        if (save == null) //no save file found for this farm
+                        {
+                            save = new InternalSaveData(); //load the (built-in) default save settings
+                        }
+
+                        ValidateFarmData(config, pack); //validate certain data in the current file before using it
+
+                        pack.WriteJsonFile($"content.json", config); //update the content pack's config file
+                        pack.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update the content pack's save file for the current farm
+
+                        FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
+
+                        Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
                     }
 
-                    if (config == null) //no config file found for this farm
-                    {
-                        Monitor.Log($"Warning: The content.json file for this content pack could not be found: {pack.Manifest.Name}", LogLevel.Warn);
-                        Monitor.Log($"Please reinstall the content pack. If you are its author, please create a config file named content.json in your content pack's main folder (not the /data/ folder).", LogLevel.Warn);
-                        continue; //skip to the next content pack
-                    }
-
-                    //attempt to load the save data for this pack and specific farm
-                    try
-                    {
-                        save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Warning: Your farm's save data for this content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
-                        Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}_SaveData.save", LogLevel.Warn);
-                        Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
-                        Monitor.Log($"----------", LogLevel.Warn);
-                        Monitor.Log($"{ex.Message}", LogLevel.Warn);
-                        continue; //skip to the next content pack
-                    }
-
-                    if (save == null) //no save file found for this farm
-                    {
-                        save = new InternalSaveData(); //load the (built-in) default save settings
-                    }
-
-                    ValidateFarmData(config, pack); //validate certain data in the current file before using it
-
-                    pack.WriteJsonFile($"content.json", config); //update the content pack's config file
-                    pack.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update the content pack's save file for the current farm
-
-                    FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
+                    Monitor.Log("All available content packs checked.", LogLevel.Trace);
+                }
+                else
+                {
+                    Monitor.Log("Content packs disabled in config.json. Skipping to local files...", LogLevel.Trace);
                 }
 
                 //clear each temp object
                 config = null;
                 save = null;
+
+                Monitor.Log("Loading files from FarmTypeManager/data", LogLevel.Trace);
 
                 //attempt to load the farm config from this mod's data folder
                 //NOTE: this should always be done *after* content packs, because it will end the loading process if an error occurs
@@ -1313,6 +1326,9 @@ namespace FarmTypeManager
 
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
             public static List<FarmData> FarmDataList = new List<FarmData>();
+
+            /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
+            public static ModConfig MConfig { get; set; }
 
             /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
             public static Random RNG { get; } = new Random();
