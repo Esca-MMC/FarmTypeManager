@@ -496,7 +496,7 @@ namespace FarmTypeManager
             /// <returns>True if objects are allowed to spawn. False if any extra conditions should prevent spawning.</returns>
             public static bool CheckExtraConditions(SpawnArea area, InternalSaveData save)
             {
-                Monitor.Log($"Checking extra conditions for the {area.MapName} area...", LogLevel.Trace);
+                Monitor.Log($"Checking extra conditions for this area...", LogLevel.Trace);
 
                 //check years
                 if (area.ExtraConditions.Years != null && area.ExtraConditions.Years.Length > 0)
@@ -868,14 +868,61 @@ namespace FarmTypeManager
                     }
                 }
 
+                //check number of spawns
+                //NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition
+                if (area.ExtraConditions.LimitedNumberOfSpawns != null)
+                {
+                    Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);
+                    if (area.ExtraConditions.LimitedNumberOfSpawns > 0) //if there's at least one spawn day for this area
+                    {
+                        //if save data already exists for this area
+                        if (save.LNOSCounter.ContainsKey(area.UniqueAreaID))
+                        {
+                            Monitor.Log("Sava data found for this area; checking spawn days counter...", LogLevel.Trace);
+                            //if there's still at least one spawn day remaining
+                            if ((area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]) > 0)
+                            {
+                            Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]}. Spawn allowed.", LogLevel.Trace);
+                            save.LNOSCounter[area.UniqueAreaID]++; //increment (NOTE: this change needs to be saved at the end of the day)
+                            }
+                            else //no spawn days remaining
+                            {
+                                Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]}. Spawn disabled.", LogLevel.Trace);
+                                return false; //prevent spawning
+                            }
+                        }
+                        else //no save file exists for this area; behave as if LNOSCounter == 0
+                        {
+                            Monitor.Log("No save data found for this area; creating new counter.", LogLevel.Trace);
+                            save.LNOSCounter.Add(area.UniqueAreaID, 1); //new counter for this area, starting at 1
+                            Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn allowed.", LogLevel.Trace);
+                        }
+                    }
+                    else //no spawns remaining
+                    {
+                        Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                }
+
+                return true; //all extra conditions allow for spawning
+            }
+
+            /// <summary>Checks whether a config file should be used with the currently loaded farm.</summary>
+            /// <param name="config">The FarmConfig to be checked.</param>
+            /// <returns>True if the file should be used with the current farm; false otherwise.</returns>
+            public static bool CheckFileConditions(FarmConfig config)
+            {
+                Monitor.Log("Checking file conditions...", LogLevel.Trace);
+
                 //check farm type
-                if (area.ExtraConditions.FarmTypes != null && area.ExtraConditions.FarmTypes.Length > 0)
+                if (config.File_Conditions.FarmTypes != null && config.File_Conditions.FarmTypes.Length > 0)
                 {
                     Monitor.Log("Farm type condition(s) found. Checking...", LogLevel.Trace);
 
                     bool validType = false;
 
-                    foreach (string type in area.ExtraConditions.FarmTypes) //for each listed farm type
+                    foreach (string type in config.File_Conditions.FarmTypes) //for each listed farm type
                     {
                         if (type.Equals("All", StringComparison.OrdinalIgnoreCase) || type.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
                         {
@@ -925,23 +972,23 @@ namespace FarmTypeManager
 
                     if (validType) //if a valid farm type was listed
                     {
-                        Monitor.Log("Farm type matched a setting. Spawn allowed.", LogLevel.Trace);
+                        Monitor.Log("Farm type matched a setting. File allowed.", LogLevel.Trace);
                     }
                     else
                     {
-                        Monitor.Log("Farm type did NOT match any settings. Spawn disabled.", LogLevel.Trace);
-                        return false; //prevent spawning
+                        Monitor.Log("Farm type did NOT match any settings. File disabled.", LogLevel.Trace);
+                        return false; //prevent config use
                     }
                 }
 
                 //check farmer name
-                if (area.ExtraConditions.FarmerNames != null && area.ExtraConditions.FarmerNames.Length > 0)
+                if (config.File_Conditions.FarmerNames != null && config.File_Conditions.FarmerNames.Length > 0)
                 {
                     Monitor.Log("Farmer name condition(s) found. Checking...", LogLevel.Trace);
 
                     bool validName = false;
 
-                    foreach (string name in area.ExtraConditions.FarmerNames) //for each listed name
+                    foreach (string name in config.File_Conditions.FarmerNames) //for each listed name
                     {
                         if (name.Equals(Game1.player.Name, StringComparison.OrdinalIgnoreCase)) //if the name matches the current player's
                         {
@@ -952,23 +999,23 @@ namespace FarmTypeManager
 
                     if (validName) //if a valid farmer name was listed
                     {
-                        Monitor.Log("Farmer name matched a setting. Spawn allowed.", LogLevel.Trace);
+                        Monitor.Log("Farmer name matched a setting. File allowed.", LogLevel.Trace);
                     }
                     else
                     {
-                        Monitor.Log("Farmer name did NOT match any settings. Spawn disabled.", LogLevel.Trace);
-                        return false; //prevent spawning
+                        Monitor.Log("Farmer name did NOT match any settings. File disabled.", LogLevel.Trace);
+                        return false; //prevent config use
                     }
                 }
 
                 //check save file names (technically the save folder name)
-                if (area.ExtraConditions.SaveFileNames != null && area.ExtraConditions.SaveFileNames.Length > 0)
+                if (config.File_Conditions.SaveFileNames != null && config.File_Conditions.SaveFileNames.Length > 0)
                 {
                     Monitor.Log("Save file name condition(s) found. Checking...", LogLevel.Trace);
 
                     bool validSave = false;
 
-                    foreach (string saveName in area.ExtraConditions.SaveFileNames) //for each listed save name
+                    foreach (string saveName in config.File_Conditions.SaveFileNames) //for each listed save name
                     {
                         if (saveName.Equals(Constants.SaveFolderName, StringComparison.OrdinalIgnoreCase)) //if the name matches the current player's save folder name
                         {
@@ -979,53 +1026,16 @@ namespace FarmTypeManager
 
                     if (validSave) //if a valid save name was listed
                     {
-                        Monitor.Log("Save file name matched a setting. Spawn allowed.", LogLevel.Trace);
+                        Monitor.Log("Save file name matched a setting. File allowed.", LogLevel.Trace);
                     }
                     else
                     {
-                        Monitor.Log("Save file name did NOT match any settings. Spawn disabled.", LogLevel.Trace);
-                        return false; //prevent spawning
+                        Monitor.Log("Save file name did NOT match any settings. File disabled.", LogLevel.Trace);
+                        return false; //prevent config use
                     }
                 }
 
-                //check number of spawns
-                //NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition
-                if (area.ExtraConditions.LimitedNumberOfSpawns != null)
-                {
-                    Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);
-                    if (area.ExtraConditions.LimitedNumberOfSpawns > 0) //if there's at least one spawn day for this area
-                    {
-                        //if save data already exists for this area
-                        if (save.LNOSCounter.ContainsKey(area.UniqueAreaID))
-                        {
-                            Monitor.Log("Sava data found for this area; checking spawn days counter...", LogLevel.Trace);
-                            //if there's still at least one spawn day remaining
-                            if ((area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]) > 0)
-                            {
-                            Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]}. Spawn allowed.", LogLevel.Trace);
-                            save.LNOSCounter[area.UniqueAreaID]++; //increment (NOTE: this change needs to be saved at the end of the day)
-                            }
-                            else //no spawn days remaining
-                            {
-                                Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns - save.LNOSCounter[area.UniqueAreaID]}. Spawn disabled.", LogLevel.Trace);
-                                return false; //prevent spawning
-                            }
-                        }
-                        else //no save file exists for this area; behave as if LNOSCounter == 0
-                        {
-                            Monitor.Log("No save data found for this area; creating new counter.", LogLevel.Trace);
-                            save.LNOSCounter.Add(area.UniqueAreaID, 1); //new counter for this area, starting at 1
-                            Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn allowed.", LogLevel.Trace);
-                        }
-                    }
-                    else //no spawns remaining
-                    {
-                        Monitor.Log($"Spawns remaining (including today): {area.ExtraConditions.LimitedNumberOfSpawns}. Spawn disabled.", LogLevel.Trace);
-                        return false; //prevent spawning
-                    }
-                }
-
-                return true; //all extra conditions allow for spawning
+                return true; //all checks were successful; config should be used
             }
 
             /// <summary>Loads all available data files for the current farm into FarmDataList. Checks the mod's data folder and any relevant content packs.</summary>
@@ -1098,9 +1108,11 @@ namespace FarmTypeManager
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
                         pack.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update the content pack's save file for the current farm
 
-                        FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
-
-                        Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
+                        if (CheckFileConditions(config)) //check file conditions; only use this config if this returns true
+                        {
+                            FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
+                            Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
+                        }
                     }
 
                     Monitor.Log("All available content packs checked.", LogLevel.Trace);
@@ -1184,7 +1196,11 @@ namespace FarmTypeManager
                 helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", config); //create or update the config file for the current farm
                 helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update this config's save file for the current farm
 
-                FarmDataList.Add(new FarmData(config, save, null)); //add the config, save, and a *null* content pack to the farm data list
+                if (CheckFileConditions(config)) //check file conditions; only use this config if this returns true
+                {
+                    FarmDataList.Add(new FarmData(config, save, null)); //add the config, save, and a *null* content pack to the farm data list
+                    Monitor.Log("FarmTypeManager/data farm data loaded successfully.", LogLevel.Trace);
+                }
             }
 
             /// <summary>Validates a single instance of farm data, correcting certain settings automatically.</summary>

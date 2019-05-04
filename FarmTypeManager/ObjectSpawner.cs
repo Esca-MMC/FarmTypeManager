@@ -35,23 +35,25 @@ namespace FarmTypeManager
                     }
                     else
                     {
-                        Utility.Monitor.Log("Forage spawn is disabled for this file. Next area...", LogLevel.Trace);
+                        Utility.Monitor.Log("Forage spawn is disabled for this file.", LogLevel.Trace);
                         return;
                     }
 
                     foreach (ForageSpawnArea area in data.Config.Forage_Spawn_Settings.Areas)
                     {
+                        Utility.Monitor.Log($"Checking forage settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+
                         //validate the map name for the area
                         if (Game1.getLocationFromName(area.MapName) == null)
                         {
-                            Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No forage will be spawned there.", LogLevel.Info);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. No forage will be spawned there.", LogLevel.Info);
                             continue;
                         }
 
                         //validate extra conditions, if any
                         if (Utility.CheckExtraConditions(area, data.Save) != true)
                         {
-                            Utility.Monitor.Log($"Extra conditions prevent spawning in this area ({area.MapName}). Next area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"Extra conditions prevent spawning in this area. Next area...", LogLevel.Trace);
                             continue;
                         }
 
@@ -193,17 +195,17 @@ namespace FarmTypeManager
                             Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForage, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
                         }
 
-                        Utility.Monitor.Log($"Forage spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Forage spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                         Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this content pack. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this content pack.", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this file. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this file.", LogLevel.Trace);
                     }
                 }
 
@@ -237,17 +239,19 @@ namespace FarmTypeManager
 
                     foreach (LargeObjectSpawnArea area in data.Config.Large_Object_Spawn_Settings.Areas)
                     {
+                        Utility.Monitor.Log($"Checking large object settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+
                         //validate the map name for the area
                         if (Game1.getLocationFromName(area.MapName) == null)
                         {
-                            Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Info);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Info);
                             continue;
                         }
 
                         //validate extra conditions, if any
                         if (Utility.CheckExtraConditions(area, data.Save) != true)
                         {
-                            Utility.Monitor.Log($"Extra conditions prevent spawning in this area ({area.MapName}). Next area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"Extra conditions prevent spawning in this area. Next area...", LogLevel.Trace);
                             continue; //one or more extra conditions prevented spawning for this area today
                         }
 
@@ -256,7 +260,7 @@ namespace FarmTypeManager
                         Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
                         if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (i.e. large objects), so display an error message and skip this area
                         {
-                            Utility.Monitor.Log($"Issue: Large objects cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
+                            Utility.Monitor.Log($"Large objects cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
                             continue;
                         }
 
@@ -347,17 +351,17 @@ namespace FarmTypeManager
                             loc.addResourceClumpAndRemoveUnderlyingTerrain(objectIDs[Utility.RNG.Next(objectIDs.Count)], 2, 2, randomTile); //generate an object using the list of valid index numbers
                         }
 
-                        Utility.Monitor.Log($"Large object spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Large object spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                         Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this content pack. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this content pack.", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this file. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this file.", LogLevel.Trace);
                     }
                 }
 
@@ -391,6 +395,8 @@ namespace FarmTypeManager
 
                     foreach (OreSpawnArea area in data.Config.Ore_Spawn_Settings.Areas)
                     {
+                        Utility.Monitor.Log($"Checking ore settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+
                         //validate the map name for the area
                         if (Game1.getLocationFromName(area.MapName) == null)
                         {
@@ -480,17 +486,17 @@ namespace FarmTypeManager
                             Utility.Monitor.Log($"Attempting to spawn ore. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
                         }
 
-                        Utility.Monitor.Log($"Ore spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Ore spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                         Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this content pack. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this content pack.", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this file. Next pack/file...", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this file.", LogLevel.Trace);
                     }
                 }
 

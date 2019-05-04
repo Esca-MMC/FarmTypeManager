@@ -52,6 +52,8 @@ namespace FarmTypeManager
 
             public int[] QuarryTileIndex { get; set; }
 
+            public FileConditions File_Conditions { get; set; }
+
             public FarmConfig()
             {
                 //basic on/off toggles
@@ -69,6 +71,8 @@ namespace FarmTypeManager
                 QuarryTileIndex = new int[] { 556, 558, 583, 606, 607, 608, 630, 635, 636, 680, 681, 685 };
                 //NOTE: swap in the following code to cover more tiles, e.g. the grassy edges of the "quarry" dirt; this tends to cover too much ground and weird spots, though, such as the farm's cave entrance
                 //{ 556, 558, 583, 606, 607, 608, 630, 631, 632, 633, 634, 635, 636, 654, 655, 656, 657, 658, 659, 679, 680, 681, 682, 683, 684, 685, 704, 705, 706, 707 };
+
+                File_Conditions = new FileConditions(); //settings determining whether this config is used for a given farm
             }
         }
 
@@ -238,17 +242,13 @@ namespace FarmTypeManager
             public string[] WeatherToday { get; set; } = new string[0];
             public string[] WeatherTomorrow { get; set; } = new string[0];
             public int? LimitedNumberOfSpawns { get; set; } = null;
-            public string[] FarmTypes { get; set; } = new string[0]; //added in version 1.4
-            public string[] FarmerNames { get; set; } = new string[0]; //added in version 1.4
-            public string[] SaveFileNames { get; set; } = new string[0]; //added in version 1.4
-
 
             public ExtraConditions()
             {
 
             }
 
-            public ExtraConditions(string[] years, string[] seasons, string[] days, string[] wyesterday, string[] wtoday, string[] wtomorrow, int? spawns, string[] types, string[] names, string[] saves)
+            public ExtraConditions(string[] years, string[] seasons, string[] days, string[] wyesterday, string[] wtoday, string[] wtomorrow, int? spawns)
             {
                 Years = years; //a list of years on which objects are allowed to spawn
                 Seasons = seasons; //a list of seasons in which objects are allowed to spawn
@@ -257,9 +257,20 @@ namespace FarmTypeManager
                 WeatherToday = wtoday; //if yesterday's weather is listed here, objects are allowed to spawn
                 WeatherTomorrow = wtomorrow; //if yesterday's weather is listed here, objects are allowed to spawn
                 LimitedNumberOfSpawns = spawns; //a number that will count down each day until 0, preventing any further spawns once that is reached
-                FarmTypes = types; //a list of farm types on which objects are allowed to spawn
-                FarmerNames = names; //a list of farmer names; if the current farmer matches, objects are allowed to spawn
-                SaveFileNames = saves; //a list of save file (technically folder) names; if they match the current farm, objects are allowed to spawn
+            }
+        }
+
+        /// <summary>A set of additional requirements needed for a config file to be used on a given farm.</summary>
+        private class FileConditions
+        {
+            //class added in version 1.4; defaults used here to automatically fill in values with SMAPI's json interface
+            public string[] FarmTypes { get; set; } = new string[0]; //a list of farm types on which the config may be used
+            public string[] FarmerNames { get; set; } = new string[0]; //a list of farmer names; if the current farmer matches, the config file may be used
+            public string[] SaveFileNames { get; set; } = new string[0]; //a list of save file (technically folder) names; if they match the current farm, the config file may be used
+
+            public FileConditions()
+            {
+
             }
         }
 
