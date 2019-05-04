@@ -13,7 +13,7 @@ This mod allows you to customize the features from Stardew Valley's different fa
     * [Ore Spawn Settings](#ore-spawn-settings)
     * [Extra Conditions](#extra-conditions)
     * [Other Settings](#other-settings)
-    * [File Conditions](#other-settings)
+    * [File Conditions](#file-conditions)
     * [Mod Settings](#mod-settings)
 * [Content Packs](#content-packs)
 
