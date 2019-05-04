@@ -868,8 +868,128 @@ namespace FarmTypeManager
                     }
                 }
 
+                //check farm type
+                if (area.ExtraConditions.FarmTypes != null && area.ExtraConditions.FarmTypes.Length > 0)
+                {
+                    Monitor.Log("Farm type condition(s) found. Checking...", LogLevel.Trace);
 
-                //check number of spawns (NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition)
+                    bool validType = false;
+
+                    foreach (string type in area.ExtraConditions.FarmTypes) //for each listed farm type
+                    {
+                        if (type.Equals("All", StringComparison.OrdinalIgnoreCase) || type.Equals("Any", StringComparison.OrdinalIgnoreCase)) //if "all" or "any" is listed
+                        {
+                            validType = true;
+                            break; //skip the rest of these checks
+                        }
+
+                        switch (Game1.whichFarm) //compare to the current farm type
+                        {
+                            case (int)Utility.FarmTypes.Standard:
+                                if (type.Equals("Standard", StringComparison.OrdinalIgnoreCase) || type.Equals("Default", StringComparison.OrdinalIgnoreCase) || type.Equals("Normal", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
+                            case (int)Utility.FarmTypes.Riverland:
+                                if (type.Equals("Riverland", StringComparison.OrdinalIgnoreCase) || type.Equals("Fishing", StringComparison.OrdinalIgnoreCase) || type.Equals("Fish", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
+                            case (int)Utility.FarmTypes.Forest:
+                                if (type.Equals("Forest", StringComparison.OrdinalIgnoreCase) || type.Equals("Foraging", StringComparison.OrdinalIgnoreCase) || type.Equals("Forage", StringComparison.OrdinalIgnoreCase) || type.Equals("Woodland", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
+                            case (int)Utility.FarmTypes.Hilltop:
+                                if (type.Equals("Hill-top", StringComparison.OrdinalIgnoreCase) || type.Equals("Hilltop", StringComparison.OrdinalIgnoreCase) || type.Equals("Mining", StringComparison.OrdinalIgnoreCase) || type.Equals("Mine", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
+                            case (int)Utility.FarmTypes.Wilderness:
+                                if (type.Equals("Wilderness", StringComparison.OrdinalIgnoreCase) || type.Equals("Combat", StringComparison.OrdinalIgnoreCase) || type.Equals("Monster", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
+                        }
+
+                        if (validType) //if a valid weather condition was listed
+                        {
+                            break; //skip the rest of these checks
+                        }
+                    }
+
+                    if (validType) //if a valid farm type was listed
+                    {
+                        Monitor.Log("Farm type matched a setting. Spawn allowed.", LogLevel.Trace);
+                    }
+                    else
+                    {
+                        Monitor.Log("Farm type did NOT match any settings. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                }
+
+                //check farmer name
+                if (area.ExtraConditions.FarmerNames != null && area.ExtraConditions.FarmerNames.Length > 0)
+                {
+                    Monitor.Log("Farmer name condition(s) found. Checking...", LogLevel.Trace);
+
+                    bool validName = false;
+
+                    foreach (string name in area.ExtraConditions.FarmerNames) //for each listed name
+                    {
+                        if (name.Equals(Game1.player.Name, StringComparison.OrdinalIgnoreCase)) //if the name matches the current player's
+                        {
+                            validName = true;
+                            break; //skip the rest of these checks
+                        }
+                    }
+
+                    if (validName) //if a valid farmer name was listed
+                    {
+                        Monitor.Log("Farmer name matched a setting. Spawn allowed.", LogLevel.Trace);
+                    }
+                    else
+                    {
+                        Monitor.Log("Farmer name did NOT match any settings. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                }
+
+                //check save file names (technically the save folder name)
+                if (area.ExtraConditions.SaveFileNames != null && area.ExtraConditions.SaveFileNames.Length > 0)
+                {
+                    Monitor.Log("Save file name condition(s) found. Checking...", LogLevel.Trace);
+
+                    bool validSave = false;
+
+                    foreach (string saveName in area.ExtraConditions.SaveFileNames) //for each listed save name
+                    {
+                        if (saveName.Equals(Constants.SaveFolderName, StringComparison.OrdinalIgnoreCase)) //if the name matches the current player's save folder name
+                        {
+                            validSave = true;
+                            break; //skip the rest of these checks
+                        }
+                    }
+
+                    if (validSave) //if a valid save name was listed
+                    {
+                        Monitor.Log("Save file name matched a setting. Spawn allowed.", LogLevel.Trace);
+                    }
+                    else
+                    {
+                        Monitor.Log("Save file name did NOT match any settings. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
+                    }
+                }
+
+                //check number of spawns
+                //NOTE: it's important that this is the last condition checked, because otherwise it might count down while not actually spawning (i.e. while blocked by another condition
                 if (area.ExtraConditions.LimitedNumberOfSpawns != null)
                 {
                     Monitor.Log("Limited Number Of Spawns condition found. Checking...", LogLevel.Trace);
@@ -1118,10 +1238,11 @@ namespace FarmTypeManager
                         if (String.IsNullOrWhiteSpace(area.UniqueAreaID) || area.UniqueAreaID.ToLower() == "null") //if the area ID is null, blank, or the string "null" (to account for user confusion)
                         {
                             //create a new name, based on which type of area this is
-                            if (area is ForageSpawnArea) { newName = "Forage area "; }
-                            else if (area is LargeObjectSpawnArea) { newName = "Large object area "; }
-                            else if (area is OreSpawnArea) { newName = "Ore area "; } 
-                            else { newName = "Area "; }
+                            newName = area.MapName;
+                            if (area is ForageSpawnArea) { newName = " forage area "; }
+                            else if (area is LargeObjectSpawnArea) { newName = " large object area "; }
+                            else if (area is OreSpawnArea) { newName = " ore area "; } 
+                            else { newName = " area "; }
 
                             newNumber = 1;
 
@@ -1195,6 +1316,9 @@ namespace FarmTypeManager
 
             /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
             public static Random RNG { get; } = new Random();
+
+            /// <summary>Enumerated list of farm types, in the order used by Stardew's internal code (e.g. Farm.cs)</summary>
+            public enum FarmTypes { Standard, Riverland, Forest, Hilltop, Wilderness }
 
             /// <summary>Enumerated list of player skills, in the order used by Stardew's internal code (e.g. Farmer.cs).</summary>
             public enum Skills { Farming, Fishing, Foraging, Mining, Combat, Luck }
