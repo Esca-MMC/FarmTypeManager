@@ -64,7 +64,119 @@ namespace FarmTypeManager
                         //calculate how much forage to spawn today
                         int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
 
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Beginning spawn process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Retrieving list of forage types...", LogLevel.Trace);
+
+                        object[] forageList = null; //the list of forage types to use for this area today
+                        List<int> forageIDs = new List<int>(); //the list of valid item IDs parsed from the forage list
+
+                        switch (Game1.currentSeason)
+                        {
+                            case "spring":
+                                if (area.SpringItemIndex != null) //if there's an "override" list set for this area
+                                {
+                                    if (area.SpringItemIndex.Length > 0) //if the override includes any items
+                                    {
+                                        forageList = area.SpringItemIndex; //get the override index list for this area
+                                    }
+                                    //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
+                                }
+                                else if (data.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if no "override" list exists and the main index list includes any items
+                                {
+                                    forageList = data.Config.Forage_Spawn_Settings.SpringItemIndex; //get the main index list
+                                }
+                                break;
+                            case "summer":
+                                if (area.SummerItemIndex != null)
+                                {
+                                    if (area.SummerItemIndex.Length > 0)
+                                    {
+                                        forageList = area.SummerItemIndex;
+                                    }
+                                }
+                                else if (data.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
+                                {
+                                    forageList = data.Config.Forage_Spawn_Settings.SummerItemIndex;
+                                }
+                                break;
+                            case "fall":
+                                if (area.FallItemIndex != null)
+                                {
+                                    if (area.FallItemIndex.Length > 0)
+                                    {
+                                        forageList = area.FallItemIndex;
+                                    }
+                                }
+                                else if (data.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
+                                {
+                                    forageList = data.Config.Forage_Spawn_Settings.FallItemIndex;
+                                }
+                                break;
+                            case "winter":
+                                if (area.WinterItemIndex != null)
+                                {
+                                    if (area.WinterItemIndex.Length > 0)
+                                    {
+                                        forageList = area.WinterItemIndex;
+                                    }
+                                }
+                                else if (data.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
+                                {
+                                    forageList = data.Config.Forage_Spawn_Settings.WinterItemIndex;
+                                }
+                                break;
+                        }
+
+                        if (forageList == null) //no valid forage list was selected
+                        {
+                            Utility.Monitor.Log($"No forage list selected. This generally means the {Game1.currentSeason}IndexList was empty. Skipping to the next forage area...", LogLevel.Trace);
+                            continue;
+                        }
+
+                        //a list was selected, so parse the list into valid forage IDs
+                        foreach (object forage in forageList)
+                        {
+                            if (forage is long) //the forage is a valid number
+                            {
+                                forageIDs.Add(Convert.ToInt32(forage));
+                            }
+                            else if (forage is string) //the forage is a string (i.e. the name of an item)
+                            {
+                                Utility.Monitor.Log($"Found a name in the selected forage list. Parsing into object ID...", LogLevel.Trace);
+                                string forageName = (string)forage; //cast it as a name
+                                bool foundMatchingItem = false;
+
+                                foreach (KeyValuePair<int, string> item in Game1.objectInformation) //for each item in the game's object list
+                                {
+                                    if (forageName.Equals(item.Value.Split('/')[0], StringComparison.OrdinalIgnoreCase)) //if the forage name matches the current item's name (note: first part of the dictionary value, separated from other settings by '/')
+                                    {
+                                        forageIDs.Add(item.Key); //add the item's ID (which is the dictionary key)
+                                        foundMatchingItem = true;
+                                        Utility.Monitor.Log($"Index parsed from \"{forageName}\" into ID: {item.Key}", LogLevel.Trace);
+                                    }
+                                }
+
+                                if (foundMatchingItem == false) //no matching item name could be found
+                                {
+                                    Utility.Monitor.Log($"An area's {Game1.currentSeason}ItemIndex list contains a name that did not match any items.", LogLevel.Info);
+                                    Utility.Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
+                                    Utility.Monitor.Log($"Item name: \"{forageName}\"", LogLevel.Info);
+                                }
+                            }
+                            else //the forage doesn't match any known types
+                            {
+                                Utility.Monitor.Log($"An area's {Game1.currentSeason}ItemIndex list contains an unrecognized setting.", LogLevel.Info);
+                                Utility.Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
+                                Utility.Monitor.Log($"This generally means the list contains a typo. The affected forage item(s) will be skipped.", LogLevel.Info);
+                            }
+                        }
+
+                        if (forageIDs.Count <= 0) //no valid items were added to the list
+                        {
+                            Utility.Monitor.Log($"Forage list selected, but contained no valid forage items. Skipping to the next forage area...", LogLevel.Trace);
+                            continue;
+                        }
+
+                        Utility.Monitor.Log($"Forage types found: {forageIDs.Count}. Beginning spawn process...", LogLevel.Trace);
 
                         //begin to spawn forage; each loop should spawn 1 random forage object on a random valid tile
                         while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
@@ -74,75 +186,11 @@ namespace FarmTypeManager
                             Vector2 randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
                             validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
 
-                            int? randomForageType = null; //set to a random valid forage's item index (remains null if none is found)
-                            switch (Game1.currentSeason)
-                            {
-                                case "spring":
-                                    if (area.SpringItemIndex != null) //if there's an override set for this area
-                                    {
-                                        if (area.SpringItemIndex.Length > 0) //if the override includes any items
-                                        {
-                                            randomForageType = area.SpringItemIndex[Utility.RNG.Next(area.SpringItemIndex.Length)]; //get a random index from the override list
-                                        }
-                                        //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
-                                    }
-                                    else if (data.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if the main index list includes any items
-                                    {
-                                        randomForageType = data.Config.Forage_Spawn_Settings.SpringItemIndex[Utility.RNG.Next(data.Config.Forage_Spawn_Settings.SpringItemIndex.Length)]; //get a random index from the main list
-                                    }
-                                    break;
-                                case "summer":
-                                    if (area.SummerItemIndex != null)
-                                    {
-                                        if (area.SummerItemIndex.Length > 0)
-                                        {
-                                            randomForageType = area.SummerItemIndex[Utility.RNG.Next(area.SummerItemIndex.Length)];
-                                        }
-                                    }
-                                    else if (data.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
-                                    {
-                                        randomForageType = data.Config.Forage_Spawn_Settings.SummerItemIndex[Utility.RNG.Next(data.Config.Forage_Spawn_Settings.SummerItemIndex.Length)];
-                                    }
-                                    break;
-                                case "fall":
-                                    if (area.FallItemIndex != null)
-                                    {
-                                        if (area.FallItemIndex.Length > 0)
-                                        {
-                                            randomForageType = area.FallItemIndex[Utility.RNG.Next(area.FallItemIndex.Length)];
-                                        }
-                                    }
-                                    else if (data.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
-                                    {
-                                        randomForageType = data.Config.Forage_Spawn_Settings.FallItemIndex[Utility.RNG.Next(data.Config.Forage_Spawn_Settings.FallItemIndex.Length)];
-                                    }
-                                    break;
-                                case "winter":
-                                    if (area.WinterItemIndex != null)
-                                    {
-                                        if (area.WinterItemIndex.Length > 0)
-                                        {
-                                            randomForageType = area.WinterItemIndex[Utility.RNG.Next(area.WinterItemIndex.Length)];
-                                        }
-                                    }
-                                    else if (data.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
-                                    {
-                                        randomForageType = data.Config.Forage_Spawn_Settings.WinterItemIndex[Utility.RNG.Next(data.Config.Forage_Spawn_Settings.WinterItemIndex.Length)];
-                                    }
-                                    break;
-                            }
+                            int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
 
-                            if (randomForageType != null) //if the forage type seems valid
-                            {
-                                Utility.Monitor.Log($"Attempting to spawn forage. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
-                                //this method call is based on code from SDV's DayUpdate() in Farm.cs, as of SDV 1.3.27
-                                Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForageType.Value, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
-                            }
-                            else
-                            {
-                                Utility.Monitor.Log("No forage type selected. This should mean the current season's item index list is blank. Ending spawn process for this area...", LogLevel.Trace);
-                                break;
-                            }
+                            Utility.Monitor.Log($"Attempting to spawn forage. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
+                            //this method call is based on code from SDV's DayUpdate() in Farm.cs, as of SDV 1.3.27
+                            Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForage, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
                         }
 
                         Utility.Monitor.Log($"Forage spawn process complete for the {area.MapName} area. Next area...", LogLevel.Trace);

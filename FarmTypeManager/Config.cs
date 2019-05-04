@@ -96,10 +96,10 @@ namespace FarmTypeManager
         {
             public ForageSpawnArea[] Areas { get; set; }
             public int PercentExtraSpawnsPerForagingLevel { get; set; }
-            public int[] SpringItemIndex { get; set; }
-            public int[] SummerItemIndex { get; set; }
-            public int[] FallItemIndex { get; set; }
-            public int[] WinterItemIndex { get; set; }
+            public object[] SpringItemIndex { get; set; } //changed from int[] to object[] in version 1.4
+            public object[] SummerItemIndex { get; set; } //changed from int[] to object[] in version 1.4
+            public object[] FallItemIndex { get; set; } //changed from int[] to object[] in version 1.4
+            public object[] WinterItemIndex { get; set; } //changed from int[] to object[] in version 1.4
             public int[] CustomTileIndex { get; set; }
 
             //default constructor: configure default forage generation settings
@@ -109,10 +109,10 @@ namespace FarmTypeManager
                 PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
 
                 //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
-                SpringItemIndex = new int[] { 16, 20, 22, 257 };
-                SummerItemIndex = new int[] { 396, 398, 402, 404 };
-                FallItemIndex = new int[] { 281, 404, 420, 422 };
-                WinterItemIndex = new int[0];
+                SpringItemIndex = new object[] { 16, 20, 22, 257 };
+                SummerItemIndex = new object[] { 396, 398, 402, 404 };
+                FallItemIndex = new object[] { 281, 404, 420, 422 };
+                WinterItemIndex = new object[0];
 
                 CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
             }
@@ -266,10 +266,10 @@ namespace FarmTypeManager
         {
             //this subclass was added in version 1.2; defaults are used here to automatically fill it in with SMAPI's json interface
 
-            public int[] SpringItemIndex { get; set; } = null;
-            public int[] SummerItemIndex { get; set; } = null;
-            public int[] FallItemIndex { get; set; } = null;
-            public int[] WinterItemIndex { get; set; } = null;
+            public object[] SpringItemIndex { get; set; } = null;
+            public object[] SummerItemIndex { get; set; } = null;
+            public object[] FallItemIndex { get; set; } = null;
+            public object[] WinterItemIndex { get; set; } = null;
 
             public ForageSpawnArea()
                 : base()
@@ -277,7 +277,7 @@ namespace FarmTypeManager
 
             }
 
-            public ForageSpawnArea(string id, string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, int[] spring, int[] summer, int[] fall, int[] winter)
+            public ForageSpawnArea(string id, string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, object[] spring, object[] summer, object[] fall, object[] winter)
                 : base(id, name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
             {
                 SpringItemIndex = spring;

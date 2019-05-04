@@ -1239,10 +1239,10 @@ namespace FarmTypeManager
                         {
                             //create a new name, based on which type of area this is
                             newName = area.MapName;
-                            if (area is ForageSpawnArea) { newName = " forage area "; }
-                            else if (area is LargeObjectSpawnArea) { newName = " large object area "; }
-                            else if (area is OreSpawnArea) { newName = " ore area "; } 
-                            else { newName = " area "; }
+                            if (area is ForageSpawnArea) { newName += " forage area "; }
+                            else if (area is LargeObjectSpawnArea) { newName += " large object area "; }
+                            else if (area is OreSpawnArea) { newName += " ore area "; } 
+                            else { newName += " area "; }
 
                             newNumber = 1;
 
