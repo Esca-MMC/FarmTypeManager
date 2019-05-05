@@ -252,7 +252,7 @@ namespace FarmTypeManager
                         if (Utility.CheckExtraConditions(area, data.Save) != true)
                         {
                             Utility.Monitor.Log($"Extra conditions prevent spawning in this area. Next area...", LogLevel.Trace);
-                            continue; //one or more extra conditions prevented spawning for this area today
+                            continue;
                         }
 
                         Utility.Monitor.Log("All extra conditions met. Checking map's support for large objects...", LogLevel.Trace);
@@ -416,7 +416,7 @@ namespace FarmTypeManager
                         if (Utility.CheckExtraConditions(area, data.Save) != true)
                         {
                             Utility.Monitor.Log($"Extra conditions prevent spawning in this area ({area.MapName}). Next area...", LogLevel.Trace);
-                            continue; //one or more extra conditions prevented spawning for this area today
+                            continue;
                         }
 
                         Utility.Monitor.Log("All extra conditions met. Generating list of valid tiles...", LogLevel.Trace);

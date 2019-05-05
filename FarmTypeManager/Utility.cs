@@ -1296,6 +1296,23 @@ namespace FarmTypeManager
                     }
                 }
 
+                Monitor.Log("Checking for valid min/max spawn settings...", LogLevel.Trace);
+                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
+                {
+                    foreach (SpawnArea area in areas) //for each area in the current array
+                    {
+                        if (area.MinimumSpawnsPerDay > area.MaximumSpawnsPerDay) //if max spawns > min spawns
+                        {
+                            //swap the two numbers
+                            int temp = area.MinimumSpawnsPerDay;
+                            area.MinimumSpawnsPerDay = area.MaximumSpawnsPerDay;
+                            area.MaximumSpawnsPerDay = temp;
+
+                            Monitor.Log($"Min > max spawns in this area: \"{area.UniqueAreaID}\" ({area.MapName}). Numbers swapped.", LogLevel.Trace);
+                        }
+                    }
+                }
+
                 if (pack != null)
                 {
                     Monitor.Log($"Validation complete for content pack: {pack.Manifest.Name}", LogLevel.Trace);
