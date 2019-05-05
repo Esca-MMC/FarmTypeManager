@@ -59,7 +59,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("All extra conditions met. Generating list of valid tiles...", LogLevel.Trace);
 
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Config.QuarryTileIndex, data.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
+                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
 
                         Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
 
@@ -268,57 +268,65 @@ namespace FarmTypeManager
 
                         List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes); //get a list of index numbers for relevant object types in this area
 
-                        if (area.FindExistingObjectLocations == true) //if enabled, ensure that any existing objects are added to the include area list
+                        //find the locations any existing objects (of the listed types)
+                        if (area.FindExistingObjectLocations == true) //if enabled 
                         {
-                            Utility.Monitor.Log("Find Existing Objects enabled. Finding...", LogLevel.Trace);
-
-                            List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
-
-                            foreach (ResourceClump clump in loc.resourceClumps) //go through the map's set of resource clumps (stumps, logs, etc)
+                            if (data.Save.ExistingObjectsFound == false) //if this hasn't been done yet for the current config+farm
                             {
-                                bool validObjectType = false; //whether the current object is listed in this area's config
-                                foreach (int ID in objectIDs) //check the list of valid index numbers for this area
+                                Utility.Monitor.Log("Find Existing Objects enabled. Finding...", LogLevel.Trace);
+
+                                List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
+
+                                foreach (ResourceClump clump in loc.resourceClumps) //go through the map's set of resource clumps (stumps, logs, etc)
                                 {
-                                    if (clump.parentSheetIndex.Value == ID)
+                                    bool validObjectType = false; //whether the current object is listed in this area's config
+                                    foreach (int ID in objectIDs) //check the list of valid index numbers for this area
                                     {
-                                        validObjectType = true; //this clump's ID matches one of the listed object IDs
-                                        break;
+                                        if (clump.parentSheetIndex.Value == ID)
+                                        {
+                                            validObjectType = true; //this clump's ID matches one of the listed object IDs
+                                            break;
+                                        }
+                                    }
+                                    if (validObjectType == false) //if this clump isn't listed in the config
+                                    {
+                                        continue; //skip to the next clump
+                                    }
+
+                                    string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
+                                    bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
+
+                                    foreach (string include in area.IncludeAreas) //check each existing include string
+                                    {
+                                        if (include == newInclude)
+                                        {
+                                            alreadyListed = true; //this tile is already specifically listed
+                                            break;
+                                        }
+                                    }
+
+                                    if (!alreadyListed) //if this object isn't already specifically listed in the include areas
+                                    {
+                                        existingObjects.Add(newInclude); //add the string to the list of new include strings
                                     }
                                 }
-                                if (validObjectType == false) //if this clump isn't listed in the config
-                                {
-                                    continue; //skip to the next clump
-                                }
 
-                                string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
-                                bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
+                                Utility.Monitor.Log($"Existing objects found: {existingObjects.Count}.", LogLevel.Trace);
 
-                                foreach (string include in area.IncludeAreas) //check each existing include string
-                                {
-                                    if (include == newInclude)
-                                    {
-                                        alreadyListed = true; //this tile is already specifically listed
-                                        break;
-                                    }
-                                }
-
-                                if (!alreadyListed) //if this object isn't already specifically listed in the include areas
-                                {
-                                    existingObjects.Add(newInclude); //add the string to the list of new include strings
-                                }
+                                data.Save.ExistingObjectLocations.Add(area.UniqueAreaID, existingObjects.ToArray()); //add the new strings to the save data for the current config+farm
+                                data.Save.ExistingObjectsFound = true; //record that this process has already been done
                             }
-
-                            Utility.Monitor.Log($"Existing objects found: {existingObjects.Count}. Combining lists...", LogLevel.Trace);
-
-                            if (existingObjects.Count > 0) //if any existing objects need to be included
+                            else //this config+farm already has a list of existing objects (if any)
                             {
-                                area.IncludeAreas = area.IncludeAreas.Concat(existingObjects).ToArray(); //add the new include strings to the end of the existing set
+                                Utility.Monitor.Log("Find Existing Objects enabled. Using save file data from a previous search.", LogLevel.Trace);
                             }
-
-                            area.FindExistingObjectLocations = false; //disable this process so it doesn't happen every day (using it repeatedly while spawning new objects would fill the whole map over time...)
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log("Find Existing Objects disabled. Skipping.", LogLevel.Trace);
                         }
 
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Config.QuarryTileIndex, data.Config.Large_Object_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for large objects in this area
+                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Large_Object_Spawn_Settings.CustomTileIndex, true); //calculate a list of valid tiles for large objects in this area
 
                         Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
 
@@ -413,7 +421,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("All extra conditions met. Generating list of valid tiles...", LogLevel.Trace);
 
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Config.QuarryTileIndex, data.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
+                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
 
                         Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
 

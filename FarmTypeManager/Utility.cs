@@ -20,7 +20,7 @@ namespace FarmTypeManager
             /// <param name="customTileIndex">The list of custom tile indices for this spawn process.</param>
             /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
             /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-            public static List<Vector2> GenerateTileList(SpawnArea area, int[] quarryTileIndex, int[] customTileIndex, bool isLarge)
+            public static List<Vector2> GenerateTileList(SpawnArea area, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex, bool isLarge)
             {
                 List<Vector2> validTiles = new List<Vector2>(); //list of all open, valid tiles for new spawns on the current map
 
@@ -42,6 +42,14 @@ namespace FarmTypeManager
                 foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
                 {
                     validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                }
+
+                if (area is LargeObjectSpawnArea objArea && objArea.FindExistingObjectLocations) //if this area is the large object type and "find existing objects" is enabled
+                {
+                    foreach (string include in save.ExistingObjectLocations[area.UniqueAreaID]) //check each saved "include" string for the area
+                    {
+                        validTiles.AddRange(Utility.GetTilesByVectorString(area, include, isLarge));
+                    }
                 }
 
                 validTiles = validTiles.Distinct().ToList(); //remove any duplicate tiles from the list
@@ -1242,7 +1250,7 @@ namespace FarmTypeManager
                             if (pack != null) //if this config is from a content pack
                             {
                                 Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Info);
-                                Monitor.Log($"If this happens after updating another mod, it might cause one-time-only or limited spawns to reset in that area.", LogLevel.Info);
+                                Monitor.Log($"If this happens after updating another mod, it might cause certain conditions (such as one-time-only spawns) to reset in that area.", LogLevel.Info);
                             }
 
                             area.UniqueAreaID = ""; //erase this area's ID, marking it for replacement
