@@ -249,7 +249,7 @@ Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 File_Conditions | *(see below)* | A list of conditions required to use this config file with a specific farm. | These settings are primarily useful for content packs.
 FarmTypes | A list of farm types: "Standard", "Riverland", "Forest", "Hilltop", "Wilderness", or "Any"/"All" | A list of farm types for which this config file will be used. | This should generally be used in content packs that are combined with custom farm maps; for example, if a custom farm replaces your Standard farm type, set this to ``["Standard"]``.
-FarmerNames | A list of farm names, e.g. ``["Esca"]`` | If one of this list's names matches the farmer's name, this config file will be used. | This setting only checks the main farmer's name; it won't be affected by multiplayer farmhands.
+FarmerNames | A list of farmer names, e.g. ``["Esca"]`` | If one of this list's names matches the farmer's name, this config file will be used. | This setting only checks the main farmer's name; it won't be affected by multiplayer farmhands.
 SaveFileNames | A list of save file names, e.g. ``["Esca_1234567"]`` | If one of these names matches the current farm's save file name, this config file will be used. | A niche setting for when other conditions aren't effective at choosing a farm. Note that this technically checks the save *folder* name, not the save file itself.
 
 ### Mod Settings
