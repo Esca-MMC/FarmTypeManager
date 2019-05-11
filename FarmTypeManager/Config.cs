@@ -101,6 +101,18 @@ namespace FarmTypeManager
             }
         }
 
+        /// <summary>A class containing and save data relating specifically to a content pack.</summary>
+        private class ContentPackSaveData
+        {
+            //class added in version 1.4.2; defaults used here to automatically fill in values with SMAPI's json interface
+            public bool MainDataFolderReset { get; set; } = false;
+
+            public ContentPackSaveData()
+            {
+
+            }
+        }
+
         //contains configuration settings for forage item generation behavior
         private class ForageSettings
         {
@@ -271,6 +283,8 @@ namespace FarmTypeManager
             public string[] FarmTypes { get; set; } = new string[0]; //a list of farm types on which the config may be used
             public string[] FarmerNames { get; set; } = new string[0]; //a list of farmer names; if the current farmer matches, the config file may be used
             public string[] SaveFileNames { get; set; } = new string[0]; //a list of save file (technically folder) names; if they match the current farm, the config file may be used
+            //field below added in version 1.5
+            public bool ResetMainDataFolder { get; set; } = false; //when true, the "FarmTypeManager/data" folder should be archived; used to remove obsolete mod settings
 
             public FileConditions()
             {
