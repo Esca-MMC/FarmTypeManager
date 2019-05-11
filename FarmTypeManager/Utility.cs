@@ -926,7 +926,7 @@ namespace FarmTypeManager
 
                 //check "reset main data folder" flag
                 //NOTE: it's preferable to do this as the first step; it's intended to be a one-off cleaning process, rather than a conditional effect
-                if (config.File_Conditions.ResetMainDataFolder)
+                if (config.File_Conditions.ResetMainDataFolder && MConfig.EnableContentPackFileChanges) //if "reset" is true and file changes are enabled
                 {
                     if (pack != null) //if this is part of a content pack
                     {
@@ -997,7 +997,6 @@ namespace FarmTypeManager
                     {
                         Monitor.Log("This farm's config file has ResetMainDataFolder = true, but this setting only works for content packs.", LogLevel.Info);
                     }
-                    
                 }
 
                 //check farm type
