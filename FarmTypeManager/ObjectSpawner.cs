@@ -26,7 +26,7 @@ namespace FarmTypeManager
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"Starting forage generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($@"Starting forage generation for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
                     if (data.Config.ForageSpawnEnabled)
@@ -196,16 +196,15 @@ namespace FarmTypeManager
                         }
 
                         Utility.Monitor.Log($"Forage spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
-                        Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this content pack.", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this file.", LogLevel.Trace);
+                        Utility.Monitor.Log($@"All areas checked. Forage spawn complete for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
@@ -224,7 +223,7 @@ namespace FarmTypeManager
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"Starting large object generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($@"Starting large object generation for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
                     if (data.Config.LargeObjectSpawnEnabled)
@@ -365,16 +364,15 @@ namespace FarmTypeManager
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this content pack.", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Large object spawn complete for this file.", LogLevel.Trace);
+                        Utility.Monitor.Log($@"All areas checked. Large object spawn complete for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
                 Utility.Monitor.Log("All files and content packs checked. Large object spawn process complete.", LogLevel.Trace);
-                Utility.Monitor.Log("", LogLevel.Trace);
             }
             
             /// <summary>Generates ore in the game based on the current player's config settings.</summary>
@@ -388,7 +386,7 @@ namespace FarmTypeManager
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"Starting ore generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($@"Starting ore generation for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
                     if (data.Config.OreSpawnEnabled)
@@ -495,21 +493,19 @@ namespace FarmTypeManager
                         }
 
                         Utility.Monitor.Log($"Ore spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
-                        Utility.Monitor.Log("", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this content pack.", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this file.", LogLevel.Trace);
+                        Utility.Monitor.Log($@"All areas checked. Ore spawn complete for this file: FarmTypeManager\data\{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
                 Utility.Monitor.Log("All files and content packs checked. Ore spawn process complete.", LogLevel.Trace);
-                Utility.Monitor.Log("", LogLevel.Trace);
             }
         }
     }

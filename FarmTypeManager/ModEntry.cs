@@ -73,7 +73,7 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
         private void DayEnding(object sender, EventArgs e)
         {
-            if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm list is blank, do nothing (e.g. when called by a newly created farm)
+            if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm data list is blank, do nothing (e.g. when called by a newly created farm)
 
             //update information in each save file
             foreach (FarmData data in Utility.FarmDataList)
