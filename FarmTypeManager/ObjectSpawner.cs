@@ -36,7 +36,7 @@ namespace FarmTypeManager
                     else
                     {
                         Utility.Monitor.Log("Forage spawn is disabled for this file.", LogLevel.Trace);
-                        return;
+                        continue;
                     }
 
                     foreach (ForageSpawnArea area in data.Config.Forage_Spawn_Settings.Areas)
@@ -234,7 +234,7 @@ namespace FarmTypeManager
                     else
                     {
                         Utility.Monitor.Log("Large object spawn is disabled.", LogLevel.Trace);
-                        return;
+                        continue;
                     }
 
                     foreach (LargeObjectSpawnArea area in data.Config.Large_Object_Spawn_Settings.Areas)
@@ -398,7 +398,7 @@ namespace FarmTypeManager
                     else
                     {
                         Utility.Monitor.Log("Ore spawn is disabled.", LogLevel.Trace);
-                        return;
+                        continue;
                     }
 
                     foreach (OreSpawnArea area in data.Config.Ore_Spawn_Settings.Areas)
