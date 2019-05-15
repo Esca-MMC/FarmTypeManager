@@ -958,7 +958,7 @@ namespace FarmTypeManager
                             string dataPath = Path.Combine(helper.DirectoryPath, "data"); //the path to this mod's data folder
                             DirectoryInfo dataFolder = new DirectoryInfo(dataPath); //an object representing this mod's data directory
 
-                            if (dataFolder.Exists) //the data folder exists, i.e. dataPath seems correct
+                            if (dataFolder.Exists) //the data folder exists
                             {
                                 Monitor.Log("Attempting to archive data folder...", LogLevel.Trace);
                                 try
@@ -979,17 +979,13 @@ namespace FarmTypeManager
                                     Monitor.Log($"{ex.Message}", LogLevel.Warn);
                                     return false; //disable this content pack's config, since it may require this process to function
                                 }
-
-                                packSave.MainDataFolderReset = true; //update save data
                             }
-                            else //the data folder doesn't exist, i.e. dataPath seems incorrect
+                            else //the data folder doesn't exist
                             {
-                                Monitor.Log($"Warning: Could not confirm that the FarmTypeManager/data/ folder exists: {dataFolder.FullName}", LogLevel.Warn);
-                                Monitor.Log($"Affected content pack: {pack.Manifest.Name}", LogLevel.Warn);
-                                Monitor.Log($"Please report this issue to Farm Type Manager's developer.", LogLevel.Warn);
-                                Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
-                                return false; //disable this content pack's config, since it may require this process to function
+                                Monitor.Log("Data folder not found; assuming it was deleted or not yet generated.", LogLevel.Trace);
                             }
+
+                            packSave.MainDataFolderReset = true; //update save data
                         }
 
                         pack.WriteJsonFile(Path.Combine("data", "ContentPackSaveData.save"), packSave); //update the content pack's global save data file
