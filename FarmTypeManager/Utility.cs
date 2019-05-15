@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -920,7 +920,7 @@ namespace FarmTypeManager
             /// <summary>Checks whether a config file should be used with the currently loaded farm.</summary>
             /// <param name="config">The FarmConfig to be checked.</param>
             /// <returns>True if the file should be used with the current farm; false otherwise.</returns>
-            public static bool CheckFileConditions(FarmConfig config, IContentPack pack)
+            public static bool CheckFileConditions(FarmConfig config, IContentPack pack, IModHelper helper)
             {
                 Monitor.Log("Checking file conditions...", LogLevel.Trace);
 
@@ -934,12 +934,13 @@ namespace FarmTypeManager
                         ContentPackSaveData packSave = null;
                         try
                         {
-                            packSave = pack.ReadJsonFile<ContentPackSaveData>($@"data\ContentPackSaveData.save"); //load the content pack's global save data (null if it doesn't exist)
+                            packSave = pack.ReadJsonFile<ContentPackSaveData>(Path.Combine("data", "ContentPackSaveData.save")); //load the content pack's global save data (null if it doesn't exist)
                         }
                         catch (Exception ex)
                         {
-                            Monitor.Log($"Warning: This content pack's save data could not be parsed correctly: {pack.Manifest.Name}\\data\\ContentPackSaveData.save", LogLevel.Warn);
-                            Monitor.Log($"Please delete the file and/or contact the mod developer.", LogLevel.Warn);
+                            Monitor.Log($"Warning: This content pack's save data could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
+                            Monitor.Log($"Affected file: data/ContentPackSaveData.save", LogLevel.Warn);
+                            Monitor.Log($"Please delete the file and/or contact the mod's developer.", LogLevel.Warn);
                             Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
                             Monitor.Log($"----------", LogLevel.Warn);
                             Monitor.Log($"{ex.Message}", LogLevel.Warn);
@@ -954,7 +955,7 @@ namespace FarmTypeManager
                         if (!packSave.MainDataFolderReset) //if this content pack has NOT reset the main data folder yet
                         {
                             Monitor.Log($"ResetMainDataFolder requested by content pack: {pack.Manifest.Name}", LogLevel.Debug);
-                            string dataPath = $@"{Constants.ExecutionPath}\Mods\FarmTypeManager\data\"; //the path to this mod's data folder
+                            string dataPath = Path.Combine(helper.DirectoryPath, "data"); //the path to this mod's data folder
                             DirectoryInfo dataFolder = new DirectoryInfo(dataPath); //an object representing this mod's data directory
 
                             if (dataFolder.Exists) //the data folder exists, i.e. dataPath seems correct
@@ -962,16 +963,17 @@ namespace FarmTypeManager
                                 Monitor.Log("Attempting to archive data folder...", LogLevel.Trace);
                                 try
                                 {
-                                    DirectoryInfo archiveFolder = dataFolder.CreateSubdirectory($@"archive\{DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss")}\"); //create a timestamped archive folder
+                                    string archivePath = Path.Combine(helper.DirectoryPath, "data", "archive", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+                                    DirectoryInfo archiveFolder = Directory.CreateDirectory(archivePath); //create a timestamped archive folder
                                     foreach (FileInfo file in dataFolder.GetFiles()) //for each file in dataFolder
                                     {
-                                        file.MoveTo($"{archiveFolder.FullName}{file.Name}"); //move each file to archiveFolder
+                                        file.MoveTo(Path.Combine(archiveFolder.FullName, file.Name)); //move each file to archiveFolder
                                     }
                                 }
                                 catch (Exception ex)
                                 {
                                     Monitor.Log($"Warning: This content pack attempted to archive Farm Type Manager's data folder but failed: {pack.Manifest.Name}", LogLevel.Warn);
-                                    Monitor.Log($"Please report this issue to Farm Type Manager's developer. This may also be fixed by manually removing your FarmTypeManager/data/ files.", LogLevel.Warn);
+                                    Monitor.Log($"Please report this issue to Farm Type Manager's developer. This might also be fixed by manually removing your FarmTypeManager/data/ files.", LogLevel.Warn);
                                     Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
                                     Monitor.Log($"----------", LogLevel.Warn);
                                     Monitor.Log($"{ex.Message}", LogLevel.Warn);
@@ -990,7 +992,7 @@ namespace FarmTypeManager
                             }
                         }
 
-                        pack.WriteJsonFile($@"data\ContentPackSaveData.save", packSave); //update the content pack's global save data file
+                        pack.WriteJsonFile(Path.Combine("data", "ContentPackSaveData.save"), packSave); //update the content pack's global save data file
                         Monitor.Log("Data folder archive successful.", LogLevel.Trace);
                     }
                     else //if this is NOT part of a content pack
@@ -1190,9 +1192,9 @@ namespace FarmTypeManager
                         ValidateFarmData(config, pack); //validate certain data in the current file before using it
 
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
-                        pack.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update the content pack's save file for the current farm
+                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update the content pack's save file for the current farm
 
-                        if (CheckFileConditions(config, pack)) //check file conditions; only use the current data if this returns true
+                        if (CheckFileConditions(config, pack, helper)) //check file conditions; only use the current data if this returns true
                         {
                             FarmDataList.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
                             Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
@@ -1216,7 +1218,7 @@ namespace FarmTypeManager
                 //NOTE: this should always be done *after* content packs, because it will end the loading process if an error occurs
                 try
                 {
-                    config = helper.Data.ReadJsonFile<FarmConfig>($"data/{Constants.SaveFolderName}.json"); //load the current save's config file (null if it doesn't exist)
+                    config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", $"{Constants.SaveFolderName}.json")); //load the current save's config file (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -1233,7 +1235,7 @@ namespace FarmTypeManager
                     //attempt to load the default.json config file
                     try
                     {
-                        config = helper.Data.ReadJsonFile<FarmConfig>($"data/default.json"); //load the default.json config file (null if it doesn't exist)
+                        config = helper.Data.ReadJsonFile<FarmConfig>(Path.Combine("data", "default.json")); //load the default.json config file (null if it doesn't exist)
                     }
                     catch (Exception ex)
                     {
@@ -1252,13 +1254,13 @@ namespace FarmTypeManager
 
                     ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                    helper.Data.WriteJsonFile($"data/default.json", config); //create or update the default.json config file
+                    helper.Data.WriteJsonFile(Path.Combine("data", "default.json"), config); //create or update the default.json config file
                 }
 
                 //attempt to load the save data for this farm
                 try
                 {
-                    save = helper.Data.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the mod's save data for this farm (null if it doesn't exist)
+                    save = helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
@@ -1277,10 +1279,10 @@ namespace FarmTypeManager
 
                 ValidateFarmData(config, null); //validate certain data in the current file before using it
 
-                helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}.json", config); //create or update the config file for the current farm
-                helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", save); //create or update this config's save file for the current farm
+                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}.json"), config); //create or update the config file for the current farm
+                helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update this config's save file for the current farm
 
-                if (CheckFileConditions(config, null)) //check file conditions; only use the current data if this returns true
+                if (CheckFileConditions(config, null, helper)) //check file conditions; only use the current data if this returns true
                 {
                     FarmDataList.Add(new FarmData(config, save, null)); //add the config, save, and a *null* content pack to the farm data list
                     Monitor.Log("FarmTypeManager/data farm data loaded successfully.", LogLevel.Trace);

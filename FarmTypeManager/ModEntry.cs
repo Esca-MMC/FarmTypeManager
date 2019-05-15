@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -82,11 +83,11 @@ namespace FarmTypeManager
 
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    data.Pack.WriteJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file for that content pack
+                    data.Pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file for that content pack
                 }
                 else //this data is from this mod's own folders
                 {
-                    Helper.Data.WriteJsonFile($"data/{Constants.SaveFolderName}_SaveData.save", data.Save); //update the save file in this mod's own folders
+                    Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file in this mod's own folders
                 }
             }
     }
