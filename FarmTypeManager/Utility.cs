@@ -1117,6 +1117,60 @@ namespace FarmTypeManager
                     }
                 }
 
+                //check whether other mods exist
+                if (config.File_Conditions.OtherMods != null && config.File_Conditions.OtherMods.Count > 0)
+                {
+                    Monitor.Log("Other mod condition(s) found. Checking...", LogLevel.Trace);
+
+                    bool validMods = true; //whether all entries are accurate (true by default, unlike most other settings)
+
+                    foreach (KeyValuePair<string, bool> entry in config.File_Conditions.OtherMods) //for each mod entry in OtherMods
+                    {
+                        bool validEntry = !(entry.Value); //whether the current entry is accurate (starts false if the mod should exist; starts true if the mod should NOT exist)
+
+                        foreach (IModInfo mod in helper.ModRegistry.GetAll()) //for each mod currently loaded by SMAPI
+                        {
+                            if (entry.Value == true) //if the mod should exist
+                            {
+                                if (entry.Key.Equals(mod.Manifest.UniqueID, StringComparison.OrdinalIgnoreCase)) //if this mod's UniqueID matches the OtherMods entry
+                                {
+                                    validEntry = true; //this entry is valid
+                                    break; //skip the rest of these checks
+                                }
+                            }
+                            else //if the mod should NOT exist
+                            {
+                                if (entry.Key.Equals(mod.Manifest.UniqueID, StringComparison.OrdinalIgnoreCase)) //if this mod's UniqueID matches the OtherMods entry
+                                {
+                                    validEntry = false; //this entry is invalid
+                                    break; //skip the rest of these checks
+                                }
+                            }
+                        }
+
+                        if (validEntry) //if the current mod entry is valid
+                        {
+                            Monitor.Log($"Mod check successful: \"{entry.Key}\" {(entry.Value ? "does exist" : "does not exist")}.", LogLevel.Trace);
+                        }
+                        else //if the current mod entry is NOT valid
+                        {
+                            Monitor.Log($"Mod check failed: \"{entry.Key}\" {(entry.Value ? "does not exist" : "does exist")}.", LogLevel.Trace);
+                            validMods = false;
+                            break; //skip the rest of these checks
+                        }
+                    }
+
+                    if (validMods) //if all mod entries in the list are valid
+                    {
+                        Monitor.Log("The OtherMods list matches the player's mods. File allowed.", LogLevel.Trace);
+                    }
+                    else //if any entries were NOT valid
+                    {
+                        Monitor.Log("The OtherMods list does NOT match the player's mods. File disabled.", LogLevel.Trace);
+                        return false; //prevent config use
+                    }
+                }
+
                 return true; //all checks were successful; config should be used
             }
 
@@ -1386,6 +1440,7 @@ namespace FarmTypeManager
                         }
                     }
                 }
+                Monitor.Log("Min/max spawn settings validated.", LogLevel.Trace);
 
                 if (pack != null)
                 {
@@ -1393,7 +1448,7 @@ namespace FarmTypeManager
                 }
                 else
                 {
-                    Monitor.Log("Validation complete for FarmTypeManager/data", LogLevel.Trace);
+                    Monitor.Log("Validation complete for this file from FarmTypeManager/data", LogLevel.Trace);
                 }
                 return;
             }
