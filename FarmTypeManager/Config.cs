@@ -221,14 +221,101 @@ namespace FarmTypeManager
         {
             public string UniqueAreaID { get; set; } = ""; //added in version 1.4
             public string MapName { get; set; }
-            public int MinimumSpawnsPerDay { get; set; }
-            public int MaximumSpawnsPerDay { get; set; }
-            public string[] AutoSpawnTerrainTypes { get; set; } //Valid properties include "Quarry", "Custom", "Diggable", "All", and any tile Type properties ("Grass", "Dirt", "Stone", "Wood")
-            public string[] IncludeAreas { get; set; }
-            public string[] ExcludeAreas { get; set; }
+            public int minimumSpawnsPerDay;
+            public int maximumSpawnsPerDay;
+            private string[] autoSpawnTerrainTypes; //Valid properties include "Quarry", "Custom", "Diggable", "All", and any tile Type properties ("Grass", "Dirt", "Stone", "Wood", etc)
+            private string[] includeAreas;
+            private string[] excludeAreas;
             public string StrictTileChecking { get; set; } = "High"; //added in version 1.1; default used here to automatically fill it in with SMAPI's json interface
-            public ExtraConditions ExtraConditions { get; set; } = new ExtraConditions(); //added in version 1.3
-            
+            private ExtraConditions extraConditions; //added in version 1.3
+
+
+            public int MinimumSpawnsPerDay
+            {
+                get
+                {
+                    if (minimumSpawnsPerDay > maximumSpawnsPerDay) //if the min and max are in the wrong order
+                    {
+                        //swap min and max
+                        int temp = minimumSpawnsPerDay;
+                        minimumSpawnsPerDay = maximumSpawnsPerDay;
+                        maximumSpawnsPerDay = temp;
+                    }
+
+                    return minimumSpawnsPerDay;
+                }
+                set
+                {
+                    minimumSpawnsPerDay = value;
+                }
+            }
+            public int MaximumSpawnsPerDay
+            {
+                get
+                {
+                    if (minimumSpawnsPerDay > maximumSpawnsPerDay) //if the min and max are in the wrong order
+                    {
+                        //swap min and max
+                        int temp = minimumSpawnsPerDay;
+                        minimumSpawnsPerDay = maximumSpawnsPerDay;
+                        maximumSpawnsPerDay = temp;
+                    }
+
+                    return maximumSpawnsPerDay;
+                }
+                set
+                {
+                    maximumSpawnsPerDay = value;
+                }
+            }
+
+            public string[] AutoSpawnTerrainTypes //custom get/set added in version 1.5.0, avoiding null errors
+            {
+                get
+                {
+                    return autoSpawnTerrainTypes ?? new string[0];
+                }
+                set
+                {
+                    autoSpawnTerrainTypes = value;
+                }
+            }
+
+            public string[] IncludeAreas //custom get/set added in version 1.5.0, avoiding null errors
+            {
+                get
+                {
+                    return includeAreas ?? new string[0];
+                }
+                set
+                {
+                    includeAreas = value;
+                }
+            }
+
+            public string[] ExcludeAreas //custom get/set added in version 1.5.0, avoiding null errors
+            { 
+                get
+                {
+                    return excludeAreas ?? new string[0];
+                }
+                set
+                {
+                    excludeAreas = value;
+                }
+            }
+
+            public ExtraConditions ExtraConditions //custom get/set added in version 1.5.0, avoiding null errors
+            {
+                get
+                {
+                    return extraConditions ?? new ExtraConditions();
+                }
+                set
+                {
+                    extraConditions = value;
+                }
+            }
 
             public SpawnArea()
             {

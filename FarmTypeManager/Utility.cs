@@ -1339,7 +1339,7 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>Validates a single instance of farm data, correcting certain settings automatically.</summary>
+            /// <summary>Validates a single instance of farm data, correcting obsolete/invalid settings automatically.</summary>
             /// <param name="config">The contents of a single config file to be validated.</param>
             /// <param name="pack">The content pack associated with this config data; null if the file was from this mod's own folders.</param>
             public static void ValidateFarmData(FarmConfig config, IContentPack pack)
@@ -1358,9 +1358,8 @@ namespace FarmTypeManager
                 allAreas.Add(config.Large_Object_Spawn_Settings.Areas);
                 allAreas.Add(config.Ore_Spawn_Settings.Areas);
 
-                HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process
-
                 Monitor.Log("Checking for duplicate UniqueAreaIDs...", LogLevel.Trace);
+                HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process
 
                 //erase any duplicate IDs and record the others in the "IDs" hashset
                 foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
@@ -1391,7 +1390,6 @@ namespace FarmTypeManager
                 }
 
                 Monitor.Log("Assigning new UniqueAreaIDs to any blanks or duplicates...", LogLevel.Trace);
-
                 string newName; //temp storage for a new ID while it's created/tested
                 int newNumber; //temp storage for the numeric part of a new ID
 
@@ -1423,24 +1421,6 @@ namespace FarmTypeManager
                         IDs.Add(area.UniqueAreaID); //the ID is finalized, so add it to the set of encountered IDs
                     }
                 }
-
-                Monitor.Log("Checking for valid min/max spawn settings...", LogLevel.Trace);
-                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
-                {
-                    foreach (SpawnArea area in areas) //for each area in the current array
-                    {
-                        if (area.MinimumSpawnsPerDay > area.MaximumSpawnsPerDay) //if max spawns > min spawns
-                        {
-                            //swap the two numbers
-                            int temp = area.MinimumSpawnsPerDay;
-                            area.MinimumSpawnsPerDay = area.MaximumSpawnsPerDay;
-                            area.MaximumSpawnsPerDay = temp;
-
-                            Monitor.Log($"Min > max spawns in this area: \"{area.UniqueAreaID}\" ({area.MapName}). Numbers swapped.", LogLevel.Trace);
-                        }
-                    }
-                }
-                Monitor.Log("Min/max spawn settings validated.", LogLevel.Trace);
 
                 if (pack != null)
                 {
