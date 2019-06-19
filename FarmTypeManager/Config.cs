@@ -221,15 +221,15 @@ namespace FarmTypeManager
         {
             public string UniqueAreaID { get; set; } = ""; //added in version 1.4
             public string MapName { get; set; }
-            public int minimumSpawnsPerDay;
-            public int maximumSpawnsPerDay;
+            private int minimumSpawnsPerDay;
+            private int maximumSpawnsPerDay;
             private string[] autoSpawnTerrainTypes; //Valid properties include "Quarry", "Custom", "Diggable", "All", and any tile Type properties ("Grass", "Dirt", "Stone", "Wood", etc)
             private string[] includeAreas;
             private string[] excludeAreas;
             public string StrictTileChecking { get; set; } = "High"; //added in version 1.1; default used here to automatically fill it in with SMAPI's json interface
             private ExtraConditions extraConditions; //added in version 1.3
 
-
+            //custom properties added in version 1.5.0 to handle configuration errors
             public int MinimumSpawnsPerDay
             {
                 get
@@ -269,11 +269,11 @@ namespace FarmTypeManager
                 }
             }
 
-            public string[] AutoSpawnTerrainTypes //custom get/set added in version 1.5.0, avoiding null errors
+            public string[] AutoSpawnTerrainTypes
             {
                 get
                 {
-                    return autoSpawnTerrainTypes ?? new string[0];
+                    return autoSpawnTerrainTypes ?? new string[0]; //return default if null
                 }
                 set
                 {
@@ -281,11 +281,11 @@ namespace FarmTypeManager
                 }
             }
 
-            public string[] IncludeAreas //custom get/set added in version 1.5.0, avoiding null errors
+            public string[] IncludeAreas
             {
                 get
                 {
-                    return includeAreas ?? new string[0];
+                    return includeAreas ?? new string[0]; //return default if null
                 }
                 set
                 {
@@ -293,11 +293,11 @@ namespace FarmTypeManager
                 }
             }
 
-            public string[] ExcludeAreas //custom get/set added in version 1.5.0, avoiding null errors
+            public string[] ExcludeAreas
             { 
                 get
                 {
-                    return excludeAreas ?? new string[0];
+                    return excludeAreas ?? new string[0]; //return default if null
                 }
                 set
                 {
@@ -305,11 +305,11 @@ namespace FarmTypeManager
                 }
             }
 
-            public ExtraConditions ExtraConditions //custom get/set added in version 1.5.0, avoiding null errors
+            public ExtraConditions ExtraConditions
             {
                 get
                 {
-                    return extraConditions ?? new ExtraConditions();
+                    return extraConditions ?? new ExtraConditions(); //return default if null
                 }
                 set
                 {
