@@ -42,7 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
+    <Compile Include="Config\Data\ContentPackSaveData.cs" />
+    <Compile Include="Config\Data\FarmData.cs" />
+    <Compile Include="Config\FarmConfig\OreSettings.cs" />
+    <Compile Include="Config\FarmConfig\SpawnArea\SpawnArea.cs" />
+    <Compile Include="Config\FarmConfig\SpawnArea\LargeObjectSpawnArea.cs" />
+    <Compile Include="Config\FarmConfig\SpawnArea\ForageSpawnArea.cs" />
+    <Compile Include="Config\FarmConfig\SpawnArea\OreSpawnArea.cs" />
+    <Compile Include="Config\FarmConfig\LargeObjectSettings.cs" />
+    <Compile Include="Config\FarmConfig\ExtraConditions.cs" />
+    <Compile Include="Config\FarmConfig\FileConditions.cs" />
+    <Compile Include="Config\Data\InternalSaveData.cs" />
+    <Compile Include="Config\FarmConfig\FarmConfig.cs" />
+    <Compile Include="Config\FarmConfig\ForageSettings.cs" />
+    <Compile Include="Config\ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="ObjectSpawner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,6 +67,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0-beta\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.3.0.0-beta\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
