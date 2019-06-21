@@ -57,7 +57,9 @@
     <Compile Include="Config\FarmConfig\ForageSettings.cs" />
     <Compile Include="Config\ModConfig.cs" />
     <Compile Include="ModEntry.cs" />
-    <Compile Include="ObjectSpawner.cs" />
+    <Compile Include="ObjectSpawner\OreSpawner.cs" />
+    <Compile Include="ObjectSpawner\LargeObjectSpawner.cs" />
+    <Compile Include="ObjectSpawner\ForageSpawner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
