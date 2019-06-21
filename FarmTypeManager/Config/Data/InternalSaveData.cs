@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using System.Collections.Generic;
+using StardewModdingAPI;
 
 namespace FarmTypeManager
 {
