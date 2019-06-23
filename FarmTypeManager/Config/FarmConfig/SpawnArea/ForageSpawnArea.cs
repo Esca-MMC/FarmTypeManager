@@ -14,19 +14,19 @@ namespace FarmTypeManager
             public object[] FallItemIndex { get; set; } = null;
             public object[] WinterItemIndex { get; set; } = null;
 
+            //default constructor, providing settings for Forest Farm style forage placement
             public ForageSpawnArea()
                 : base()
             {
-
-            }
-
-            public ForageSpawnArea(string id, string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, object[] spring, object[] summer, object[] fall, object[] winter)
-                : base(id, name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
-            {
-                SpringItemIndex = spring;
-                SummerItemIndex = summer;
-                FallItemIndex = fall;
-                WinterItemIndex = winter;
+                UniqueAreaID = "";
+                MapName = "Farm";
+                MinimumSpawnsPerDay = 0;
+                MaximumSpawnsPerDay = 3;
+                AutoSpawnTerrainTypes = new string[] { "Grass", "Diggable" };
+                IncludeAreas = new string[0];
+                ExcludeAreas = new string[0];
+                StrictTileChecking = "High";
+                ExtraConditions = new ExtraConditions();
             }
         }
     }

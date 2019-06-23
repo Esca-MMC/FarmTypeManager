@@ -190,9 +190,13 @@ namespace FarmTypeManager
 
                             int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
 
-                            Utility.Monitor.Log($"Attempting to spawn forage. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
-                            //this method call is based on code from SDV's DayUpdate() in Farm.cs, as of SDV 1.3.27
-                            Game1.getLocationFromName(area.MapName).dropObject(new StardewValley.Object(randomTile, randomForage, (string)null, false, true, false, true), randomTile * 64f, Game1.viewport, true, (Farmer)null);
+                            Utility.SpawnForage(randomForage, Game1.getLocationFromName(area.MapName), randomTile);
+                            
+                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to forage
+                            {
+                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned forage
+                                data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
+                            }
                         }
 
                         Utility.Monitor.Log($"Forage spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);

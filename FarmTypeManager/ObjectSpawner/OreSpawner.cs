@@ -120,7 +120,14 @@ namespace FarmTypeManager
                             {
                                 if (randomOreNum < ore.Value) //this ore "wins"
                                 {
-                                    Utility.SpawnOre(ore.Key, area.MapName, randomTile);
+                                    int? oreID = Utility.SpawnOre(ore.Key, Game1.getLocationFromName(area.MapName), randomTile); //spawn ore & get its index ID
+
+                                    if (oreID != null && area.DaysUntilSpawnsExpire != null) //if oreID exists & if this area assigns expiration dates to ore
+                                    {
+                                        SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, oreID.Value, ore.Key, area.DaysUntilSpawnsExpire); //create a record of the newly spawned ore
+                                        data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
+                                    }
+
                                     break;
                                 }
                                 else //this ore "loses"
@@ -128,8 +135,6 @@ namespace FarmTypeManager
                                     randomOreNum -= ore.Value; //subtract this ore's chance from the random number before moving to the next one
                                 }
                             }
-
-                            Utility.Monitor.Log($"Attempting to spawn ore. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
                         }
 
                         Utility.Monitor.Log($"Ore spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);

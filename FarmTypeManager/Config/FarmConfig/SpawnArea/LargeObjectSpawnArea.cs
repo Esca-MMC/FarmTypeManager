@@ -12,19 +12,24 @@ namespace FarmTypeManager
             public int PercentExtraSpawnsPerSkillLevel { get; set; }
             public string RelatedSkill { get; set; }
 
+            //default constructor, providing settings for hardwood stump respawning (roughly similar to the Forest Farm)
             public LargeObjectSpawnArea()
                 : base()
             {
+                UniqueAreaID = "";
+                MapName = "Farm";
+                MinimumSpawnsPerDay = 999;
+                MaximumSpawnsPerDay = 999;
+                AutoSpawnTerrainTypes = new string[0];
+                IncludeAreas = new string[0];
+                ExcludeAreas = new string[0];
+                StrictTileChecking = "High";
+                ExtraConditions = new ExtraConditions();
 
-            }
-
-            public LargeObjectSpawnArea(string id, string name, int min, int max, string[] types, string[] include, string[] exclude, string safety, ExtraConditions extra, string[] objTypes, bool find, int extraSpawns, string skill)
-                : base(id, name, min, max, types, include, exclude, safety, extra) //uses the original "SpawnArea" constructor to fill in the shared fields as usual
-            {
-                ObjectTypes = objTypes;
-                FindExistingObjectLocations = find;
-                PercentExtraSpawnsPerSkillLevel = extraSpawns;
-                RelatedSkill = skill;
+                ObjectTypes = new string[] { "Stump" };
+                FindExistingObjectLocations = true;
+                PercentExtraSpawnsPerSkillLevel = 0;
+                RelatedSkill = "Foraging";
             }
         }
     }

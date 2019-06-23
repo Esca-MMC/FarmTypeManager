@@ -157,8 +157,15 @@ namespace FarmTypeManager
 
                             if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
-                            Utility.Monitor.Log($"Attempting to spawn large object. Location: {randomTile.X},{randomTile.Y} ({area.MapName}).", LogLevel.Trace);
-                            loc.addResourceClumpAndRemoveUnderlyingTerrain(objectIDs[Utility.RNG.Next(objectIDs.Count)], 2, 2, randomTile); //generate an object using the list of valid index numbers
+                            int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
+
+                            Utility.SpawnLargeObject(randomObject, loc, randomTile);
+
+                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to objects
+                            {
+                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned object
+                                data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
+                            }
                         }
 
                         Utility.Monitor.Log($"Large object spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
