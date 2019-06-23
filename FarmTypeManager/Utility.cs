@@ -1650,16 +1650,14 @@ namespace FarmTypeManager
             /// <returns>A "Weather" enum describing today's weather.</returns>
             public static Weather WeatherForToday()
             {
-                if (Game1.isLightning)
-                    return Weather.Lightning; //note this has to be completed before "isRaining", because both are true during storms
-                else if (Game1.isRaining)
-                    return Weather.Rain;
-                else if (Game1.isSnowing)
+                if (Game1.isSnowing)
                     return Weather.Snow;
-                else if (Game1.isDebrisWeather)
+                if (Game1.isRaining)
+                    return Game1.isLightning ? Weather.Lightning : Weather.Rain;
+                if (SaveGame.loaded?.isDebrisWeather ?? Game1.isDebrisWeather)
                     return Weather.Debris;
-                else
-                    return Weather.Sunny;
+
+                return Weather.Sunny;
             }
 
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
