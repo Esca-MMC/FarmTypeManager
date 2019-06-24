@@ -1460,6 +1460,10 @@ namespace FarmTypeManager
             /// <param name="save">The save data to the checked.</param>
             public static void ReplaceProtectedSpawnsOvernight(InternalSaveData save)
             {
+                Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
+                int missing = 0; //# of objects missing
+                int blocked = 0; //# of objects that could not respawn due to blocked locations
+                int respawned = 0; //# of objects respawned
                 foreach (SavedObject saved in save.SavedObjects)
                 {
                     if (saved.DaysUntilExpire == null) //if the object's expiration setting is null
@@ -1492,10 +1496,17 @@ namespace FarmTypeManager
 
                         if (!stillExists) //if the object no longer exists
                         {
+                            missing++; //increment missing tracker
+
                             //if the object's tiles are not unoccupied
                             if (!farm.isTileOccupiedForPlacement(saved.Tile) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X, saved.Tile.Y + 1)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y + 1)))
                             {
                                 SpawnLargeObject(saved.ID, farm, saved.Tile); //respawn it
+                                respawned++; //increment respawn tracker
+                            }
+                            else //the tiles are occupied
+                            {
+                                blocked++; //increment obstruction tracker
                             }
                         }
                     }
@@ -1513,6 +1524,8 @@ namespace FarmTypeManager
 
                         if (realObject == null) //if the object no longer exists
                         {
+                            missing++; //increment missing object tracker
+
                             if (!location.isTileOccupiedForPlacement(saved.Tile)) //if the object's tile is not occupied
                             {
                                 if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
@@ -1523,9 +1536,16 @@ namespace FarmTypeManager
                                 {
                                     Utility.SpawnOre(saved.Name, location, saved.Tile); //respawn it
                                 }
+                                respawned++; //increment respawn tracker
                             } 
+                            else //if the object's tile is occupied
+                            {
+                                blocked++; //increment obstruction tracker
+                            }
                         }
                     }
+
+                    Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}.", LogLevel.Trace);
                 }
             }
 
@@ -1533,6 +1553,7 @@ namespace FarmTypeManager
             /// <param name="save">The save data to the checked.</param>
             public static void ProcessObjectExpiration(InternalSaveData save)
             {
+                Monitor.Log($"Updating save data for missing/expired objects...", LogLevel.Trace);
                 List<SavedObject> objectsToRemove = new List<SavedObject>(); //objects to remove from saved data after processing (note: do not remove them while looping through them)
 
                 foreach (SavedObject saved in save.SavedObjects) //for each saved object & expiration countdown
@@ -1569,6 +1590,7 @@ namespace FarmTypeManager
                         {
                             if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                             {
+                                Monitor.Log($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).", LogLevel.Trace);
                                 farm.removeEverythingExceptCharactersFromThisTile((int)saved.Tile.X, (int)saved.Tile.Y); //remove the object from the game
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
@@ -1598,6 +1620,7 @@ namespace FarmTypeManager
                         {
                             if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                             {
+                                Monitor.Log($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).", LogLevel.Trace);
                                 location.removeObject(saved.Tile, false); //remove the object from the game
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
@@ -1615,6 +1638,7 @@ namespace FarmTypeManager
                     
                 }
 
+                Monitor.Log($"Expiration check complete. Clearing {objectsToRemove.Count} missing/expired objects from save data.", LogLevel.Trace);
                 foreach (SavedObject saved in objectsToRemove) //for each object that should be removed from the save data
                 {
                     save.SavedObjects.Remove(saved); //remove it
