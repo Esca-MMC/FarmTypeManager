@@ -1464,6 +1464,7 @@ namespace FarmTypeManager
                 int missing = 0; //# of objects missing
                 int blocked = 0; //# of objects that could not respawn due to blocked locations
                 int respawned = 0; //# of objects respawned
+                int unloaded = 0; //# of objects skipped due to missing (unloaded) or invalid map names
                 foreach (SavedObject saved in save.SavedObjects)
                 {
                     if (saved.DaysUntilExpire == null) //if the object's expiration setting is null
@@ -1477,6 +1478,7 @@ namespace FarmTypeManager
 
                         if (farm == null) //if this isn't a valid map
                         {
+                            unloaded++; //increment unloaded tracker
                             //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
                             continue; //skip to the next object
                         }
@@ -1516,6 +1518,7 @@ namespace FarmTypeManager
 
                         if (location == null) //if the map wasn't found
                         {
+                            unloaded++; //increment unloaded tracker
                             //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
                             continue; //skip to the next object
                         }
@@ -1545,7 +1548,7 @@ namespace FarmTypeManager
                         }
                     }
 
-                    Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}.", LogLevel.Trace);
+                    Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.", LogLevel.Trace);
                 }
             }
 
