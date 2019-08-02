@@ -598,7 +598,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="Forage-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="Forage-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="Forage-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="Forage-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -1388,7 +1390,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="LargeObject-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="LargeObject-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="LargeObject-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="LargeObject-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -1948,7 +1952,9 @@
 						<option value="blank"></option>
 						<option value="custom">[NEW]</option>
 						<input name="Ore-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="Ore-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
 						<div>
+							<button type="button" class="basic" id="Ore-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
 							<button type="button" class="basic" id="Ore-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
 						</div>
 					</div>
@@ -4158,10 +4164,87 @@
 			input.value = ""; //clear the text field
 		}
 		
+		//display the textbox used to edit the selected area's ID
+		function areaEditID(button)
+		{
+			//get the relevant area select field
+			var selector = button.id.replace("-EditAreaButton", "");
+			selector = document.getElementById(selector);
+		
+			if (selector.selectedIndex < 2) //if the current selection can't be edited
+			{
+				return; //do nothing
+			}
+		
+			var textbox = document.getElementById(button.id.replace("-EditAreaButton", "-EditArea")); //get the textbox
+			textbox.value = selector.options[selector.selectedIndex].text; //fill the textbox with the current area's ID
+			toggleField(selector, textbox); //display the textbox
+		}
+		
+		
+		function areaEditIDConfirmed(textbox)
+		{
+			if (textbox.style.display == "none") //if the textbox isn't currently visible
+			{
+				return; //do nothing
+			}
+		
+			document.getElementById("alertbox-message").textContent = ""; //clear the alertbox message section
+		
+			//get the relevant area select field
+			var selector = textbox.id.replace("-EditArea", "");
+			selector = document.getElementById(selector);
+
+			var areaIndex = selector.selectedIndex; //get the index for the currently selected area
+			areaSelect(selector); //store the currently selected area (note: may or may not be necessary)
+			
+			//get the relevant area list
+			var areas;
+			if (selector.id.includes("Forage")) //if forage area
+			{
+				areas = json.Forage_Spawn_Settings.Areas;
+			}
+			else if (selector.id.includes("LargeObject")) //if large object area
+			{
+				areas = json.Large_Object_Spawn_Settings.Areas;
+			}
+			else //if ore area
+			{
+				areas = json.Ore_Spawn_Settings.Areas;
+			}
+			
+			if (textbox.value == selector.options[selector.selectedIndex].text) //if the ID is unchanged
+			{
+				textbox.value = ""; //clear the textbox
+			}
+			
+			for (var x = 0; x < areas.length; x++) //for each area
+			{
+				if (textbox.value == areas[x].UniqueAreaID) //if this area ID is already used
+				{
+					document.getElementById("alertbox-message").textContent = "\n\nError - That area ID is already used.";
+					textbox.value = ""; //clear the textbox
+					break;
+				}
+			}
+			
+			toggleField(textbox, selector); //display the selector
+			
+			if (textbox.value.trim() == "") //if the entered ID is blank (or matched a previous ID)
+			{
+				textbox.value = ""; //clear the textbox
+				return;
+			}
+			
+			selector.options[selector.selectedIndex].text = textbox.value; //update the selected option's ID
+			areas[areaIndex - 2].UniqueAreaID = textbox.value; //update the stored area ID
+			textbox.value = ""; //clear the textbox
+		}
+		
 		//delete the currently selected area
 		function areaDelete(button)
 		{
-			// get the relevant area select field
+			//get the relevant area select field
 			var selector = button.id.replace("-DelAreaButton", "");
 			selector = document.getElementById(selector);
 			
