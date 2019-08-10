@@ -40,11 +40,11 @@ namespace FarmTypeManager
                         break;
                     case "magmageode":
                         ore = new StardewValley.Object(tile, 77, 1); //magma geode rock
-                        ore.MinutesUntilReady = 8; //TODO: replace this guess w/ actual vanilla durability
+                        ore.MinutesUntilReady = 7;
                         break;
                     case "gem":
                         ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
-                        ore.MinutesUntilReady = 5; //based on "gemstone" durability, but applies to every type for simplicity's sake
+                        ore.MinutesUntilReady = 5; //note that this value might not be shared by type-specific gem spawns in the mines
                         break;
                     case "copper":
                         ore = new StardewValley.Object(tile, 751, 1); //copper ore
@@ -60,11 +60,11 @@ namespace FarmTypeManager
                         break;
                     case "iridium":
                         ore = new StardewValley.Object(tile, 765, 1); //iridium ore
-                        ore.MinutesUntilReady = 16; //TODO: confirm this is still the case (it's based on SDV 1.11 code)
+                        ore.MinutesUntilReady = 16;
                         break;
                     case "mystic":
-                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false); //mystic ore, i.e. high-end cavern rock with iridium + gold
-                        ore.MinutesUntilReady = 16; //TODO: replace this guess w/ actual vanilla durability
+                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false); //mystic stone, a.k.a. mystic ore
+                        ore.MinutesUntilReady = 12;
                         break;
                     default: break;
                 }
