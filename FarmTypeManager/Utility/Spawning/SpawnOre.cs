@@ -43,7 +43,7 @@ namespace FarmTypeManager
                         ore.MinutesUntilReady = 7;
                         break;
                     case "gem":
-                        ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, false, false, false); //any of the possible gem rocks
+                        ore = new StardewValley.Object(tile, (RNG.Next(7) + 1) * 2, "Stone", true, true, false, false); //any of the possible gem rocks
                         ore.MinutesUntilReady = 5;
                         break;
                     case "copper":
@@ -63,35 +63,35 @@ namespace FarmTypeManager
                         ore.MinutesUntilReady = 16;
                         break;
                     case "mystic":
-                        ore = new StardewValley.Object(tile, 46, "Stone", true, false, false, false); //mystic stone, a.k.a. mystic ore
+                        ore = new StardewValley.Object(tile, 46, "Stone", true, true, false, false); //mystic stone, a.k.a. mystic ore
                         ore.MinutesUntilReady = 12;
                         break;
                     case "diamond":
-                        ore = new StardewValley.Object(tile, 2, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 2, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "ruby":
-                        ore = new StardewValley.Object(tile, 4, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 4, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "jade":
-                        ore = new StardewValley.Object(tile, 6, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 6, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "amethyst":
-                        ore = new StardewValley.Object(tile, 8, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 8, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "topaz":
-                        ore = new StardewValley.Object(tile, 10, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 10, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "emerald":
-                        ore = new StardewValley.Object(tile, 12, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 12, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     case "aquamarine":
-                        ore = new StardewValley.Object(tile, 14, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 14, "Stone", true, true, false, false);
                         ore.MinutesUntilReady = 5;
                         break;
                     default: break;
