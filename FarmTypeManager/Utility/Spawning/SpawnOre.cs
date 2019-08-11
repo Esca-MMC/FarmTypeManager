@@ -99,7 +99,7 @@ namespace FarmTypeManager
 
                 if (ore != null)
                 {
-                    Utility.Monitor.Log($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).", LogLevel.Trace);
+                    Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     location.setObject(tile, ore); //actually spawn the ore object into the world
                     return ore.ParentSheetIndex;
                 }
