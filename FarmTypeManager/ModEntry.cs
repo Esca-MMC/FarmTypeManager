@@ -67,6 +67,7 @@ namespace FarmTypeManager
 
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
+                Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
