@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\WhereAmI.cs" />
     <Compile Include="Config\Data\ContentPackSaveData.cs" />
     <Compile Include="Config\Data\FarmData.cs" />
     <Compile Include="Config\FarmConfig\OreSettings.cs" />
