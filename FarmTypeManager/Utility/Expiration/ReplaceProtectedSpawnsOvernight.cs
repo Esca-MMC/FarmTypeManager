@@ -92,11 +92,11 @@ namespace FarmTypeManager
                             {
                                 if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
                                 {
-                                    Utility.SpawnForage(saved.ID, location, saved.Tile); //respawn it
+                                    SpawnForage(saved.ID, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {
-                                    Utility.SpawnOre(saved.Name, location, saved.Tile); //respawn it
+                                    SpawnOre(saved.Name, location, saved.Tile); //respawn it
                                 }
                                 respawned++; //increment respawn tracker
                             }
@@ -108,7 +108,7 @@ namespace FarmTypeManager
                     }
                 }
 
-                Monitor.Log($"Missing object check complete. Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.", LogLevel.Trace);
+                Monitor.VerboseLog($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.");
             }
         }
     }

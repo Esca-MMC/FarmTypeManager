@@ -65,9 +65,18 @@ namespace FarmTypeManager
 
             Utility.LoadFarmData(Helper); //load all available data files
 
+            Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
-                Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
+                if (data.Pack != null) //if this data is from a content pack
+                {
+                    Monitor.VerboseLog($"Checking objects from content pack: {data.Pack.Manifest.Name}");
+                }
+                else //this data is from this mod's own folders
+                {
+                    Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                }
+
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
