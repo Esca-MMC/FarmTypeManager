@@ -49,6 +49,7 @@
     <Compile Include="Config Classes\Data\ContentPackSaveData.cs" />
     <Compile Include="Config Classes\Data\FarmData.cs" />
     <Compile Include="Config Classes\FarmConfig\OreSettings.cs" />
+    <Compile Include="Config Classes\FarmConfig\SpawnArea\MonsterSpawnArea.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\SpawnArea.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\LargeObjectSpawnArea.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\ForageSpawnArea.cs" />
