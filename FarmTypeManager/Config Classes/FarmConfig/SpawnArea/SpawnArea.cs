@@ -4,10 +4,10 @@ namespace FarmTypeManager
 {
     public partial class ModEntry : Mod
     {
-        //a set of variables including a map name, terrain type(s) to auto-detect, and manually defined included/excluded areas for object spawning
+        /// <summary>A set of variables describing the spawn settings for an "area" on a single map. Used primarily by subclasses in most versions.</summary>
         private class SpawnArea
         {
-            public string UniqueAreaID { get; set; } = ""; //added in version 1.4.0
+            public string UniqueAreaID { get; set; } = "";
 
             public string MapName { get; set; } = "Farm";
 
@@ -93,9 +93,22 @@ namespace FarmTypeManager
                 }
             }
 
-            public string StrictTileChecking { get; set; } = "High"; //added in version 1.1.0; default used here to automatically fill it in with SMAPI's json interface
+            public string StrictTileChecking { get; set; } = "High";
 
-            private ExtraConditions extraConditions; //added in version 1.3.0
+            private SpawnTiming spawnTiming;
+            public SpawnTiming SpawnTiming
+            {
+                get
+                {
+                    return spawnTiming ?? new SpawnTiming(); //return default if null
+                }
+                set
+                {
+                    spawnTiming = value;
+                }
+            }
+
+            private ExtraConditions extraConditions;
             public ExtraConditions ExtraConditions
             {
                 get

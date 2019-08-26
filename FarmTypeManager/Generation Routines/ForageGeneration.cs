@@ -68,8 +68,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log($"Items to spawn: {spawnCount}. Retrieving list of forage types...", LogLevel.Trace);
 
-                        object[] forageList = null; //the list of forage types to use for this area today
-                        List<int> forageIDs = new List<int>(); //the list of valid item IDs parsed from the forage list
+                        object[] forageObjects = null; //the unprocessed array of forage types to use for this area today
 
                         switch (Game1.currentSeason)
                         {
@@ -78,13 +77,13 @@ namespace FarmTypeManager
                                 {
                                     if (area.SpringItemIndex.Length > 0) //if the override includes any items
                                     {
-                                        forageList = area.SpringItemIndex; //get the override index list for this area
+                                        forageObjects = area.SpringItemIndex; //get the override index list for this area
                                     }
                                     //if an area index exists but is empty, *do not* use the main index; users may want to disable spawns in this season
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.SpringItemIndex.Length > 0) //if no "override" list exists and the main index list includes any items
                                 {
-                                    forageList = data.Config.Forage_Spawn_Settings.SpringItemIndex; //get the main index list
+                                    forageObjects = data.Config.Forage_Spawn_Settings.SpringItemIndex; //get the main index list
                                 }
                                 break;
                             case "summer":
@@ -92,12 +91,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.SummerItemIndex.Length > 0)
                                     {
-                                        forageList = area.SummerItemIndex;
+                                        forageObjects = area.SummerItemIndex;
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.SummerItemIndex.Length > 0)
                                 {
-                                    forageList = data.Config.Forage_Spawn_Settings.SummerItemIndex;
+                                    forageObjects = data.Config.Forage_Spawn_Settings.SummerItemIndex;
                                 }
                                 break;
                             case "fall":
@@ -105,12 +104,12 @@ namespace FarmTypeManager
                                 {
                                     if (area.FallItemIndex.Length > 0)
                                     {
-                                        forageList = area.FallItemIndex;
+                                        forageObjects = area.FallItemIndex;
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.FallItemIndex.Length > 0)
                                 {
-                                    forageList = data.Config.Forage_Spawn_Settings.FallItemIndex;
+                                    forageObjects = data.Config.Forage_Spawn_Settings.FallItemIndex;
                                 }
                                 break;
                             case "winter":
@@ -118,59 +117,24 @@ namespace FarmTypeManager
                                 {
                                     if (area.WinterItemIndex.Length > 0)
                                     {
-                                        forageList = area.WinterItemIndex;
+                                        forageObjects = area.WinterItemIndex;
                                     }
                                 }
                                 else if (data.Config.Forage_Spawn_Settings.WinterItemIndex.Length > 0)
                                 {
-                                    forageList = data.Config.Forage_Spawn_Settings.WinterItemIndex;
+                                    forageObjects = data.Config.Forage_Spawn_Settings.WinterItemIndex;
                                 }
                                 break;
                         }
 
-                        if (forageList == null) //no valid forage list was selected
+                        if (forageObjects == null) //no valid forage list was selected
                         {
                             Utility.Monitor.Log($"No forage list selected. This generally means the {Game1.currentSeason}IndexList was empty. Skipping to the next forage area...", LogLevel.Trace);
                             continue;
                         }
 
-                        //a list was selected, so parse the list into valid forage IDs
-                        foreach (object forage in forageList)
-                        {
-                            if (forage is long) //the forage is a valid number
-                            {
-                                forageIDs.Add(Convert.ToInt32(forage));
-                            }
-                            else if (forage is string) //the forage is a string (i.e. the name of an item)
-                            {
-                                Utility.Monitor.Log($"Found a name in the selected forage list. Parsing into object ID...", LogLevel.Trace);
-                                string forageName = (string)forage; //cast it as a name
-                                bool foundMatchingItem = false;
-
-                                foreach (KeyValuePair<int, string> item in Game1.objectInformation) //for each item in the game's object list
-                                {
-                                    if (forageName.Equals(item.Value.Split('/')[0], StringComparison.OrdinalIgnoreCase)) //if the forage name matches the current item's name (note: first part of the dictionary value, separated from other settings by '/')
-                                    {
-                                        forageIDs.Add(item.Key); //add the item's ID (which is the dictionary key)
-                                        foundMatchingItem = true;
-                                        Utility.Monitor.Log($"Index parsed from \"{forageName}\" into ID: {item.Key}", LogLevel.Trace);
-                                    }
-                                }
-
-                                if (foundMatchingItem == false) //no matching item name could be found
-                                {
-                                    Utility.Monitor.Log($"An area's {Game1.currentSeason}ItemIndex list contains a name that did not match any items.", LogLevel.Info);
-                                    Utility.Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
-                                    Utility.Monitor.Log($"Item name: \"{forageName}\"", LogLevel.Info);
-                                }
-                            }
-                            else //the forage doesn't match any known types
-                            {
-                                Utility.Monitor.Log($"An area's {Game1.currentSeason}ItemIndex list contains an unrecognized setting.", LogLevel.Info);
-                                Utility.Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
-                                Utility.Monitor.Log($"This generally means the list contains a typo. The affected forage item(s) will be skipped.", LogLevel.Info);
-                            }
-                        }
+                        //a list was selected, so parse "forageObjects" into a list of valid forage IDs
+                        List<int> forageIDs = Utility.GetIDsFromObjects(forageObjects.ToList(), area);
 
                         if (forageIDs.Count <= 0) //no valid items were added to the list
                         {

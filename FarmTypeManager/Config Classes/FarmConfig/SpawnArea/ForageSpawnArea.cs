@@ -26,6 +26,7 @@ namespace FarmTypeManager
                 IncludeAreas = new string[0];
                 ExcludeAreas = new string[0];
                 StrictTileChecking = "High";
+                SpawnTiming = new SpawnTiming();
                 ExtraConditions = new ExtraConditions();
             }
         }

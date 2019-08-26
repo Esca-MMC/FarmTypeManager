@@ -48,6 +48,7 @@
     <Compile Include="Commands\WhereAmI.cs" />
     <Compile Include="Config Classes\Data\ContentPackSaveData.cs" />
     <Compile Include="Config Classes\Data\FarmData.cs" />
+    <Compile Include="Config Classes\FarmConfig\SpawnTiming.cs" />
     <Compile Include="Config Classes\FarmConfig\OreSettings.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\MonsterSpawnArea.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\SpawnArea.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="Utility\Conditions\CheckFileConditions.cs" />
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
+    <Compile Include="Utility\Spawning\ApplyMonsterSettings.cs" />
+    <Compile Include="Utility\Spawning\GetIDsFromObjects.cs" />
+    <Compile Include="Utility\Spawning\SpawnMonster.cs" />
     <Compile Include="Utility\Spawning\SpawnOre.cs" />
     <Compile Include="Utility\Spawning\AdjustedSpawnCount.cs" />
     <Compile Include="Utility\Spawning\GetLargeObjectIDs.cs" />

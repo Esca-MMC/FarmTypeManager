@@ -97,17 +97,15 @@ namespace FarmTypeManager
                     default: break;
                 }
 
-                if (ore != null)
+                if (ore == null)
                 {
-                    Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    location.setObject(tile, ore); //actually spawn the ore object into the world
-                    return ore.ParentSheetIndex;
-                }
-                else
-                {
-                    Utility.Monitor.Log($"The ore to be spawned (\"{oreName}\") doesn't match any known ore types. Make sure that name isn't misspelled in your player config file.", LogLevel.Info);
+                    Utility.Monitor.Log($"The ore to be spawned (\"{oreName}\") doesn't match any known ore types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
                     return null;
                 }
+
+                Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                location.setObject(tile, ore); //actually spawn the ore object into the world
+                return ore.ParentSheetIndex;
             }
         }
     }
