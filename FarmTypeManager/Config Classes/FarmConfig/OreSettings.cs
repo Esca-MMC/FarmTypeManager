@@ -20,7 +20,7 @@ namespace FarmTypeManager
             public OreSettings()
             {
 
-                Areas = new OreSpawnArea[] { new OreSpawnArea() }; //a set of "OreSpawnArea" objects, describing where ore can spawn on each map
+                Areas = new OreSpawnArea[] { new OreSpawnArea() }; //a set of "OreSpawnArea" objects, describing where ore can spawn
                 PercentExtraSpawnsPerMiningLevel = 0; //multiplier to give extra ore per level of mining skill; default is +0%, since the native game lacks this mechanic
 
                 //mining skill level required to spawn each ore type; defaults are based on the vanilla "hilltop" map settings, though some types didn't spawn at all
@@ -89,7 +89,7 @@ namespace FarmTypeManager
                     { "Aquamarine", 0 }
                 };
 
-                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
+                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for those who want to use their own custom terrain type
             }
         }
     }

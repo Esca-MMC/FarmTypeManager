@@ -10,10 +10,12 @@ namespace FarmTypeManager
             public bool ForageSpawnEnabled { get; set; }
             public bool LargeObjectSpawnEnabled { get; set; }
             public bool OreSpawnEnabled { get; set; }
+            public bool MonsterSpawnEnabled { get; set; }
 
             public ForageSettings Forage_Spawn_Settings { get; set; }
             public LargeObjectSettings Large_Object_Spawn_Settings { get; set; }
             public OreSettings Ore_Spawn_Settings { get; set; }
+            public MonsterSettings Monster_Spawn_Settings { get; set; }
 
             public int[] QuarryTileIndex { get; set; }
 
@@ -25,11 +27,13 @@ namespace FarmTypeManager
                 ForageSpawnEnabled = false;
                 LargeObjectSpawnEnabled = false;
                 OreSpawnEnabled = false;
+                MonsterSpawnEnabled = false;
 
-                //settings for each generation type (assigned in the constructor for each of these "Settings" objects; see those for details)
+                //settings for each generation type (assigned in the default constructor for each of these "Settings" objects; see those for details)
                 Forage_Spawn_Settings = new ForageSettings();
                 Large_Object_Spawn_Settings = new LargeObjectSettings();
                 Ore_Spawn_Settings = new OreSettings();
+                Monster_Spawn_Settings = new MonsterSettings();
 
                 //a list of every tilesheet index commonly used by "quarry" tiles on maps, e.g. the vanilla hilltop (mining) farm
                 //these should be compared to [an instance of GameLocation].getTileIndexAt(x, y, "Back")

@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +51,7 @@
     <Compile Include="Commands\WhereAmI.cs" />
     <Compile Include="Config Classes\Data\ContentPackSaveData.cs" />
     <Compile Include="Config Classes\Data\FarmData.cs" />
+    <Compile Include="Config Classes\FarmConfig\MonsterSettings.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnTiming.cs" />
     <Compile Include="Config Classes\FarmConfig\OreSettings.cs" />
     <Compile Include="Config Classes\FarmConfig\SpawnArea\MonsterSpawnArea.cs" />
@@ -62,6 +66,7 @@
     <Compile Include="Config Classes\FarmConfig\FarmConfig.cs" />
     <Compile Include="Config Classes\FarmConfig\ForageSettings.cs" />
     <Compile Include="Config Classes\ModConfig.cs" />
+    <Compile Include="Generation Routines\MonsterGeneration.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Generation Routines\OreGeneration.cs" />
     <Compile Include="Generation Routines\LargeObjectGeneration.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
     <Compile Include="Utility\Spawning\ApplyMonsterSettings.cs" />
+    <Compile Include="Utility\Spawning\ValidateMonsterTypes.cs" />
     <Compile Include="Utility\Spawning\GetIDsFromObjects.cs" />
     <Compile Include="Utility\Spawning\SpawnMonster.cs" />
     <Compile Include="Utility\Spawning\SpawnOre.cs" />

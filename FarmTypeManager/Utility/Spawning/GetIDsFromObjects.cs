@@ -16,14 +16,17 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            
-            public static List<int> GetIDsFromObjects(List<object> objects, SpawnArea area)
+            /// <summary>Parses a list of objects into a new list of Stardew object IDs, excluding any that aren't recognized.</summary>
+            /// <param name="objects">A list of objects representing Stardew object IDs.</param>
+            /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
+            /// <returns>A new list of Stardew object IDs in integer form.</returns>
+            public static List<int> GetIDsFromObjects(List<object> objects, string areaID = "")
             {
                 List<int> IDs = new List<int>();
 
                 foreach (object obj in objects)
                 {
-                    if (obj is long) //if the object is a valid number
+                    if (obj is long) //if the object is a readable integer
                     {
                         IDs.Add(Convert.ToInt32(obj)); //add it to the list as an ID
                     }
@@ -43,14 +46,14 @@ namespace FarmTypeManager
                         if (foundMatchingItem == false) //no matching item name could be found
                         {
                             Monitor.Log($"An area's item list contains a name that did not match any items.", LogLevel.Info);
-                            Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
                             Monitor.Log($"Item name: \"{name}\"", LogLevel.Info);
                         }
                     }
                     else //the forage doesn't match any known types
                     {
                         Monitor.Log($"An area's item list contains an unrecognized item format.", LogLevel.Info);
-                        Monitor.Log($"Area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Info);
+                        Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
                         Monitor.Log($"This generally means the list contains a typo. The affected item(s) will be skipped.", LogLevel.Info);
                     }
                 }

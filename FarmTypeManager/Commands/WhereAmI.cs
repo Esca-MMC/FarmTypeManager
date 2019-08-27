@@ -54,7 +54,7 @@ namespace FarmTypeManager
 
                 MonsterType monster = new MonsterType(args[0], dict);
 
-                Utility.SpawnMonster(monster, loc, new Vector2(x, y - 1), new SpawnArea());
+                Utility.SpawnMonster(monster, loc, new Vector2(x, y - 1), "Fake area ID");
             }
         }
     }

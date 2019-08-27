@@ -20,9 +20,9 @@ namespace FarmTypeManager
 
                 set
                 {
-                    monsterTypes = value; //set the internal value *before* adjusting it below (because value is read-only & the previous "monsterTypes" never needs to be kept)
+                    monsterTypes = value;
 
-                    for (int x = 0; x < monsterTypes.Count; x++) //for each type in the list
+                    for (int x = 0; x < monsterTypes.Count; x++) //for each monster type in the list
                     {
                         if (monsterTypes[x].Settings != null && monsterTypes[x].Settings.Comparer != StringComparer.OrdinalIgnoreCase) //if the type's dictionary exists & isn't using a case-insensitive comparer
                         {
@@ -41,7 +41,7 @@ namespace FarmTypeManager
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 5; //~1/8 chance of 1 spawn each 10m
                 MaximumSpawnsPerDay = 16; //~3/8 chance of 1 spawn each 10m
-                AutoSpawnTerrainTypes = new string[] { "Any" };
+                AutoSpawnTerrainTypes = new string[] { "All" };
                 IncludeAreas = new string[0];
                 ExcludeAreas = new string[0];
                 StrictTileChecking = "High";

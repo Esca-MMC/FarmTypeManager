@@ -84,6 +84,7 @@ namespace FarmTypeManager
             Generation.ForageGeneration();
             Generation.LargeObjectGeneration();
             Generation.OreGeneration();
+            Generation.MonsterGeneration();
         }
 
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>

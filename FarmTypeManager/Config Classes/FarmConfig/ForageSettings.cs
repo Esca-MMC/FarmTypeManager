@@ -18,7 +18,7 @@ namespace FarmTypeManager
             //default constructor: configure default forage generation settings
             public ForageSettings()
             {
-                Areas = new ForageSpawnArea[] { new ForageSpawnArea() }; //a set of "SpawnArea" objects, describing where forage items can spawn on each map
+                Areas = new ForageSpawnArea[] { new ForageSpawnArea() }; //a set of "SpawnArea" objects, describing where forage items can spawn
                 PercentExtraSpawnsPerForagingLevel = 0; //multiplier to give extra forage per level of foraging skill; default is +0%, since the native game lacks this mechanic
 
                 //the "parentSheetIndex" values for each type of forage item allowed to spawn in each season (the numbers found in ObjectInformation.xnb)
@@ -27,7 +27,7 @@ namespace FarmTypeManager
                 FallItemIndex = new object[] { 281, 404, 420, 422 };
                 WinterItemIndex = new object[0];
 
-                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
+                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for those who want to use their own custom terrain type
             }
         }
     }

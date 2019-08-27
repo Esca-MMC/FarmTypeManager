@@ -20,9 +20,9 @@ namespace FarmTypeManager
             /// <param name="monsterType">The monster type's name and an optional dictionary of monster-specific settings.</param>
             /// <param name="location">The GameLocation where the monster should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the monster should be spawned.</param>
-            /// <param name="area">The monster's SpawnArea. Required for log messages.</param>
+            /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
             /// <returns>Returns false if spawn could not be attempted.</returns>
-            public static bool SpawnMonster(MonsterType monsterType, GameLocation location, Vector2 tile, SpawnArea area)
+            public static bool SpawnMonster(MonsterType monsterType, GameLocation location, Vector2 tile, string areaID = "")
             {
                 Monster monster = null; //an instatiated monster, to be spawned into the world later
 
@@ -76,6 +76,10 @@ namespace FarmTypeManager
                         break;
                     case "bug":
                         monster = new Bug(tile, mineLevel ?? 0);
+                        break;
+                    case "carbonghost":
+                    case "carbon ghost":
+                        monster = new Ghost(tile, "Carbon Ghost");
                         break;
                     case "duggy":
                         monster = new Duggy(tile);
@@ -222,7 +226,7 @@ namespace FarmTypeManager
                     return false;
                 }
 
-                ApplyMonsterSettings(monster, monsterType.Settings, area); //adjust the monster based on any other provided optional settings
+                ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
 
                 //spawn the completed monster at the target location
                 Monitor.VerboseLog($"Spawning monster. Type: {monsterType.MonsterName}. Location: {tile.X},{tile.Y} ({location.Name}).");

@@ -18,7 +18,7 @@ namespace FarmTypeManager
         {
             /// <summary>Validates a single instance of farm data, correcting obsolete/invalid settings automatically.</summary>
             /// <param name="config">The contents of a single config file to be validated.</param>
-            /// <param name="pack">The content pack associated with this config data; null if the file was from this mod's own folders.</param>
+            /// <param name="pack">The content pack associated with this config data; null if the file was from this mod's own data folder.</param>
             public static void ValidateFarmData(FarmConfig config, IContentPack pack)
             {
                 if (pack != null)
@@ -34,6 +34,7 @@ namespace FarmTypeManager
                 allAreas.Add(config.Forage_Spawn_Settings.Areas);
                 allAreas.Add(config.Large_Object_Spawn_Settings.Areas);
                 allAreas.Add(config.Ore_Spawn_Settings.Areas);
+                allAreas.Add(config.Monster_Spawn_Settings.Areas);
 
                 Monitor.Log("Checking for duplicate UniqueAreaIDs...", LogLevel.Trace);
                 HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process
@@ -82,6 +83,7 @@ namespace FarmTypeManager
                             if (area is ForageSpawnArea) { newName += " forage area "; }
                             else if (area is LargeObjectSpawnArea) { newName += " large object area "; }
                             else if (area is OreSpawnArea) { newName += " ore area "; }
+                            else if (area is MonsterSpawnArea) { newName += " monster area "; }
                             else { newName += " area "; }
 
                             newNumber = 1;

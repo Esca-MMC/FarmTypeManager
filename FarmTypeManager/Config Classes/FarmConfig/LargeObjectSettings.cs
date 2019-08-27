@@ -12,8 +12,8 @@ namespace FarmTypeManager
 
             public LargeObjectSettings()
             {
-                Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea() }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn on each map
-                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for use by players who want to make some custom tile detection
+                Areas = new LargeObjectSpawnArea[] { new LargeObjectSpawnArea() }; //a set of "LargeObjectSpawnArea", describing where large objects can spawn
+                CustomTileIndex = new int[0]; //an extra list of tilesheet indices, for those who want to use their own custom terrain type
             }
         }
     }
