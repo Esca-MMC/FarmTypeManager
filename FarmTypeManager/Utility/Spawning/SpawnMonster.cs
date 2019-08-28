@@ -232,7 +232,7 @@ namespace FarmTypeManager
                 Monitor.VerboseLog($"Spawning monster. Type: {monsterType.MonsterName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                 monster.currentLocation = location;
                 monster.setTileLocation(tile);
-                Game1.currentLocation.addCharacter(monster);
+                location.addCharacter(monster);
                 return true;
             }
         }

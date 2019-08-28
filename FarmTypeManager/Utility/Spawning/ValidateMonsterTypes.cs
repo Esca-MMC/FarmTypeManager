@@ -29,9 +29,8 @@ namespace FarmTypeManager
                 }
 
                 List<MonsterType> validTypes = new List<MonsterType>(monsterTypes); //a new copy of the list, to be validated and returned
-                List<int> indicesToDelete = new List<int>(); //a list of indices in the valid monster list to be deleted (e.g. due to invalid names)
 
-                for (int x = 0; x < validTypes.Count; x++) //for each monster type in the new list
+                for (int x = validTypes.Count - 1; x >= 0; x--) //for each monster type in the new list (iterating backward to allow safe removal)
                 {
                     //validate monster names
                     bool validName = false;
@@ -43,6 +42,8 @@ namespace FarmTypeManager
                         case "bigslime":
                         case "big slime":
                         case "bug":
+                        case "carbonghost":
+                        case "carbon ghost":
                         case "duggy":
                         case "dust":
                         case "spirit":
@@ -89,7 +90,7 @@ namespace FarmTypeManager
                         Monitor.Log($"A listed monster (\"{validTypes[x].MonsterName}\") doesn't match any known monster types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
                         Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
-                        indicesToDelete.Add(x); //add this type's index to the list for deletion
+                        validTypes.RemoveAt(x); //remove this type from the valid list
                         continue; //skip to the next monster type
                     }
 
@@ -315,11 +316,6 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("CurrentHP"); //remove the setting
                         }
                     }
-                }
-
-                foreach (int x in indicesToDelete) //for each index of a monster type to be deleted
-                {
-                    validTypes.RemoveAt(x); //remove it
                 }
 
                 return validTypes;

@@ -39,9 +39,7 @@ namespace FarmTypeManager
                 Dictionary<string, object> dict = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
                 if (args.Length > 1)
-                    dict.Add("minelevel", Convert.ToInt32(args[1]));
-                else
-                    dict.Add("minelevel", 0);
+                    dict.Add("EXP", Convert.ToInt32(args[1]));
 
                 dict.Add("mincolor", "0 0 0");
                 dict.Add("maxcolor", "255 255 255");
@@ -50,11 +48,11 @@ namespace FarmTypeManager
                 loot.Add((long)420); //be careful with this elsewhere, since apparently SMAPI's JSON conversion just happens to read numbers as longs
                 loot.Add("pizza");
 
-                dict.Add("Loot", loot);
+                dict.Add("Loot", Utility.GetIDsFromObjects(loot));
 
                 MonsterType monster = new MonsterType(args[0], dict);
-
-                Utility.SpawnMonster(monster, loc, new Vector2(x, y - 1), "Fake area ID");
+                
+                Utility.SpawnMonster(monster, loc, new Vector2(x, y - 1));
             }
         }
     }

@@ -99,7 +99,7 @@ namespace FarmTypeManager
 
                             if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
-                            MonsterType randomMonster = area.MonsterTypes[Utility.RNG.Next(area.MonsterTypes.Count)]; //get a random monster type to spawn
+                            MonsterType randomMonster = validMonsterTypes[Utility.RNG.Next(validMonsterTypes.Count)]; //get a random monster type to spawn
 
                             Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID);
 
