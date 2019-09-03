@@ -27,16 +27,10 @@ namespace FarmTypeManager
             {
                 Monster monster = null; //an instatiated monster, to be spawned into the world later
 
-                int? mineLevel = null; //used by some monster types to determine subtype or other properties
-                Color? color = null; //the monster's color (used by slimes)
+                Color? color = null; //the monster's color (used by specific monster types)
 
                 if (monsterType.Settings != null) //if settings were provided
                 {
-                    if (monsterType.Settings.ContainsKey("MineLevel")) //if mineLevel was provided
-                    {
-                        mineLevel = Convert.ToInt32(monsterType.Settings["MineLevel"]);
-                    }
-
                     if (monsterType.Settings.ContainsKey("Color")) //if color was provided
                     {
                         string[] colorText = ((string)monsterType.Settings["Color"]).Trim().Split(' '); //split the setting string into strings for each number
@@ -65,25 +59,69 @@ namespace FarmTypeManager
                 switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
                 {
                     case "bat":
-                        monster = new BatFTM(tile, mineLevel ?? 0);
+                        monster = new BatFTM(tile, 0);
+                        break;
+                    case "frostbat":
+                    case "frost bat":
+                        monster = new BatFTM(tile, 40);
+                        break;
+                    case "lavabat":
+                    case "lava bat":
+                        monster = new BatFTM(tile, 80);
+                        break;
+                    case "iridiumbat":
+                    case "iridium bat":
+                        monster = new BatFTM(tile, 171);
                         break;
                     case "bigslime":
                     case "big slime":
-                        monster = new BigSlime(tile, mineLevel ?? 0);
+                    case "biggreenslime":
+                    case "big green slime":
+                        monster = new BigSlimeFTM(tile, 0);
                         if (color.HasValue) //if color was provided
                         {
-                            ((BigSlime)monster).c.Value = color.Value; //set its color after creation
+                            ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "bigblueslime":
+                    case "big blue slime":
+                    case "bigfrostjelly":
+                    case "big frost jelly":
+                        monster = new BigSlimeFTM(tile, 40);
+                        if (color.HasValue) //if color was provided
+                        {
+                            ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "bigredslime":
+                    case "big red slime":
+                    case "bigredsludge":
+                    case "big red sludge":
+                        monster = new BigSlimeFTM(tile, 80);
+                        if (color.HasValue) //if color was provided
+                        {
+                            ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "bigpurpleslime":
+                    case "big purple slime":
+                    case "bigpurplesludge":
+                    case "big purple sludge":
+                        monster = new BigSlimeFTM(tile, 121);
+                        if (color.HasValue) //if color was provided
+                        {
+                            ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
                         break;
                     case "bug":
-                        monster = new Bug(tile, mineLevel ?? 0);
+                        monster = new Bug(tile, 0);
                         break;
-                    case "carbonghost":
-                    case "carbon ghost":
-                        monster = new GhostFTM(tile, "Carbon Ghost");
+                    case "armoredbug":
+                    case "armored bug":
+                        monster = new Bug(tile, 121);
                         break;
                     case "duggy":
-                        monster = new DuggyFTM(tile, true); //TODO: make the moveAnywhere bool customizable via a property
+                        monster = new DuggyFTM(tile, true); //TODO: make the moveAnywhere bool into a customizable setting
                         break;
                     case "dust":
                     case "sprite":
@@ -94,30 +132,50 @@ namespace FarmTypeManager
                     case "dust spirit":
                         monster = new DustSpirit(tile);
                         break;
-                    case "fly":
-                    case "cavefly":
-                    case "cave fly":
-                        monster = new FlyFTM(tile);
-                        break;
                     case "ghost":
                         monster = new GhostFTM(tile);
                         break;
+                    case "carbonghost":
+                    case "carbon ghost":
+                        monster = new GhostFTM(tile, "Carbon Ghost");
+                        break;
                     case "slime":
-                        if (mineLevel.HasValue) //if minelevel was provided
+                    case "greenslime":
+                    case "green slime":
+                        monster = new GreenSlime(tile, 0);
+                        if (color.HasValue) //if color was also provided
                         {
-                            monster = new GreenSlime(tile, mineLevel.Value); //spawn a slime based on minelevel
-                            if (color.HasValue) //if color was also provided
-                            {
-                                ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
-                            }
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
                         }
-                        else if (color.HasValue) //if minelevel wasn't provided but color was
+                        break;
+                    case "blueslime":
+                    case "blue slime":
+                    case "frostjelly":
+                    case "frost jelly":
+                        monster = new GreenSlime(tile, 40);
+                        if (color.HasValue) //if color was also provided
                         {
-                            monster = new GreenSlime(tile, color.Value); //spawn a slime based on color
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
                         }
-                        else //if minelevel and color weren't provided
+                        break;
+                    case "redslime":
+                    case "red slime":
+                    case "redsludge":
+                    case "red sludge":
+                        monster = new GreenSlime(tile, 80);
+                        if (color.HasValue) //if color was also provided
                         {
-                            monster = new GreenSlime(tile); //spawn a default slime
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "purpleslime":
+                    case "purple slime":
+                    case "purplesludge":
+                    case "purple sludge":
+                        monster = new GreenSlime(tile, 121);
+                        if (color.HasValue) //if color was also provided
+                        {
+                            ((GreenSlime)monster).color.Value = color.Value; //set its color after creation
                         }
                         break;
                     case "grub":
@@ -125,36 +183,10 @@ namespace FarmTypeManager
                     case "cave grub":
                         monster = new Grub(tile);
                         break;
-                    case "iridiumcrab":
-                    case "iridium crab":
-                        monster = new RockCrab(tile, "Iridium Crab");
-                        break;
-                    case "lavacrab":
-                    case "lava crab":
-                        monster = new LavaCrab(tile);
-                        break;
-                    case "metalhead":
-                    case "metal head":
-                        if (!mineLevel.HasValue || mineLevel < 40) //if minelevel wasn't provided or is less than 40
-                        {
-                            monster = new MetalHead(tile, 0); //spawn the first subtype
-                        }
-                        else if (mineLevel < 80) //if minelevel is 40-79
-                        {
-                            monster = new MetalHead(tile, 40); //spawn the second subtype
-                        }
-                        else
-                        {
-                            monster = new MetalHead(tile, 80); //spawn the third subtype
-                        }
-
-                        if (color.HasValue) //if color was provided
-                        {
-                            ((MetalHead)monster).c.Value = color.Value; //set its color after creation
-                        }
-                        break;
-                    case "mummy":
-                        monster = new Mummy(tile);
+                    case "fly":
+                    case "cavefly":
+                    case "cave fly":
+                        monster = new FlyFTM(tile);
                         break;
                     case "mutantgrub":
                     case "mutant grub":
@@ -164,29 +196,42 @@ namespace FarmTypeManager
                     case "mutant fly":
                         monster = new FlyFTM(tile, true);
                         break;
+                    case "metalhead":
+                    case "metal head":
+                        monster = new MetalHead(tile, 0); //spawn the first "subtype" (other mineArea effects seem unfinished)
+                        if (color.HasValue) //if color was provided
+                        {
+                            ((MetalHead)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        break;
+                    case "mummy":
+                        monster = new Mummy(tile);
+                        break;
                     case "rockcrab":
                     case "rock crab":
                         monster = new RockCrab(tile);
                         break;
+                    case "lavacrab":
+                    case "lava crab":
+                        monster = new LavaCrab(tile);
+                        break;
+                     case "iridiumcrab":
+                    case "iridium crab":
+                        monster = new RockCrab(tile, "Iridium Crab");
+                        break;
+                    case "rockgolem":
+                    case "rock golem":
                     case "stonegolem":
                     case "stone golem":
                         //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
                         //      also consider fixing its static damage settings
                         monster = new RockGolem(tile);
-                        if (mineLevel.HasValue) //if minelevel was provided
-                        {
-                            //perform a modified version of the RockGolem(position, mineArea) constructor, which sets default HP and damage
-                            if (mineLevel >= 80)
-                            {
-                                monster.DamageToFarmer *= 2;
-                                monster.Health = (int)((double)monster.Health * 2.5);
-                            }
-                            else if (mineLevel >= 40)
-                            {
-                                monster.DamageToFarmer = (int)((double)monster.DamageToFarmer * 1.5);
-                                monster.Health = (int)((double)monster.Health * 1.75);
-                            }
-                        }
+                        break;
+                    case "wildernessgolem":
+                    case "wilderness golem":
+                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
+                        //      also consider fixing its static damage settings
+                        monster = new RockGolem(tile, Game1.player.CombatLevel); //note: this uses the main player's combat level to imitate the base game
                         break;
                     case "serpent":
                         monster = new SerpentFTM(tile);
@@ -210,12 +255,6 @@ namespace FarmTypeManager
                     case "squid kid":
                         monster = new SquidKidFTM(tile);
                         break;
-                    case "wildernessgolem":
-                    case "wilderness golem":
-                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
-                        //      also consider fixing its static damage settings
-                        monster = new RockGolem(tile, Game1.player.CombatLevel); //note: this uses the main player's combat level to imitate the base game
-                        break;
                     default: break;
                 }
 
@@ -224,6 +263,8 @@ namespace FarmTypeManager
                     Monitor.Log($"The monster to be spawned (\"{monsterType.MonsterName}\") doesn't match any known monster types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
                     return false;
                 }
+
+                monster.MaxHealth = monster.Health; //some monster types set Health on creation and expect MaxHealth to be updated elsewhere
 
                 ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
 

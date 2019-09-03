@@ -12,12 +12,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FarmTypeManager.Monsters
 {
-    /// <summary>An instance of Stardew's Duggy class, adjusted for use by this mod.</summary>
+    /// <summary>A subclass of Stardew's Duggy class, adjusted for use by this mod.</summary>
     class DuggyFTM : Duggy, ICustomDamage
     {
         public int CustomDamage { get; set; } = 8; //implements ICustomDamage (default set to mimic hardcoded values)
         public bool MoveAnywhere { get; set; } = false; //if true, ignore this monster type's default movement restrictions
 
+        /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
+        /// <param name="position">The x,y coordinates of this monster's location.</param>
+        /// <param name="moveAnywhere">If true, this monster will ignore some of its default movement restrictions.</param>
+        public DuggyFTM(Vector2 position, bool moveAnywhere = false)
+            : base(position)
+        {
+            MoveAnywhere = moveAnywhere;
+        }
 
         //this override fixes the following Duggy behavioral bugs:
         // * permanently editing tiles' TileIndex (attempting to display the "empty hole" sprite)
@@ -109,15 +117,6 @@ namespace FarmTypeManager.Monsters
                     this.SetMovingDown(true);
             }
             this.MovePosition(time, Game1.viewport, this.currentLocation);
-        }
-
-        /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
-        /// <param name="position">The x,y coordinates of this monster's location.</param>
-        /// <param name="moveAnywhere">If true, this monster will ignore some of its default movement restrictions.</param>
-        public DuggyFTM(Vector2 position, bool moveAnywhere = false)
-            :base(position)
-        {
-            MoveAnywhere = moveAnywhere;
         }
     }
 }
