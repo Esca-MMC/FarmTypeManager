@@ -91,7 +91,7 @@ namespace FarmTypeManager
                 }
             }
 
-            private int? MaximumSimultaneousSpawns { get; set; } = null; //the maximum number of things this area will spawn at the same time (note: this may override min/max spawns per day from SpawnArea)
+            public int? MaximumSimultaneousSpawns { get; set; } = null; //the maximum number of things this area will spawn at the same time (note: this may override min/max spawns per day from SpawnArea)
 
             public bool OnlySpawnIfAPlayerIsPresent = false; //if true, spawns will be skipped if no players are present at the target map
 

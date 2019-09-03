@@ -8,6 +8,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
+using FarmTypeManager.Monsters;
 
 namespace FarmTypeManager
 {
@@ -61,10 +62,10 @@ namespace FarmTypeManager
                 }
 
                 //create a new monster based on the provided name & apply type-specific settings
-                switch (monsterType.MonsterName.ToLower()) //avoid any casing issues in method calls by making this lower-case
+                switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
                 {
                     case "bat":
-                        monster = new Bat(tile, mineLevel ?? 0);
+                        monster = new BatFTM(tile, mineLevel ?? 0);
                         break;
                     case "bigslime":
                     case "big slime":
@@ -79,38 +80,29 @@ namespace FarmTypeManager
                         break;
                     case "carbonghost":
                     case "carbon ghost":
-                        monster = new Ghost(tile, "Carbon Ghost");
+                        monster = new GhostFTM(tile, "Carbon Ghost");
                         break;
                     case "duggy":
-                        monster = new Duggy(tile);
-                        //TODO: fix duggy destruction (tile index change) & refusal to unborrow (iirc; something to do with the base behavior?)
-                        //      maybe also fix the hardcoded damage reset caused by its attack behavior
-                        //
-                        //      and while at it, remember to fix flying monsters in general
-                        //      (override their "draw above most layers" or w/e thing to call the "draw above all" one afterward? see Farm.cs)
+                        monster = new DuggyFTM(tile, true); //TODO: make the moveAnywhere bool customizable via a property
                         break;
                     case "dust":
+                    case "sprite":
+                    case "dustsprite":
+                    case "dust sprite":
                     case "spirit":
                     case "dustspirit":
                     case "dust spirit":
                         monster = new DustSpirit(tile);
                         break;
                     case "fly":
-                        if (mineLevel.HasValue && mineLevel > 120) //note: minelevel normally isn't involved with flies, but is used here as shorthand
-                        {
-                            monster = new Fly(tile, true); //spawn a hard fly
-                        }
-                        else
-                        {
-                            monster = new Fly(tile); //spawn a normal fly
-                        }
+                    case "cavefly":
+                    case "cave fly":
+                        monster = new FlyFTM(tile);
                         break;
                     case "ghost":
-                        monster = new Ghost(tile);
+                        monster = new GhostFTM(tile);
                         break;
                     case "slime":
-                    case "greenslime":
-                    case "green slime":
                         if (mineLevel.HasValue) //if minelevel was provided
                         {
                             monster = new GreenSlime(tile, mineLevel.Value); //spawn a slime based on minelevel
@@ -129,14 +121,9 @@ namespace FarmTypeManager
                         }
                         break;
                     case "grub":
-                        if (mineLevel.HasValue && mineLevel > 120) //note: minelevel normally isn't directly involved with grubs, but is used here as shorthand
-                        {
-                            monster = new Grub(tile, true); //spawn a hard grub
-                        }
-                        else
-                        {
-                            monster = new Grub(tile); //spawn a normal grub
-                        }
+                    case "cavegrub":
+                    case "cave grub":
+                        monster = new Grub(tile);
                         break;
                     case "iridiumcrab":
                     case "iridium crab":
@@ -169,12 +156,22 @@ namespace FarmTypeManager
                     case "mummy":
                         monster = new Mummy(tile);
                         break;
+                    case "mutantgrub":
+                    case "mutant grub":
+                        monster = new Grub(tile, true);
+                        break;
+                    case "mutantfly":
+                    case "mutant fly":
+                        monster = new FlyFTM(tile, true);
+                        break;
                     case "rockcrab":
                     case "rock crab":
                         monster = new RockCrab(tile);
                         break;
                     case "stonegolem":
                     case "stone golem":
+                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
+                        //      also consider fixing its static damage settings
                         monster = new RockGolem(tile);
                         if (mineLevel.HasValue) //if minelevel was provided
                         {
@@ -192,7 +189,7 @@ namespace FarmTypeManager
                         }
                         break;
                     case "serpent":
-                        monster = new Serpent(tile);
+                        monster = new SerpentFTM(tile);
                         break;
                     case "brute":
                     case "shadowbrute":
@@ -211,10 +208,12 @@ namespace FarmTypeManager
                     case "kid":
                     case "squidkid":
                     case "squid kid":
-                        monster = new SquidKid(tile);
+                        monster = new SquidKidFTM(tile);
                         break;
                     case "wildernessgolem":
                     case "wilderness golem":
+                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
+                        //      also consider fixing its static damage settings
                         monster = new RockGolem(tile, Game1.player.CombatLevel); //note: this uses the main player's combat level to imitate the base game
                         break;
                     default: break;

@@ -67,6 +67,13 @@
     <Compile Include="Config Classes\FarmConfig\ForageSettings.cs" />
     <Compile Include="Config Classes\ModConfig.cs" />
     <Compile Include="Generation Routines\MonsterGeneration.cs" />
+    <Compile Include="In-Game Classes\Monsters\FlyFTM.cs" />
+    <Compile Include="In-Game Classes\Monsters\GhostFTM.cs" />
+    <Compile Include="In-Game Classes\Monsters\BatFTM.cs" />
+    <Compile Include="In-Game Classes\Monsters\DuggyFTM.cs" />
+    <Compile Include="In-Game Classes\Monsters\ICustomDamage.cs" />
+    <Compile Include="In-Game Classes\Monsters\SquidKidFTM.cs" />
+    <Compile Include="In-Game Classes\Monsters\SerpentFTM.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Generation Routines\OreGeneration.cs" />
     <Compile Include="Generation Routines\LargeObjectGeneration.cs" />

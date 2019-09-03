@@ -8,6 +8,7 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
+using FarmTypeManager.Monsters;
 
 namespace FarmTypeManager
 {
@@ -36,7 +37,14 @@ namespace FarmTypeManager
                 //set damage
                 if (settings.ContainsKey("Damage"))
                 {
-                    monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]);
+                    if (monster is ICustomDamage cd) //if this monster type uses the custom damage interface
+                    {
+                        cd.CustomDamage = Convert.ToInt32(settings["Damage"]); //set CustomDamage
+                    }
+                    else
+                    {
+                        monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]); //set DamageToFarmer
+                    }
                 }
 
                 //set movement speed

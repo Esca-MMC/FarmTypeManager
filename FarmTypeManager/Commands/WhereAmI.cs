@@ -39,7 +39,7 @@ namespace FarmTypeManager
                 Dictionary<string, object> dict = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
                 if (args.Length > 1)
-                    dict.Add("EXP", Convert.ToInt32(args[1]));
+                    dict.Add("Damage", Convert.ToInt32(args[1]));
 
                 dict.Add("mincolor", "0 0 0");
                 dict.Add("maxcolor", "255 255 255");
