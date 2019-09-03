@@ -17,15 +17,7 @@ namespace FarmTypeManager.Monsters
     {
         /// <summary>Creates an instance of Stardew's Fly class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
-        public FlyFTM(Vector2 position)
-            : base(position)
-        {
-
-        }
-
-        /// <summary>Creates an instance of Stardew's Fly class, but with adjustments made for this mod.</summary>
-        /// <param name="position">The x,y coordinates of this monster's location.</param>
-        /// <param name="hard">True if the created fly is the "hard" subtype.</param>
+        /// <param name="hard">If true, this fly will be the Mutant Fly subtype.</param>
         public FlyFTM(Vector2 position, bool hard)
             : base(position, hard)
         {

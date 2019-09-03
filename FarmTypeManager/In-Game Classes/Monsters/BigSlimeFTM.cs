@@ -26,7 +26,7 @@ namespace FarmTypeManager.Monsters
             MineLevelOfDeathSpawns = mineLevel;
         }
 
-        //this override fixes the follow BigSlime behavioral bugs:
+        //this override fixes the following BigSlime behavioral bugs:
         // * small slimes not spawning when the big slime dies
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {

@@ -181,16 +181,16 @@ namespace FarmTypeManager
                     case "grub":
                     case "cavegrub":
                     case "cave grub":
-                        monster = new Grub(tile);
+                        monster = new GrubFTM(tile, false);
                         break;
                     case "fly":
                     case "cavefly":
                     case "cave fly":
-                        monster = new FlyFTM(tile);
+                        monster = new FlyFTM(tile, false);
                         break;
                     case "mutantgrub":
                     case "mutant grub":
-                        monster = new Grub(tile, true);
+                        monster = new GrubFTM(tile, true);
                         break;
                     case "mutantfly":
                     case "mutant fly":
@@ -198,7 +198,7 @@ namespace FarmTypeManager
                         break;
                     case "metalhead":
                     case "metal head":
-                        monster = new MetalHead(tile, 0); //spawn the first "subtype" (other mineArea effects seem unfinished)
+                        monster = new MetalHead(tile, 0);
                         if (color.HasValue) //if color was provided
                         {
                             ((MetalHead)monster).c.Value = color.Value; //set its color after creation
@@ -223,15 +223,11 @@ namespace FarmTypeManager
                     case "rock golem":
                     case "stonegolem":
                     case "stone golem":
-                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
-                        //      also consider fixing its static damage settings
-                        monster = new RockGolem(tile);
+                        monster = new RockGolemFTM(tile);
                         break;
                     case "wildernessgolem":
                     case "wilderness golem":
-                        //TODO: fix this monster type's behavior: currently they don't move at all, regardless of spawn location
-                        //      also consider fixing its static damage settings
-                        monster = new RockGolem(tile, Game1.player.CombatLevel); //note: this uses the main player's combat level to imitate the base game
+                        monster = new RockGolemFTM(tile, Game1.player.CombatLevel);
                         break;
                     case "serpent":
                         monster = new SerpentFTM(tile);
