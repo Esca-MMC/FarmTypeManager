@@ -99,18 +99,15 @@ namespace FarmTypeManager
 
                             if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
-                            MonsterType randomMonster = validMonsterTypes[Utility.RNG.Next(validMonsterTypes.Count)]; //get a random monster type to spawn
+                            MonsterType randomMonster = Utility.Clone(validMonsterTypes[Utility.RNG.Next(validMonsterTypes.Count)]); //get a random monster type to spawn (cloned for later use as a unique instance)
 
-                            Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID);
+                            int? monsterID = Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID);
 
-                            //TODO: fix the savedobject system
-                            /*
-                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to objects
+                            if (monsterID.HasValue) //if a monster ID was generated (NOTE: this assigns a default expiration date to all monsters because they must be tracked and removed overnight)
                             {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, randomMonster, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned object
+                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Monster, monsterID.Value, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster); //create a record of the newly spawned monster
                                 data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
                             }
-                            */
                         }
 
                         Utility.Monitor.Log($"Monster spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);

@@ -122,9 +122,9 @@ namespace FarmTypeManager
                                 {
                                     int? oreID = Utility.SpawnOre(ore.Key, Game1.getLocationFromName(area.MapName), randomTile); //spawn ore & get its index ID
 
-                                    if (oreID != null && area.DaysUntilSpawnsExpire != null) //if oreID exists & if this area assigns expiration dates to ore
+                                    if (area.DaysUntilSpawnsExpire.HasValue && oreID.HasValue) //if oreID exists & if this area assigns expiration dates to ore
                                     {
-                                        SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Ore, oreID.Value, ore.Key, area.DaysUntilSpawnsExpire); //create a record of the newly spawned ore
+                                        SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Ore, oreID.Value, ore.Key, area.DaysUntilSpawnsExpire.Value); //create a record of the newly spawned ore
                                         data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
                                     }
 

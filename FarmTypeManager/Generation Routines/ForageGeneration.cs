@@ -156,9 +156,9 @@ namespace FarmTypeManager
 
                             Utility.SpawnForage(randomForage, Game1.getLocationFromName(area.MapName), randomTile);
                             
-                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to forage
+                            if (area.DaysUntilSpawnsExpire.HasValue) //if this area assigns expiration dates to forage
                             {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned forage
+                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire.Value); //create a record of the newly spawned forage
                                 data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
                             }
                         }

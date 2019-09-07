@@ -17,13 +17,13 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Generates ore and places it on the specified map and tile.</summary>
+            /// <summary>Generates a monster and places it on the specified map and tile.</summary>
             /// <param name="monsterType">The monster type's name and an optional dictionary of monster-specific settings.</param>
             /// <param name="location">The GameLocation where the monster should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the monster should be spawned.</param>
             /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
-            /// <returns>Returns false if spawn could not be attempted.</returns>
-            public static bool SpawnMonster(MonsterType monsterType, GameLocation location, Vector2 tile, string areaID = "")
+            /// <returns>Returns the monster's ID value, or null if the spawn process failed.</returns>
+            public static int? SpawnMonster(MonsterType monsterType, GameLocation location, Vector2 tile, string areaID = "")
             {
                 Monster monster = null; //an instatiated monster, to be spawned into the world later
 
@@ -257,11 +257,11 @@ namespace FarmTypeManager
                 if (monster == null)
                 {
                     Monitor.Log($"The monster to be spawned (\"{monsterType.MonsterName}\") doesn't match any known monster types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
-                    return false;
+                    return null;
                 }
 
-                monster.MaxHealth = monster.Health; //some monster types set Health on creation and expect MaxHealth to be updated elsewhere
-
+                monster.MaxHealth = monster.Health; //some monster types set Health on creation and expect MaxHealth to be updated like this
+                monster.id = Utility.RNG.Next(int.MinValue, -1); //assign the monster a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
                 ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
 
                 //spawn the completed monster at the target location
@@ -269,7 +269,7 @@ namespace FarmTypeManager
                 monster.currentLocation = location;
                 monster.setTileLocation(tile);
                 location.addCharacter(monster);
-                return true;
+                return monster.id;
             }
         }
     }

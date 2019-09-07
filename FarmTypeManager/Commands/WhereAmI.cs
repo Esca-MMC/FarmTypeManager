@@ -31,29 +31,6 @@ namespace FarmTypeManager
             Monitor.Log($"Terrain type: {type}", LogLevel.Info);
             Monitor.Log($"Diggable: {diggable}", LogLevel.Info);
             Monitor.Log($"Tile image index: {index}", LogLevel.Info);
-
-            //TODO TEMP TEST ETC
-            //testing stuff below here
-            if (args.Length > 0)
-            {
-                Dictionary<string, object> dict = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-
-                if (args.Length > 1)
-                    dict.Add("MineLevel", Convert.ToInt32(args[1]));
-
-                dict.Add("mincolor", "0 0 0");
-                dict.Add("maxcolor", "255 255 255");
-
-                List<object> loot = new List<object>();
-                loot.Add((long)420); //be careful with this elsewhere, since apparently SMAPI's JSON conversion just happens to read numbers as longs
-                loot.Add("pizza");
-
-                dict.Add("Loot", Utility.GetIDsFromObjects(loot));
-
-                MonsterType monster = new MonsterType(args[0], dict);
-                
-                Utility.SpawnMonster(monster, loc, new Vector2(x, y - 1));
-            }
         }
     }
 }

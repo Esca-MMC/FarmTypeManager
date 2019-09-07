@@ -160,9 +160,9 @@ namespace FarmTypeManager
 
                             Utility.SpawnLargeObject(randomObject, loc, randomTile);
 
-                            if (area.DaysUntilSpawnsExpire != null) //if this area assigns expiration dates to objects
+                            if (area.DaysUntilSpawnsExpire.HasValue) //if this area assigns expiration dates to objects
                             {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire); //create a record of the newly spawned object
+                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire.Value); //create a record of the newly spawned object
                                 data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
                             }
                         }
