@@ -35,6 +35,12 @@ namespace FarmTypeManager
                     {
                         GameLocation location = Game1.getLocationFromName(saved.MapName); //get the monster's location
 
+                        if (location == null) //if this isn't a valid map
+                        {
+                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            continue; //skip to the next object
+                        }
+
                         for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for removal purposes)
                         {
                             if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
