@@ -28,7 +28,7 @@ namespace FarmTypeManager
                     return new List<MonsterType>(); //return an empty list
                 }
 
-                List<MonsterType> validTypes = new List<MonsterType>(monsterTypes); //a new copy of the list, to be validated and returned
+                List<MonsterType> validTypes = Clone(monsterTypes); //create a new copy of the list, to be validated and returned
 
                 for (int x = validTypes.Count - 1; x >= 0; x--) //for each monster type in the new list (iterating backward to allow safe removal)
                 {
@@ -40,36 +40,82 @@ namespace FarmTypeManager
                     switch (validTypes[x].MonsterName.ToLower()) //avoid any casing issues by making this lower-case
                     {
                         case "bat":
+                        case "frostbat":
+                        case "frost bat":
+                        case "lavabat":
+                        case "lava bat":
+                        case "iridiumbat":
+                        case "iridium bat":
                         case "bigslime":
                         case "big slime":
+                        case "biggreenslime":
+                        case "big green slime":
+                        case "bigblueslime":
+                        case "big blue slime":
+                        case "bigfrostjelly":
+                        case "big frost jelly":
+                        case "bigredslime":
+                        case "big red slime":
+                        case "bigredsludge":
+                        case "big red sludge":
+                        case "bigpurpleslime":
+                        case "big purple slime":
+                        case "bigpurplesludge":
+                        case "big purple sludge":
                         case "bug":
-                        case "carbonghost":
-                        case "carbon ghost":
+                        case "armoredbug":
+                        case "armored bug":
                         case "duggy":
                         case "dust":
-                        case "spirit":
                         case "sprite":
-                        case "dustspirit":
-                        case "dust spirit":
                         case "dustsprite":
                         case "dust sprite":
-                        case "fly":
+                        case "spirit":
+                        case "dustspirit":
+                        case "dust spirit":
                         case "ghost":
+                        case "carbonghost":
+                        case "carbon ghost":
                         case "slime":
                         case "greenslime":
                         case "green slime":
+                        case "blueslime":
+                        case "blue slime":
+                        case "frostjelly":
+                        case "frost jelly":
+                        case "redslime":
+                        case "red slime":
+                        case "redsludge":
+                        case "red sludge":
+                        case "purpleslime":
+                        case "purple slime":
+                        case "purplesludge":
+                        case "purple sludge":
                         case "grub":
-                        case "iridiumcrab":
-                        case "iridium crab":
-                        case "lavacrab":
-                        case "lava crab":
+                        case "cavegrub":
+                        case "cave grub":
+                        case "fly":
+                        case "cavefly":
+                        case "cave fly":
+                        case "mutantgrub":
+                        case "mutant grub":
+                        case "mutantfly":
+                        case "mutant fly":
                         case "metalhead":
                         case "metal head":
                         case "mummy":
                         case "rockcrab":
                         case "rock crab":
+                        case "lavacrab":
+                        case "lava crab":
+                        case "iridiumcrab":
+                        case "iridium crab":
+                        case "rockgolem":
+                        case "rock golem":
                         case "stonegolem":
                         case "stone golem":
+                        case "wildernessgolem":
+                        case "wilderness golem":
                         case "serpent":
                         case "brute":
                         case "shadowbrute":
@@ -82,8 +128,6 @@ namespace FarmTypeManager
                         case "kid":
                         case "squidkid":
                         case "squid kid":
-                        case "wildernessgolem":
-                        case "wilderness golem":
                             validName = true; //the name is valid
                             break;
                         default: break; //the name is invalid
@@ -269,7 +313,7 @@ namespace FarmTypeManager
                         }
                     }
 
-                    //validate loot and parse the provided list into IDs
+                    //validate loot and parse the provided objects into IDs
                     if (validTypes[x].Settings.ContainsKey("Loot"))
                     {
                         List<object> rawList = null;
@@ -278,7 +322,7 @@ namespace FarmTypeManager
                         {
                             rawList = ((JArray)validTypes[x].Settings["Loot"]).ToObject<List<object>>(); //cast this list to catch formatting/coding errors
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             Monitor.Log($"The \"Loot\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's a correctly formatted list.", LogLevel.Info);
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
@@ -320,9 +364,67 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("CurrentHP"); //remove the setting
                         }
                     }
-                }
 
-                //TODO: validate color
+                    //validate color
+                    if (validTypes[x].Settings.ContainsKey("Color")) //if color was provided
+                    {
+                        try
+                        {
+                            string[] colorText = ((string)validTypes[x].Settings["Color"]).Trim().Split(' '); //split the color string into strings for each number
+                            int[] colorRGB = new int[] { Convert.ToInt32(colorText[0]), Convert.ToInt32(colorText[1]), Convert.ToInt32(colorText[2]) }; //convert the strings into numbers
+                            Color color = new Color(colorRGB[0], colorRGB[1], colorRGB[2]); //set the color variable
+                        }
+                        catch (Exception)
+                        {
+                            Monitor.Log($"The \"Color\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it follows the correct format, e.g. \"255 255 255\".", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("Color"); //remove the setting
+                        }
+                    }
+                    else if (validTypes[x].Settings.ContainsKey("MinColor") && validTypes[x].Settings.ContainsKey("MaxColor")) //if color wasn't provided, but mincolor & maxcolor were
+                    {
+                        try
+                        {
+                            string[] minColorText = ((string)validTypes[x].Settings["MinColor"]).Trim().Split(' '); //split the setting string into strings for each number
+                            int[] minColorRGB = new int[] { Convert.ToInt32(minColorText[0]), Convert.ToInt32(minColorText[1]), Convert.ToInt32(minColorText[2]) }; //convert the strings into numbers
+
+                            string[] maxColorText = ((string)validTypes[x].Settings["MaxColor"]).Trim().Split(' '); //split the setting string into strings for each number
+                            int[] maxColorRGB = new int[] { Convert.ToInt32(maxColorText[0]), Convert.ToInt32(maxColorText[1]), Convert.ToInt32(maxColorText[2]) }; //convert the strings into numbers
+
+                            //validate individual color values
+                            string validMin = "";
+                            string validMax = "";
+
+                            for (int y = 0; y < minColorRGB.Length; y++) //for each color value
+                            {
+                                if (minColorRGB[y] > maxColorRGB[y]) //if min > max
+                                {
+                                    //swap min and max
+                                    int temp = minColorRGB[y];
+                                    minColorRGB[y] = maxColorRGB[y];
+                                    maxColorRGB[y] = temp;
+                                }
+
+                                //append to new string versions of the settings
+                                validMin += minColorRGB[y] + " ";
+                                validMax += maxColorRGB[y] + " ";
+                            }
+                            //update the validated settings
+                            validTypes[x].Settings["MinColor"] = validMin.Trim();
+                            validTypes[x].Settings["MaxColor"] = validMax.Trim();
+                        }
+                        catch (Exception)
+                        {
+                            Monitor.Log($"The \"MinColor\" and/or \"MaxColor\" settings for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure they follow the correct format, e.g. \"255 255 255\".", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            //remove the settings
+                            validTypes[x].Settings.Remove("MinColor");
+                            validTypes[x].Settings.Remove("MaxColor");
+                        }
+                    }
+                }
 
                 return validTypes;
             }
