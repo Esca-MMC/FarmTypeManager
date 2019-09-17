@@ -47,6 +47,18 @@ namespace FarmTypeManager
                     }
                 }
 
+                //set defense
+                if (settings.ContainsKey("Defense"))
+                {
+                    monster.resilience.Value = Convert.ToInt32(settings["Defense"]);
+                }
+
+                //set dodge chance
+                if (settings.ContainsKey("DodgeChance"))
+                {
+                    monster.missChance.Value = ((double)Convert.ToInt32(settings["DodgeChance"])) / 100;
+                }
+
                 //set movement speed
                 if (settings.ContainsKey("Speed"))
                 {

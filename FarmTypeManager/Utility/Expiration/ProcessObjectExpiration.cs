@@ -55,7 +55,10 @@ namespace FarmTypeManager
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
 
-                                saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
+                                if (!saved.MonType.Settings.ContainsKey("PersistentHP") || (bool)saved.MonType.Settings["PersistentHP"]) //if PersistentHP wasn't provided OR is set to true
+                                {
+                                    saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
+                                }
 
                                 location.characters.RemoveAt(x); //remove this monster from the location (note: this must be done even for unexpired monsters to avoid SDV save errors)
                                 break; //stop searching the character list

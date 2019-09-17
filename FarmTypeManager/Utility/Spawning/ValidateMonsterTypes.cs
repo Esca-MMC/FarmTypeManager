@@ -148,7 +148,7 @@ namespace FarmTypeManager
                         if (validTypes[x].Settings["HP"] is long) //if this is a readable integer
                         {
                             int HP = Convert.ToInt32(validTypes[x].Settings["HP"]);
-                            if (HP <= 0) //if the setting is too low
+                            if (HP < 1) //if the setting is too low
                             {
                                 Monitor.Log($"The \"HP\" setting for monster type \"{validTypes[x].MonsterName}\" is {HP}. Setting it to 1.", LogLevel.Trace);
                                 validTypes[x].Settings["HP"] = (long)1; //set the validated setting to 1
@@ -181,6 +181,48 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                             validTypes[x].Settings.Remove("Damage"); //remove the setting
+                        }
+                    }
+
+                    //validate defense
+                    if (validTypes[x].Settings.ContainsKey("Defense"))
+                    {
+                        if (validTypes[x].Settings["Defense"] is long) //if this is a readable integer
+                        {
+                            int defense = Convert.ToInt32(validTypes[x].Settings["Defense"]);
+                            if (defense < 0) //if the setting is too low
+                            {
+                                Monitor.Log($"The \"Defense\" setting for monster type \"{validTypes[x].MonsterName}\" is {defense}. Setting it to 0.", LogLevel.Trace);
+                                validTypes[x].Settings["Defense"] = (long)0; //set the validated setting to 1
+                            }
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"Defense\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("Defense"); //remove the setting
+                        }
+                    }
+
+                    //validate dodge chance
+                    if (validTypes[x].Settings.ContainsKey("DodgeChance"))
+                    {
+                        if (validTypes[x].Settings["DodgeChance"] is long) //if this is a readable integer
+                        {
+                            int dodge = Convert.ToInt32(validTypes[x].Settings["DodgeChance"]);
+                            if (dodge < 1) //if the setting is too low
+                            {
+                                Monitor.Log($"The \"DodgeChance\" setting for monster type \"{validTypes[x].MonsterName}\" is {dodge}. Setting it to 1.", LogLevel.Trace);
+                                validTypes[x].Settings["DodgeChance"] = (long)1; //set the validated setting to 1
+                            }
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"DodgeChance\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("DodgeChance"); //remove the setting
                         }
                     }
 
@@ -339,13 +381,25 @@ namespace FarmTypeManager
                         }
                     }
 
+                    //validate persistent HP
+                    if (validTypes[x].Settings.ContainsKey("PersistentHP"))
+                    {
+                        if (!(validTypes[x].Settings["PersistentHP"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"PersistentHP\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("PersistentHP"); //remove the setting
+                        }
+                    }
+
                     //validate current HP
                     if (validTypes[x].Settings.ContainsKey("CurrentHP"))
                     {
                         if (validTypes[x].Settings["CurrentHP"] is long) //if this is a readable integer
                         {
                             int currentHP = Convert.ToInt32(validTypes[x].Settings["CurrentHP"]);
-                            if (currentHP <= 0) //if the current HP setting is too low
+                            if (currentHP < 1) //if the current HP setting is too low
                             {
                                 Monitor.Log($"The \"CurrentHP\" setting for monster type \"{validTypes[x].MonsterName}\" is {currentHP}. Setting it to 1.", LogLevel.Trace);
                                 monsterTypes[x].Settings["CurrentHP"] = (long)1; //set the original provided setting to 1

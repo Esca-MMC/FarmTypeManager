@@ -67,6 +67,7 @@
     <Compile Include="Config Classes\FarmConfig\FarmConfig.cs" />
     <Compile Include="Config Classes\FarmConfig\ForageSettings.cs" />
     <Compile Include="Config Classes\ModConfig.cs" />
+    <Compile Include="Config Classes\MonsterType.cs" />
     <Compile Include="Generation Routines\MonsterGeneration.cs" />
     <Compile Include="In-Game Classes\Monsters\GrubFTM.cs" />
     <Compile Include="In-Game Classes\Monsters\RockGolemFTM.cs" />
