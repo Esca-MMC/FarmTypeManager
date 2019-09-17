@@ -151,7 +151,6 @@ namespace FarmTypeManager
                             if (HP <= 0) //if the setting is too low
                             {
                                 Monitor.Log($"The \"HP\" setting for monster type \"{validTypes[x].MonsterName}\" is {HP}. Setting it to 1.", LogLevel.Trace);
-                                monsterTypes[x].Settings["HP"] = (long)1; //set the original provided setting to 1
                                 validTypes[x].Settings["HP"] = (long)1; //set the validated setting to 1
                             }
                         }
@@ -173,7 +172,6 @@ namespace FarmTypeManager
                             if (damage < 0) //if the setting is too low
                             {
                                 Monitor.Log($"The \"Damage\" setting for monster type \"{validTypes[x].MonsterName}\" is {damage}. Setting it to 0.", LogLevel.Trace);
-                                monsterTypes[x].Settings["Damage"] = (long)0; //set the original provided setting to 0
                                 validTypes[x].Settings["Damage"] = (long)0; //set the validated setting to 0
                             }
                         }
@@ -195,7 +193,6 @@ namespace FarmTypeManager
                             if (speed < 0) //if the setting is too low
                             {
                                 Monitor.Log($"The \"Speed\" setting for monster type \"{validTypes[x].MonsterName}\" is {speed}. Setting it to 0.", LogLevel.Trace);
-                                monsterTypes[x].Settings["Speed"] = (long)0; //set the original provided setting to 0
                                 validTypes[x].Settings["Speed"] = (long)0; //set the validated setting to 0
                             }
                         }
@@ -217,7 +214,6 @@ namespace FarmTypeManager
                             if (exp < 0) //if the setting is too low
                             {
                                 Monitor.Log($"The \"EXP\" setting for monster type \"{validTypes[x].MonsterName}\" is {exp}. Setting it to 0.", LogLevel.Trace);
-                                monsterTypes[x].Settings["EXP"] = (long)0; //set the original provided setting to 0
                                 validTypes[x].Settings["EXP"] = (long)0; //set the validated setting to 0
                             }
                         }
@@ -410,6 +406,7 @@ namespace FarmTypeManager
                                 validMin += minColorRGB[y] + " ";
                                 validMax += maxColorRGB[y] + " ";
                             }
+
                             //update the validated settings
                             validTypes[x].Settings["MinColor"] = validMin.Trim();
                             validTypes[x].Settings["MaxColor"] = validMax.Trim();
@@ -422,6 +419,27 @@ namespace FarmTypeManager
                             //remove the settings
                             validTypes[x].Settings.Remove("MinColor");
                             validTypes[x].Settings.Remove("MaxColor");
+                        }
+                    }
+
+                    //validate spawn weight
+                    if (validTypes[x].Settings.ContainsKey("SpawnWeight"))
+                    {
+                        if (validTypes[x].Settings["SpawnWeight"] is long) //if this is a readable integer
+                        {
+                            int weight = Convert.ToInt32(validTypes[x].Settings["SpawnWeight"]);
+                            if (weight < 1) //if the setting is too low
+                            {
+                                Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" is {weight}. Setting it to 1.", LogLevel.Trace);
+                                validTypes[x].Settings["SpawnWeight"] = (long)1; //set to 1
+                            }
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("SpawnWeight"); //remove the setting
                         }
                     }
                 }

@@ -10,28 +10,7 @@ namespace FarmTypeManager
         //a subclass of "SpawnArea" specifically for monster generation
         private class MonsterSpawnArea : SpawnArea
         {
-            private List<MonsterType> monsterTypes; //a list of MonsterType objects (each containing a name and optional dictionary of customization settings)
-            public List<MonsterType> MonsterTypes 
-            {
-                get
-                {
-                    return monsterTypes;
-                }
-
-                set
-                {
-                    monsterTypes = value;
-
-                    for (int x = 0; x < monsterTypes.Count; x++) //for each monster type in the list
-                    {
-                        if (monsterTypes[x].Settings != null && monsterTypes[x].Settings.Comparer != StringComparer.OrdinalIgnoreCase) //if the type's dictionary exists & isn't using a case-insensitive comparer
-                        {
-                            //make it use a case-insensitive comparer
-                            monsterTypes[x].Settings = new Dictionary<string, object>(monsterTypes[x].Settings, StringComparer.OrdinalIgnoreCase);
-                        }
-                    }
-                }
-            }
+            public List<MonsterType> MonsterTypes { get; set; } //a list of MonsterType objects (each containing a name and optional dictionary of customization settings)
 
             //default constructor, providing Wilderness Farm style monster spawns on the farm
             public MonsterSpawnArea()
@@ -63,8 +42,24 @@ namespace FarmTypeManager
         /// <summary>A container for a monster's name and a set of optional customization settings.</summary>
         private class MonsterType
         {
-            public string MonsterName { get; set; } = "";
-            public Dictionary<string, object> Settings { get; set; } = null;
+            public string MonsterName { get; set; } = ""; //a string representing a specific monster type
+
+            private Dictionary<string, object> settings = null; //a dictionary of optional setting names and values (of various types)
+            public Dictionary<string, object> Settings
+            {
+                get
+                {
+                    return settings;
+                }
+                set
+                {
+                    if (value != null && value.Comparer != StringComparer.OrdinalIgnoreCase) //if the provided dictionary exists & isn't using a case-insensitive comparer
+                    {
+                        //create and use a copy with a case-insensitive comparer
+                        settings = new Dictionary<string, object>(value, StringComparer.OrdinalIgnoreCase);
+                    }
+                }
+            }
 
             public MonsterType(string monsterName, Dictionary<string, object> settings)
             {

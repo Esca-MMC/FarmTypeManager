@@ -99,9 +99,44 @@ namespace FarmTypeManager
 
                             if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
 
-                            MonsterType randomMonster = Utility.Clone(validMonsterTypes[Utility.RNG.Next(validMonsterTypes.Count)]); //get a random monster type to spawn (cloned for later use as a unique instance)
+                            //get the total spawn weight of valid monster types
+                            int totalWeight = 0;
+                            foreach (MonsterType type in validMonsterTypes) //for each valid monster type
+                            {
+                                if (type.Settings.ContainsKey("SpawnWeight")) //if a custom spawn weight was provided
+                                {
+                                    totalWeight += Convert.ToInt32(type.Settings["SpawnWeight"]);
+                                }
+                                else //if no spawn weight was provided
+                                {
+                                    totalWeight += 1;
+                                }
+                            }
 
-                            int? monsterID = Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID);
+                            //select a random monster using spawn weights
+                            MonsterType randomMonster = null;
+                            int random = Utility.RNG.Next(0, totalWeight); //get a random integer from 0 to (totalWeight - 1)
+
+                            for (int x = 0; x < validMonsterTypes.Count; x++) //for each valid monster type
+                            {
+                                int spawnWeight = 1; //default to 1
+                                if (validMonsterTypes[x].Settings.ContainsKey("SpawnWeight")) //if a spawn weight was provided
+                                {
+                                    spawnWeight = Convert.ToInt32(validMonsterTypes[x].Settings["SpawnWeight"]); //use it
+                                }
+
+                                if (random < spawnWeight) //if this monster type is selected
+                                {
+                                    randomMonster = Utility.Clone(validMonsterTypes[x]); //get the selected monster type (cloned for later use as a unique instance)
+                                    break;
+                                }
+                                else //if this monster type is not selected
+                                {
+                                    random -= spawnWeight; //subtract this item's weight from the random number
+                                }
+                            }
+
+                            int? monsterID = Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID); //spawn a monster and (if successful) get its ID
 
                             if (monsterID.HasValue) //if a monster ID was generated (NOTE: this assigns a default expiration date to all monsters because they must be tracked and removed overnight)
                             {
