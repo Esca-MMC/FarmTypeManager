@@ -41,10 +41,13 @@ namespace FarmTypeManager
                             continue; //skip to the next object
                         }
 
+                        bool stillExists = false; //does this monster still exist?
+
                         for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for removal purposes)
                         {
                             if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
                             {
+                                stillExists = true;
                                 if (saved.DaysUntilExpire == 1) //if this should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
@@ -63,6 +66,11 @@ namespace FarmTypeManager
                                 location.characters.RemoveAt(x); //remove this monster from the location (note: this must be done even for unexpired monsters to avoid SDV save errors)
                                 break; //stop searching the character list
                             }
+                        }
+
+                        if (!stillExists) //if this monster no longer exists
+                        {
+                            objectsToRemove.Add(saved); //mark this for removal from save
                         }
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
