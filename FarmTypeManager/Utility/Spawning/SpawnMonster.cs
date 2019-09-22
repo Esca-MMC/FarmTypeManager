@@ -121,7 +121,7 @@ namespace FarmTypeManager
                         monster = new Bug(tile, 121);
                         break;
                     case "duggy":
-                        monster = new DuggyFTM(tile, true); //TODO: make the moveAnywhere bool into a customizable setting
+                        monster = new DuggyFTM(tile, true);
                         break;
                     case "dust":
                     case "sprite":

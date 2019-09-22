@@ -35,7 +35,6 @@ namespace FarmTypeManager
                     //validate monster names
                     bool validName = false;
 
-                    //TODO: UPDATE THIS LIST after finishing SpawnMonster.cs; it's already out of date and will be moreso if "minelevel" stuff is replaced
                     //NOTE: switch cases copied from SpawnMonster.cs; update this manually if new monsters are added
                     switch (validTypes[x].MonsterName.ToLower()) //avoid any casing issues by making this lower-case
                     {
