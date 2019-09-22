@@ -367,6 +367,30 @@ namespace FarmTypeManager
                         }
                     }
 
+                    //validate defense multiplier
+                    if (validTypes[x].Settings.ContainsKey("PercentExtraDefensePerSkillLevel"))
+                    {
+                        if (!(validTypes[x].Settings["PercentExtraDefensePerSkillLevel"] is long)) //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"PercentExtraDefensePerSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("PercentExtraDefensePerSkillLevel"); //remove the setting
+                        }
+                    }
+
+                    //validate dodge chance multiplier
+                    if (validTypes[x].Settings.ContainsKey("PercentExtraDodgeChancePerSkillLevel"))
+                    {
+                        if (!(validTypes[x].Settings["PercentExtraDodgeChancePerSkillLevel"] is long)) //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"PercentExtraDodgeChancePerSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("PercentExtraDodgeChancePerSkillLevel"); //remove the setting
+                        }
+                    }
+
                     //validate speed multiplier
                     if (validTypes[x].Settings.ContainsKey("PercentExtraSpeedPerSkillLevel"))
                     {
