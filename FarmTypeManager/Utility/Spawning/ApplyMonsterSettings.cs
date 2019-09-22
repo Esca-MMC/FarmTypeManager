@@ -170,6 +170,13 @@ namespace FarmTypeManager
                 {
                     monster.Health = monster.MaxHealth; //set it to max HP
                 }
+
+                //set sprite
+                if (settings.ContainsKey("Sprite"))
+                {
+                    //replace the monster's sprite, using its existing settings where possible
+                    monster.Sprite = new AnimatedSprite((string)settings["Sprite"], monster.Sprite.CurrentFrame, monster.Sprite.SpriteWidth, monster.Sprite.SpriteHeight);
+                }
             }
         }
     }

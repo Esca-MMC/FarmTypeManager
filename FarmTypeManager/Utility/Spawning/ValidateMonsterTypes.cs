@@ -537,6 +537,32 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("SpawnWeight"); //remove the setting
                         }
                     }
+
+                    //validate sprite
+                    if (validTypes[x].Settings.ContainsKey("Sprite"))
+                    {
+                        if (validTypes[x].Settings["Sprite"] is string spriteText) //if this is a readable string
+                        {
+                            try
+                            {
+                                AnimatedSprite sprite = new AnimatedSprite(spriteText);
+                            }
+                            catch (Exception)
+                            {
+                                Monitor.Log($"The \"Sprite\" setting for monster type \"{validTypes[x].MonsterName}\" failed to load. Please make sure the setting is spelled correctly.", LogLevel.Info);
+                                Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                                validTypes[x].Settings.Remove("Sprite"); //remove the setting
+                            }
+                        }
+                        else //if this is NOT a readable string
+                        {
+                            Monitor.Log($"The \"Sprite\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's a valid string (text inside quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("Sprite"); //remove the setting
+                        }
+                    }
                 }
 
                 return validTypes;
