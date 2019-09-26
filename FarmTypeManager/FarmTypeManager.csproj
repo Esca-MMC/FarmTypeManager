@@ -90,7 +90,7 @@
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
     <Compile Include="Utility\Spawning\ApplyMonsterSettings.cs" />
-    <Compile Include="Utility\Spawning\Clone.cs" />
+    <Compile Include="Utility\Clone.cs" />
     <Compile Include="Utility\Spawning\ValidateMonsterTypes.cs" />
     <Compile Include="Utility\Spawning\GetIDsFromObjects.cs" />
     <Compile Include="Utility\Spawning\SpawnMonster.cs" />
