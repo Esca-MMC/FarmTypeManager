@@ -8,51 +8,9 @@ namespace FarmTypeManager
         private class SpawnArea
         {
             public string UniqueAreaID { get; set; } = "";
-
             public string MapName { get; set; } = "Farm";
-
-            //custom properties were added in version 1.5.0 to handle configuration errors
-            private int minimumSpawnsPerDay = 0;
-            public int MinimumSpawnsPerDay
-            {
-                get
-                {
-                    if (minimumSpawnsPerDay > maximumSpawnsPerDay) //if the min and max are in the wrong order
-                    {
-                        //swap min and max
-                        int temp = minimumSpawnsPerDay;
-                        minimumSpawnsPerDay = maximumSpawnsPerDay;
-                        maximumSpawnsPerDay = temp;
-                    }
-
-                    return minimumSpawnsPerDay;
-                }
-                set
-                {
-                    minimumSpawnsPerDay = value;
-                }
-            }
-
-            private int maximumSpawnsPerDay = 0;
-            public int MaximumSpawnsPerDay
-            {
-                get
-                {
-                    if (minimumSpawnsPerDay > maximumSpawnsPerDay) //if the min and max are in the wrong order
-                    {
-                        //swap min and max
-                        int temp = minimumSpawnsPerDay;
-                        minimumSpawnsPerDay = maximumSpawnsPerDay;
-                        maximumSpawnsPerDay = temp;
-                    }
-
-                    return maximumSpawnsPerDay;
-                }
-                set
-                {
-                    maximumSpawnsPerDay = value;
-                }
-            }
+            public int MinimumSpawnsPerDay { get; set; } = 0;
+            public int MaximumSpawnsPerDay { get; set; } = 0;
 
             private string[] autoSpawnTerrainTypes = new string[0];
             public string[] AutoSpawnTerrainTypes

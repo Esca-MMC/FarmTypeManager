@@ -31,11 +31,11 @@ namespace FarmTypeManager
 
                     if (data.Config.OreSpawnEnabled)
                     {
-                        Utility.Monitor.Log("Ore spawn is enabled. Starting generation process...", LogLevel.Trace);
+                        Utility.Monitor.Log("Ore generation is enabled. Starting generation process...", LogLevel.Trace);
                     }
                     else
                     {
-                        Utility.Monitor.Log("Ore spawn is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log("Ore generation is disabled.", LogLevel.Trace);
                         continue;
                     }
 
@@ -57,11 +57,7 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log("All extra conditions met. Generating list of valid tiles...", LogLevel.Trace);
-
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Ore_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for ore in this area
-
-                        Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
+                        Utility.Monitor.Log("All extra conditions met. Deciding how many items to spawn...", LogLevel.Trace);
 
                         //calculate how much ore to spawn today
                         int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Utility.Skills.Mining);
@@ -95,20 +91,15 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log($"Spawn chances complete. Beginning spawn process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Spawn chances complete. Beginning generation process...", LogLevel.Trace);
 
-                        //begin to spawn ore
-                        int randomIndex;
-                        Vector2 randomTile;
+                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+
+                        //begin to generate ore
                         int randomOreNum;
-                        while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for ore & still ore to be spawned
+                        while (spawnCount > 0) //while more ore should be spawned
                         {
-                            //this section spawns 1 ore at a random valid location
-
-                            spawnCount--; //reduce by 1, since one will be spawned
-                            randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random tile
-                            randomTile = validTiles[randomIndex]; //get the tile's x,y coordinates
-                            validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
+                            spawnCount--;
 
                             int totalWeight = 0; //the upper limit for the random number that picks ore type (i.e. the sum of all ore chances)
                             foreach (KeyValuePair<string, int> ore in oreChances)
@@ -120,13 +111,9 @@ namespace FarmTypeManager
                             {
                                 if (randomOreNum < ore.Value) //this ore "wins"
                                 {
-                                    int? oreID = Utility.SpawnOre(ore.Key, Game1.getLocationFromName(area.MapName), randomTile); //spawn ore & get its index ID
-
-                                    if (area.DaysUntilSpawnsExpire.HasValue && oreID.HasValue) //if oreID exists & if this area assigns expiration dates to ore
-                                    {
-                                        SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Ore, oreID.Value, ore.Key, area.DaysUntilSpawnsExpire.Value); //create a record of the newly spawned ore
-                                        data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
-                                    }
+                                    //create a saved object representing this spawn (with a "blank" tile location)
+                                    SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Ore, null, ore.Key, area.DaysUntilSpawnsExpire);
+                                    spawns.Add(saved); //add it to the list
 
                                     break;
                                 }
@@ -137,16 +124,18 @@ namespace FarmTypeManager
                             }
                         }
 
-                        Utility.Monitor.Log($"Ore spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
+
+                        Utility.Monitor.Log($"Ore generation process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Ore generation complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Ore spawn complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Ore generation complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 

@@ -31,11 +31,11 @@ namespace FarmTypeManager
 
                     if (data.Config.ForageSpawnEnabled)
                     {
-                        Utility.Monitor.Log("Forage spawn is enabled. Starting generation process...", LogLevel.Trace);
+                        Utility.Monitor.Log("Forage generation is enabled. Starting generation process...", LogLevel.Trace);
                     }
                     else
                     {
-                        Utility.Monitor.Log("Forage spawn is disabled for this file.", LogLevel.Trace);
+                        Utility.Monitor.Log("Forage generation is disabled for this file.", LogLevel.Trace);
                         continue;
                     }
 
@@ -57,11 +57,7 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log("All extra conditions met. Generating list of valid tiles...", LogLevel.Trace);
-
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Forage_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for forage in this area
-
-                        Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
+                        Utility.Monitor.Log("All extra conditions met. Deciding how many items to spawn...", LogLevel.Trace);
 
                         //calculate how much forage to spawn today
                         int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
@@ -142,41 +138,38 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log($"Forage types found: {forageIDs.Count}. Beginning spawn process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Forage types found: {forageIDs.Count}. Beginning generation process...", LogLevel.Trace);
 
-                        //begin to spawn forage; each loop should spawn 1 random forage object on a random valid tile
-                        while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for forage & still forage to be spawned
+                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+
+                        //begin to generate forage
+                        while (spawnCount > 0) //while more forage should be spawned
                         {
-                            spawnCount--; //reduce by 1, since one will be spawned
-                            int randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random valid tile
-                            Vector2 randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
-                            validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be obstructed now
+                            spawnCount--;
 
                             int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
 
-                            Utility.SpawnForage(randomForage, Game1.getLocationFromName(area.MapName), randomTile);
-                            
-                            if (area.DaysUntilSpawnsExpire.HasValue) //if this area assigns expiration dates to forage
-                            {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire.Value); //create a record of the newly spawned forage
-                                data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
-                            }
+                            //create a saved object representing this spawn (with a "blank" tile location)
+                            SavedObject forage = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire);
+                            spawns.Add(forage); //add it to the list
                         }
 
-                        Utility.Monitor.Log($"Forage spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
+                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
+
+                        Utility.Monitor.Log($"Forage generation complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Forage generation complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Forage spawn complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Forage generation complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
-                Utility.Monitor.Log("All files and content packs checked. Forage spawn process complete.", LogLevel.Trace);
+                Utility.Monitor.Log("All files and content packs checked. Forage generation process complete.", LogLevel.Trace);
             }
         }
     }

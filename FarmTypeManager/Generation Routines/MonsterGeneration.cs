@@ -31,11 +31,11 @@ namespace FarmTypeManager
 
                     if (data.Config.MonsterSpawnEnabled)
                     {
-                        Utility.Monitor.Log("Monster spawn is enabled. Starting generation process...", LogLevel.Trace);
+                        Utility.Monitor.Log("Monster generation is enabled. Starting generation process...", LogLevel.Trace);
                     }
                     else
                     {
-                        Utility.Monitor.Log("Monster spawn is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log("Monster generation is disabled.", LogLevel.Trace);
                         continue;
                     }
 
@@ -68,36 +68,19 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log("Generating list of valid tiles...", LogLevel.Trace);
-
-                        List<Vector2> validTiles = Utility.GenerateTileList(area, data.Save, data.Config.QuarryTileIndex, data.Config.Monster_Spawn_Settings.CustomTileIndex, false); //calculate a list of valid tiles for monsters in this area
-
-                        Utility.Monitor.Log($"Number of valid tiles: {validTiles.Count}. Deciding how many items to spawn...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Deciding how many items to spawn...", LogLevel.Trace);
 
                         //calculate how many monsters to spawn today
                         int spawnCount = Utility.RNG.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max
 
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Beginning spawn process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Beginning generation process...", LogLevel.Trace);
 
-                        //begin to spawn monsters
-                        while (validTiles.Count > 0 && spawnCount > 0) //while there's still open space for monsters & still monsters to be spawned
+                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+
+                        //begin to generate monsters
+                        while (spawnCount > 0) //while more monsters should be spawned
                         {
-                            //this section spawns 1 monster at a random valid location
-
-                            spawnCount--; //reduce by 1, since one will be spawned
-
-                            int randomIndex;
-                            Vector2 randomTile;
-                            bool tileConfirmed = false; //false until a valid monster location is confirmed
-                            do
-                            {
-                                randomIndex = Utility.RNG.Next(validTiles.Count); //get the array index for a random valid tile
-                                randomTile = validTiles[randomIndex]; //get the random tile's x,y coordinates
-                                validTiles.RemoveAt(randomIndex); //remove the tile from the list, since it will be invalidated now
-                                tileConfirmed = Utility.IsTileValid(area, randomTile, false); //check whether the tile is open/valid for spawning
-                            } while (validTiles.Count > 0 && !tileConfirmed);
-
-                            if (!tileConfirmed) { break; } //if no more valid tiles could be found, stop trying to spawn things in this area
+                            spawnCount--;
 
                             //get the total spawn weight of valid monster types
                             int totalWeight = 0;
@@ -136,29 +119,27 @@ namespace FarmTypeManager
                                 }
                             }
 
-                            int? monsterID = Utility.SpawnMonster(randomMonster, Game1.getLocationFromName(area.MapName), randomTile, area.UniqueAreaID); //spawn a monster and (if successful) get its ID
-
-                            if (monsterID.HasValue) //if a monster ID was generated (NOTE: this assigns a default expiration date to all monsters because they must be tracked and removed overnight)
-                            {
-                                SavedObject saved = new SavedObject(area.MapName, randomTile, SavedObject.ObjectType.Monster, monsterID.Value, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster); //create a record of the newly spawned monster
-                                data.Save.SavedObjects.Add(saved); //add it to the save file with the area's expiration setting
-                            }
+                            //create a saved object representing this spawn (with a "blank" tile location)
+                            SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Monster, null, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster);
+                            spawns.Add(saved); //add it to the list
                         }
+
+                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
 
                         Utility.Monitor.Log($"Monster spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }
 
                     if (data.Pack != null) //content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Monster spawn complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Monster generation complete for this content pack: {data.Pack.Manifest.Name}", LogLevel.Trace);
                     }
                     else //not a content pack
                     {
-                        Utility.Monitor.Log($"All areas checked. Monster spawn complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
+                        Utility.Monitor.Log($"All areas checked. Monster generation complete for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
                 }
 
-                Utility.Monitor.Log("All files and content packs checked. Monster spawn process complete.", LogLevel.Trace);
+                Utility.Monitor.Log("All files and content packs checked. Monster generation process complete.", LogLevel.Trace);
             }
         }
     }

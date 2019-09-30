@@ -18,6 +18,7 @@ namespace FarmTypeManager
         {
             //tell SMAPI to run event methods when necessary
             Helper.Events.GameLoop.DayStarted += DayStarted;
+            Helper.Events.GameLoop.TimeChanged += TimeChanged;
             Helper.Events.GameLoop.DayEnding += DayEnding;
             Helper.Events.GameLoop.ReturnedToTitle += ReturnedToTitle;
 
@@ -80,11 +81,21 @@ namespace FarmTypeManager
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
-            //run the methods providing the mod's main features
+            Utility.TimedSpawns.Clear(); //clear any existing spawn data
+
+            //run each generation process to fill the TimedSpawns list for today
             Generation.ForageGeneration();
             Generation.LargeObjectGeneration();
             Generation.OreGeneration();
             Generation.MonsterGeneration();
+
+            Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at 6:00AM
+        }
+
+        /// <summary>Tasks performed when the the game's clock time changes, i.e. every 10 in-game minutes. (Note: This event doesn't fire at 6:00AM.)</summary>
+        private void TimeChanged(object sender, TimeChangedEventArgs e)
+        {
+            Generation.SpawnTimedSpawns(Utility.TimedSpawns, e.NewTime); //spawn anything set to appear at the current time
         }
 
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>

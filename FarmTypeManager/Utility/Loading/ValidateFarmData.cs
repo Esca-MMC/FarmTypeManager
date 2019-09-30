@@ -101,6 +101,32 @@ namespace FarmTypeManager
                     }
                 }
 
+                //confirm that any paired min/max settings are in the correct order
+                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
+                {
+                    foreach (SpawnArea area in areas) //for each area in the current array
+                    {
+
+                        if (area.MinimumSpawnsPerDay > area.MaximumSpawnsPerDay) //if the min and max are in the wrong order
+                        {
+                            //swap min and max
+                            int temp = area.MinimumSpawnsPerDay;
+                            area.MinimumSpawnsPerDay = area.MaximumSpawnsPerDay;
+                            area.MaximumSpawnsPerDay = temp;
+                            Monitor.Log($"Swapping minimum and maximum spawns per day for this area: {area.UniqueAreaID}", LogLevel.Trace);
+                        }
+
+                        if (area.SpawnTiming.StartTime > area.SpawnTiming.EndTime) //if start and end are in the wrong order
+                        {
+                            //swap start and end
+                            StardewTime temp = area.SpawnTiming.StartTime;
+                            area.SpawnTiming.StartTime = area.SpawnTiming.EndTime;
+                            area.SpawnTiming.EndTime = temp;
+                            Monitor.Log($"Swapping StartTime and EndTime in the SpawnTiming settings for this area: {area.UniqueAreaID}", LogLevel.Trace);
+                        }
+                    }
+                }
+
                 if (pack != null)
                 {
                     Monitor.Log($"Validation complete for content pack: {pack.Manifest.Name}", LogLevel.Trace);

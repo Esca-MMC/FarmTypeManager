@@ -85,7 +85,7 @@ namespace FarmTypeManager
                             //if the object's tiles are not unoccupied
                             if (!farm.isTileOccupiedForPlacement(saved.Tile) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X, saved.Tile.Y + 1)) && !farm.isTileOccupiedForPlacement(new Vector2(saved.Tile.X + 1, saved.Tile.Y + 1)))
                             {
-                                SpawnLargeObject(saved.ID, farm, saved.Tile); //respawn it
+                                SpawnLargeObject(saved.ID.Value, farm, saved.Tile); //respawn it
                                 respawned++; //increment respawn tracker
                             }
                             else //the tiles are occupied
@@ -115,7 +115,7 @@ namespace FarmTypeManager
                             {
                                 if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
                                 {
-                                    SpawnForage(saved.ID, location, saved.Tile); //respawn it
+                                    SpawnForage(saved.ID.Value, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {
