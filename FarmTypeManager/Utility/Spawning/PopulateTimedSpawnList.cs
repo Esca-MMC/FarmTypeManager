@@ -77,7 +77,7 @@ namespace FarmTypeManager
                     }
                 }
 
-                TimedSpawns.AddRange(timedSpawns); //add the processed list of timed spawns to the Utility.TimedSpawns list
+                TimedSpawns.Add(timedSpawns); //add the processed list of timed spawns to Utility.TimedSpawns
             }
         }
     }

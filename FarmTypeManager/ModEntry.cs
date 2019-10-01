@@ -95,7 +95,10 @@ namespace FarmTypeManager
         /// <summary>Tasks performed when the the game's clock time changes, i.e. every 10 in-game minutes. (Note: This event doesn't fire at 6:00AM.)</summary>
         private void TimeChanged(object sender, TimeChangedEventArgs e)
         {
-            Generation.SpawnTimedSpawns(Utility.TimedSpawns, e.NewTime); //spawn anything set to appear at the current time
+            if (e.NewTime != 600) //if it's not currently 6:00AM
+            {
+                Generation.SpawnTimedSpawns(Utility.TimedSpawns, e.NewTime); //spawn anything set to appear at the current time
+            }
         }
 
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>

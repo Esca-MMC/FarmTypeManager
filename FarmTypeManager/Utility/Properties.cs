@@ -75,8 +75,8 @@ namespace FarmTypeManager
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
             public static List<FarmData> FarmDataList = new List<FarmData>();
 
-            /// <summary>A list of objects to be spawned during the current in-game day.</summary>
-            public static List<TimedSpawn> TimedSpawns = new List<TimedSpawn>();
+            /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
+            public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
 
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }
