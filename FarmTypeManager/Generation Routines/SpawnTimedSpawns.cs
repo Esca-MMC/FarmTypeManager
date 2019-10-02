@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
@@ -21,7 +22,7 @@ namespace FarmTypeManager
             /// <param name="time">An in-game time value. If provided, only objects with matching SpawnTime values will be spawned.</param>
             public static void SpawnTimedSpawns(List<List<TimedSpawn>> timedSpawns, StardewTime? time = null)
             {
-                Utility.Monitor.Log($"Spawning objects set to appear at time: {(int?)time}", LogLevel.Trace);
+                Utility.Monitor.VerboseLog($"Spawning objects set to appear at time: {(int?)time}");
 
                 int spawned = 0; //tracks the number of objects spawned during this process
                 bool filter(TimedSpawn spawn) => spawn.SavedObject.SpawnTime == time; //define a filter that is true when a TimedSpawn matches the provided time
@@ -48,6 +49,29 @@ namespace FarmTypeManager
                     if (spawns.Count <= 0) //if nothing in the list had a matching time
                     {
                         continue; //skip to the next list
+                    }
+
+                    //validate the "only spawn if a player is present" setting
+                    if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent)
+                    {
+                        GameLocation location = Game1.getLocationFromName(spawns[0].SpawnArea.MapName); //get this area's lcoation
+                        FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
+
+                        bool playerIsPresent = false;
+                        foreach (Farmer farmer in farmers)
+                        {
+                            if (farmer.currentLocation == location) //if this farmer is at the current location
+                            {
+                                playerIsPresent = true;
+                                break;
+                            }
+                        }
+
+                        if (!playerIsPresent) //if no players are present
+                        {
+                            Utility.Monitor.Log($"Skipping spawns for this area because no players are present: {spawns[0].SpawnArea.UniqueAreaID} ({spawns[0].SpawnArea.MapName})", LogLevel.Trace);
+                            continue; //skip to the next list
+                        }
                     }
 
                     bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
