@@ -16,6 +16,8 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
+            /// <summary>Attempts to load the config.json file into Utility.MConfig.</summary>
+            /// <param name="helper">The IModHelper interface provided by SMAPI.</param>
             public static void LoadModData(IModHelper helper)
             {
                 try
@@ -29,6 +31,8 @@ namespace FarmTypeManager
                     Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Some related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
                     Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
                     Monitor.Log($"{ex.Message}", LogLevel.Warn);
+
+                    MConfig = null; //clear MConfig to avoid using old data
                 }
             }
         }

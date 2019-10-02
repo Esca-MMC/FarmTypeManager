@@ -24,7 +24,7 @@ namespace FarmTypeManager
 
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
 
-            Utility.LoadModData(helper); //attempt to load the config.json ModConfig file and activate its settings
+            Utility.LoadModData(helper); //attempt to load the config.json ModConfig file
 
             if (Utility.MConfig?.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
             {
