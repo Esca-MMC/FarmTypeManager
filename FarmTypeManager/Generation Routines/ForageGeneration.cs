@@ -46,7 +46,7 @@ namespace FarmTypeManager
                         //validate the map name for the area
                         if (Game1.getLocationFromName(area.MapName) == null)
                         {
-                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. No forage will be spawned there.", LogLevel.Info);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. No forage will be spawned there.", LogLevel.Debug);
                             continue;
                         }
 

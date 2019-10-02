@@ -46,7 +46,7 @@ namespace FarmTypeManager
                         //validate the map name for the area
                         if (Game1.getLocationFromName(area.MapName) == null)
                         {
-                            Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No ore will be spawned there.", LogLevel.Info);
+                            Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No ore will be spawned there.", LogLevel.Debug);
                             continue;
                         }
 
