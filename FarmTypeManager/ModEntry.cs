@@ -92,7 +92,7 @@ namespace FarmTypeManager
             Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at 6:00AM
         }
 
-        /// <summary>Tasks performed when the the game's clock time changes, i.e. every 10 in-game minutes. (Note: This event doesn't fire at 6:00AM.)</summary>
+        /// <summary>Tasks performed when the the game's clock time changes, i.e. every 10 in-game minutes. (Note: This event *sometimes* fires at 6:00AM: apaprently every load after the first.)</summary>
         private void TimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (e.NewTime != 600) //if it's not currently 6:00AM
