@@ -92,25 +92,25 @@
     <Compile Include="Utility\Conditions\CheckFileConditions.cs" />
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
-    <Compile Include="Utility\Spawning\ApplyMonsterSettings.cs" />
+    <Compile Include="Utility\Spawning\Monsters\ApplyMonsterSettings.cs" />
     <Compile Include="Utility\Clone.cs" />
     <Compile Include="Utility\Spawning\PopulateTimedSpawnList.cs" />
     <Compile Include="Generation Routines\SpawnTimedSpawns.cs" />
-    <Compile Include="Utility\Spawning\ValidateMonsterTypes.cs" />
-    <Compile Include="Utility\Spawning\GetIDsFromObjects.cs" />
-    <Compile Include="Utility\Spawning\SpawnMonster.cs" />
-    <Compile Include="Utility\Spawning\SpawnOre.cs" />
+    <Compile Include="Utility\Spawning\Monsters\ValidateMonsterTypes.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetIDsFromObjects.cs" />
+    <Compile Include="Utility\Spawning\Monsters\SpawnMonster.cs" />
+    <Compile Include="Utility\Spawning\Ore\SpawnOre.cs" />
     <Compile Include="Utility\Spawning\AdjustedSpawnCount.cs" />
-    <Compile Include="Utility\Spawning\GetLargeObjectIDs.cs" />
-    <Compile Include="Utility\Spawning\AdjustedSpawnChances.cs" />
+    <Compile Include="Utility\Spawning\Large Objects\GetLargeObjectIDs.cs" />
+    <Compile Include="Utility\Spawning\Ore\AdjustedSpawnChances.cs" />
     <Compile Include="Utility\Expiration\ProcessObjectExpiration.cs" />
     <Compile Include="Utility\Expiration\ReplaceProtectedSpawnsOvernight.cs" />
     <Compile Include="Utility\Tiles\GetTilesByIndex.cs" />
     <Compile Include="Utility\Tiles\GetTilesByProperty.cs" />
     <Compile Include="Utility\Tiles\GenerateTileList.cs" />
     <Compile Include="Utility\Tiles\GetTilesByVectorString.cs" />
-    <Compile Include="Utility\Spawning\SpawnForage.cs" />
-    <Compile Include="Utility\Spawning\SpawnLargeObject.cs" />
+    <Compile Include="Utility\Spawning\Forage\SpawnForage.cs" />
+    <Compile Include="Utility\Spawning\Large Objects\SpawnLargeObject.cs" />
     <Compile Include="Utility\Tiles\IsTileValid.cs" />
   </ItemGroup>
   <ItemGroup>
