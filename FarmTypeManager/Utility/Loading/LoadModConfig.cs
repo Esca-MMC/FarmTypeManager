@@ -29,7 +29,7 @@ namespace FarmTypeManager
                 catch (Exception ex) //if the config.json file can't be parsed correctly, try to explain it in the user's log & then skip any config-related behaviors
                 {
                     Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Some related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
-                    Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
+                    Monitor.Log($"----------", LogLevel.Warn);
                     Monitor.Log($"{ex.Message}", LogLevel.Warn);
 
                     MConfig = null; //clear MConfig to avoid using old data

@@ -29,6 +29,7 @@ namespace FarmTypeManager
 
                 for (int x = timedSpawns.Count - 1; x >= 0; x--) //for each list of spawns (looping backward for removal purposes)
                 {
+                    //NOTE: the spawns in each "spawns" list must share the same SpawnArea for optimization reasons
                     List<TimedSpawn> spawns = null; //refer to the current list as "spawns"
 
                     if (time.HasValue == false) //if no time was provided
@@ -51,10 +52,11 @@ namespace FarmTypeManager
                         continue; //skip to the next list
                     }
 
+                    GameLocation location = Game1.getLocationFromName(spawns[0].SpawnArea.MapName); //get this area's location
+
                     //validate the "only spawn if a player is present" setting
                     if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent)
                     {
-                        GameLocation location = Game1.getLocationFromName(spawns[0].SpawnArea.MapName); //get this area's lcoation
                         FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
 
                         bool playerIsPresent = false;
@@ -119,32 +121,38 @@ namespace FarmTypeManager
                         switch (spawns[y].SavedObject.Type)
                         {
                             case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject.ID.Value, Game1.getLocationFromName(spawns[y].SpawnArea.MapName), spawns[y].SavedObject.Tile); //spawn forage
+                                Utility.SpawnForage(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, (Farm)Game1.getLocationFromName(spawns[y].SpawnArea.MapName), spawns[y].SavedObject.Tile); //spawn large object
+                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, (Farm)location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
-                                int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, Game1.getLocationFromName(spawns[y].SpawnArea.MapName), spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
+                                int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
                                 if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
                                 }
                                 break;
                             case SavedObject.ObjectType.Monster:
-                                int? monID = Utility.SpawnMonster(spawns[y].SavedObject.MonType, Game1.getLocationFromName(spawns[y].SpawnArea.MapName), spawns[y].SavedObject.Tile, spawns[y].SpawnArea.UniqueAreaID); //spawn monster and get its ID if successful
-                                if (monID.HasValue)
+                                int? monID = Utility.SpawnMonster(spawns[y].SavedObject.MonType, location, spawns[y].SavedObject.Tile, spawns[y].SpawnArea.UniqueAreaID); //spawn monster and get its ID if successful
+                                if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
                                 }
                                 break;
                         }
-                        spawned++; //increment the spawn tracker
 
                         if (spawns[y].SavedObject.ID.HasValue && spawns[y].SavedObject.DaysUntilExpire.HasValue) //if this object spawned successfully and has an expiration date
                         {
                             spawns[y].FarmData.Save.SavedObjects.Add(spawns[y].SavedObject); //add the spawn to the relevant save data
                         }
+
+                        spawned++; //increment the spawn tracker
+                    }
+
+                    if (spawns[0].SpawnArea.SpawnTiming.SpawnSound != null && spawns[0].SpawnArea.SpawnTiming.SpawnSound.Trim() != "") //if this area has a SpawnSound setting
+                    {
+                        location.playSound(spawns[0].SpawnArea.SpawnTiming.SpawnSound); //play this area's SpawnSound
                     }
                 }
                 Utility.Monitor.VerboseLog($"Spawn process complete for time: {(int)time}. Objects spawned: {spawned}");

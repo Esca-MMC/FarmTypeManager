@@ -23,7 +23,16 @@ namespace FarmTypeManager
                 IncludeAreas = new string[0];
                 ExcludeAreas = new string[0];
                 StrictTileChecking = "High";
-                SpawnTiming = new SpawnTiming(1900, 2600, 10, 1, false); //from 5pm onward, 1 monster can spawn every 10m
+                SpawnTiming = new SpawnTiming
+                {
+                    //from 5pm onward, up to 1 monster can spawn every 10 minutes
+                    StartTime = 1900,
+                    EndTime = 2600,
+                    MinimumTimeBetweenSpawns = 10,
+                    MaximumSimultaneousSpawns = 1,
+                    OnlySpawnIfAPlayerIsPresent = false,
+                    SpawnSound = ""
+                }; 
                 ExtraConditions = new ExtraConditions();
 
                 MonsterTypes = new List<MonsterType>();

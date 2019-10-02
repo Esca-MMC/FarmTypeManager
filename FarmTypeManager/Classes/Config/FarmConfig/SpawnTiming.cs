@@ -36,18 +36,11 @@ namespace FarmTypeManager
 
             public bool OnlySpawnIfAPlayerIsPresent { get; set; } = false; //if true, spawns will be skipped if no players are present at the target map
 
+            public string SpawnSound { get; set; } = ""; //the name (if any) of the sound to be played when this area spawns objects
+
             public SpawnTiming()
             {
 
-            }
-
-            public SpawnTiming(int start, int end, int between, int simultaneous, bool present)
-            {
-                StartTime = start;
-                EndTime = end;
-                MinimumTimeBetweenSpawns = between;
-                MaximumSimultaneousSpawns = simultaneous;
-                OnlySpawnIfAPlayerIsPresent = present;
             }
         }
     }
