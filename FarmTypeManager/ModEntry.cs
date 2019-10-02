@@ -24,23 +24,11 @@ namespace FarmTypeManager
 
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
 
-            //attempt to load the config.json ModConfig file and activate its settings
-            try
-            {
-                Utility.MConfig = helper.ReadConfig<ModConfig>(); //create or load the config.json file
+            Utility.LoadModData(helper); //attempt to load the config.json ModConfig file and activate its settings
 
-                if (Utility.MConfig.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
-                {
-                    helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
-                }
-
-                helper.WriteConfig<ModConfig>(Utility.MConfig); //update the config.json file (e.g. to add settings from new versions of the mod)
-            }
-            catch (Exception ex) //if the config.json file can't be parsed correctly, try to explain it in the user's log & then skip any config-related behaviors
+            if (Utility.MConfig?.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
             {
-                Utility.Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
-                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
-                Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
+                helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
             }
         }
 
@@ -48,19 +36,8 @@ namespace FarmTypeManager
         private void DayStarted(object sender, EventArgs e)
         {
             //attempt to load the config.json ModConfig file and update its settings
-            //NOTE: this already happens in the Entry method, but doing it here allows certain settings to be changed while the game is running
-            try
-            {
-                Utility.MConfig = Helper.ReadConfig<ModConfig>(); //create or load the config.json file
-
-                Helper.WriteConfig<ModConfig>(Utility.MConfig); //update the config.json file (e.g. to add settings from new versions of the mod)
-            }
-            catch (Exception ex) //if the config.json file can't be parsed correctly, try to explain it in the user's log & then skip any config-related behaviors
-            {
-                Utility.Monitor.Log($"Warning: This mod's config.json file could not be parsed correctly. Some related settings will be disabled. Please edit the file, or delete it and reload the game to generate a new config file. The auto-generated error message is displayed below:", LogLevel.Warn);
-                Utility.Monitor.Log($"----------", LogLevel.Warn); //visual break to slightly improve clarity, based on user feedback
-                Utility.Monitor.Log($"{ex.Message}", LogLevel.Warn);
-            }
+            //note: this already happens in the Entry method, but doing it here allows certain settings to be changed while the game is running
+            Utility.LoadModData(Helper);
 
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
