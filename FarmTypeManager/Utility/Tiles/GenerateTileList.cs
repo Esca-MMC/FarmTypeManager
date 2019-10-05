@@ -20,9 +20,8 @@ namespace FarmTypeManager
             /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
             /// <param name="quarryTileIndex">The list of quarry tile indices for this spawn process.</param>
             /// <param name="customTileIndex">The list of custom tile indices for this spawn process.</param>
-            /// <param name="isLarge">True if the objects to be spawned are 2x2 tiles in size, otherwise false (1 tile).</param>
             /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-            public static List<Vector2> GenerateTileList(SpawnArea area, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex, bool isLarge)
+            public static List<Vector2> GenerateTileList(SpawnArea area, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex)
             {
                 HashSet<Vector2> validTiles = new HashSet<Vector2>(); //a set of all open, valid tiles for new spawns in the provided area
 

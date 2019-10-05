@@ -95,7 +95,7 @@ namespace FarmTypeManager
                     }
 
                     //generate a new list of valid tiles for this spawn area
-                    List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles, isLarge);
+                    List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles);
 
                     for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
                     {
