@@ -18,16 +18,10 @@ namespace FarmTypeManager
             public ForageSpawnArea()
                 : base()
             {
-                UniqueAreaID = "";
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 0;
                 MaximumSpawnsPerDay = 3;
                 IncludeTerrainTypes = new string[] { "Grass", "Diggable" };
-                IncludeAreas = new string[0];
-                ExcludeAreas = new string[0];
-                StrictTileChecking = "High";
-                SpawnTiming = new SpawnTiming();
-                ExtraConditions = new ExtraConditions();
             }
         }
     }

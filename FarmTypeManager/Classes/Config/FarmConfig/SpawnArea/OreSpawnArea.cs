@@ -16,16 +16,10 @@ namespace FarmTypeManager
             public OreSpawnArea()
                 : base()
             {
-                UniqueAreaID = "";
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 1;
                 MaximumSpawnsPerDay = 5;
                 IncludeTerrainTypes = new string[] { "Quarry" };
-                IncludeAreas = new string[0];
-                ExcludeAreas = new string[0];
-                StrictTileChecking = "High";
-                SpawnTiming = new SpawnTiming();
-                ExtraConditions = new ExtraConditions();
             }
         }
     }

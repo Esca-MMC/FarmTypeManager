@@ -74,7 +74,7 @@ namespace FarmTypeManager
                 }
             }
 
-            private ExtraConditions extraConditions;
+            private ExtraConditions extraConditions = new ExtraConditions();
             public ExtraConditions ExtraConditions
             {
                 get

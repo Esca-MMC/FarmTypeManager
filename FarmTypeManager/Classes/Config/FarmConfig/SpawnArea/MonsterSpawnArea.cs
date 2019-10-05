@@ -15,14 +15,10 @@ namespace FarmTypeManager
             public MonsterSpawnArea()
                 : base()
             {
-                UniqueAreaID = "";
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 5; //~1/8 chance of 1 spawn each 10m
                 MaximumSpawnsPerDay = 16; //~3/8 chance of 1 spawn each 10m
-                IncludeTerrainTypes = new string[] { "All" };
-                IncludeAreas = new string[0];
-                ExcludeAreas = new string[0];
-                StrictTileChecking = "High";
+                IncludeTerrainTypes = new string[] { "Dirt, Diggable, Grass" };
                 SpawnTiming = new SpawnTiming
                 {
                     //from 5pm onward, up to 1 monster can spawn every 10 minutes
