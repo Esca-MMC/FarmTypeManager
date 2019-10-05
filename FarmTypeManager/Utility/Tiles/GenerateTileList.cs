@@ -25,7 +25,7 @@ namespace FarmTypeManager
             {
                 HashSet<Vector2> validTiles = new HashSet<Vector2>(); //a set of all open, valid tiles for new spawns in the provided area
 
-                foreach (string type in area.AutoSpawnTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
+                foreach (string type in area.IncludeTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
                 {
                     if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
                     {

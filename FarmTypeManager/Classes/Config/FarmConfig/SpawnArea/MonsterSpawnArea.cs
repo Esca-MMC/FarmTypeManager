@@ -19,7 +19,7 @@ namespace FarmTypeManager
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 5; //~1/8 chance of 1 spawn each 10m
                 MaximumSpawnsPerDay = 16; //~3/8 chance of 1 spawn each 10m
-                AutoSpawnTerrainTypes = new string[] { "All" };
+                IncludeTerrainTypes = new string[] { "All" };
                 IncludeAreas = new string[0];
                 ExcludeAreas = new string[0];
                 StrictTileChecking = "High";

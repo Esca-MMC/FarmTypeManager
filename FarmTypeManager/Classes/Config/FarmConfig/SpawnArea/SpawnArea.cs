@@ -12,16 +12,24 @@ namespace FarmTypeManager
             public int MinimumSpawnsPerDay { get; set; } = 0;
             public int MaximumSpawnsPerDay { get; set; } = 0;
 
-            private string[] autoSpawnTerrainTypes = new string[0];
-            public string[] AutoSpawnTerrainTypes
+            public string[] AutoSpawnTerrainTypes //supports a previously used name for IncludeTerrainTypes (changed in v1.7.0)
+            {
+                set
+                {
+                    IncludeTerrainTypes = value;
+                }
+            }
+
+            private string[] includeTerrainTypes = new string[0];
+            public string[] IncludeTerrainTypes
             {
                 get
                 {
-                    return autoSpawnTerrainTypes ?? new string[0]; //return default if null
+                    return includeTerrainTypes ?? new string[0]; //return default if null
                 }
                 set
                 {
-                    autoSpawnTerrainTypes = value;
+                    includeTerrainTypes = value;
                 }
             }
 

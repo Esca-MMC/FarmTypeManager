@@ -22,7 +22,7 @@ namespace FarmTypeManager
                 MapName = "Farm";
                 MinimumSpawnsPerDay = 0;
                 MaximumSpawnsPerDay = 3;
-                AutoSpawnTerrainTypes = new string[] { "Grass", "Diggable" };
+                IncludeTerrainTypes = new string[] { "Grass", "Diggable" };
                 IncludeAreas = new string[0];
                 ExcludeAreas = new string[0];
                 StrictTileChecking = "High";
