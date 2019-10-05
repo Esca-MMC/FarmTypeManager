@@ -33,6 +33,19 @@ namespace FarmTypeManager
                 }
             }
 
+            private string[] excludeTerrainTypes = new string[0];
+            public string[] ExcludeTerrainTypes
+            {
+                get
+                {
+                    return excludeTerrainTypes ?? new string[0]; //return default if null
+                }
+                set
+                {
+                    excludeTerrainTypes = value;
+                }
+            }
+
             private string[] includeAreas = new string[0];
             public string[] IncludeAreas
             {

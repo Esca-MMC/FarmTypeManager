@@ -25,26 +25,30 @@ namespace FarmTypeManager
             {
                 HashSet<Vector2> validTiles = new HashSet<Vector2>(); //a set of all open, valid tiles for new spawns in the provided area
 
-                foreach (string type in area.IncludeTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
+                //include terrain types
+                foreach (string includeType in area.IncludeTerrainTypes) //loop to auto-detect valid tiles based on various types of terrain
                 {
-                    if (type.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
+                    if (includeType.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
                     {
                         validTiles.UnionWith(GetTilesByIndex(area, quarryTileIndex));
                     }
-                    else if (type.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
+                    else if (includeType.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
                     {
                         validTiles.UnionWith(GetTilesByIndex(area, customTileIndex));
                     }
-                    else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just add every valid tile)
+                    else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just add every tile)
                     {
-                        validTiles.UnionWith(GetTilesByProperty(area, type));
+                        validTiles.UnionWith(GetTilesByProperty(area, includeType));
                     }
                 }
-                foreach (string include in area.IncludeAreas) //check for valid tiles in each "include" zone for the area
+                
+                //include coordinates
+                foreach (string includeCoords in area.IncludeAreas) //check for tiles in each "include" zone for the area
                 {
-                    validTiles.UnionWith(GetTilesByVectorString(area, include));
+                    validTiles.UnionWith(GetTilesByVectorString(area, includeCoords));
                 }
 
+                //include existing object locations
                 if (area is LargeObjectSpawnArea objArea && objArea.FindExistingObjectLocations) //if this area is the large object type and is set to use existing object locations
                 {
                     if (save.ExistingObjectLocations.ContainsKey(area.UniqueAreaID)) //if this area has save data for existing locations
@@ -61,10 +65,27 @@ namespace FarmTypeManager
                     }
                 }
 
-                foreach (string exclude in area.ExcludeAreas) //check for valid tiles in each "exclude" zone for the area (validity isn't technically relevant here, but simpler to code, and tiles' validity cannot currently change during this process)
+                //exclude terrain types
+                foreach (string excludeType in area.ExcludeTerrainTypes)
                 {
-                    HashSet<Vector2> excludedTiles = GetTilesByVectorString(area, exclude); //get list of valid tiles in the excluded area
-                    validTiles.ExceptWith(excludedTiles); //remove any previously valid tiles that match the excluded area
+                    if (excludeType.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //remove tiles matching the "quarry" tile index list
+                    {
+                        validTiles.ExceptWith(GetTilesByIndex(area, quarryTileIndex));
+                    }
+                    else if (excludeType.Equals("custom", StringComparison.OrdinalIgnoreCase)) //remove tiles matching the "custom" tile index list
+                    {
+                        validTiles.ExceptWith(GetTilesByIndex(area, customTileIndex));
+                    }
+                    else  //remove any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just remove every tile)
+                    {
+                        validTiles.ExceptWith(GetTilesByProperty(area, excludeType));
+                    }
+                }
+                
+                //exclude coordinates
+                foreach (string excludeCoords in area.ExcludeAreas) //check for tiles in each "exclude" zone for the area
+                {
+                    validTiles.ExceptWith(GetTilesByVectorString(area, excludeCoords)); //remove any tiles that match the excluded area
                 }
 
                 return validTiles.ToList(); //convert the set to a list and return it
