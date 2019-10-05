@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 
@@ -78,6 +79,8 @@ namespace FarmTypeManager
 
                     bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
                     int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
+                    int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
+
                     switch (spawns[0].SavedObject.Type)
                     {
                         case SavedObject.ObjectType.Forage:
@@ -91,6 +94,11 @@ namespace FarmTypeManager
                             break;
                         case SavedObject.ObjectType.Monster:
                             customTiles = spawns[0].FarmData.Config.Monster_Spawn_Settings.CustomTileIndex;
+
+                            if (Utility.MConfig.MonsterLimitPerLocation.HasValue) //if a per-location monster limit was provided
+                            {
+                                monstersAtLocation = location.characters.Count(character => character is Monster); //get the number of monsters at this location
+                            }
                             break;
                     }
 
@@ -99,6 +107,11 @@ namespace FarmTypeManager
 
                     for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
                     {
+                        if (Utility.MConfig.MonsterLimitPerLocation.HasValue && Utility.MConfig.MonsterLimitPerLocation <= monstersAtLocation) //if this location has reached a provided monster limit
+                        {
+                            break; //skip the rest of this spawn list
+                        }
+
                         Vector2? chosenTile = null;
                         while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
                         {
@@ -138,6 +151,10 @@ namespace FarmTypeManager
                                 if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
+                                    if (monstersAtLocation.HasValue) //if the monster counter is being used
+                                    {
+                                        monstersAtLocation++; //increment monster counter
+                                    }
                                 }
                                 break;
                         }
@@ -152,7 +169,11 @@ namespace FarmTypeManager
 
                     if (spawns[0].SpawnArea.SpawnTiming.SpawnSound != null && spawns[0].SpawnArea.SpawnTiming.SpawnSound.Trim() != "") //if this area has a SpawnSound setting
                     {
-                        location.playSound(spawns[0].SpawnArea.SpawnTiming.SpawnSound); //play this area's SpawnSound
+                        if (spawned > 0) //if anything was actually spawned
+                        {
+                            location.playSound(spawns[0].SpawnArea.SpawnTiming.SpawnSound); //play this area's SpawnSound
+                        }
+                        
                     }
                 }
                 Utility.Monitor.VerboseLog($"Spawn process complete for time: {(int)time}. Objects spawned: {spawned}");
