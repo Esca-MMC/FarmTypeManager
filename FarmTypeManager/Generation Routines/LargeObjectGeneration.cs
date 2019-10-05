@@ -102,7 +102,7 @@ namespace FarmTypeManager
                                     string newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this tile
                                     bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
 
-                                    foreach (string include in area.IncludeAreas) //check each existing include string
+                                    foreach (string include in area.IncludeCoordinates) //check each existing include string
                                     {
                                         if (include == newInclude)
                                         {

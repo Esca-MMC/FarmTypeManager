@@ -43,7 +43,7 @@ namespace FarmTypeManager
                 }
                 
                 //include coordinates
-                foreach (string includeCoords in area.IncludeAreas) //check for tiles in each "include" zone for the area
+                foreach (string includeCoords in area.IncludeCoordinates) //check for tiles in each "include" zone for the area
                 {
                     validTiles.UnionWith(GetTilesByVectorString(area, includeCoords));
                 }
@@ -83,7 +83,7 @@ namespace FarmTypeManager
                 }
                 
                 //exclude coordinates
-                foreach (string excludeCoords in area.ExcludeAreas) //check for tiles in each "exclude" zone for the area
+                foreach (string excludeCoords in area.ExcludeCoordinates) //check for tiles in each "exclude" zone for the area
                 {
                     validTiles.ExceptWith(GetTilesByVectorString(area, excludeCoords)); //remove any tiles that match the excluded area
                 }

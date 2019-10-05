@@ -46,29 +46,45 @@ namespace FarmTypeManager
                 }
             }
 
-            private string[] includeAreas = new string[0];
-            public string[] IncludeAreas
+            public string[] IncludeAreas //supports a previously used name for IncludeCoordinates (changed in v1.7.0)
             {
-                get
-                {
-                    return includeAreas ?? new string[0]; //return default if null
-                }
                 set
                 {
-                    includeAreas = value;
+                    IncludeCoordinates = value;
                 }
             }
 
-            private string[] excludeAreas = new string[0];
-            public string[] ExcludeAreas
+            private string[] includeCoordinates = new string[0];
+            public string[] IncludeCoordinates
             {
                 get
                 {
-                    return excludeAreas ?? new string[0]; //return default if null
+                    return includeCoordinates ?? new string[0]; //return default if null
                 }
                 set
                 {
-                    excludeAreas = value;
+                    includeCoordinates = value;
+                }
+            }
+
+            public string[] ExcludeAreas //supports a previously used name for ExcludeCoordinates (changed in v1.7.0)
+            {
+                set
+                {
+                    ExcludeCoordinates = value;
+                }
+            }
+
+            private string[] excludeCoordinates = new string[0];
+            public string[] ExcludeCoordinates
+            {
+                get
+                {
+                    return excludeCoordinates ?? new string[0]; //return default if null
+                }
+                set
+                {
+                    excludeCoordinates = value;
                 }
             }
 
