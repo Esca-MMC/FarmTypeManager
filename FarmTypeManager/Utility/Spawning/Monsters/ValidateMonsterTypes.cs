@@ -141,6 +141,11 @@ namespace FarmTypeManager
                         continue; //skip to the next monster type
                     }
 
+                    if (validTypes[x].Settings == null) //if no settings were provided at all
+                    {
+                        validTypes[x].Settings = new Dictionary<string, object>(); //create a blank list of settings
+                    }
+
                     //validate HP
                     if (validTypes[x].Settings.ContainsKey("HP"))
                     {
