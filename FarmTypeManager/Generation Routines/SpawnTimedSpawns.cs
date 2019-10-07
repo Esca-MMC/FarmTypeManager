@@ -53,127 +53,131 @@ namespace FarmTypeManager
                         continue; //skip to the next list
                     }
 
-                    GameLocation location = Game1.getLocationFromName(spawns[0].SpawnArea.MapName); //get this area's location
+                    List<GameLocation> locations = Utility.GetAllLocationsFromName(spawns[0].SpawnArea.MapName); //get all locations matching this area's map name
 
-                    //validate the "only spawn if a player is present" setting
-                    if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent)
+                    foreach (GameLocation location in locations) //for each location matching this area
                     {
-                        FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
-
-                        bool playerIsPresent = false;
-                        foreach (Farmer farmer in farmers)
+                        //validate the "only spawn if a player is present" setting
+                        if (spawns[0].SpawnArea.SpawnTiming.OnlySpawnIfAPlayerIsPresent)
                         {
-                            if (farmer.currentLocation == location) //if this farmer is at the current location
+                            FarmerCollection farmers = Game1.getOnlineFarmers(); //get all active players
+
+                            bool playerIsPresent = false;
+                            foreach (Farmer farmer in farmers)
                             {
-                                playerIsPresent = true;
-                                break;
+                                if (farmer.currentLocation == location) //if this farmer is at the current location
+                                {
+                                    playerIsPresent = true;
+                                    break;
+                                }
+                            }
+
+                            if (!playerIsPresent) //if no players are present
+                            {
+                                Utility.Monitor.Log($"Skipping spawns for this location because no players are present: {spawns[0].SpawnArea.UniqueAreaID} ({spawns[0].SpawnArea.MapName})", LogLevel.Trace);
+                                continue; //skip to the next list
                             }
                         }
 
-                        if (!playerIsPresent) //if no players are present
-                        {
-                            Utility.Monitor.Log($"Skipping spawns for this area because no players are present: {spawns[0].SpawnArea.UniqueAreaID} ({spawns[0].SpawnArea.MapName})", LogLevel.Trace);
-                            continue; //skip to the next list
-                        }
-                    }
+                        bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
+                        int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
+                        int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
 
-                    bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
-                    int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
-                    int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
-
-                    switch (spawns[0].SavedObject.Type)
-                    {
-                        case SavedObject.ObjectType.Forage:
-                            customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
-                            break;
-                        case SavedObject.ObjectType.LargeObject:
-                            customTiles = spawns[0].FarmData.Config.Large_Object_Spawn_Settings.CustomTileIndex;
-                            break;
-                        case SavedObject.ObjectType.Ore:
-                            customTiles = spawns[0].FarmData.Config.Ore_Spawn_Settings.CustomTileIndex;
-                            break;
-                        case SavedObject.ObjectType.Monster:
-                            customTiles = spawns[0].FarmData.Config.Monster_Spawn_Settings.CustomTileIndex;
-
-                            if (Utility.MConfig.MonsterLimitPerLocation.HasValue) //if a per-location monster limit was provided
-                            {
-                                monstersAtLocation = location.characters.Count(character => character is Monster); //get the number of monsters at this location
-                            }
-                            break;
-                    }
-
-                    //generate a new list of valid tiles for this spawn area
-                    List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles);
-
-                    for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
-                    {
-                        if (Utility.MConfig.MonsterLimitPerLocation.HasValue && Utility.MConfig.MonsterLimitPerLocation <= monstersAtLocation) //if this location has reached a provided monster limit
-                        {
-                            break; //skip the rest of this spawn list
-                        }
-
-                        Vector2? chosenTile = null;
-                        while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
-                        {
-                            int randomIndex = Utility.RNG.Next(tiles.Count); //get the array index for a random valid tile
-                            if (Utility.IsTileValid(spawns[y].SpawnArea, tiles[randomIndex], isLarge)) //if this tile is valid
-                            {
-                                chosenTile = tiles[randomIndex]; //choose this tile
-                            }
-                            tiles.RemoveAt(randomIndex); //remove the tile from the list
-                        }
-
-                        if (!chosenTile.HasValue) //if no remaining tiles were valid
-                        {
-                            break; //skip the rest of this spawn list
-                        }
-
-                        spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
-
-                        //spawn the object based on its type
-                        switch (spawns[y].SavedObject.Type)
+                        switch (spawns[0].SavedObject.Type)
                         {
                             case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn forage
+                                customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, (Farm)location, spawns[y].SavedObject.Tile); //spawn large object
+                                customTiles = spawns[0].FarmData.Config.Large_Object_Spawn_Settings.CustomTileIndex;
                                 break;
                             case SavedObject.ObjectType.Ore:
-                                int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
-                                if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
-                                {
-                                    spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
-                                }
+                                customTiles = spawns[0].FarmData.Config.Ore_Spawn_Settings.CustomTileIndex;
                                 break;
                             case SavedObject.ObjectType.Monster:
-                                int? monID = Utility.SpawnMonster(spawns[y].SavedObject.MonType, location, spawns[y].SavedObject.Tile, spawns[y].SpawnArea.UniqueAreaID); //spawn monster and get its ID if successful
-                                if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
+                                customTiles = spawns[0].FarmData.Config.Monster_Spawn_Settings.CustomTileIndex;
+
+                                if (Utility.MConfig.MonsterLimitPerLocation.HasValue) //if a per-location monster limit was provided
                                 {
-                                    spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
-                                    if (monstersAtLocation.HasValue) //if the monster counter is being used
-                                    {
-                                        monstersAtLocation++; //increment monster counter
-                                    }
+                                    monstersAtLocation = location.characters.Count(character => character is Monster); //get the number of monsters at this location
                                 }
                                 break;
                         }
 
-                        if (spawns[y].SavedObject.ID.HasValue && spawns[y].SavedObject.DaysUntilExpire.HasValue) //if this object spawned successfully and has an expiration date
+                        //generate a new list of valid tiles for this spawn area
+                        List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, location, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles);
+
+                        for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
                         {
-                            spawns[y].FarmData.Save.SavedObjects.Add(spawns[y].SavedObject); //add the spawn to the relevant save data
+                            if (Utility.MConfig.MonsterLimitPerLocation.HasValue && Utility.MConfig.MonsterLimitPerLocation <= monstersAtLocation) //if this location has reached a provided monster limit
+                            {
+                                break; //skip the rest of this spawn list
+                            }
+
+                            Vector2? chosenTile = null;
+                            while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
+                            {
+                                int randomIndex = Utility.RNG.Next(tiles.Count); //get the array index for a random valid tile
+                                if (Utility.IsTileValid(location, tiles[randomIndex], isLarge, spawns[y].SpawnArea.StrictTileChecking)) //if this tile is valid
+                                {
+                                    chosenTile = tiles[randomIndex]; //choose this tile
+                                }
+                                tiles.RemoveAt(randomIndex); //remove the tile from the list
+                            }
+
+                            if (!chosenTile.HasValue) //if no remaining tiles were valid
+                            {
+                                break; //skip the rest of this spawn list
+                            }
+
+                            spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
+
+                            //spawn the object based on its type
+                            switch (spawns[y].SavedObject.Type)
+                            {
+                                case SavedObject.ObjectType.Forage:
+                                    Utility.SpawnForage(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn forage
+                                    break;
+                                case SavedObject.ObjectType.LargeObject:
+                                    Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, (Farm)location, spawns[y].SavedObject.Tile); //spawn large object
+                                    break;
+                                case SavedObject.ObjectType.Ore:
+                                    int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
+                                    if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
+                                    {
+                                        spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
+                                    }
+                                    break;
+                                case SavedObject.ObjectType.Monster:
+                                    int? monID = Utility.SpawnMonster(spawns[y].SavedObject.MonType, location, spawns[y].SavedObject.Tile, spawns[y].SpawnArea.UniqueAreaID); //spawn monster and get its ID if successful
+                                    if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
+                                    {
+                                        spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
+                                        if (monstersAtLocation.HasValue) //if the monster counter is being used
+                                        {
+                                            monstersAtLocation++; //increment monster counter
+                                        }
+                                    }
+                                    break;
+                            }
+
+                            if (spawns[y].SavedObject.ID.HasValue && spawns[y].SavedObject.DaysUntilExpire.HasValue) //if this object spawned successfully and has an expiration date
+                            {
+                                SavedObject saved = Utility.Clone(spawns[y].SavedObject); //clone this object to avoid accidental modification
+                                spawns[y].FarmData.Save.SavedObjects.Add(saved); //add the spawn to the relevant save data
+                            }
+
+                            spawned++; //increment the spawn tracker
                         }
 
-                        spawned++; //increment the spawn tracker
-                    }
-
-                    if (spawns[0].SpawnArea.SpawnTiming.SpawnSound != null && spawns[0].SpawnArea.SpawnTiming.SpawnSound.Trim() != "") //if this area has a SpawnSound setting
-                    {
-                        if (spawned > 0) //if anything was actually spawned
+                        if (spawns[0].SpawnArea.SpawnTiming.SpawnSound != null && spawns[0].SpawnArea.SpawnTiming.SpawnSound.Trim() != "") //if this area has a SpawnSound setting
                         {
-                            location.playSound(spawns[0].SpawnArea.SpawnTiming.SpawnSound); //play this area's SpawnSound
+                            if (spawned > 0) //if anything was actually spawned
+                            {
+                                location.playSound(spawns[0].SpawnArea.SpawnTiming.SpawnSound); //play this area's SpawnSound
+                            }
+
                         }
-                        
                     }
                 }
                 Utility.Monitor.VerboseLog($"Spawn process complete for time: {(int)time}. Objects spawned: {spawned}");

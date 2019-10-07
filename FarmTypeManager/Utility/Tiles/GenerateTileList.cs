@@ -17,11 +17,12 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Generates a list of all valid tiles for object spawning in the provided SpawnArea.</summary>
-            /// <param name="area">A SpawnArea listing an in-game map name and the valid regions/terrain within it that may be valid spawn points.</param>
-            /// <param name="quarryTileIndex">The list of quarry tile indices for this spawn process.</param>
-            /// <param name="customTileIndex">The list of custom tile indices for this spawn process.</param>
+            /// <param name="area">The SpawnArea that defines which tiles are valid for selection.</param>
+            /// <param name="location">The specific game location to be checked for valid tiles.</param>
+            /// <param name="quarryTileIndex">The list of valid "quarry" tile indices for this spawn process.</param>
+            /// <param name="customTileIndex">The list of valid "custom" tile indices for this spawn process.</param>
             /// <returns>A completed list of all valid tile coordinates for this spawn process in this SpawnArea.</returns>
-            public static List<Vector2> GenerateTileList(SpawnArea area, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex)
+            public static List<Vector2> GenerateTileList(SpawnArea area, GameLocation location, InternalSaveData save, int[] quarryTileIndex, int[] customTileIndex)
             {
                 HashSet<Vector2> validTiles = new HashSet<Vector2>(); //a set of all open, valid tiles for new spawns in the provided area
 
@@ -30,22 +31,22 @@ namespace FarmTypeManager
                 {
                     if (includeType.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "quarry" tile index list
                     {
-                        validTiles.UnionWith(GetTilesByIndex(area, quarryTileIndex));
+                        validTiles.UnionWith(GetTilesByIndex(location, quarryTileIndex));
                     }
                     else if (includeType.Equals("custom", StringComparison.OrdinalIgnoreCase)) //add tiles matching the "custom" tile index list
                     {
-                        validTiles.UnionWith(GetTilesByIndex(area, customTileIndex));
+                        validTiles.UnionWith(GetTilesByIndex(location, customTileIndex));
                     }
                     else  //add any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just add every tile)
                     {
-                        validTiles.UnionWith(GetTilesByProperty(area, includeType));
+                        validTiles.UnionWith(GetTilesByProperty(location, includeType));
                     }
                 }
                 
                 //include coordinates
                 foreach (string includeCoords in area.IncludeCoordinates) //check for tiles in each "include" zone for the area
                 {
-                    validTiles.UnionWith(GetTilesByVectorString(area, includeCoords));
+                    validTiles.UnionWith(GetTilesByVectorString(location, includeCoords));
                 }
 
                 //include existing object locations
@@ -55,7 +56,7 @@ namespace FarmTypeManager
                     {
                         foreach (string include in save.ExistingObjectLocations[area.UniqueAreaID]) //check each saved "include" string for the area
                         {
-                            validTiles.UnionWith(GetTilesByVectorString(area, include));
+                            validTiles.UnionWith(GetTilesByVectorString(location, include));
                         }
                     }
                     else //if this area has not generated any save data for existing locations yet (note: this *shouldn't* be reachable)
@@ -70,22 +71,22 @@ namespace FarmTypeManager
                 {
                     if (excludeType.Equals("quarry", StringComparison.OrdinalIgnoreCase)) //remove tiles matching the "quarry" tile index list
                     {
-                        validTiles.ExceptWith(GetTilesByIndex(area, quarryTileIndex));
+                        validTiles.ExceptWith(GetTilesByIndex(location, quarryTileIndex));
                     }
                     else if (excludeType.Equals("custom", StringComparison.OrdinalIgnoreCase)) //remove tiles matching the "custom" tile index list
                     {
-                        validTiles.ExceptWith(GetTilesByIndex(area, customTileIndex));
+                        validTiles.ExceptWith(GetTilesByIndex(location, customTileIndex));
                     }
                     else  //remove any tiles with properties matching "type" (e.g. tiles with the "Diggable" property, "Grass" type, etc; if the "type" is "All", this will just remove every tile)
                     {
-                        validTiles.ExceptWith(GetTilesByProperty(area, excludeType));
+                        validTiles.ExceptWith(GetTilesByProperty(location, excludeType));
                     }
                 }
                 
                 //exclude coordinates
                 foreach (string excludeCoords in area.ExcludeCoordinates) //check for tiles in each "exclude" zone for the area
                 {
-                    validTiles.ExceptWith(GetTilesByVectorString(area, excludeCoords)); //remove any tiles that match the excluded area
+                    validTiles.ExceptWith(GetTilesByVectorString(location, excludeCoords)); //remove any tiles that match the excluded area
                 }
 
                 return validTiles.ToList(); //convert the set to a list and return it

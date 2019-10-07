@@ -43,10 +43,11 @@ namespace FarmTypeManager
                     {
                         Utility.Monitor.Log($"Checking large object settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
-                        //validate the map name for the area
-                        if (Game1.getLocationFromName(area.MapName) == null)
+                        //validate map name for the area
+                        if (!(Game1.getLocationFromName(area.MapName) is Farm loc)) //if the provided map is not a farm (or is null)
                         {
-                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Large objects won't be spawned there.", LogLevel.Debug);
+                            //non-farm maps generally don't support resource clumps (a.k.a. large objects) properly, so display an error message and skip this area
+                            Utility.Monitor.Log($"The map named \"{area.MapName}\" could not be found OR is not a \"farm\" map type. Large objects won't be spawned there.", LogLevel.Debug);
                             continue;
                         }
 
@@ -58,13 +59,6 @@ namespace FarmTypeManager
                         }
 
                         Utility.Monitor.Log("All extra conditions met. Checking map's support for large objects...", LogLevel.Trace);
-
-                        Farm loc = Game1.getLocationFromName(area.MapName) as Farm; //variable for the current location being worked on (NOTE: null if the current location isn't a "farm" map)
-                        if (loc == null) //if this area isn't a "farm" map, there's usually no built-in support for resource clumps (i.e. large objects), so display an error message and skip this area
-                        {
-                            Utility.Monitor.Log($"Large objects cannot be spawned in the \"{area.MapName}\" map. Only \"farm\" map types are currently supported.", LogLevel.Info);
-                            continue;
-                        }
 
                         Utility.Monitor.Log("Current map supports large objects. Checking the Find Existing Objects setting...", LogLevel.Trace);
 

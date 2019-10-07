@@ -17,12 +17,11 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Produces a set of x/y coordinates for possible tiles for object spawning at a location (based on a string describing two vectors).</summary>
-            /// <param name="area">The SpawnArea describing the current area and its settings.</param>
+            /// <param name="location">The game location to be checked.</param>
             /// <param name="vectorString">A string describing two vectors. Parsed into vectors and used to find a rectangular area.</param>
             /// <returns>A list of Vector2, each representing a tile for object spawning at the given location.</returns>
-            public static HashSet<Vector2> GetTilesByVectorString(SpawnArea area, string vectorString)
+            public static HashSet<Vector2> GetTilesByVectorString(GameLocation location, string vectorString)
             {
-                GameLocation loc = Game1.getLocationFromName(area.MapName); //variable for the current location being worked on
                 HashSet<Vector2> tiles = new HashSet<Vector2>(); //x,y coordinates for tiles in the provided range
                 List<Tuple<Vector2, Vector2>> vectorPairs = new List<Tuple<Vector2, Vector2>>(); //pairs of x,y coordinates representing areas on the map (to be scanned for existing tiles)
 
@@ -30,7 +29,7 @@ namespace FarmTypeManager
                 string[] xyxy = vectorString.Split(new char[] { ',', '/', ';' }); //split the string into separate strings based on various delimiter symbols
                 if (xyxy.Length != 4) //if "xyxy" didn't split into the right number of strings, it's probably formatted poorly
                 {
-                    Monitor.Log($"Issue: This include/exclude area for the {area.MapName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
+                    Monitor.Log($"Issue: This include/exclude area for the \"{location.Name}\" map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
                 }
                 else
                 {
@@ -51,13 +50,13 @@ namespace FarmTypeManager
                     }
                     else
                     {
-                        Monitor.Log($"Issue: This include/exclude area for the {area.MapName} map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
+                        Monitor.Log($"Issue: This include/exclude area for the \"{location.Name}\" map isn't formatted correctly: \"{vectorString}\"", LogLevel.Info);
                     }
                 }
 
                 //get the total size of the current map
-                int mapX = loc.Map.DisplayWidth / Game1.tileSize;
-                int mapY = loc.Map.DisplayHeight / Game1.tileSize;
+                int mapX = location.Map.DisplayWidth / Game1.tileSize;
+                int mapY = location.Map.DisplayHeight / Game1.tileSize;
 
                 foreach (Tuple<Vector2, Vector2> pair in vectorPairs) //for each pair of coordinates
                 {

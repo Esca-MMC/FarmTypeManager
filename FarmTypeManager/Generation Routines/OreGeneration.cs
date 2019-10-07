@@ -6,6 +6,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
@@ -44,9 +46,9 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking ore settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        if (Game1.getLocationFromName(area.MapName) == null)
+                        if (Utility.GetAllLocationsFromName(area.MapName).Count == 0) //if no locations have this name
                         {
-                            Utility.Monitor.Log($"Issue: No map named \"{area.MapName}\" could be found. No ore will be spawned there.", LogLevel.Debug);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Ore won't be spawned there.", LogLevel.Debug);
                             continue;
                         }
 
