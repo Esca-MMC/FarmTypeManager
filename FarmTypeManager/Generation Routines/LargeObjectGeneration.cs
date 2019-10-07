@@ -124,7 +124,7 @@ namespace FarmTypeManager
                         //calculate how many objects to spawn today
                         int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, area.PercentExtraSpawnsPerSkillLevel, (Utility.Skills)Enum.Parse(typeof(Utility.Skills), area.RelatedSkill, true));
 
-                        Utility.Monitor.Log($"Calculating items to spawn: {spawnCount}. Beginning generation process...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Calculating potential spawns: {spawnCount}. Beginning generation process...", LogLevel.Trace);
 
                         List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
 

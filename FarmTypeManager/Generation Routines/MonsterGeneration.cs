@@ -46,7 +46,8 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking monster settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        if (Utility.GetAllLocationsFromName(area.MapName).Count == 0) //if no locations have this name
+                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Monsters won't be spawned there.", LogLevel.Debug);
                             continue;
@@ -70,63 +71,73 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log($"Deciding how many items to spawn...", LogLevel.Trace);
+                        Utility.Monitor.Log($"Monster type validation complete. Beginning generation process...", LogLevel.Trace);
 
-                        //calculate how many monsters to spawn today
-                        int spawnCount = Utility.RNG.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max
-
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Beginning generation process...", LogLevel.Trace);
-
-                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
-
-                        //begin to generate monsters
-                        while (spawnCount > 0) //while more monsters should be spawned
+                        for (int x = 0; x < locations.Count; x++) //for each location matching this area's map name
                         {
-                            spawnCount--;
+                            //calculate how many monsters to spawn today
+                            int spawnCount = Utility.RNG.Next(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay + 1); //random number from min to max
 
-                            //get the total spawn weight of valid monster types
-                            int totalWeight = 0;
-                            foreach (MonsterType type in validMonsterTypes) //for each valid monster type
+                            if (locations.Count > 1) //if this area targets multiple locations
                             {
-                                if (type.Settings.ContainsKey("SpawnWeight")) //if a custom spawn weight was provided
-                                {
-                                    totalWeight += Convert.ToInt32(type.Settings["SpawnWeight"]);
-                                }
-                                else //if no spawn weight was provided
-                                {
-                                    totalWeight += 1;
-                                }
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
+                            }
+                            else //if this area only targets one location
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
                             }
 
-                            //select a random monster using spawn weights
-                            MonsterType randomMonster = null;
-                            int random = Utility.RNG.Next(0, totalWeight); //get a random integer from 0 to (totalWeight - 1)
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
 
-                            for (int x = 0; x < validMonsterTypes.Count; x++) //for each valid monster type
+                            //begin to generate monsters
+                            while (spawnCount > 0) //while more monsters should be spawned
                             {
-                                int spawnWeight = 1; //default to 1
-                                if (validMonsterTypes[x].Settings.ContainsKey("SpawnWeight")) //if a spawn weight was provided
+                                spawnCount--;
+
+                                //get the total spawn weight of valid monster types
+                                int totalWeight = 0;
+                                foreach (MonsterType type in validMonsterTypes) //for each valid monster type
                                 {
-                                    spawnWeight = Convert.ToInt32(validMonsterTypes[x].Settings["SpawnWeight"]); //use it
+                                    if (type.Settings.ContainsKey("SpawnWeight")) //if a custom spawn weight was provided
+                                    {
+                                        totalWeight += Convert.ToInt32(type.Settings["SpawnWeight"]);
+                                    }
+                                    else //if no spawn weight was provided
+                                    {
+                                        totalWeight += 1;
+                                    }
                                 }
 
-                                if (random < spawnWeight) //if this monster type is selected
+                                //select a random monster using spawn weights
+                                MonsterType randomMonster = null;
+                                int random = Utility.RNG.Next(0, totalWeight); //get a random integer from 0 to (totalWeight - 1)
+
+                                for (int m = 0; m < validMonsterTypes.Count; m++) //for each valid monster type
                                 {
-                                    randomMonster = Utility.Clone(validMonsterTypes[x]); //get the selected monster type (cloned for later use as a unique instance)
-                                    break;
+                                    int spawnWeight = 1; //default to 1
+                                    if (validMonsterTypes[m].Settings.ContainsKey("SpawnWeight")) //if a spawn weight was provided
+                                    {
+                                        spawnWeight = Convert.ToInt32(validMonsterTypes[m].Settings["SpawnWeight"]); //use it
+                                    }
+
+                                    if (random < spawnWeight) //if this monster type is selected
+                                    {
+                                        randomMonster = Utility.Clone(validMonsterTypes[m]); //get the selected monster type (cloned for later use as a unique instance)
+                                        break;
+                                    }
+                                    else //if this monster type is not selected
+                                    {
+                                        random -= spawnWeight; //subtract this item's weight from the random number
+                                    }
                                 }
-                                else //if this monster type is not selected
-                                {
-                                    random -= spawnWeight; //subtract this item's weight from the random number
-                                }
+
+                                //create a saved object representing this spawn (with a "blank" tile location)
+                                SavedObject saved = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Monster, null, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster);
+                                spawns.Add(saved); //add it to the list
                             }
 
-                            //create a saved object representing this spawn (with a "blank" tile location)
-                            SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Monster, null, null, area.DaysUntilSpawnsExpire ?? 1, randomMonster);
-                            spawns.Add(saved); //add it to the list
+                            Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
                         }
-
-                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
 
                         Utility.Monitor.Log($"Monster spawn process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }

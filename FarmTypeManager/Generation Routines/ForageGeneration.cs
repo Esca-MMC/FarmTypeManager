@@ -46,7 +46,8 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking forage settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        if (Utility.GetAllLocationsFromName(area.MapName).Count == 0) //if no locations have this name
+                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Forage won't be spawned there.", LogLevel.Debug);
                             continue;
@@ -59,12 +60,7 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log("All extra conditions met. Deciding how many items to spawn...", LogLevel.Trace);
-
-                        //calculate how much forage to spawn today
-                        int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
-
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Retrieving list of forage types...", LogLevel.Trace);
+                        Utility.Monitor.Log("All extra conditions met. Retrieving list of forage types...", LogLevel.Trace);
 
                         object[] forageObjects = null; //the unprocessed array of forage types to use for this area today
 
@@ -142,21 +138,33 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log($"Forage types found: {forageIDs.Count}. Beginning generation process...", LogLevel.Trace);
 
-                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
-
-                        //begin to generate forage
-                        while (spawnCount > 0) //while more forage should be spawned
+                        for (int x = 0; x < locations.Count; x++) //for each location matching this area's map name
                         {
-                            spawnCount--;
+                            //calculate how much forage to spawn today
+                            int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
 
-                            int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
+                            if (locations.Count > 1) //if this area targets multiple locations
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
+                            }
+                            else //if this area only targets one location
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
+                            }
 
-                            //create a saved object representing this spawn (with a "blank" tile location)
-                            SavedObject forage = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire);
-                            spawns.Add(forage); //add it to the list
+                            //begin to generate forage
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+                            while (spawnCount > 0) //while more forage should be spawned
+                            {
+                                spawnCount--;
+
+                                int randomForage = forageIDs[Utility.RNG.Next(forageIDs.Count)]; //pick a random forage ID from the list
+                                SavedObject forage = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Forage, randomForage, null, area.DaysUntilSpawnsExpire); //create a saved object representing this spawn (with a "blank" tile location)
+                                spawns.Add(forage); //add it to the list
+                            }
+
+                            Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
                         }
-
-                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
 
                         Utility.Monitor.Log($"Forage generation complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }

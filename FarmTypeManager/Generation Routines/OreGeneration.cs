@@ -46,7 +46,8 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Checking ore settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
 
                         //validate the map name for the area
-                        if (Utility.GetAllLocationsFromName(area.MapName).Count == 0) //if no locations have this name
+                        List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                        if (locations.Count == 0) //if no locations were found
                         {
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Ore won't be spawned there.", LogLevel.Debug);
                             continue;
@@ -59,12 +60,7 @@ namespace FarmTypeManager
                             continue;
                         }
 
-                        Utility.Monitor.Log("All extra conditions met. Deciding how many items to spawn...", LogLevel.Trace);
-
-                        //calculate how much ore to spawn today
-                        int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Utility.Skills.Mining);
-
-                        Utility.Monitor.Log($"Items to spawn: {spawnCount}. Determining spawn chances for ore...", LogLevel.Trace);
+                        Utility.Monitor.Log("All extra conditions met. Determining spawn chances for ore...", LogLevel.Trace);
 
                         //figure out which config section to use (if the spawn area's data is null, use the "global" data instead)
                         Dictionary<string, int> skillReq = area.MiningLevelRequired ?? data.Config.Ore_Spawn_Settings.MiningLevelRequired;
@@ -95,38 +91,53 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log($"Spawn chances complete. Beginning generation process...", LogLevel.Trace);
 
-                        List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
-
-                        //begin to generate ore
-                        int randomOreNum;
-                        while (spawnCount > 0) //while more ore should be spawned
+                        for (int x = 0; x < locations.Count; x++) //for each location matching this area's map name
                         {
-                            spawnCount--;
+                            //calculate how much ore to spawn today
+                            int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Ore_Spawn_Settings.PercentExtraSpawnsPerMiningLevel, Utility.Skills.Mining);
 
-                            int totalWeight = 0; //the upper limit for the random number that picks ore type (i.e. the sum of all ore chances)
-                            foreach (KeyValuePair<string, int> ore in oreChances)
+                            if (locations.Count > 1) //if this area targets multiple locations
                             {
-                                totalWeight += ore.Value; //sum up all the ore chances
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
                             }
-                            randomOreNum = Utility.RNG.Next(totalWeight); //generate random number from 0 to [totalWeight - 1]
-                            foreach (KeyValuePair<string, int> ore in oreChances)
+                            else //if this area only targets one location
                             {
-                                if (randomOreNum < ore.Value) //this ore "wins"
-                                {
-                                    //create a saved object representing this spawn (with a "blank" tile location)
-                                    SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.Ore, null, ore.Key, area.DaysUntilSpawnsExpire);
-                                    spawns.Add(saved); //add it to the list
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
+                            }
 
-                                    break;
-                                }
-                                else //this ore "loses"
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+
+                            //begin to generate ore
+                            int randomOreNum;
+                            while (spawnCount > 0) //while more ore should be spawned
+                            {
+                                spawnCount--;
+
+                                int totalWeight = 0; //the upper limit for the random number that picks ore type (i.e. the sum of all ore chances)
+                                foreach (KeyValuePair<string, int> ore in oreChances)
                                 {
-                                    randomOreNum -= ore.Value; //subtract this ore's chance from the random number before moving to the next one
+                                    totalWeight += ore.Value; //sum up all the ore chances
+                                }
+                                randomOreNum = Utility.RNG.Next(totalWeight); //generate random number from 0 to [totalWeight - 1]
+                                foreach (KeyValuePair<string, int> ore in oreChances)
+                                {
+                                    if (randomOreNum < ore.Value) //this ore "wins"
+                                    {
+                                        //create a saved object representing this spawn (with a "blank" tile location)
+                                        SavedObject saved = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Ore, null, ore.Key, area.DaysUntilSpawnsExpire);
+                                        spawns.Add(saved); //add it to the list
+
+                                        break;
+                                    }
+                                    else //this ore "loses"
+                                    {
+                                        randomOreNum -= ore.Value; //subtract this ore's chance from the random number before moving to the next one
+                                    }
                                 }
                             }
+
+                            Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
                         }
-
-                        Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns
 
                         Utility.Monitor.Log($"Ore generation process complete for this area: \"{area.UniqueAreaID}\" ({area.MapName})", LogLevel.Trace);
                     }
