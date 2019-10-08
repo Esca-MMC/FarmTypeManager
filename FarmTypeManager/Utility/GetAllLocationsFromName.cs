@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -45,6 +47,28 @@ namespace FarmTypeManager
                             }
                         }
                     }
+                }
+
+                if (locations == null) //if locations is still null
+                {
+                    //check for TMXLoader buildable locations
+                    if (Type.GetType("TMXLoader.TMXLoaderMod, TMXLoader") is Type tmx) //if TMXLoader can be accessed
+                    {
+                        if (tmx.GetField("buildablesBuild", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) is IList tmxSaveBuildables) //if tmx's SaveBuildables list can be accessed
+                        {
+                            foreach (object sb in tmxSaveBuildables) //for each saved buildable in TMXLoader
+                            {
+                                if (sb.GetType() is Type sbType && sbType.GetProperty("UniqueId").GetValue(sb) is string UniqueId && sbType.GetProperty("Id").GetValue(sb) is string Id) //if this buildable's UniqueID and ID can be accessed
+                                {
+                                    string mapName = "BuildableIndoors-" + UniqueId; //construct the GameLocation.Name used for this buildable's interior location
+                                    if (name == Id && Game1.getLocationFromName(mapName) is GameLocation indoors) //if the provided name equals this buildable's ID AND the interior location exists
+                                    {
+                                        locations.Add(indoors); //add this location to the list
+                                    }
+                                }
+                            }
+                        }
+                    }      
                 }
 
                 return locations;
