@@ -47,7 +47,7 @@ namespace FarmTypeManager
                         if (!(Game1.getLocationFromName(area.MapName) is Farm loc)) //if the provided map is not a farm (or is null)
                         {
                             //non-farm maps generally don't support resource clumps (a.k.a. large objects) properly, so display an error message and skip this area
-                            Utility.Monitor.Log($"The map named \"{area.MapName}\" could not be found OR is not a \"farm\" map type. Large objects won't be spawned there.", LogLevel.Debug);
+                            Utility.Monitor.Log($"The map named \"{area.MapName}\" could not be found OR is not a \"farm\" map type. Large objects won't be spawned there.", LogLevel.Trace);
                             continue;
                         }
 

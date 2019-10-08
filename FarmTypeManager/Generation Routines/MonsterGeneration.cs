@@ -49,7 +49,7 @@ namespace FarmTypeManager
                         List<GameLocation> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
                         if (locations.Count == 0) //if no locations were found
                         {
-                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Monsters won't be spawned there.", LogLevel.Debug);
+                            Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Monsters won't be spawned there.", LogLevel.Trace);
                             continue;
                         }
 

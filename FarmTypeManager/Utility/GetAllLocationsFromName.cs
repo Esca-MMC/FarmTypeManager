@@ -49,7 +49,7 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (locations == null) //if locations is still null
+                if (locations.Count == 0) //if locations is still empty
                 {
                     //check for TMXLoader buildable locations
                     if (Type.GetType("TMXLoader.TMXLoaderMod, TMXLoader") is Type tmx) //if TMXLoader can be accessed
