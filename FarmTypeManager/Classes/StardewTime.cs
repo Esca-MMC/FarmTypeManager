@@ -27,7 +27,8 @@ namespace FarmTypeManager
             {
                 get
                 {
-                    return time;
+
+                    return Math.Max(time, 600); //always return 600 or higher
                 }
 
                 set

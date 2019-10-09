@@ -43,17 +43,17 @@ namespace FarmTypeManager
                     int index = RNG.Next(0, possibleTimes.Count); //randomly select an index for a valid time
                     obj.SpawnTime = possibleTimes.Keys.ElementAt(index); //assign the time to this object
                     timedSpawns.Add(new TimedSpawn(obj, data, area)); //add this object to the processed list
-                    possibleTimes[obj.SpawnTime.Value]++; //increment the number of objects assigned to this time
+                    possibleTimes[obj.SpawnTime]++; //increment the number of objects assigned to this time
 
-                    if (area.SpawnTiming.MaximumSimultaneousSpawns.HasValue && area.SpawnTiming.MaximumSimultaneousSpawns.Value <= possibleTimes[obj.SpawnTime.Value]) //if "max spawns" exists and has been reached for this time
+                    if (area.SpawnTiming.MaximumSimultaneousSpawns.HasValue && area.SpawnTiming.MaximumSimultaneousSpawns.Value <= possibleTimes[obj.SpawnTime]) //if "max spawns" exists and has been reached for this time
                     {
-                        possibleTimes.Remove(obj.SpawnTime.Value); //remove this time from the list
+                        possibleTimes.Remove(obj.SpawnTime); //remove this time from the list
                     }
                     else if (area.SpawnTiming.MinimumTimeBetweenSpawns.HasValue && area.SpawnTiming.MinimumTimeBetweenSpawns.Value > 10) //if "time between" exists and is significant
                     {
                         int between = (area.SpawnTiming.MinimumTimeBetweenSpawns.Value - 10) / 10; //get the number of other possible times to remove before/after the selected time
-                        StardewTime minTime = obj.SpawnTime.Value; //the earliest time to be removed from the list
-                        StardewTime maxTime = obj.SpawnTime.Value; //the latest time to be removed from the list
+                        StardewTime minTime = obj.SpawnTime; //the earliest time to be removed from the list
+                        StardewTime maxTime = obj.SpawnTime; //the latest time to be removed from the list
 
                         for (int x = 0; x < between; x++) //for each adjacent time to be removed
                         {
@@ -64,7 +64,7 @@ namespace FarmTypeManager
                         for (int x = possibleTimes.Count - 1; x >= 0; x--) //for each possible time (looping backward for removal purposes)
                         {
                             int time = possibleTimes.Keys.ElementAt(x);
-                            if (time != obj.SpawnTime.Value && time >= minTime && time <= maxTime) //if this time isn't the selected time, and is within the range of minTime and maxTime
+                            if (time != obj.SpawnTime && time >= minTime && time <= maxTime) //if this time isn't the selected time, and is within the range of minTime and maxTime
                             {
                                 possibleTimes.Remove(time); //remove it from the list
                             }
