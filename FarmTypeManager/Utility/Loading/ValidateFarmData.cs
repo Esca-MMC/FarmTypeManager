@@ -31,10 +31,23 @@ namespace FarmTypeManager
                 }
 
                 List<SpawnArea[]> allAreas = new List<SpawnArea[]>(); //a unified list of each "Areas" array in this config file
-                allAreas.Add(config.Forage_Spawn_Settings.Areas);
-                allAreas.Add(config.Large_Object_Spawn_Settings.Areas);
-                allAreas.Add(config.Ore_Spawn_Settings.Areas);
-                allAreas.Add(config.Monster_Spawn_Settings.Areas);
+                //add each group of spawn areas to the list (unless its config section is null)
+                if (config.Forage_Spawn_Settings != null)
+                {
+                    allAreas.Add(config.Forage_Spawn_Settings.Areas);
+                }
+                if (config.Large_Object_Spawn_Settings != null)
+                {
+                    allAreas.Add(config.Large_Object_Spawn_Settings.Areas);
+                }
+                if (config.Ore_Spawn_Settings != null)
+                {
+                    allAreas.Add(config.Ore_Spawn_Settings.Areas);
+                }
+                if (config.Monster_Spawn_Settings != null)
+                {
+                    allAreas.Add(config.Monster_Spawn_Settings.Areas);
+                }
 
                 Monitor.Log("Checking for duplicate UniqueAreaIDs...", LogLevel.Trace);
                 HashSet<string> IDs = new HashSet<string>(); //a record of all unique IDs encountered during this process

@@ -29,13 +29,21 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Starting large object generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
-                    if (data.Config.LargeObjectSpawnEnabled)
+                    if (data.Config.Large_Object_Spawn_Settings != null) //if this config contains large object settings
                     {
-                        Utility.Monitor.Log("Large object generation is enabled. Starting generation process...", LogLevel.Trace);
+                        if (data.Config.LargeObjectSpawnEnabled)
+                        {
+                            Utility.Monitor.Log("Large object generation is enabled. Starting generation process...", LogLevel.Trace);
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log($"Large object generation is disabled for this {(data.Pack == null ? "file" : "content pack")}.", LogLevel.Trace);
+                            continue;
+                        }
                     }
-                    else
+                    else //if this config's large object settings are null
                     {
-                        Utility.Monitor.Log("Large object generation is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log($"This {(data.Pack == null ? "file" : "content pack")}'s large object spawn settings are blank.", LogLevel.Trace);
                         continue;
                     }
 

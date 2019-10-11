@@ -31,13 +31,21 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Starting forage generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
-                    if (data.Config.ForageSpawnEnabled)
+                    if (data.Config.Forage_Spawn_Settings != null) //if this config contains forage settings
                     {
-                        Utility.Monitor.Log("Forage generation is enabled. Starting generation process...", LogLevel.Trace);
+                        if (data.Config.ForageSpawnEnabled)
+                        {
+                            Utility.Monitor.Log("Forage generation is enabled. Starting generation process...", LogLevel.Trace);
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log($"Forage generation is disabled for this {(data.Pack == null ? "file" : "content pack")}.", LogLevel.Trace);
+                            continue;
+                        }
                     }
-                    else
+                    else //if this config's forage settings are null
                     {
-                        Utility.Monitor.Log("Forage generation is disabled for this file.", LogLevel.Trace);
+                        Utility.Monitor.Log($"This {(data.Pack == null ? "file" : "content pack")}'s forage spawn settings are blank.", LogLevel.Trace);
                         continue;
                     }
 

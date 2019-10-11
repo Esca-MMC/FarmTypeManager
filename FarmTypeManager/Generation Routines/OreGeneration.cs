@@ -31,13 +31,21 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Starting ore generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
-                    if (data.Config.OreSpawnEnabled)
+                    if (data.Config.Ore_Spawn_Settings != null) //if this config contains ore settings
                     {
-                        Utility.Monitor.Log("Ore generation is enabled. Starting generation process...", LogLevel.Trace);
+                        if (data.Config.OreSpawnEnabled)
+                        {
+                            Utility.Monitor.Log("Ore generation is enabled. Starting generation process...", LogLevel.Trace);
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log($"Ore generation is disabled for this {(data.Pack == null ? "file" : "content pack")}.", LogLevel.Trace);
+                            continue;
+                        }
                     }
-                    else
+                    else //if this config's ore settings are null
                     {
-                        Utility.Monitor.Log("Ore generation is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log($"This {(data.Pack == null ? "file" : "content pack")}'s ore spawn settings are blank.", LogLevel.Trace);
                         continue;
                     }
 

@@ -31,13 +31,21 @@ namespace FarmTypeManager
                         Utility.Monitor.Log($"Starting monster generation for this file: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Trace);
                     }
 
-                    if (data.Config.MonsterSpawnEnabled)
+                    if (data.Config.Monster_Spawn_Settings != null) //if this config contains monster settings
                     {
-                        Utility.Monitor.Log("Monster generation is enabled. Starting generation process...", LogLevel.Trace);
+                        if (data.Config.MonsterSpawnEnabled)
+                        {
+                            Utility.Monitor.Log("Monster generation is enabled. Starting generation process...", LogLevel.Trace);
+                        }
+                        else
+                        {
+                            Utility.Monitor.Log($"Monster generation is disabled for this {(data.Pack == null ? "file" : "content pack")}.", LogLevel.Trace);
+                            continue;
+                        }
                     }
-                    else
+                    else //if this config's monster settings are null
                     {
-                        Utility.Monitor.Log("Monster generation is disabled.", LogLevel.Trace);
+                        Utility.Monitor.Log($"This {(data.Pack == null ? "file" : "content pack")}'s monster spawn settings are blank.", LogLevel.Trace);
                         continue;
                     }
 
