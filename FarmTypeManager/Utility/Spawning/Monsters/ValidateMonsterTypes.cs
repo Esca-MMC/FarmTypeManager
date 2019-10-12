@@ -305,14 +305,14 @@ namespace FarmTypeManager
                         }
                     }
 
-                    //validate skill level requirement
-                    if (validTypes[x].Settings.ContainsKey("SkillLevelRequired"))
+                    //validate minimum skill requirement
+                    if (validTypes[x].Settings.ContainsKey("MinimumSkillLevel"))
                     {
-                        if (validTypes[x].Settings["SkillLevelRequired"] is long) //if this is a readable integer
+                        if (validTypes[x].Settings["MinimumSkillLevel"] is long) //if this is a readable integer
                         {
                             if (validTypes[x].Settings.ContainsKey("RelatedSkill")) //if a RelatedSkill has been provided
                             {
-                                int required = Convert.ToInt32(validTypes[x].Settings["SkillLevelRequired"]);
+                                int required = Convert.ToInt32(validTypes[x].Settings["MinimumSkillLevel"]);
                                 int highestSkillLevel = 0; //highest skill level among all existing farmers (not just the host)
                                 Enum.TryParse((string)validTypes[x].Settings["RelatedSkill"], true, out Skills skill); //parse the RelatedSkill setting into an enum (note: the setting should be validated earlier in this method)
 
@@ -322,27 +322,68 @@ namespace FarmTypeManager
                                     highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the farmer's skill level if it's higher than before
                                 }
 
-                                if (required > highestSkillLevel) //if the skill requirement is higher than any farmer's skill
+                                if (required > highestSkillLevel) //if the skill requirement is higher than the farmers' highest skill
                                 {
-                                    Monitor.Log($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to skill level requirement.", LogLevel.Trace);
+                                    Monitor.Log($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to minimum skill level.", LogLevel.Trace);
                                     validTypes.RemoveAt(x); //remove this type from the valid list
                                     continue; //skip to the next monster type
                                 }
                             }
                             else //if a RelatedSkill was not provided
                             {
-                                Monitor.Log($"Monster type \"{validTypes[x].MonsterName}\" has a valid setting for \"SkillLevelRequired\" but not \"RelatedSkill\". The requirement will be skipped.", LogLevel.Info);
+                                Monitor.Log($"Monster type \"{validTypes[x].MonsterName}\" has a valid setting for \"MinimumSkillLevel\" but not \"RelatedSkill\". The requirement will be skipped.", LogLevel.Info);
                                 Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
-                                validTypes[x].Settings.Remove("SkillLevelRequired"); //remove the setting
+                                validTypes[x].Settings.Remove("MinimumSkillLevel"); //remove the setting
                             }
                         }
                         else //if this isn't a readable integer
                         {
-                            Monitor.Log($"The \"SkillLevelRequired\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"The \"MinimumSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
-                            validTypes[x].Settings.Remove("SkillLevelRequired"); //remove the setting
+                            validTypes[x].Settings.Remove("MinimumSkillLevel"); //remove the setting
+                        }
+                    }
+
+                    //validate maximum skill requirement
+                    if (validTypes[x].Settings.ContainsKey("MaximumSkillLevel"))
+                    {
+                        if (validTypes[x].Settings["MaximumSkillLevel"] is long) //if this is a readable integer
+                        {
+                            if (validTypes[x].Settings.ContainsKey("RelatedSkill")) //if a RelatedSkill has been provided
+                            {
+                                int required = Convert.ToInt32(validTypes[x].Settings["MaximumSkillLevel"]);
+                                int highestSkillLevel = 0; //highest skill level among all existing farmers (not just the host)
+                                Enum.TryParse((string)validTypes[x].Settings["RelatedSkill"], true, out Skills skill); //parse the RelatedSkill setting into an enum (note: the setting should be validated earlier in this method)
+
+                                foreach (Farmer farmer in Game1.getAllFarmers()) //for each farmer
+                                {
+
+                                    highestSkillLevel = Math.Max(highestSkillLevel, farmer.getEffectiveSkillLevel((int)skill)); //record the farmer's skill level if it's higher than before
+                                }
+
+                                if (required < highestSkillLevel) //if the skill requirement is lower than the farmers' highest skill
+                                {
+                                    Monitor.Log($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to maximum skill level.", LogLevel.Trace);
+                                    validTypes.RemoveAt(x); //remove this type from the valid list
+                                    continue; //skip to the next monster type
+                                }
+                            }
+                            else //if a RelatedSkill was not provided
+                            {
+                                Monitor.Log($"Monster type \"{validTypes[x].MonsterName}\" has a valid setting for \"MaximumSkillLevel\" but not \"RelatedSkill\". The requirement will be skipped.", LogLevel.Info);
+                                Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                                validTypes[x].Settings.Remove("MaximumSkillLevel"); //remove the setting
+                            }
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"MaximumSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("MaximumSkillLevel"); //remove the setting
                         }
                     }
 
