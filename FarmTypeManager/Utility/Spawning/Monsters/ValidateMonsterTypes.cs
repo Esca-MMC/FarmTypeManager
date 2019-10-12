@@ -324,7 +324,7 @@ namespace FarmTypeManager
 
                                 if (required > highestSkillLevel) //if the skill requirement is higher than the farmers' highest skill
                                 {
-                                    Monitor.Log($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to minimum skill level.", LogLevel.Trace);
+                                    Monitor.VerboseLog($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to minimum skill level.");
                                     validTypes.RemoveAt(x); //remove this type from the valid list
                                     continue; //skip to the next monster type
                                 }
@@ -365,7 +365,7 @@ namespace FarmTypeManager
 
                                 if (required < highestSkillLevel) //if the skill requirement is lower than the farmers' highest skill
                                 {
-                                    Monitor.Log($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to maximum skill level.", LogLevel.Trace);
+                                    Monitor.VerboseLog($"Skipping monster type \"{validTypes[x].MonsterName}\" in spawn area \"{areaID}\" due to maximum skill level.");
                                     validTypes.RemoveAt(x); //remove this type from the valid list
                                     continue; //skip to the next monster type
                                 }

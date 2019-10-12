@@ -90,7 +90,7 @@ namespace FarmTypeManager
 
             public string StrictTileChecking { get; set; } = "High";
 
-            private SpawnTiming spawnTiming;
+            private SpawnTiming spawnTiming = new SpawnTiming();
             public SpawnTiming SpawnTiming
             {
                 get
