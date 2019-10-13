@@ -23,7 +23,7 @@ namespace FarmTypeManager
             /// <param name="time">An in-game time value. If provided, only objects with matching SpawnTime values will be spawned.</param>
             public static void SpawnTimedSpawns(List<List<TimedSpawn>> timedSpawns, StardewTime? time = null)
             {
-                Utility.Monitor.VerboseLog($"Spawning objects set to appear at time: {(int?)time}");
+                Utility.Monitor.VerboseLog($"Spawning objects set to appear at time: {(int?)time}...");
 
                 int spawned = 0; //tracks the number of objects spawned during this process
                 bool filter(TimedSpawn spawn) => spawn.SavedObject.SpawnTime == time; //define a filter that is true when a TimedSpawn matches the provided time
@@ -72,7 +72,7 @@ namespace FarmTypeManager
 
                         if (!playerIsPresent) //if no players are present
                         {
-                            Utility.Monitor.Log($"Skipping spawns for this location because no players are present: {spawns[0].SpawnArea.UniqueAreaID} ({spawns[0].SpawnArea.MapName})", LogLevel.Trace);
+                            Utility.Monitor.VerboseLog($"Skipping spawns for this location because no players are present: {spawns[0].SpawnArea.UniqueAreaID} ({spawns[0].SpawnArea.MapName})");
                             continue; //skip to the next list
                         }
                     }
@@ -177,7 +177,7 @@ namespace FarmTypeManager
 
                     }
                 }
-                Utility.Monitor.VerboseLog($"Spawn process complete for time: {(int)time}. Objects spawned: {spawned}");
+                Utility.Monitor.VerboseLog($"Spawn process complete for time: {(int)time}. Objects spawned: {spawned}.");
             }
         }
     }
