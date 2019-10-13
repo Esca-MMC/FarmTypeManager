@@ -21,7 +21,7 @@ namespace FarmTypeManager.Monsters
         public GhostFTM(Vector2 position)
             : base(position)
         {
-
+            HideShadow = true;
         }
 
         /// <summary>Creates an instance of Stardew's Ghost class, but with adjustments made for this mod.</summary>
@@ -30,7 +30,7 @@ namespace FarmTypeManager.Monsters
         public GhostFTM(Vector2 position, string name)
             : base(position, name)
         {
-
+            HideShadow = true;
         }
 
         //this override forces any instance of GameLocation to call drawAboveAllLayers, fixing a bug where flying monsters are invisible on some maps
