@@ -85,6 +85,15 @@ namespace FarmTypeManager
 
             foreach (FarmData data in Utility.FarmDataList) //for each set of farm data
             {
+                if (data.Pack != null) //if this data is from a content pack
+                {
+                    Monitor.VerboseLog($"Processing save data for content pack: {data.Pack.Manifest.Name}");
+                }
+                else //this data is from this mod's own folders
+                {
+                    Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                }
+
                 Utility.ProcessObjectExpiration(data.Save); //remove expired objects & update saved expiration data
 
                 data.Save.WeatherForYesterday = Utility.WeatherForToday(); //update saved weather info

@@ -20,12 +20,17 @@ namespace FarmTypeManager
                 }
                 set
                 {
-                    if (value != null && value.Comparer != StringComparer.OrdinalIgnoreCase) //if the provided dictionary exists & isn't using a case-insensitive comparer
+                    if (value == null) //if the provided dictionary doesn't exist
                     {
-                        //create and use a copy with a case-insensitive comparer
+                        //create a new dictionary with a case-insensitive comparer
+                        settings = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                    }
+                    else if (value.Comparer != StringComparer.OrdinalIgnoreCase) //if the provided dictionary exists, but isn't using a case-insensitive comparer
+                    {
+                        //copy the provided dictionary and use a case-insensitive comparer
                         settings = new Dictionary<string, object>(value, StringComparer.OrdinalIgnoreCase);
                     }
-                    else
+                    else //if the provided dictionary exists is using the correct comparer
                     {
                         settings = value;
                     }

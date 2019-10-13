@@ -21,7 +21,6 @@ namespace FarmTypeManager
             /// <param name="save">The save data to the checked.</param>
             public static void ProcessObjectExpiration(InternalSaveData save)
             {
-                Monitor.Log($"Updating save data for missing/expired objects...", LogLevel.Trace);
                 List<SavedObject> objectsToRemove = new List<SavedObject>(); //objects to remove from saved data after processing (note: do not remove them while looping through them)
 
                 foreach (SavedObject saved in save.SavedObjects) //for each saved object & expiration countdown
@@ -58,7 +57,7 @@ namespace FarmTypeManager
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
 
-                                if (!saved.MonType.Settings.ContainsKey("PersistentHP") || (bool)saved.MonType.Settings["PersistentHP"]) //if PersistentHP wasn't provided OR is set to true
+                                if (saved.MonType != null && (!saved.MonType.Settings.ContainsKey("PersistentHP") || (bool)saved.MonType.Settings["PersistentHP"])) //if PersistentHP wasn't provided OR is set to true
                                 {
                                     saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
                                 }
@@ -147,7 +146,7 @@ namespace FarmTypeManager
 
                 }
 
-                Monitor.Log($"Expiration check complete. Clearing {objectsToRemove.Count} missing/expired objects from save data.", LogLevel.Trace);
+                Monitor.Log($"Expiration check complete. Clearing {objectsToRemove.Count} missing/expired objects.", LogLevel.Trace);
                 foreach (SavedObject saved in objectsToRemove) //for each object that should be removed from the save data
                 {
                     save.SavedObjects.Remove(saved); //remove it
