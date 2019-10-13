@@ -64,11 +64,11 @@ namespace FarmTypeManager
 
                         if (IDs.Contains(area.UniqueAreaID)) //if this area's ID was already encountered
                         {
-                            Monitor.Log($"Duplicate UniqueAreaID found: \"{area.UniqueAreaID}\" will be renamed.", LogLevel.Info);
+                            Monitor.Log($"Duplicate UniqueAreaID found: \"{area.UniqueAreaID}\" will be renamed.", LogLevel.Debug);
                             if (pack != null) //if this config is from a content pack
                             {
                                 Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Info);
-                                Monitor.Log($"If this happens after updating another mod, it might cause certain conditions (such as one-time-only spawns) to reset in that area.", LogLevel.Info);
+                                Monitor.Log($"If this happened after updating another mod, it might cause certain conditions (such as one-time-only spawns) to reset in that area.", LogLevel.Debug);
                             }
 
                             area.UniqueAreaID = ""; //erase this area's ID, marking it for replacement
