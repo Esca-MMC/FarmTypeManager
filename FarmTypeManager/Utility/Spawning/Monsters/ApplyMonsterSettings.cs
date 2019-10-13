@@ -207,6 +207,15 @@ namespace FarmTypeManager
                     monster.Health = monster.MaxHealth; //set it to max HP
                 }
 
+                //set whether the monster automatically sees players at spawn
+                if (settings.ContainsKey("SeesPlayersAtSpawn"))
+                {
+                    if ((bool)settings["SeesPlayersAtSpawn"]) //if the setting is true (note: supposedly, some monsters behave incorrectly if focusedOnFarmers is set to false)
+                    {
+                        monster.focusedOnFarmers = true; //set the monster focus
+                    }
+                }
+
                 //set sprite
                 if (settings.ContainsKey("Sprite"))
                 {

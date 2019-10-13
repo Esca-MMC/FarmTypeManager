@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -28,10 +29,9 @@ namespace FarmTypeManager
                 Monster monster = null; //an instatiated monster, to be spawned into the world later
 
                 Color? color = null; //the monster's color (used by specific monster types)
-
                 if (monsterType.Settings != null) //if settings were provided
                 {
-                    if (monsterType.Settings.ContainsKey("Color")) //if color was provided
+                    if (monsterType.Settings.ContainsKey("Color")) //if this setting was provided
                     {
                         string[] colorText = ((string)monsterType.Settings["Color"]).Trim().Split(' '); //split the setting string into strings for each number
                         int[] colorRGB = new int[] { Convert.ToInt32(colorText[0]), Convert.ToInt32(colorText[1]), Convert.ToInt32(colorText[2]) }; //convert the strings into numbers
@@ -55,8 +55,17 @@ namespace FarmTypeManager
                     }
                 }
 
-                //create a new monster based on the provided name & apply type-specific settings
-                switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
+                bool seesPlayers = false; //whether the monster automatically "sees" players at spawn (handled differently by some monster types)
+                if (monsterType.Settings != null) //if settings were provided
+                {
+                    if (monsterType.Settings.ContainsKey("SeesPlayersAtSpawn")) //if this setting was provided
+                    {
+                        seesPlayers = (bool)monsterType.Settings["SeesPlayersAtSpawn"]; //use the provided setting
+                    }
+                }
+
+                        //create a new monster based on the provided name & apply type-specific settings
+                        switch (monsterType.MonsterName.ToLower()) //avoid most casing issues by making this lower-case
                 {
                     case "bat":
                         monster = new BatFTM(tile, 0);
@@ -82,6 +91,10 @@ namespace FarmTypeManager
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            monster.IsWalkingTowardPlayer = true;
+                        }
                         break;
                     case "bigblueslime":
                     case "big blue slime":
@@ -91,6 +104,10 @@ namespace FarmTypeManager
                         if (color.HasValue) //if color was provided
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            monster.IsWalkingTowardPlayer = true;
                         }
                         break;
                     case "bigredslime":
@@ -102,6 +119,10 @@ namespace FarmTypeManager
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
                         }
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            monster.IsWalkingTowardPlayer = true;
+                        }
                         break;
                     case "bigpurpleslime":
                     case "big purple slime":
@@ -111,6 +132,10 @@ namespace FarmTypeManager
                         if (color.HasValue) //if color was provided
                         {
                             ((BigSlimeFTM)monster).c.Value = color.Value; //set its color after creation
+                        }
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            monster.IsWalkingTowardPlayer = true;
                         }
                         break;
                     case "bug":
@@ -244,6 +269,14 @@ namespace FarmTypeManager
                         break;
                     case "skeleton":
                         monster = new Skeleton(tile);
+                        if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
+                        {
+                            if (typeof(Skeleton).GetField("spottedPlayer", BindingFlags.NonPublic | BindingFlags.Instance) is FieldInfo field) //try to access this skeleton's private "spottedPlayer" field
+                            {
+                                field.SetValue(monster, true); //set "spottedPlayer" to true
+                                monster.IsWalkingTowardPlayer = true;
+                            }
+                        }
                         break;
                     case "squid":
                     case "kid":

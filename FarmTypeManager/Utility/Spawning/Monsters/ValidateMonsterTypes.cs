@@ -525,6 +525,18 @@ namespace FarmTypeManager
                         }
                     }
 
+                    //validate seeing players at spawn
+                    if (validTypes[x].Settings.ContainsKey("SeesPlayersAtSpawn"))
+                    {
+                        if (!(validTypes[x].Settings["SeesPlayersAtSpawn"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"SeesPlayersAtSpawn\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("SeesPlayersAtSpawn"); //remove the setting
+                        }
+                    }
+
                     //validate color
                     if (validTypes[x].Settings.ContainsKey("Color")) //if color was provided
                     {
@@ -586,27 +598,6 @@ namespace FarmTypeManager
                         }
                     }
 
-                    //validate spawn weight
-                    if (validTypes[x].Settings.ContainsKey("SpawnWeight"))
-                    {
-                        if (validTypes[x].Settings["SpawnWeight"] is long) //if this is a readable integer
-                        {
-                            int weight = Convert.ToInt32(validTypes[x].Settings["SpawnWeight"]);
-                            if (weight < 1) //if the setting is too low
-                            {
-                                Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" is {weight}. Setting it to 1.", LogLevel.Trace);
-                                validTypes[x].Settings["SpawnWeight"] = (long)1; //set to 1
-                            }
-                        }
-                        else //if this isn't a readable integer
-                        {
-                            Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
-
-                            validTypes[x].Settings.Remove("SpawnWeight"); //remove the setting
-                        }
-                    }
-
                     //validate sprite
                     if (validTypes[x].Settings.ContainsKey("Sprite"))
                     {
@@ -630,6 +621,27 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                             validTypes[x].Settings.Remove("Sprite"); //remove the setting
+                        }
+                    }
+
+                    //validate spawn weight
+                    if (validTypes[x].Settings.ContainsKey("SpawnWeight"))
+                    {
+                        if (validTypes[x].Settings["SpawnWeight"] is long) //if this is a readable integer
+                        {
+                            int weight = Convert.ToInt32(validTypes[x].Settings["SpawnWeight"]);
+                            if (weight < 1) //if the setting is too low
+                            {
+                                Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" is {weight}. Setting it to 1.", LogLevel.Trace);
+                                validTypes[x].Settings["SpawnWeight"] = (long)1; //set to 1
+                            }
+                        }
+                        else //if this isn't a readable integer
+                        {
+                            Monitor.Log($"The \"SpawnWeight\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("SpawnWeight"); //remove the setting
                         }
                     }
                 }
