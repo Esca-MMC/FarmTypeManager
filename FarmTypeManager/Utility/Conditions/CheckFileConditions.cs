@@ -143,6 +143,12 @@ namespace FarmTypeManager
                                     validType = true;
                                 }
                                 break;
+                            case (int)Utility.FarmTypes.FourCorners:
+                                if (type.Equals("Four Corners", StringComparison.OrdinalIgnoreCase) || type.Equals("FourCorners", StringComparison.OrdinalIgnoreCase) || type.Equals("Four", StringComparison.OrdinalIgnoreCase) || type.Equals("Corners", StringComparison.OrdinalIgnoreCase) || type.Equals("FC", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    validType = true;
+                                }
+                                break;
                         }
 
                         if (validType) //if a valid weather condition was listed
