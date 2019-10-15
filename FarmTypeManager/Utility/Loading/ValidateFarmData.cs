@@ -152,11 +152,11 @@ namespace FarmTypeManager
                             {
                                 Game1.soundBank.GetCue(area.SpawnTiming.SpawnSound); //test whether this sound exists by retrieving it from the game's soundbank
                             }
-                            catch (Exception ex) //if an exception is thrown while retrieving the sound
+                            catch //if an exception is thrown while retrieving the sound
                             {
                                 Monitor.Log($"This spawn sound could not be found: {area.SpawnTiming.SpawnSound}", LogLevel.Debug);
                                 Monitor.Log($"Please make sure the sound's name is spelled and capitalized correctly. Sound names are case-sensitive.", LogLevel.Debug);
-                                Monitor.Log($"Area: {area.UniqueAreaID}", LogLevel.Debug;
+                                Monitor.Log($"Area: {area.UniqueAreaID}", LogLevel.Debug);
                                 if (pack != null) //if this file is from a content pack
                                 {
                                     Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Debug);
