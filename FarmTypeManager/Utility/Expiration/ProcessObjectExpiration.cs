@@ -36,7 +36,8 @@ namespace FarmTypeManager
 
                         if (location == null) //if this isn't a valid map
                         {
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                            objectsToRemove.Add(saved); //mark this for removal from save
                             continue; //skip to the next object
                         }
 
@@ -78,7 +79,8 @@ namespace FarmTypeManager
 
                         if (farm == null) //if this isn't a valid map
                         {
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                            objectsToRemove.Add(saved); //mark this for removal from save
                             continue; //skip to the next object
                         }
 
@@ -117,7 +119,8 @@ namespace FarmTypeManager
 
                         if (location == null) //if the map wasn't found
                         {
-                            //note: don't remove the object's save data; this might be a temporary issue, e.g. a map that didn't load correctly
+                            Monitor.VerboseLog($"Removing object data saved for a missing location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                            objectsToRemove.Add(saved); //mark this for removal from save
                             continue; //skip to the next object
                         }
 
