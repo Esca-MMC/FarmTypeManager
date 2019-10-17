@@ -18,7 +18,7 @@ namespace FarmTypeManager
         {
             /// <summary>Attempts to load the config.json file into Utility.MConfig.</summary>
             /// <param name="helper">The IModHelper interface provided by SMAPI.</param>
-            public static void LoadModData(IModHelper helper)
+            public static void LoadModConfig(IModHelper helper)
             {
                 try
                 {
