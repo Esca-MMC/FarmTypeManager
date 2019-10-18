@@ -829,90 +829,45 @@
 						<div class="accordion-content">
 							<div class="setting">
 								<fieldset class="border">
-								<legend>Spawn forage on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
+								<legend>Spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
 									<table class="checkboxes">
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-All" value="All">
-												<label for="Forage-ASTT-All" class="small-checkbox-label">All</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-All" value="All">
+												<label for="Forage-IncludeTerrainTypes-All" class="small-checkbox-label">All</label>
 											</td>
 											<td></td>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Custom" value="Custom">
-												<label for="Forage-ASTT-Custom" class="small-checkbox-label">Custom</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Custom" value="Custom">
+												<label for="Forage-IncludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Diggable" value="Diggable">
-												<label for="Forage-ASTT-Diggable" class="small-checkbox-label">Diggable</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Forage-IncludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Dirt" value="Dirt">
-												<label for="Forage-ASTT-Dirt" class="small-checkbox-label">Dirt</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Forage-IncludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Grass" value="Grass">
-												<label for="Forage-ASTT-Grass" class="small-checkbox-label">Grass</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Grass" value="Grass">
+												<label for="Forage-IncludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Quarry" value="Quarry">
-												<label for="Forage-ASTT-Quarry" class="small-checkbox-label">Quarry</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Forage-IncludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Stone" value="Stone">
-												<label for="Forage-ASTT-Stone" class="small-checkbox-label">Stone</label>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Stone" value="Stone">
+												<label for="Forage-IncludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Forage-AutoSpawnTerrainTypes" id="Forage-ASTT-Wood" value="Wood">
-												<label for="Forage-ASTT-Wood" class="small-checkbox-label">Wood</label>
-											</td>
-										</tr>
-									</table>
-								</fieldset>
-							</div>
-							
-							<div class="setting">
-								<fieldset class="border">
-								<legend><b>Also</b> spawn forage in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Forage can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; forage will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
-									<table class="list-left">
-										<tr>
-											<td>
-												<select size="7" id="Forage-IncludeAreas" style="width:8em">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<button class="basic" id="Forage-IncludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
-											</td>
-										</tr>
-									</table>
-									<table class="list-right">
-										<tr>
-											<td>
-												<label for="Forage-IncludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="Forage-IncludeAreas-X1" id="Forage-IncludeAreas-X1" style="width:4em;">
-											</td>
-											<td>
-												<label for="Forage-IncludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="Forage-IncludeAreas-Y1" id="Forage-IncludeAreas-Y1" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label for="Forage-IncludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="Forage-IncludeAreas-X1" id="Forage-IncludeAreas-X2" style="width:4em;">
-											</td>
-											<td>
-												<label for="Forage-IncludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="Forage-IncludeAreas-Y2" id="Forage-IncludeAreas-Y2" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<button class="basic" id="Forage-IncludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<input type="checkbox" class="small" name="Forage-IncludeTerrainTypes" id="Forage-IncludeTerrainTypes-Wood" value="Wood">
+												<label for="Forage-IncludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
 											</td>
 										</tr>
 									</table>
@@ -921,43 +876,135 @@
 							
 							<div class="setting">
 								<fieldset class="border">
-								<legend><b>Prevent</b> spawning forage in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Forage <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+								<legend><b>Also</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Forage can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; forage will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
 									<table class="list-left">
 										<tr>
 											<td>
-												<select size="7" id="Forage-ExcludeAreas" style="width:8em">
+												<select size="7" id="Forage-IncludeCoordinates" style="width:8em">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<button class="basic" id="Forage-ExcludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												<button class="basic" id="Forage-IncludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
 											</td>
 										</tr>
 									</table>
 									<table class="list-right">
 										<tr>
 											<td>
-												<label for="Forage-ExcludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="Forage-ExcludeAreas-X1" id="Forage-ExcludeAreas-X1" style="width:4em;">
+												<label for="Forage-IncludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Forage-IncludeCoordinates-X1" id="Forage-IncludeCoordinates-X1" style="width:4em;">
 											</td>
 											<td>
-												<label for="Forage-IncludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="Forage-ExcludeAreas-Y1" id="Forage-ExcludeAreas-Y1" style="width:4em;">
+												<label for="Forage-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Forage-IncludeCoordinates-Y1" id="Forage-IncludeCoordinates-Y1" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<label for="Forage-ExcludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="Forage-ExcludeAreas-X1" id="Forage-ExcludeAreas-X2" style="width:4em;">
+												<label for="Forage-IncludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Forage-IncludeCoordinates-X1" id="Forage-IncludeCoordinates-X2" style="width:4em;">
 											</td>
 											<td>
-												<label for="Forage-ExcludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="Forage-ExcludeAreas-Y2" id="Forage-ExcludeAreas-Y2" style="width:4em;">
+												<label for="Forage-IncludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Forage-IncludeCoordinates-Y2" id="Forage-IncludeCoordinates-Y2" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
-												<button class="basic" id="Forage-ExcludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<button class="basic" id="Forage-IncludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to <b>prevent</b> spawning on them.<br/><br/>The <b>All</b> setting will prevent spawning entirely, which is not recommended.</span></span></legend>
+									<table class="checkboxes">
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-All" value="All">
+												<label for="Forage-ExcludeTerrainTypes-All" class="small-checkbox-label">All</label>
+											</td>
+											<td></td>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Custom" value="Custom">
+												<label for="Forage-ExcludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Forage-ExcludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Forage-ExcludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Grass" value="Grass">
+												<label for="Forage-ExcludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Forage-ExcludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Stone" value="Stone">
+												<label for="Forage-ExcludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Forage-ExcludeTerrainTypes" id="Forage-ExcludeTerrainTypes-Wood" value="Wood">
+												<label for="Forage-ExcludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Forage <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="7" id="Forage-ExcludeCoordinates" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="Forage-ExcludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="Forage-ExcludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Forage-ExcludeCoordinates-X1" id="Forage-ExcludeCoordinates-X1" style="width:4em;">
+											</td>
+											<td>
+												<label for="Forage-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Forage-ExcludeCoordinates-Y1" id="Forage-ExcludeCoordinates-Y1" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="Forage-ExcludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Forage-ExcludeCoordinates-X1" id="Forage-ExcludeCoordinates-X2" style="width:4em;">
+											</td>
+											<td>
+												<label for="Forage-ExcludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Forage-ExcludeCoordinates-Y2" id="Forage-ExcludeCoordinates-Y2" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="Forage-ExcludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
 											</td>
 										</tr>
 									</table>
@@ -1527,90 +1574,45 @@
 							</div>
 							<div class="setting">
 								<fieldset class="border">
-								<legend>Spawn objects on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
+								<legend>Spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
 									<table class="checkboxes">
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-All" value="All">
-												<label for="LargeObject-ASTT-All" class="small-checkbox-label">All</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-All" value="All">
+												<label for="LargeObject-IncludeTerrainTypes-All" class="small-checkbox-label">All</label>
 											</td>
 											<td></td>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Custom" value="Custom">
-												<label for="LargeObject-ASTT-Custom" class="small-checkbox-label">Custom</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Custom" value="Custom">
+												<label for="LargeObject-IncludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Diggable" value="Diggable">
-												<label for="LargeObject-ASTT-Diggable" class="small-checkbox-label">Diggable</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Diggable" value="Diggable">
+												<label for="LargeObject-IncludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Dirt" value="Dirt">
-												<label for="LargeObject-ASTT-Dirt" class="small-checkbox-label">Dirt</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Dirt" value="Dirt">
+												<label for="LargeObject-IncludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Grass" value="Grass">
-												<label for="LargeObject-ASTT-Grass" class="small-checkbox-label">Grass</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Grass" value="Grass">
+												<label for="LargeObject-IncludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Quarry" value="Quarry">
-												<label for="LargeObject-ASTT-Quarry" class="small-checkbox-label">Quarry</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Quarry" value="Quarry">
+												<label for="LargeObject-IncludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Stone" value="Stone">
-												<label for="LargeObject-ASTT-Stone" class="small-checkbox-label">Stone</label>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Stone" value="Stone">
+												<label for="LargeObject-IncludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="LargeObject-AutoSpawnTerrainTypes" id="LargeObject-ASTT-Wood" value="Wood">
-												<label for="LargeObject-ASTT-Wood" class="small-checkbox-label">Wood</label>
-											</td>
-										</tr>
-									</table>
-								</fieldset>
-							</div>
-							
-							<div class="setting">
-								<fieldset class="border">
-								<legend><b>Also</b> spawn objects in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Objects can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; objects will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
-									<table class="list-left">
-										<tr>
-											<td>
-												<select size="7" id="LargeObject-IncludeAreas" style="width:8em">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<button class="basic" id="LargeObject-IncludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
-											</td>
-										</tr>
-									</table>
-									<table class="list-right">
-										<tr>
-											<td>
-												<label for="LargeObject-IncludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="LargeObject-IncludeAreas-X1" id="LargeObject-IncludeAreas-X1" style="width:4em;">
-											</td>
-											<td>
-												<label for="LargeObject-IncludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="LargeObject-IncludeAreas-Y1" id="LargeObject-IncludeAreas-Y1" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label for="LargeObject-IncludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="LargeObject-IncludeAreas-X1" id="LargeObject-IncludeAreas-X2" style="width:4em;">
-											</td>
-											<td>
-												<label for="LargeObject-IncludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="LargeObject-IncludeAreas-Y2" id="LargeObject-IncludeAreas-Y2" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<button class="basic" id="LargeObject-IncludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<input type="checkbox" class="small" name="LargeObject-IncludeTerrainTypes" id="LargeObject-IncludeTerrainTypes-Wood" value="Wood">
+												<label for="LargeObject-IncludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
 											</td>
 										</tr>
 									</table>
@@ -1619,43 +1621,135 @@
 							
 							<div class="setting">
 								<fieldset class="border">
-								<legend><b>Prevent</b> spawning objects in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Objects <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+								<legend><b>Also</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Objects can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; objects will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
 									<table class="list-left">
 										<tr>
 											<td>
-												<select size="7" id="LargeObject-ExcludeAreas" style="width:8em">
+												<select size="7" id="LargeObject-IncludeCoordinates" style="width:8em">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<button class="basic" id="LargeObject-ExcludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												<button class="basic" id="LargeObject-IncludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
 											</td>
 										</tr>
 									</table>
 									<table class="list-right">
 										<tr>
 											<td>
-												<label for="LargeObject-ExcludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="LargeObject-ExcludeAreas-X1" id="LargeObject-ExcludeAreas-X1" style="width:4em;">
+												<label for="LargeObject-IncludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="LargeObject-IncludeCoordinates-X1" id="LargeObject-IncludeCoordinates-X1" style="width:4em;">
 											</td>
 											<td>
-												<label for="LargeObject-IncludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="LargeObject-ExcludeAreas-Y1" id="LargeObject-ExcludeAreas-Y1" style="width:4em;">
+												<label for="LargeObject-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="LargeObject-IncludeCoordinates-Y1" id="LargeObject-IncludeCoordinates-Y1" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<label for="LargeObject-ExcludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="LargeObject-ExcludeAreas-X1" id="LargeObject-ExcludeAreas-X2" style="width:4em;">
+												<label for="LargeObject-IncludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="LargeObject-IncludeCoordinates-X1" id="LargeObject-IncludeCoordinates-X2" style="width:4em;">
 											</td>
 											<td>
-												<label for="LargeObject-ExcludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="LargeObject-ExcludeAreas-Y2" id="LargeObject-ExcludeAreas-Y2" style="width:4em;">
+												<label for="LargeObject-IncludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="LargeObject-IncludeCoordinates-Y2" id="LargeObject-IncludeCoordinates-Y2" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
-												<button class="basic" id="LargeObject-ExcludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<button class="basic" id="LargeObject-IncludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to <b>prevent</b> spawning on them.<br/><br/>The <b>All</b> setting will prevent spawning entirely, which is not recommended.</span></span></legend>
+									<table class="checkboxes">
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-All" value="All">
+												<label for="LargeObject-ExcludeTerrainTypes-All" class="small-checkbox-label">All</label>
+											</td>
+											<td></td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Custom" value="Custom">
+												<label for="LargeObject-ExcludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Diggable" value="Diggable">
+												<label for="LargeObject-ExcludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Dirt" value="Dirt">
+												<label for="LargeObject-ExcludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Grass" value="Grass">
+												<label for="LargeObject-ExcludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Quarry" value="Quarry">
+												<label for="LargeObject-ExcludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Stone" value="Stone">
+												<label for="LargeObject-ExcludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="LargeObject-ExcludeTerrainTypes" id="LargeObject-ExcludeTerrainTypes-Wood" value="Wood">
+												<label for="LargeObject-ExcludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Objects <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="7" id="LargeObject-ExcludeCoordinates" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="LargeObject-ExcludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="LargeObject-ExcludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="LargeObject-ExcludeCoordinates-X1" id="LargeObject-ExcludeCoordinates-X1" style="width:4em;">
+											</td>
+											<td>
+												<label for="LargeObject-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="LargeObject-ExcludeCoordinates-Y1" id="LargeObject-ExcludeCoordinates-Y1" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="LargeObject-ExcludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="LargeObject-ExcludeCoordinates-X1" id="LargeObject-ExcludeCoordinates-X2" style="width:4em;">
+											</td>
+											<td>
+												<label for="LargeObject-ExcludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="LargeObject-ExcludeCoordinates-Y2" id="LargeObject-ExcludeCoordinates-Y2" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="LargeObject-ExcludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
 											</td>
 										</tr>
 									</table>
@@ -1676,7 +1770,7 @@
 						<button class="accordion">Extra conditions</button>
 						<div class="accordion-content">
 							<div class="setting">
-								<label for="LargeObject-DaysUntilSpawnsExpire">Days until spawns expire<span class="tooltip">?<span class="tooltiptext">Spawned objects will disappear after this number of days.<br/><br/>Leave this blank for default behavior, or set it to <b>0</b> to force spawns to last forever.<br/><br/>By default, large objects should never expire. <b>0</b> is generally unncessary here.</span></span></label>
+								<label for="LargeObject-DaysUntilSpawnsExpire">Days until spawns expire<span class="tooltip">?<span class="tooltiptext">Spawned objects will disappear after this number of days.<br/><br/>Leave this blank for default behavior, or set it to <b>0</b> to force spawns to last forever.<br/><br/>By default, large objects should never expire. <b>0</b> is generally unnecessary here.</span></span></label>
 								<input type="number" name="LargeObject-DaysUntilSpawnsExpire" id="LargeObject-DaysUntilSpawnsExpire" style="width:5em;">
 							</div>
 						
@@ -2328,90 +2422,45 @@
 						<div class="accordion-content">
 							<div class="setting">
 								<fieldset class="border">
-								<legend>Spawn ore on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
+								<legend>Spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
 									<table class="checkboxes">
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-All" value="All">
-												<label for="Ore-ASTT-All" class="small-checkbox-label">All</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-All" value="All">
+												<label for="Ore-IncludeTerrainTypes-All" class="small-checkbox-label">All</label>
 											</td>
 											<td></td>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Custom" value="Custom">
-												<label for="Ore-ASTT-Custom" class="small-checkbox-label">Custom</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Custom" value="Custom">
+												<label for="Ore-IncludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Diggable" value="Diggable">
-												<label for="Ore-ASTT-Diggable" class="small-checkbox-label">Diggable</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Ore-IncludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Dirt" value="Dirt">
-												<label for="Ore-ASTT-Dirt" class="small-checkbox-label">Dirt</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Ore-IncludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Grass" value="Grass">
-												<label for="Ore-ASTT-Grass" class="small-checkbox-label">Grass</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Grass" value="Grass">
+												<label for="Ore-IncludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Quarry" value="Quarry">
-												<label for="Ore-ASTT-Quarry" class="small-checkbox-label">Quarry</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Ore-IncludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Stone" value="Stone">
-												<label for="Ore-ASTT-Stone" class="small-checkbox-label">Stone</label>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Stone" value="Stone">
+												<label for="Ore-IncludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
 											</td>
 											<td>
-												<input type="checkbox" class="small" name="Ore-AutoSpawnTerrainTypes" id="Ore-ASTT-Wood" value="Wood">
-												<label for="Ore-ASTT-Wood" class="small-checkbox-label">Wood</label>
-											</td>
-										</tr>
-									</table>
-								</fieldset>
-							</div>
-							
-							<div class="setting">
-								<fieldset class="border">
-								<legend><b>Also</b> spawn ore in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Ore can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; ore will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
-									<table class="list-left">
-										<tr>
-											<td>
-												<select size="7" id="Ore-IncludeAreas" style="width:8em">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<button class="basic" id="Ore-IncludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
-											</td>
-										</tr>
-									</table>
-									<table class="list-right">
-										<tr>
-											<td>
-												<label for="Ore-IncludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="Ore-IncludeAreas-X1" id="Ore-IncludeAreas-X1" style="width:4em;">
-											</td>
-											<td>
-												<label for="Ore-IncludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="Ore-IncludeAreas-Y1" id="Ore-IncludeAreas-Y1" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<label for="Ore-IncludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="Ore-IncludeAreas-X1" id="Ore-IncludeAreas-X2" style="width:4em;">
-											</td>
-											<td>
-												<label for="Ore-IncludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="Ore-IncludeAreas-Y2" id="Ore-IncludeAreas-Y2" style="width:4em;">
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<button class="basic" id="Ore-IncludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<input type="checkbox" class="small" name="Ore-IncludeTerrainTypes" id="Ore-IncludeTerrainTypes-Wood" value="Wood">
+												<label for="Ore-IncludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
 											</td>
 										</tr>
 									</table>
@@ -2420,43 +2469,135 @@
 							
 							<div class="setting">
 								<fieldset class="border">
-								<legend><b>Prevent</b> spawning ore in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Ore <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+								<legend><b>Also</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Ore can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; ore will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
 									<table class="list-left">
 										<tr>
 											<td>
-												<select size="7" id="Ore-ExcludeAreas" style="width:8em">
+												<select size="7" id="Ore-IncludeCoordinates" style="width:8em">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<button class="basic" id="Ore-ExcludeAreas-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												<button class="basic" id="Ore-IncludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
 											</td>
 										</tr>
 									</table>
 									<table class="list-right">
 										<tr>
 											<td>
-												<label for="Ore-ExcludeAreas-X1">X<sub>1</sub></label>
-												<input type="number" name="Ore-ExcludeAreas-X1" id="Ore-ExcludeAreas-X1" style="width:4em;">
+												<label for="Ore-IncludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Ore-IncludeCoordinates-X1" id="Ore-IncludeCoordinates-X1" style="width:4em;">
 											</td>
 											<td>
-												<label for="Ore-ExcludeAreas-Y1">Y<sub>1</sub></label>
-												<input type="number" name="Ore-ExcludeAreas-Y1" id="Ore-ExcludeAreas-Y1" style="width:4em;">
+												<label for="Ore-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Ore-IncludeCoordinates-Y1" id="Ore-IncludeCoordinates-Y1" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<label for="Ore-ExcludeAreas-X2">X<sub>2</sub></label>
-												<input type="number" name="Ore-ExcludeAreas-X1" id="Ore-ExcludeAreas-X2" style="width:4em;">
+												<label for="Ore-IncludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Ore-IncludeCoordinates-X1" id="Ore-IncludeCoordinates-X2" style="width:4em;">
 											</td>
 											<td>
-												<label for="Ore-ExcludeAreas-Y1">Y<sub>2</sub></label>
-												<input type="number" name="Ore-ExcludeAreas-Y2" id="Ore-ExcludeAreas-Y2" style="width:4em;">
+												<label for="Ore-IncludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Ore-IncludeCoordinates-Y2" id="Ore-IncludeCoordinates-Y2" style="width:4em;">
 											</td>
 										</tr>
 										<tr>
 											<td colspan="2">
-												<button class="basic" id="Ore-ExcludeAreas-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+												<button class="basic" id="Ore-IncludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to <b>prevent</b> spawning on them.<br/><br/>The <b>All</b> setting will prevent spawning entirely, which is not recommended.</span></span></legend>
+									<table class="checkboxes">
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-All" value="All">
+												<label for="Ore-ExcludeTerrainTypes-All" class="small-checkbox-label">All</label>
+											</td>
+											<td></td>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Custom" value="Custom">
+												<label for="Ore-ExcludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Ore-ExcludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Ore-ExcludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Grass" value="Grass">
+												<label for="Ore-ExcludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Ore-ExcludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Stone" value="Stone">
+												<label for="Ore-ExcludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Ore-ExcludeTerrainTypes" id="Ore-ExcludeTerrainTypes-Wood" value="Wood">
+												<label for="Ore-ExcludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Ore <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="7" id="Ore-ExcludeCoordinates" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="Ore-ExcludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="Ore-ExcludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Ore-ExcludeCoordinates-X1" id="Ore-ExcludeCoordinates-X1" style="width:4em;">
+											</td>
+											<td>
+												<label for="Ore-ExcludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Ore-ExcludeCoordinates-Y1" id="Ore-ExcludeCoordinates-Y1" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="Ore-ExcludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Ore-ExcludeCoordinates-X1" id="Ore-ExcludeCoordinates-X2" style="width:4em;">
+											</td>
+											<td>
+												<label for="Ore-ExcludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Ore-ExcludeCoordinates-Y2" id="Ore-ExcludeCoordinates-Y2" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="Ore-ExcludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
 											</td>
 										</tr>
 									</table>
@@ -2477,7 +2618,7 @@
 						<button class="accordion">Extra conditions</button>
 						<div class="accordion-content">
 							<div class="setting">
-								<label for="Ore-DaysUntilSpawnsExpire">Days until spawns expire<span class="tooltip">?<span class="tooltiptext">Spawned ore will disappear after this number of days.<br/><br/>Leave this blank for default behavior, or set it to <b>0</b> to force spawns to last forever.<br/><br/>By default, ore should never expire. <b>0</b> is generally unncessary here.</span></span></label>
+								<label for="Ore-DaysUntilSpawnsExpire">Days until spawns expire<span class="tooltip">?<span class="tooltiptext">Spawned ore will disappear after this number of days.<br/><br/>Leave this blank for default behavior, or set it to <b>0</b> to force spawns to last forever.<br/><br/>By default, ore should never expire. <b>0</b> is generally unnecessary here.</span></span></label>
 								<input type="number" name="Ore-DaysUntilSpawnsExpire" id="Ore-DaysUntilSpawnsExpire" style="width:5em;">
 							</div>
 							
@@ -3540,14 +3681,14 @@
 		var json; //global storage for a json object containing all of this page's settings (shared by the load/save functions)
 		
 		//copy-paste the latest version of FTM's default config file
-		var defaultJsonFile =
-		{
-		  "ForageSpawnEnabled": false,
-		  "LargeObjectSpawnEnabled": false,
-		  "OreSpawnEnabled": false,
-		  "Forage_Spawn_Settings": {
+		var defaultJsonFile ={
+			"ForageSpawnEnabled": false,
+			"LargeObjectSpawnEnabled": false,
+			"OreSpawnEnabled": false,
+			"MonsterSpawnEnabled": false,
+			"Forage_Spawn_Settings": {
 			"Areas": [
-			  {
+				{
 				"SpringItemIndex": null,
 				"SummerItemIndex": null,
 				"FallItemIndex": null,
@@ -3556,52 +3697,61 @@
 				"MapName": "Farm",
 				"MinimumSpawnsPerDay": 0,
 				"MaximumSpawnsPerDay": 3,
-				"AutoSpawnTerrainTypes": [
-				  "Grass",
-				  "Diggable"
+				"IncludeTerrainTypes": [
+					"Grass",
+					"Diggable"
 				],
-				"IncludeAreas": [],
-				"ExcludeAreas": [],
+				"ExcludeTerrainTypes": [],
+				"IncludeCoordinates": [],
+				"ExcludeCoordinates": [],
 				"StrictTileChecking": "High",
+				"SpawnTiming": {
+					"StartTime": 600,
+					"EndTime": 600,
+					"MinimumTimeBetweenSpawns": 10,
+					"MaximumSimultaneousSpawns": null,
+					"OnlySpawnIfAPlayerIsPresent": false,
+					"SpawnSound": ""
+				},
 				"ExtraConditions": {
-				  "Years": [],
-				  "Seasons": [],
-				  "Days": [],
-				  "WeatherYesterday": [],
-				  "WeatherToday": [],
-				  "WeatherTomorrow": [],
-				  "LimitedNumberOfSpawns": null
+					"Years": [],
+					"Seasons": [],
+					"Days": [],
+					"WeatherYesterday": [],
+					"WeatherToday": [],
+					"WeatherTomorrow": [],
+					"LimitedNumberOfSpawns": null
 				},
 				"DaysUntilSpawnsExpire": null
-			  }
+				}
 			],
 			"PercentExtraSpawnsPerForagingLevel": 0,
 			"SpringItemIndex": [
-			  16,
-			  20,
-			  22,
-			  257
+				16,
+				20,
+				22,
+				257
 			],
 			"SummerItemIndex": [
-			  396,
-			  398,
-			  402,
-			  404
+				396,
+				398,
+				402,
+				404
 			],
 			"FallItemIndex": [
-			  281,
-			  404,
-			  420,
-			  422
+				281,
+				404,
+				420,
+				422
 			],
 			"WinterItemIndex": [],
 			"CustomTileIndex": []
-		  },
-		  "Large_Object_Spawn_Settings": {
+			},
+			"Large_Object_Spawn_Settings": {
 			"Areas": [
-			  {
+				{
 				"ObjectTypes": [
-				  "Stump"
+					"Stump"
 				],
 				"FindExistingObjectLocations": true,
 				"PercentExtraSpawnsPerSkillLevel": 0,
@@ -3610,27 +3760,36 @@
 				"MapName": "Farm",
 				"MinimumSpawnsPerDay": 999,
 				"MaximumSpawnsPerDay": 999,
-				"AutoSpawnTerrainTypes": [],
-				"IncludeAreas": [],
-				"ExcludeAreas": [],
+				"IncludeTerrainTypes": [],
+				"ExcludeTerrainTypes": [],
+				"IncludeCoordinates": [],
+				"ExcludeCoordinates": [],
 				"StrictTileChecking": "High",
+				"SpawnTiming": {
+					"StartTime": 600,
+					"EndTime": 600,
+					"MinimumTimeBetweenSpawns": 10,
+					"MaximumSimultaneousSpawns": null,
+					"OnlySpawnIfAPlayerIsPresent": false,
+					"SpawnSound": ""
+				},
 				"ExtraConditions": {
-				  "Years": [],
-				  "Seasons": [],
-				  "Days": [],
-				  "WeatherYesterday": [],
-				  "WeatherToday": [],
-				  "WeatherTomorrow": [],
-				  "LimitedNumberOfSpawns": null
+					"Years": [],
+					"Seasons": [],
+					"Days": [],
+					"WeatherYesterday": [],
+					"WeatherToday": [],
+					"WeatherTomorrow": [],
+					"LimitedNumberOfSpawns": null
 				},
 				"DaysUntilSpawnsExpire": null
-			  }
+				}
 			],
 			"CustomTileIndex": []
-		  },
-		  "Ore_Spawn_Settings": {
+			},
+			"Ore_Spawn_Settings": {
 			"Areas": [
-			  {
+				{
 				"MiningLevelRequired": null,
 				"StartingSpawnChance": null,
 				"LevelTenSpawnChance": null,
@@ -3638,85 +3797,254 @@
 				"MapName": "Farm",
 				"MinimumSpawnsPerDay": 1,
 				"MaximumSpawnsPerDay": 5,
-				"AutoSpawnTerrainTypes": [
-				  "Quarry"
+				"IncludeTerrainTypes": [
+					"Quarry"
 				],
-				"IncludeAreas": [],
-				"ExcludeAreas": [],
+				"ExcludeTerrainTypes": [],
+				"IncludeCoordinates": [],
+				"ExcludeCoordinates": [],
 				"StrictTileChecking": "High",
+				"SpawnTiming": {
+					"StartTime": 600,
+					"EndTime": 600,
+					"MinimumTimeBetweenSpawns": 10,
+					"MaximumSimultaneousSpawns": null,
+					"OnlySpawnIfAPlayerIsPresent": false,
+					"SpawnSound": ""
+				},
 				"ExtraConditions": {
-				  "Years": [],
-				  "Seasons": [],
-				  "Days": [],
-				  "WeatherYesterday": [],
-				  "WeatherToday": [],
-				  "WeatherTomorrow": [],
-				  "LimitedNumberOfSpawns": null
+					"Years": [],
+					"Seasons": [],
+					"Days": [],
+					"WeatherYesterday": [],
+					"WeatherToday": [],
+					"WeatherTomorrow": [],
+					"LimitedNumberOfSpawns": null
 				},
 				"DaysUntilSpawnsExpire": null
-			  }
+				}
 			],
 			"PercentExtraSpawnsPerMiningLevel": 0,
 			"MiningLevelRequired": {
-			  "Stone": 0,
-			  "Geode": 0,
-			  "FrozenGeode": 5,
-			  "MagmaGeode": 8,
-			  "Gem": 6,
-			  "Copper": 0,
-			  "Iron": 4,
-			  "Gold": 7,
-			  "Iridium": 9,
-			  "Mystic": 10,
-			  "Diamond": 6,
-			  "Ruby": 6,
-			  "Jade": 6,
-			  "Amethyst": 6,
-			  "Topaz": 6,
-			  "Emerald": 6,
-			  "Aquamarine": 6
+				"Stone": 0,
+				"Geode": 0,
+				"FrozenGeode": 5,
+				"MagmaGeode": 8,
+				"Gem": 6,
+				"Copper": 0,
+				"Iron": 4,
+				"Gold": 7,
+				"Iridium": 9,
+				"Mystic": 10,
+				"Diamond": 6,
+				"Ruby": 6,
+				"Jade": 6,
+				"Amethyst": 6,
+				"Topaz": 6,
+				"Emerald": 6,
+				"Aquamarine": 6
 			},
 			"StartingSpawnChance": {
-			  "Stone": 66,
-			  "Geode": 8,
-			  "FrozenGeode": 4,
-			  "MagmaGeode": 2,
-			  "Gem": 5,
-			  "Copper": 21,
-			  "Iron": 15,
-			  "Gold": 10,
-			  "Iridium": 1,
-			  "Mystic": 1,
-			  "Diamond": 0,
-			  "Ruby": 0,
-			  "Jade": 0,
-			  "Amethyst": 0,
-			  "Topaz": 0,
-			  "Emerald": 0,
-			  "Aquamarine": 0
+				"Stone": 66,
+				"Geode": 8,
+				"FrozenGeode": 4,
+				"MagmaGeode": 2,
+				"Gem": 5,
+				"Copper": 21,
+				"Iron": 15,
+				"Gold": 10,
+				"Iridium": 1,
+				"Mystic": 1,
+				"Diamond": 0,
+				"Ruby": 0,
+				"Jade": 0,
+				"Amethyst": 0,
+				"Topaz": 0,
+				"Emerald": 0,
+				"Aquamarine": 0
 			},
 			"LevelTenSpawnChance": {
-			  "Stone": 48,
-			  "Geode": 2,
-			  "FrozenGeode": 2,
-			  "MagmaGeode": 2,
-			  "Gem": 5,
-			  "Copper": 16,
-			  "Iron": 13,
-			  "Gold": 10,
-			  "Iridium": 1,
-			  "Mystic": 1,
-			  "Diamond": 0,
-			  "Ruby": 0,
-			  "Jade": 0,
-			  "Amethyst": 0,
-			  "Topaz": 0,
-			  "Emerald": 0,
-			  "Aquamarine": 0
+				"Stone": 48,
+				"Geode": 2,
+				"FrozenGeode": 2,
+				"MagmaGeode": 2,
+				"Gem": 5,
+				"Copper": 16,
+				"Iron": 13,
+				"Gold": 10,
+				"Iridium": 1,
+				"Mystic": 1,
+				"Diamond": 0,
+				"Ruby": 0,
+				"Jade": 0,
+				"Amethyst": 0,
+				"Topaz": 0,
+				"Emerald": 0,
+				"Aquamarine": 0
 			},
 			"CustomTileIndex": []
-		  },
-		  "QuarryTileIndex": [
+			},
+			"Monster_Spawn_Settings": {
+			"Areas": [
+				{
+				"MonsterTypes": [
+					{
+					"MonsterName": "shadow brute",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 8
+					}
+					},
+					{
+					"MonsterName": "wilderness golem",
+					"Settings": {
+						"SpawnWeight": 4
+					}
+					},
+					{
+					"MonsterName": "purple slime",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 10,
+						"SpawnWeight": 2
+					}
+					},
+					{
+					"MonsterName": "red slime",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 8,
+						"MaximumSkillLevel": 9,
+						"SpawnWeight": 2
+					}
+					},
+					{
+					"MonsterName": "blue slime",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 4,
+						"MaximumSkillLevel": 7,
+						"SpawnWeight": 2
+					}
+					},
+					{
+					"MonsterName": "green slime",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MaximumSkillLevel": 3,
+						"SpawnWeight": 2
+					}
+					}
+				],
+				"UniqueAreaID": "Farm monster area 1",
+				"MapName": "Farm",
+				"MinimumSpawnsPerDay": 5,
+				"MaximumSpawnsPerDay": 8,
+				"IncludeTerrainTypes": [
+					"Dirt",
+					"Diggable",
+					"Grass"
+				],
+				"ExcludeTerrainTypes": [],
+				"IncludeCoordinates": [],
+				"ExcludeCoordinates": [],
+				"StrictTileChecking": "High",
+				"SpawnTiming": {
+					"StartTime": 1900,
+					"EndTime": 2550,
+					"MinimumTimeBetweenSpawns": 10,
+					"MaximumSimultaneousSpawns": 1,
+					"OnlySpawnIfAPlayerIsPresent": true,
+					"SpawnSound": ""
+				},
+				"ExtraConditions": {
+					"Years": [],
+					"Seasons": [],
+					"Days": [],
+					"WeatherYesterday": [],
+					"WeatherToday": [],
+					"WeatherTomorrow": [],
+					"LimitedNumberOfSpawns": null
+				},
+				"DaysUntilSpawnsExpire": null
+				},
+				{
+				"MonsterTypes": [
+					{
+					"MonsterName": "iridium bat",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 10,
+						"SpawnWeight": 4
+					}
+					},
+					{
+					"MonsterName": "serpent",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 10,
+						"SpawnWeight": 3
+					}
+					},
+					{
+					"MonsterName": "lava bat",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 8,
+						"SpawnWeight": 4
+					}
+					},
+					{
+					"MonsterName": "frost bat",
+					"Settings": {
+						"RelatedSkill": "Combat",
+						"MinimumSkillLevel": 5,
+						"SpawnWeight": 2
+					}
+					},
+					{
+					"MonsterName": "bat",
+					"Settings": {
+						"SpawnWeight": 2
+					}
+					}
+				],
+				"UniqueAreaID": "Farm monster area 2",
+				"MapName": "Farm",
+				"MinimumSpawnsPerDay": 2,
+				"MaximumSpawnsPerDay": 3,
+				"IncludeTerrainTypes": [
+					"Dirt",
+					"Diggable",
+					"Grass"
+				],
+				"ExcludeTerrainTypes": [],
+				"IncludeCoordinates": [],
+				"ExcludeCoordinates": [],
+				"StrictTileChecking": "High",
+				"SpawnTiming": {
+					"StartTime": 1900,
+					"EndTime": 2550,
+					"MinimumTimeBetweenSpawns": 10,
+					"MaximumSimultaneousSpawns": 1,
+					"OnlySpawnIfAPlayerIsPresent": true,
+					"SpawnSound": ""
+				},
+				"ExtraConditions": {
+					"Years": [],
+					"Seasons": [],
+					"Days": [],
+					"WeatherYesterday": [],
+					"WeatherToday": [],
+					"WeatherTomorrow": [],
+					"LimitedNumberOfSpawns": null
+				},
+				"DaysUntilSpawnsExpire": null
+				}
+			],
+			"CustomTileIndex": []
+			},
+			"QuarryTileIndex": [
 			556,
 			558,
 			583,
@@ -3729,14 +4057,14 @@
 			680,
 			681,
 			685
-		  ],
-		  "File_Conditions": {
+			],
+			"File_Conditions": {
 			"FarmTypes": [],
 			"FarmerNames": [],
 			"SaveFileNames": [],
 			"OtherMods": {},
 			"ResetMainDataFolder": false
-		  }
+			}
 		};
 		
 		//load a user-selected .json file & pass its contents to the fillAllSettings function
@@ -3749,9 +4077,10 @@
                 var reader = new FileReader();
                 reader.onload = function(e) { //when this finishes reading the file
 					var text = reader.result; //get the file's text
+					var jsonTemp; //parse json here without immediately overwriting the "json" var
 					try
 					{
-						json = JSON.parse(text); //parse into an object
+						jsonTemp = JSON.parse(text); //parse into an object
 					}
 					catch (e) //if parsing failed somehow
 					{
@@ -3759,7 +4088,24 @@
 						return; //quit without filling in settings
 					}
 					
-                    fillAllSettings(file.name); //json loaded, so use it to fill in this page's settings
+					if (jsonTemp.ForageSpawnEnabled == null && jsonTemp.LargeObjectSpawnEnabled == null && jsonTemp.OreSpawnEnabled == null) //if this seems like the wrong kind of json file
+					{
+						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
+						return; //quit without filling in settings
+					}
+					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null) //if this seems like an out-of-date confg file
+					{
+						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems outdated or incomplete.\n\nPlease load a Stardew farm that uses this config to automatically update it.";
+						return; //quit without filling in settings
+					}
+					else //if the file seems valid
+					{
+						document.getElementById("alertbox-file").textContent = file.name || "[new]"; //display the current file's name (or a default if not provided)
+						document.getElementById("alertbox-message").textContent = ""; //clear any error messages
+					}
+
+					json = jsonTemp; //overwrite the stored json
+                    fillAllSettings(); //fill in this page's settings
                 }
                 reader.readAsText(file); //read the file
             }
@@ -3770,19 +4116,8 @@
 		}
 		
 		//fill the editor's fields from a json object
-		function fillAllSettings(fileName)
+		function fillAllSettings()
 		{
-			if (json.ForageSpawnEnabled == null && json.LargeObjectSpawnEnabled == null && json.OreSpawnEnabled == null) //if the file seems invalid (e.g. it lacks the main json properties)
-			{
-				document.getElementById("alertbox-message").textContent = "\n\nError - This seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
-				return; //don't fill any settings
-			}
-			else //if the file seems valid
-			{
-				document.getElementById("alertbox-file").textContent = fileName || "[new]"; //display the current file's name (or a default if not provided)
-				document.getElementById("alertbox-message").textContent = ""; //clear any error messages
-			}
-			
 			//set main checkboxes
 			document.getElementById("ForageSpawnEnabled").checked = json.ForageSpawnEnabled;
 			enableDiv(document.getElementById("ForageSpawnEnabled"));
@@ -4355,23 +4690,32 @@
 				var area;
 				if (selector.id.includes("Forage")) //if forage area
 				{
-					//copy-paste default settings for a forage area (note: use ID as the UniqueAreaID)
+					//UPDATE: copy-paste default settings for a forage area
 					area = {
 						"SpringItemIndex": null,
 						"SummerItemIndex": null,
 						"FallItemIndex": null,
 						"WinterItemIndex": null,
-						"UniqueAreaID": ID,
+						"UniqueAreaID": "Farm forage area 1",
 						"MapName": "Farm",
 						"MinimumSpawnsPerDay": 0,
 						"MaximumSpawnsPerDay": 3,
-						"AutoSpawnTerrainTypes": [
+						"IncludeTerrainTypes": [
 						  "Grass",
 						  "Diggable"
 						],
-						"IncludeAreas": [],
-						"ExcludeAreas": [],
+						"ExcludeTerrainTypes": [],
+						"IncludeCoordinates": [],
+						"ExcludeCoordinates": [],
 						"StrictTileChecking": "High",
+						"SpawnTiming": {
+						  "StartTime": 600,
+						  "EndTime": 600,
+						  "MinimumTimeBetweenSpawns": 10,
+						  "MaximumSimultaneousSpawns": null,
+						  "OnlySpawnIfAPlayerIsPresent": false,
+						  "SpawnSound": ""
+						},
 						"ExtraConditions": {
 						  "Years": [],
 						  "Seasons": [],
@@ -4384,38 +4728,49 @@
 						"DaysUntilSpawnsExpire": null
 					};
 					
+					area.UniqueAreaID = ID; //adjust the ID
 					json.Forage_Spawn_Settings.Areas.push(area); //add the new area
 				}
 				else if (selector.id.includes("LargeObject")) //if large object area
 				{
-					//copy-paste default settings for a large object area
+					//UPDATE: copy-paste default settings for a large object area
 					area = {
 						"ObjectTypes": [
-						  "Stump"
+							"Stump"
 						],
 						"FindExistingObjectLocations": true,
 						"PercentExtraSpawnsPerSkillLevel": 0,
 						"RelatedSkill": "Foraging",
-						"UniqueAreaID": ID,
+						"UniqueAreaID": "Farm large object area 1",
 						"MapName": "Farm",
 						"MinimumSpawnsPerDay": 999,
 						"MaximumSpawnsPerDay": 999,
-						"AutoSpawnTerrainTypes": [],
-						"IncludeAreas": [],
-						"ExcludeAreas": [],
+						"IncludeTerrainTypes": [],
+						"ExcludeTerrainTypes": [],
+						"IncludeCoordinates": [],
+						"ExcludeCoordinates": [],
 						"StrictTileChecking": "High",
+						"SpawnTiming": {
+							"StartTime": 600,
+							"EndTime": 600,
+							"MinimumTimeBetweenSpawns": 10,
+							"MaximumSimultaneousSpawns": null,
+							"OnlySpawnIfAPlayerIsPresent": false,
+							"SpawnSound": ""
+						},
 						"ExtraConditions": {
-						  "Years": [],
-						  "Seasons": [],
-						  "Days": [],
-						  "WeatherYesterday": [],
-						  "WeatherToday": [],
-						  "WeatherTomorrow": [],
-						  "LimitedNumberOfSpawns": null
+							"Years": [],
+							"Seasons": [],
+							"Days": [],
+							"WeatherYesterday": [],
+							"WeatherToday": [],
+							"WeatherTomorrow": [],
+							"LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
 					};
-					
+
+					area.UniqueAreaID = ID; //adjust the ID
 					json.Large_Object_Spawn_Settings.Areas.push(area); //add the new area
 				}
 				else //if ore area
@@ -4425,28 +4780,38 @@
 						"MiningLevelRequired": null,
 						"StartingSpawnChance": null,
 						"LevelTenSpawnChance": null,
-						"UniqueAreaID": ID,
+						"UniqueAreaID": "Farm ore area 1",
 						"MapName": "Farm",
 						"MinimumSpawnsPerDay": 1,
 						"MaximumSpawnsPerDay": 5,
-						"AutoSpawnTerrainTypes": [
-						  "Quarry"
+						"IncludeTerrainTypes": [
+							"Quarry"
 						],
-						"IncludeAreas": [],
-						"ExcludeAreas": [],
+						"ExcludeTerrainTypes": [],
+						"IncludeCoordinates": [],
+						"ExcludeCoordinates": [],
 						"StrictTileChecking": "High",
+						"SpawnTiming": {
+							"StartTime": 600,
+							"EndTime": 600,
+							"MinimumTimeBetweenSpawns": 10,
+							"MaximumSimultaneousSpawns": null,
+							"OnlySpawnIfAPlayerIsPresent": false,
+							"SpawnSound": ""
+						},
 						"ExtraConditions": {
-						  "Years": [],
-						  "Seasons": [],
-						  "Days": [],
-						  "WeatherYesterday": [],
-						  "WeatherToday": [],
-						  "WeatherTomorrow": [],
-						  "LimitedNumberOfSpawns": null
+							"Years": [],
+							"Seasons": [],
+							"Days": [],
+							"WeatherYesterday": [],
+							"WeatherToday": [],
+							"WeatherTomorrow": [],
+							"LimitedNumberOfSpawns": null
 						},
 						"DaysUntilSpawnsExpire": null
 					};
 					
+					area.UniqueAreaID = ID; //adjust the ID
 					json.Ore_Spawn_Settings.Areas.push(area); //add the new area
 				}
 				
@@ -4712,26 +5077,36 @@
 						}
 					}
 					
-					prev.AutoSpawnTerrainTypes = [];
-					var terrains = document.getElementsByName("Forage-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					prev.IncludeTerrainTypes = [];
+					var includeTerrains = document.getElementsByName("Forage-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						if (terrains[x].checked)
+						if (includeTerrains[x].checked)
 						{
-							prev.AutoSpawnTerrainTypes.push(terrains[x].value); //add the checkbox's value to the array
+							prev.IncludeTerrainTypes.push(includeTerrains[x].value); //add the checkbox's value to the array
 						}
 					}
 					
-					prev.IncludeAreas = [];
-					for (var x = 0; x < document.getElementById("Forage-IncludeAreas").options.length; x++) //for each include area
+					prev.IncludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("Forage-IncludeCoordinates").options.length; x++) //for each include area
 					{
-						prev.IncludeAreas.push(document.getElementById("Forage-IncludeAreas").options[x].text);
+						prev.IncludeCoordinates.push(document.getElementById("Forage-IncludeCoordinates").options[x].text);
+					}
+
+					prev.ExcludeTerrainTypes = [];
+					var excludeTerrains = document.getElementsByName("Forage-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
+					{
+						if (excludeTerrains[x].checked)
+						{
+							prev.ExcludeTerrainTypes.push(excludeTerrains[x].value); //add the checkbox's value to the array
+						}
 					}
 					
-					prev.ExcludeAreas = [];
-					for (var x = 0; x < document.getElementById("Forage-ExcludeAreas").options.length; x++) //for each exclude area
+					prev.ExcludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("Forage-ExcludeCoordinates").options.length; x++) //for each exclude area
 					{
-						prev.ExcludeAreas.push(document.getElementById("Forage-ExcludeAreas").options[x].text);
+						prev.ExcludeCoordinates.push(document.getElementById("Forage-ExcludeCoordinates").options[x].text);
 					}
 					
 					prev.StrictTileChecking = document.getElementById("Forage-StrictTileChecking").options[document.getElementById("Forage-StrictTileChecking").selectedIndex].text;
@@ -4905,34 +5280,48 @@
 						}
 					}
 					
-					var terrains = document.getElementsByName("Forage-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					var includeTerrains = document.getElementsByName("Forage-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						terrains[x].checked = false; //uncheck by default
-						for (var y = 0; y < curr.AutoSpawnTerrainTypes.length; y++) //for each stored string
+						includeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.IncludeTerrainTypes.length; y++) //for each stored string
 						{
-							if (terrains[x].value.toUpperCase() == curr.AutoSpawnTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							if (includeTerrains[x].value.toUpperCase() == curr.IncludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
 							{
-								terrains[x].checked = true;
+								includeTerrains[x].checked = true;
 								break; //skip the rest of the "y" loop
 							}
 						}
 					}
 					
-					document.getElementById("Forage-IncludeAreas").options.length = 0;
-					for (var x = 0; x < curr.IncludeAreas.length; x++) //for each include area
+					document.getElementById("Forage-IncludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.IncludeCoordinates.length; x++) //for each include area
 					{
 						var option = document.createElement("option");
-						option.text = curr.IncludeAreas[x];
-						document.getElementById("Forage-IncludeAreas").options.add(option);
+						option.text = curr.IncludeCoordinates[x];
+						document.getElementById("Forage-IncludeCoordinates").options.add(option);
+					}
+
+					var excludeTerrains = document.getElementsByName("Forage-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
+					{
+						excludeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.ExcludeTerrainTypes.length; y++) //for each stored string
+						{
+							if (excludeTerrains[x].value.toUpperCase() == curr.ExcludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							{
+								excludeTerrains[x].checked = true;
+								break; //skip the rest of the "y" loop
+							}
+						}
 					}
 					
-					document.getElementById("Forage-ExcludeAreas").options.length = 0;
-					for (var x = 0; x < curr.ExcludeAreas.length; x++) //for each exclude area
+					document.getElementById("Forage-ExcludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.ExcludeCoordinates.length; x++) //for each exclude area
 					{
 						var option = document.createElement("option");
-						option.text = curr.ExcludeAreas[x];
-						document.getElementById("Forage-ExcludeAreas").options.add(option);
+						option.text = curr.ExcludeCoordinates[x];
+						document.getElementById("Forage-ExcludeCoordinates").options.add(option);
 					}
 					
 					document.getElementById("Forage-StrictTileChecking").value = curr.StrictTileChecking;
@@ -5062,26 +5451,36 @@
 					
 					prev.FindExistingObjectLocations = document.getElementById("LargeObject-FindExistingObjectLocations").checked;
 					
-					prev.AutoSpawnTerrainTypes = [];
-					var terrains = document.getElementsByName("LargeObject-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					prev.IncludeTerrainTypes = [];
+					var includeTerrains = document.getElementsByName("LargeObject-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						if (terrains[x].checked)
+						if (includeTerrains[x].checked)
 						{
-							prev.AutoSpawnTerrainTypes.push(terrains[x].value); //add the checkbox's value to the array
+							prev.IncludeTerrainTypes.push(includeTerrains[x].value); //add the checkbox's value to the array
 						}
 					}
 					
-					prev.IncludeAreas = [];
-					for (var x = 0; x < document.getElementById("LargeObject-IncludeAreas").options.length; x++) //for each include area
+					prev.IncludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("LargeObject-IncludeCoordinates").options.length; x++) //for each include area
 					{
-						prev.IncludeAreas.push(document.getElementById("LargeObject-IncludeAreas").options[x].text);
+						prev.IncludeCoordinates.push(document.getElementById("LargeObject-IncludeCoordinates").options[x].text);
 					}
 					
-					prev.ExcludeAreas = [];
-					for (var x = 0; x < document.getElementById("LargeObject-ExcludeAreas").options.length; x++) //for each exclude area
+					prev.ExcludeTerrainTypes = [];
+					var excludeTerrains = document.getElementsByName("LargeObject-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
 					{
-						prev.ExcludeAreas.push(document.getElementById("LargeObject-ExcludeAreas").options[x].text);
+						if (excludeTerrains[x].checked)
+						{
+							prev.ExcludeTerrainTypes.push(excludeTerrains[x].value); //add the checkbox's value to the array
+						}
+					}
+
+					prev.ExcludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("LargeObject-ExcludeCoordinates").options.length; x++) //for each exclude area
+					{
+						prev.ExcludeCoordinates.push(document.getElementById("LargeObject-ExcludeCoordinates").options[x].text);
 					}
 					
 					prev.StrictTileChecking = document.getElementById("LargeObject-StrictTileChecking").options[document.getElementById("LargeObject-StrictTileChecking").selectedIndex].text;
@@ -5202,34 +5601,48 @@
 					
 					document.getElementById("LargeObject-FindExistingObjectLocations").checked = curr.FindExistingObjectLocations;
 					
-					var terrains = document.getElementsByName("LargeObject-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					var includeTerrains = document.getElementsByName("LargeObject-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						terrains[x].checked = false; //uncheck by default
-						for (var y = 0; y < curr.AutoSpawnTerrainTypes.length; y++) //for each stored string
+						includeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.IncludeTerrainTypes.length; y++) //for each stored string
 						{
-							if (terrains[x].value.toUpperCase() == curr.AutoSpawnTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							if (includeTerrains[x].value.toUpperCase() == curr.IncludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
 							{
-								terrains[x].checked = true;
+								includeTerrains[x].checked = true;
 								break; //skip the rest of the "y" loop
 							}
 						}
 					}
 					
-					document.getElementById("LargeObject-IncludeAreas").options.length = 0;
-					for (var x = 0; x < curr.IncludeAreas.length; x++) //for each include area
+					document.getElementById("LargeObject-IncludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.IncludeCoordinates.length; x++) //for each include area
 					{
 						var option = document.createElement("option");
-						option.text = curr.IncludeAreas[x];
-						document.getElementById("LargeObject-IncludeAreas").options.add(option);
+						option.text = curr.IncludeCoordinates[x];
+						document.getElementById("LargeObject-IncludeCoordinates").options.add(option);
+					}
+
+					var excludeTerrains = document.getElementsByName("LargeObject-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
+					{
+						excludeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.ExcludeTerrainTypes.length; y++) //for each stored string
+						{
+							if (excludeTerrains[x].value.toUpperCase() == curr.ExcludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							{
+								excludeTerrains[x].checked = true;
+								break; //skip the rest of the "y" loop
+							}
+						}
 					}
 					
-					document.getElementById("LargeObject-ExcludeAreas").options.length = 0;
-					for (var x = 0; x < curr.ExcludeAreas.length; x++) //for each exclude area
+					document.getElementById("LargeObject-ExcludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.ExcludeCoordinates.length; x++) //for each exclude area
 					{
 						var option = document.createElement("option");
-						option.text = curr.ExcludeAreas[x];
-						document.getElementById("LargeObject-ExcludeAreas").options.add(option);
+						option.text = curr.ExcludeCoordinates[x];
+						document.getElementById("LargeObject-ExcludeCoordinates").options.add(option);
 					}
 					
 					document.getElementById("LargeObject-StrictTileChecking").value = curr.StrictTileChecking;
@@ -5421,26 +5834,36 @@
 						prev.LevelTenSpawnChance["Aquamarine"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Aquamarine").value) || 0;
 					}
 					
-					prev.AutoSpawnTerrainTypes = [];
-					var terrains = document.getElementsByName("Ore-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					prev.IncludeTerrainTypes = [];
+					var includeTerrains = document.getElementsByName("Ore-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						if (terrains[x].checked)
+						if (includeTerrains[x].checked)
 						{
-							prev.AutoSpawnTerrainTypes.push(terrains[x].value); //add the checkbox's value to the array
+							prev.IncludeTerrainTypes.push(includeTerrains[x].value); //add the checkbox's value to the array
 						}
 					}
 					
-					prev.IncludeAreas = [];
-					for (var x = 0; x < document.getElementById("Ore-IncludeAreas").options.length; x++) //for each include area
+					prev.IncludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("Ore-IncludeCoordinates").options.length; x++) //for each include area
 					{
-						prev.IncludeAreas.push(document.getElementById("Ore-IncludeAreas").options[x].text);
+						prev.IncludeCoordinates.push(document.getElementById("Ore-IncludeCoordinates").options[x].text);
+					}
+
+					prev.ExcludeTerrainTypes = [];
+					var excludeTerrains = document.getElementsByName("Ore-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
+					{
+						if (excludeTerrains[x].checked)
+						{
+							prev.ExcludeTerrainTypes.push(excludeTerrains[x].value); //add the checkbox's value to the array
+						}
 					}
 					
-					prev.ExcludeAreas = [];
-					for (var x = 0; x < document.getElementById("Ore-ExcludeAreas").options.length; x++) //for each exclude area
+					prev.ExcludeCoordinates = [];
+					for (var x = 0; x < document.getElementById("Ore-ExcludeCoordinates").options.length; x++) //for each exclude area
 					{
-						prev.ExcludeAreas.push(document.getElementById("Ore-ExcludeAreas").options[x].text);
+						prev.ExcludeCoordinates.push(document.getElementById("Ore-ExcludeCoordinates").options[x].text);
 					}
 					
 					prev.StrictTileChecking = document.getElementById("Ore-StrictTileChecking").options[document.getElementById("Ore-StrictTileChecking").selectedIndex].text;
@@ -5626,34 +6049,48 @@
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Emerald").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Emerald"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Aquamarine").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Aquamarine"] : 0;
 					
-					var terrains = document.getElementsByName("Ore-AutoSpawnTerrainTypes");
-					for (var x = 0; x < terrains.length; x++) //for each terrain type checkbox
+					var includeTerrains = document.getElementsByName("Ore-IncludeTerrainTypes");
+					for (var x = 0; x < includeTerrains.length; x++) //for each terrain type checkbox
 					{
-						terrains[x].checked = false; //uncheck by default
-						for (var y = 0; y < curr.AutoSpawnTerrainTypes.length; y++) //for each stored string
+						includeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.IncludeTerrainTypes.length; y++) //for each stored string
 						{
-							if (terrains[x].value.toUpperCase() == curr.AutoSpawnTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							if (includeTerrains[x].value.toUpperCase() == curr.IncludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
 							{
-								terrains[x].checked = true;
+								includeTerrains[x].checked = true;
 								break; //skip the rest of the "y" loop
 							}
 						}
 					}
 					
-					document.getElementById("Ore-IncludeAreas").options.length = 0;
-					for (var x = 0; x < curr.IncludeAreas.length; x++) //for each include area
+					document.getElementById("Ore-IncludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.IncludeCoordinates.length; x++) //for each include area
 					{
 						var option = document.createElement("option");
-						option.text = curr.IncludeAreas[x];
-						document.getElementById("Ore-IncludeAreas").options.add(option);
+						option.text = curr.IncludeCoordinates[x];
+						document.getElementById("Ore-IncludeCoordinates").options.add(option);
+					}
+
+					var excludeTerrains = document.getElementsByName("Ore-ExcludeTerrainTypes");
+					for (var x = 0; x < excludeTerrains.length; x++) //for each terrain type checkbox
+					{
+						excludeTerrains[x].checked = false; //uncheck by default
+						for (var y = 0; y < curr.ExcludeTerrainTypes.length; y++) //for each stored string
+						{
+							if (excludeTerrains[x].value.toUpperCase() == curr.ExcludeTerrainTypes[y].toUpperCase()) //if checkbox matches stored string
+							{
+								excludeTerrains[x].checked = true;
+								break; //skip the rest of the "y" loop
+							}
+						}
 					}
 					
-					document.getElementById("Ore-ExcludeAreas").options.length = 0;
-					for (var x = 0; x < curr.ExcludeAreas.length; x++) //for each exclude area
+					document.getElementById("Ore-ExcludeCoordinates").options.length = 0;
+					for (var x = 0; x < curr.ExcludeCoordinates.length; x++) //for each exclude area
 					{
 						var option = document.createElement("option");
-						option.text = curr.ExcludeAreas[x];
-						document.getElementById("Ore-ExcludeAreas").options.add(option);
+						option.text = curr.ExcludeCoordinates[x];
+						document.getElementById("Ore-ExcludeCoordinates").options.add(option);
 					}
 					
 					document.getElementById("Ore-StrictTileChecking").value = curr.StrictTileChecking;
@@ -5779,7 +6216,7 @@
 			input.value = ""; //clear the input field
 		}
 		
-		//add coordinates to an IncludeAreas/ExcludeAreas list
+		//add coordinates to an IncludeCoordinates/ExcludeCoordinates list
 		function buttonAddCoordinates(addButton)
 		{
 			var select = document.getElementById(addButton.id.replace("-AddButton", "")); //get the item list
