@@ -1021,6 +1021,40 @@
 								</select>
 							</div>
 						</div>
+
+						<button class="accordion">Spawn timing</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<label for="Forage-SpawnTiming-StartTime">Starting spawn time<span class="tooltip">?<span class="tooltiptext">The earliest time at which forage can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Forage will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Forage-SpawnTiming-StartTime" id="Forage-SpawnTiming-StartTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Forage-SpawnTiming-EndTime">Ending spawn time<span class="tooltip">?<span class="tooltiptext">The latest time at which forage can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Forage will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Forage-SpawnTiming-EndTime" id="Forage-SpawnTiming-EndTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Forage-SpawnTiming-MinimumTimeBetweenSpawns">Minimum time between spawns<span class="tooltip">?<span class="tooltiptext">The number of in-game minutes between each "group" of forage spawns (minimum 10).<br/><br/>This should be a multiple of 10.<br/><br/>This does <b>not</b> prevent multiple objects spawning simultaneously; it just sets a minimum "rest period" between spawn times.</span></span></label>
+								<input type="number" name="Forage-SpawnTiming-MinimumTimeBetweenSpawns" id="Forage-SpawnTiming-MinimumTimeBetweenSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Forage-SpawnTiming-MaximumSimultaneousSpawns">Maximum simultaneous spawns<span class="tooltip">?<span class="tooltiptext">The maximum number of forage objects that can appear at the same time.<br/><br/>Leave this blank for unlimited.<br/><br/>This <b>will</b> reduce the total amount of forage if there are no available spawn times left.</span></span></label>
+								<input type="number" name="Forage-SpawnTiming-MinimumTimeBetweenSpawns" id="Forage-SpawnTiming-MaximumSimultaneousSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="clickable">Only spawn if a player is present<span class="tooltip">?<span class="tooltiptext">If enabled, forage will only spawn if at least one player is currently present at that map.<br/><br/>The forage will <b>not</b> be delayed until later; any forage assigned to that spawn time (randomly or otherwise) will not spawn.</span></span></label>
+								<input type="checkbox" class="small" name="Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent" id="Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent">
+								<label for="Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="small-checkbox-label"></label>
+							</div>
+							
+							<div class="setting">
+								<label for="Forage-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when forage spawns.<br/><br/>Use a name from a list of <a href="https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo" target="_blank">Stardew's Sound Bank IDs</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
+								<input type="text" name="Forage-SpawnTiming-SpawnSound" id="Forage-SpawnTiming-SpawnSound" style="width:8em;">
+							</div>
+						</div>
 						
 						<button class="accordion">Extra conditions</button>
 						<div class="accordion-content">
@@ -1764,6 +1798,40 @@
 								<option>Low</option>
 								<option>None</option>
 								</select>
+							</div>
+						</div>
+
+						<button class="accordion">Spawn timing</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-StartTime">Starting spawn time<span class="tooltip">?<span class="tooltiptext">The earliest time at which objects can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Objects will spawn at random times within this range.</span></span></label>
+								<input type="number" name="LargeObject-SpawnTiming-StartTime" id="LargeObject-SpawnTiming-StartTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-EndTime">Ending spawn time<span class="tooltip">?<span class="tooltiptext">The latest time at which objects can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Objects will spawn at random times within this range.</span></span></label>
+								<input type="number" name="LargeObject-SpawnTiming-EndTime" id="LargeObject-SpawnTiming-EndTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-MinimumTimeBetweenSpawns">Minimum time between spawns<span class="tooltip">?<span class="tooltiptext">The number of in-game minutes between each "group" of object spawns (minimum 10).<br/><br/>This should be a multiple of 10.<br/><br/>This does <b>not</b> prevent multiple objects spawning simultaneously; it just sets a minimum "rest period" between spawn times.</span></span></label>
+								<input type="number" name="LargeObject-SpawnTiming-MinimumTimeBetweenSpawns" id="LargeObject-SpawnTiming-MinimumTimeBetweenSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-MaximumSimultaneousSpawns">Maximum simultaneous spawns<span class="tooltip">?<span class="tooltiptext">The maximum number of objects that can appear at the same time.<br/><br/>Leave this blank for unlimited.<br/><br/>This <b>will</b> reduce the total amount of objects if there are no available spawn times left.</span></span></label>
+								<input type="number" name="LargeObject-SpawnTiming-MinimumTimeBetweenSpawns" id="LargeObject-SpawnTiming-MaximumSimultaneousSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="clickable">Only spawn if a player is present<span class="tooltip">?<span class="tooltiptext">If enabled, objects will only spawn if at least one player is currently present at that map.<br/><br/>The objects will <b>not</b> be delayed until later; any objects assigned to that spawn time (randomly or otherwise) will not spawn.</span></span></label>
+								<input type="checkbox" class="small" name="LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent" id="LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent">
+								<label for="LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="small-checkbox-label"></label>
+							</div>
+							
+							<div class="setting">
+								<label for="LargeObject-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when objects spawn.<br/><br/>Use a name from a list of <a href="https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo" target="_blank">Stardew's Sound Bank IDs</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
+								<input type="text" name="LargeObject-SpawnTiming-SpawnSound" id="LargeObject-SpawnTiming-SpawnSound" style="width:8em;">
 							</div>
 						</div>
 						
@@ -2615,6 +2683,40 @@
 							</div>
 						</div>
 						
+						<button class="accordion">Spawn timing</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<label for="Ore-SpawnTiming-StartTime">Starting spawn time<span class="tooltip">?<span class="tooltiptext">The earliest time at which ore can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Ore will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Ore-SpawnTiming-StartTime" id="Ore-SpawnTiming-StartTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Ore-SpawnTiming-EndTime">Ending spawn time<span class="tooltip">?<span class="tooltiptext">The latest time at which ore can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Ore will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Ore-SpawnTiming-EndTime" id="Ore-SpawnTiming-EndTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Ore-SpawnTiming-MinimumTimeBetweenSpawns">Minimum time between spawns<span class="tooltip">?<span class="tooltiptext">The number of in-game minutes between each "group" of ore spawns (minimum 10).<br/><br/>This should be a multiple of 10.<br/><br/>This does <b>not</b> prevent multiple objects spawning simultaneously; it just sets a minimum "rest period" between spawn times.</span></span></label>
+								<input type="number" name="Ore-SpawnTiming-MinimumTimeBetweenSpawns" id="Ore-SpawnTiming-MinimumTimeBetweenSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Ore-SpawnTiming-MaximumSimultaneousSpawns">Maximum simultaneous spawns<span class="tooltip">?<span class="tooltiptext">The maximum number of ore objects that can appear at the same time.<br/><br/>Leave this blank for unlimited.<br/><br/>This <b>will</b> reduce the total amount of ore if there are no available spawn times left.</span></span></label>
+								<input type="number" name="Ore-SpawnTiming-MinimumTimeBetweenSpawns" id="Ore-SpawnTiming-MaximumSimultaneousSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="clickable">Only spawn if a player is present<span class="tooltip">?<span class="tooltiptext">If enabled, ore will only spawn if at least one player is currently present at that map.<br/><br/>The ore will <b>not</b> be delayed until later; any ore assigned to that spawn time (randomly or otherwise) will not spawn.</span></span></label>
+								<input type="checkbox" class="small" name="Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent" id="Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent">
+								<label for="Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="small-checkbox-label"></label>
+							</div>
+							
+							<div class="setting">
+								<label for="Ore-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when ore spawns.<br/><br/>Use a name from a list of <a href="https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo" target="_blank">Stardew's Sound Bank IDs</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
+								<input type="text" name="Ore-SpawnTiming-SpawnSound" id="Ore-SpawnTiming-SpawnSound" style="width:8em;">
+							</div>
+						</div>
+
 						<button class="accordion">Extra conditions</button>
 						<div class="accordion-content">
 							<div class="setting">
@@ -5110,6 +5212,25 @@
 					}
 					
 					prev.StrictTileChecking = document.getElementById("Forage-StrictTileChecking").options[document.getElementById("Forage-StrictTileChecking").selectedIndex].text;
+
+					prev.SpawnTiming.StartTime = parseInt(document.getElementById("Forage-SpawnTiming-StartTime").value);
+
+					prev.SpawnTiming.EndTime = parseInt(document.getElementById("Forage-SpawnTiming-EndTime").value);
+
+					prev.SpawnTiming.MinimumTimeBetweenSpawns = parseInt(document.getElementById("Forage-SpawnTiming-MinimumTimeBetweenSpawns").value);
+
+					prev.SpawnTiming.MaximumSimultaneousSpawns = parseInt(document.getElementById("Forage-SpawnTiming-MaximumSimultaneousSpawns").value);
+
+					prev.SpawnTiming.OnlySpawnIfAPlayerIsPresent = document.getElementById("Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked;
+
+					if (document.getElementById("Forage-SpawnTiming-SpawnSound").value) //if not null
+					{
+						prev.SpawnTiming.SpawnSound = document.getElementById("Forage-SpawnTiming-SpawnSound").value;
+					}
+					else //if null or similar values
+					{
+						prev.SpawnTiming.SpawnSound = "";
+					}
 					
 					if (document.getElementById("Forage-DaysUntilSpawnsExpire").value) //if not null
 					{
@@ -5325,6 +5446,18 @@
 					}
 					
 					document.getElementById("Forage-StrictTileChecking").value = curr.StrictTileChecking;
+
+					document.getElementById("Forage-SpawnTiming-StartTime").value = curr.SpawnTiming.StartTime;
+
+					document.getElementById("Forage-SpawnTiming-EndTime").value = curr.SpawnTiming.EndTime;
+
+					document.getElementById("Forage-SpawnTiming-MinimumTimeBetweenSpawns").value = curr.SpawnTiming.MinimumTimeBetweenSpawns;
+
+					document.getElementById("Forage-SpawnTiming-MaximumSimultaneousSpawns").value = curr.SpawnTiming.MaximumSimultaneousSpawns;
+
+					document.getElementById("Forage-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked = curr.SpawnTiming.OnlySpawnIfAPlayerIsPresent;
+
+					document.getElementById("Forage-SpawnTiming-SpawnSound").value = curr.SpawnTiming.SpawnSound;
 					
 					document.getElementById("Forage-DaysUntilSpawnsExpire").value = curr.DaysUntilSpawnsExpire;
 					
@@ -5485,6 +5618,25 @@
 					
 					prev.StrictTileChecking = document.getElementById("LargeObject-StrictTileChecking").options[document.getElementById("LargeObject-StrictTileChecking").selectedIndex].text;
 					
+					prev.SpawnTiming.StartTime = parseInt(document.getElementById("LargeObject-SpawnTiming-StartTime").value);
+
+					prev.SpawnTiming.EndTime = parseInt(document.getElementById("LargeObject-SpawnTiming-EndTime").value);
+
+					prev.SpawnTiming.MinimumTimeBetweenSpawns = parseInt(document.getElementById("LargeObject-SpawnTiming-MinimumTimeBetweenSpawns").value);
+
+					prev.SpawnTiming.MaximumSimultaneousSpawns = parseInt(document.getElementById("LargeObject-SpawnTiming-MaximumSimultaneousSpawns").value);
+
+					prev.SpawnTiming.OnlySpawnIfAPlayerIsPresent = document.getElementById("LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked;
+
+					if (document.getElementById("LargeObject-SpawnTiming-SpawnSound").value) //if not null
+					{
+						prev.SpawnTiming.SpawnSound = document.getElementById("LargeObject-SpawnTiming-SpawnSound").value;
+					}
+					else //if null or similar values
+					{
+						prev.SpawnTiming.SpawnSound = "";
+					}
+
 					if (document.getElementById("LargeObject-DaysUntilSpawnsExpire").value) //if not null
 					{
 						prev.DaysUntilSpawnsExpire = parseInt(document.getElementById("LargeObject-DaysUntilSpawnsExpire").value);
@@ -5646,6 +5798,18 @@
 					}
 					
 					document.getElementById("LargeObject-StrictTileChecking").value = curr.StrictTileChecking;
+
+					document.getElementById("LargeObject-SpawnTiming-StartTime").value = curr.SpawnTiming.StartTime;
+
+					document.getElementById("LargeObject-SpawnTiming-EndTime").value = curr.SpawnTiming.EndTime;
+
+					document.getElementById("LargeObject-SpawnTiming-MinimumTimeBetweenSpawns").value = curr.SpawnTiming.MinimumTimeBetweenSpawns;
+
+					document.getElementById("LargeObject-SpawnTiming-MaximumSimultaneousSpawns").value = curr.SpawnTiming.MaximumSimultaneousSpawns;
+
+					document.getElementById("LargeObject-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked = curr.SpawnTiming.OnlySpawnIfAPlayerIsPresent;
+
+					document.getElementById("LargeObject-SpawnTiming-SpawnSound").value = curr.SpawnTiming.SpawnSound;
 					
 					document.getElementById("LargeObject-DaysUntilSpawnsExpire").value = curr.DaysUntilSpawnsExpire;
 					
@@ -5867,6 +6031,25 @@
 					}
 					
 					prev.StrictTileChecking = document.getElementById("Ore-StrictTileChecking").options[document.getElementById("Ore-StrictTileChecking").selectedIndex].text;
+
+					prev.SpawnTiming.StartTime = parseInt(document.getElementById("Ore-SpawnTiming-StartTime").value);
+
+					prev.SpawnTiming.EndTime = parseInt(document.getElementById("Ore-SpawnTiming-EndTime").value);
+
+					prev.SpawnTiming.MinimumTimeBetweenSpawns = parseInt(document.getElementById("Ore-SpawnTiming-MinimumTimeBetweenSpawns").value);
+
+					prev.SpawnTiming.MaximumSimultaneousSpawns = parseInt(document.getElementById("Ore-SpawnTiming-MaximumSimultaneousSpawns").value);
+
+					prev.SpawnTiming.OnlySpawnIfAPlayerIsPresent = document.getElementById("Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked;
+
+					if (document.getElementById("Ore-SpawnTiming-SpawnSound").value) //if not null
+					{
+						prev.SpawnTiming.SpawnSound = document.getElementById("Ore-SpawnTiming-SpawnSound").value;
+					}
+					else //if null or similar values
+					{
+						prev.SpawnTiming.SpawnSound = "";
+					}
 					
 					if (document.getElementById("Ore-DaysUntilSpawnsExpire").value) //if not null
 					{
@@ -6094,6 +6277,18 @@
 					}
 					
 					document.getElementById("Ore-StrictTileChecking").value = curr.StrictTileChecking;
+
+					document.getElementById("Ore-SpawnTiming-StartTime").value = curr.SpawnTiming.StartTime;
+
+					document.getElementById("Ore-SpawnTiming-EndTime").value = curr.SpawnTiming.EndTime;
+
+					document.getElementById("Ore-SpawnTiming-MinimumTimeBetweenSpawns").value = curr.SpawnTiming.MinimumTimeBetweenSpawns;
+
+					document.getElementById("Ore-SpawnTiming-MaximumSimultaneousSpawns").value = curr.SpawnTiming.MaximumSimultaneousSpawns;
+
+					document.getElementById("Ore-SpawnTiming-OnlySpawnIfAPlayerIsPresent").checked = curr.SpawnTiming.OnlySpawnIfAPlayerIsPresent;
+
+					document.getElementById("Ore-SpawnTiming-SpawnSound").value = curr.SpawnTiming.SpawnSound;
 					
 					document.getElementById("Ore-DaysUntilSpawnsExpire").value = curr.DaysUntilSpawnsExpire;
 					
