@@ -540,15 +540,32 @@ namespace FarmTypeManager
                     //validate color
                     if (validTypes[x].Settings.ContainsKey("Color")) //if color was provided
                     {
+                        //try a trimmed copy of the color application code
                         try
                         {
                             string[] colorText = ((string)validTypes[x].Settings["Color"]).Trim().Split(' '); //split the color string into strings for each number
-                            int[] colorRGB = new int[] { Convert.ToInt32(colorText[0]), Convert.ToInt32(colorText[1]), Convert.ToInt32(colorText[2]) }; //convert the strings into numbers
-                            Color color = new Color(colorRGB[0], colorRGB[1], colorRGB[2]); //set the color variable
+                            List<int> colorNumbers = new List<int>();
+                            foreach (string text in colorText) //for each string
+                            {
+                                int num = Convert.ToInt32(text); //convert it to a number
+                                if (num < 0) { num = 0; } //minimum 0
+                                else if (num > 255) { num = 255; } //maximum 255
+                                colorNumbers.Add(num); //add it to the list
+                            }
+
+                            //convert strings into RGBA values
+                            int r = Convert.ToInt32(colorNumbers[0]);
+                            int g = Convert.ToInt32(colorNumbers[1]);
+                            int b = Convert.ToInt32(colorNumbers[2]);
+                            int a;
+                            if (colorNumbers.Count > 3) //if the setting included an "A" value
+                            {
+                                a = Convert.ToInt32(colorNumbers[3]);
+                            }
                         }
                         catch (Exception)
                         {
-                            Monitor.Log($"The \"Color\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it follows the correct format, e.g. \"255 255 255\".", LogLevel.Info);
+                            Monitor.Log($"The \"Color\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it follows the correct format, e.g. \"255 255 255\" or \"255 255 255 255\".", LogLevel.Info);
                             Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                             validTypes[x].Settings.Remove("Color"); //remove the setting
@@ -556,36 +573,28 @@ namespace FarmTypeManager
                     }
                     else if (validTypes[x].Settings.ContainsKey("MinColor") && validTypes[x].Settings.ContainsKey("MaxColor")) //if color wasn't provided, but mincolor & maxcolor were
                     {
+                        //try a trimmed copy of the min/max color application code
                         try
                         {
                             string[] minColorText = ((string)validTypes[x].Settings["MinColor"]).Trim().Split(' '); //split the setting string into strings for each number
-                            int[] minColorRGB = new int[] { Convert.ToInt32(minColorText[0]), Convert.ToInt32(minColorText[1]), Convert.ToInt32(minColorText[2]) }; //convert the strings into numbers
-
-                            string[] maxColorText = ((string)validTypes[x].Settings["MaxColor"]).Trim().Split(' '); //split the setting string into strings for each number
-                            int[] maxColorRGB = new int[] { Convert.ToInt32(maxColorText[0]), Convert.ToInt32(maxColorText[1]), Convert.ToInt32(maxColorText[2]) }; //convert the strings into numbers
-
-                            //validate individual color values
-                            string validMin = "";
-                            string validMax = "";
-
-                            for (int y = 0; y < minColorRGB.Length; y++) //for each color value
+                            List<int> minColorNumbers = new List<int>();
+                            foreach (string text in minColorText) //for each string
                             {
-                                if (minColorRGB[y] > maxColorRGB[y]) //if min > max
-                                {
-                                    //swap min and max
-                                    int temp = minColorRGB[y];
-                                    minColorRGB[y] = maxColorRGB[y];
-                                    maxColorRGB[y] = temp;
-                                }
-
-                                //append to new string versions of the settings
-                                validMin += minColorRGB[y] + " ";
-                                validMax += maxColorRGB[y] + " ";
+                                int num = Convert.ToInt32(text); //convert it to a number
+                                if (num < 0) { num = 0; } //minimum 0
+                                else if (num > 255) { num = 255; } //maximum 255
+                                minColorNumbers.Add(num); //add it to the list
                             }
 
-                            //update the validated settings
-                            validTypes[x].Settings["MinColor"] = validMin.Trim();
-                            validTypes[x].Settings["MaxColor"] = validMax.Trim();
+                            string[] maxColorText = ((string)validTypes[x].Settings["MaxColor"]).Trim().Split(' '); //split the setting string into strings for each number
+                            List<int> maxColorNumbers = new List<int>();
+                            foreach (string text in maxColorText) //for each string
+                            {
+                                int num = Convert.ToInt32(text); //convert it to a number
+                                if (num < 0) { num = 0; } //minimum 0
+                                else if (num > 255) { num = 255; } //maximum 255
+                                maxColorNumbers.Add(num); //convert to number
+                            }
                         }
                         catch (Exception)
                         {

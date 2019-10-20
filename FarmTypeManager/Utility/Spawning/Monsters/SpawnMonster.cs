@@ -34,24 +34,79 @@ namespace FarmTypeManager
                     if (monsterType.Settings.ContainsKey("Color")) //if this setting was provided
                     {
                         string[] colorText = ((string)monsterType.Settings["Color"]).Trim().Split(' '); //split the setting string into strings for each number
-                        int[] colorRGB = new int[] { Convert.ToInt32(colorText[0]), Convert.ToInt32(colorText[1]), Convert.ToInt32(colorText[2]) }; //convert the strings into numbers
+                        List<int> colorNumbers = new List<int>();
+                        foreach (string text in colorText) //for each string
+                        {
+                            int num = Convert.ToInt32(text); //convert it to a number
+                            if (num < 0) { num = 0; } //minimum 0
+                            else if (num > 255) { num = 255; } //maximum 255
+                            colorNumbers.Add(num); //add it to the list
+                        }
 
-                        color = new Color(colorRGB[0], colorRGB[1], colorRGB[2]); //set the color variable
+                        //convert strings into RGBA values
+                        int r = Convert.ToInt32(colorNumbers[0]);
+                        int g = Convert.ToInt32(colorNumbers[1]);
+                        int b = Convert.ToInt32(colorNumbers[2]);
+                        int a;
+                        if (colorNumbers.Count > 3) //if the setting included an "A" value
+                        {
+                            a = Convert.ToInt32(colorNumbers[3]);
+                        }
+                        else //if the setting did not include an "A" value
+                        {
+                            a = 255; //default to no transparency
+                        }
+
+                        color = new Color(r, g, b, a); //set the color
                     }
                     else if (monsterType.Settings.ContainsKey("MinColor") && monsterType.Settings.ContainsKey("MaxColor")) //if color wasn't provided, but mincolor & maxcolor were
                     {
                         string[] minColorText = ((string)monsterType.Settings["MinColor"]).Trim().Split(' '); //split the setting string into strings for each number
-                        int[] minColorRGB = new int[] { Convert.ToInt32(minColorText[0]), Convert.ToInt32(minColorText[1]), Convert.ToInt32(minColorText[2]) }; //convert the strings into numbers
+                        List<int> minColorNumbers = new List<int>();
+                        foreach (string text in minColorText) //for each string
+                        {
+                            int num = Convert.ToInt32(text); //convert it to a number
+                            if (num < 0) { num = 0; } //minimum 0
+                            else if (num > 255) { num = 255; } //maximum 255
+                            minColorNumbers.Add(num); //add it to the list
+                        }
 
                         string[] maxColorText = ((string)monsterType.Settings["MaxColor"]).Trim().Split(' '); //split the setting string into strings for each number
-                        int[] maxColorRGB = new int[] { Convert.ToInt32(maxColorText[0]), Convert.ToInt32(maxColorText[1]), Convert.ToInt32(maxColorText[2]) }; //convert the strings into numbers
+                        List<int> maxColorNumbers = new List<int>();
+                        foreach (string text in maxColorText) //for each string
+                        {
+                            int num = Convert.ToInt32(text); //convert it to a number
+                            if (num < 0) { num = 0; } //minimum 0
+                            else if (num > 255) { num = 255; } //maximum 255
+                            maxColorNumbers.Add(num); //convert to number
+                        }
 
-                        //pick random RGB color between min and max
-                        int r = RNG.Next(minColorRGB[0], maxColorRGB[0] + 1);
-                        int g = RNG.Next(minColorRGB[1], maxColorRGB[1] + 1);
-                        int b = RNG.Next(minColorRGB[2], maxColorRGB[2] + 1);
+                        for (int x = 0; x < minColorNumbers.Count && x < maxColorNumbers.Count; x++) //for each pair of values
+                        {
+                            if (minColorNumbers[x] > maxColorNumbers[x]) //if min > max
+                            {
+                                //swap min and max
+                                int temp = minColorNumbers[x];
+                                minColorNumbers[x] = maxColorNumbers[x];
+                                maxColorNumbers[x] = temp;
+                            }
+                        }
 
-                        color = new Color(r, g, b); //set the color variable
+                        //pick random RGBA values between min and max
+                        int r = RNG.Next(minColorNumbers[0], maxColorNumbers[0] + 1);
+                        int g = RNG.Next(minColorNumbers[1], maxColorNumbers[1] + 1);
+                        int b = RNG.Next(minColorNumbers[2], maxColorNumbers[2] + 1);
+                        int a;
+                        if (minColorNumbers.Count > 3 && maxColorNumbers.Count > 3) //if both settings included an "A" value
+                        {
+                            a = RNG.Next(minColorNumbers[3], maxColorNumbers[3] + 1);
+                        }
+                        else //if one/both of the settings did not include an "A" value
+                        {
+                            a = 255; //default to no transparency
+                        }
+
+                        color = new Color(r, g, b, a); //set the color
                     }
                 }
 
