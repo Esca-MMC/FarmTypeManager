@@ -436,6 +436,7 @@
 			#tab_forage:checked ~ #content_forage,
 			#tab_objects:checked ~ #content_objects,
 			#tab_ore:checked ~ #content_ore,
+			#tab_monsters:checked ~ #content_monsters,
 			#tab_options:checked ~ #content_options {
 				display: block;
 			}
@@ -449,15 +450,19 @@
 			}
 			
 			label.tab[for='tab_objects']:before {
-				content:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwwAADsMBx2+oZAAAABh0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMS41ZEdYUgAAABtQTFRFAAAAAAAnNRwMUC4AakINdUkRfk8XjlwVo3IYGqI0EgAAAAJ0Uk5TAFVtkmhDAAABa0lEQVQoz22QvXazMAyGneQGanIF2Hyna2qZsscCuieGzg3gzgVi7/1xLvsTJ2lPh2qwpedIeiUx9rdtAHa/Y9CIBn7Fzlrbnn/Ixs2DH3r39V1VzI33/mzDeI3XrvGztX5obynrufZHxPbcxyuQs5u78NHHMpxuoP50le9j/3wDfR0b37WxvIL1Pq8CqQRfhmJpkqni6MLlEs9tzEk4MULOTYddZcNhAVwIVdAY1oZPqO93jCdKyvZCFo/g7ke22u4F0K6I1WCcfGArvZePHULVYdU9pncEQL4OBvQA2AE13RhFABUOJ11lTzuWQSpjZyQOo64zHFki+L+vI92wIfCSGcb59mk6KW2DMdVbkhLIn/GgsI2UFRaVbRtRSQwTgK7fabk8TCaVZZiEAE03WxWTUVyW8Y1zytuxdY6QcqnjngDQHAkeBOeJ/kjphWJkGRUsYFoEpTZMqpQvriJBnoiUJSS9uClbPn73H8HDcGsGj8u2AAAAAElFTkSuQmCC');
+				content:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAYUExURQAAADUcDFAuAGpCDXVJEX5PF45cFaNyGDWCZpsAAAABdFJOUwBA5thmAAABWElEQVQoz22Qu3LDIBBFwV8gUCa1WRz1ZiW5t5Fcx0iktiVDnwf+/Sx+ZFyEhtkz9+7jMvb/WwAsn2vQiAaeam+t7c9/ZOHnMYyD/3m4qrkLIZxtPN1q7rswWxvG/i7hcxt2iP15SDcgZz+7+DWkOh7uoP32TRjSsL+DoU1dcH2qb4CvV02kKTHUscpNSlXtfLxc0rlPKxrMjZBz59A1Nm4zYEKoitawNn5D+0oerqTsL/TSDvwrSRZrAXQrYjMaL0mh1/LNITQOG/dWUA8N8mM0oEdAB9lhFAFUOB50U26WrIRCJmckjifdlnhiXLCXnx1l2BF4L00ObDMdlLbRmObIc9fVHrcK+0SqmOtFn1BJjBOAbj+zIE6mkHWchACdM6smo5is05GSwbhkfIVQMKnTmgDQHhy3gi7UX9SPQ3ViJRkymPIAqQ2TqrgGq65xioJdV2GPj7Ffxh5VqJmornYAAAAASUVORK5CYII=');
 			}
 			
 			label.tab[for='tab_ore']:before {
-				content:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAtUExURf///wAAAAAAADoTKkYpL1Y0N2U/PmcuPmk0N3hMPo9MPp85OuVlOv+PRP+zAJ/hv5cAAAADdFJOUwBemVedn+QAAAC6SURBVCjPY2AgEzAbm7g4MLCXF+ASYDaN6Ggvca+9c7wAuwCziUf33jsn2qv3XsclYBrRc+7tjY726u3YBZhN3LJW7zm9a1lqsAEDdgHT0MhZq1atnDktGYcAe3l5WebMmTOnpaU4G2ATYK85vXs7UGRG954j2AW49945vb00LC2j9+6NZuwCu7eXV7SGhqVX7zlsKIBNgFFIGRiAQOBebKTAgFVAUBAoBARGioICWAVAIlAA4WMKkAoAw/l7yaFnWvQAAAAASUVORK5CYII=');
+				content:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAqUExURQAAAP///zoTKkYpL1Y0N2U/PmcuPmk0N3hMPo9MPp85OuVlOv+PRP+zAKpPdZQAAAACdFJOUwAAdpPNOAAAALdJREFUKM9jEEQDDAMpIKSkbGwoKJaWiEtASMW9vCzZLOf0tkTsAkLK5lVrTm8vy1pzDJeAinv13jvHy8uylmEXEFI2jZy1etfKqSFOioLYBVRcPDpnzpzR0RqEQ0AsLS01oqOjozU02EgRm4BY9q5Vy4Ai7VWrN2MXkFpzeteyFNfQ8Jozx4uwC6xalpZe4uIalrV6kwIjNgEBBiZgAAKBWZICA4YAyKUMQMCkBAQKQIYgWAWKAABVkHftrXcMWQAAAABJRU5ErkJggg==');
+			}
+			
+			label.tab[for='tab_monsters']:before {
+				content:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAAkUExURQAAAP///xEfBRtACiZiDCoqNy8vOjM1OzWLED+pFUfHEpaxhpwocK8AAAACdFJOUwAAdpPNOAAAAG1JREFUKM+90DERw0AQA8CjYAqiIAqiEAqmEAqiIApP4cmlyUzeGZ8LF1anLVSo6qFsS+5CVQEkuez+A2TbYguQ7eQnp5CM+ALkJCMdgJKdJEIP056JW6B2+W1fAF/SLqmB7z0kUA1UAcBSD/ABqDlNCUM4arYAAAAASUVORK5CYII=');
 			}
 			
 			label.tab[for='tab_options']:before {
-				content: url(' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA6mAAAOpgGH3KlvAAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4xLjb9TgnoAAABJklEQVRYR82S0Q3CMBBD88kXizADQ7ABg7ADm7ESqOVeUrk63QmappYsNWfHZ0HKr7idLu8lbbwfuhWIgpk/zmXm6/5l5Pf0FaILzDcvgCEK5vy8lpmRD51c9VUgHKaAt4AzOn71oUPVbW0DwrACAIMW4axzpecLF4PhBYBXRAOzPovNIxuc9Vmsj2XYRA2KHhFzLcIZHdq1BjUsl0/sVoABRhZlFyvwaQFyVnl8DC+gFzhzgXm9KGCu9z3WHD4QNKB7AcAAahBFNAB6Pqh+W9ught0LKDBqEAs8qj+9UDGsgLf4X6aLDCugi/lJeYzo+jih59O/Bt3WNiBgHF5AA83mFvV85Hh5FQjDCgAMnpE5gRSJ/J6+QnSBebcCWXQLzmKbAqV8AD2EcTU4GJJQAAAAAElFTkSuQmCC');
+				content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA6mAAAOpgGH3KlvAAAAGHRFWHRTb2Z0d2FyZQBwYWludC5uZXQgNC4xLjb9TgnoAAABJklEQVRYR82S0Q3CMBBD88kXizADQ7ABg7ADm7ESqOVeUrk63QmappYsNWfHZ0HKr7idLu8lbbwfuhWIgpk/zmXm6/5l5Pf0FaILzDcvgCEK5vy8lpmRD51c9VUgHKaAt4AzOn71oUPVbW0DwrACAIMW4axzpecLF4PhBYBXRAOzPovNIxuc9Vmsj2XYRA2KHhFzLcIZHdq1BjUsl0/sVoABRhZlFyvwaQFyVnl8DC+gFzhzgXm9KGCu9z3WHD4QNKB7AcAAahBFNAB6Pqh+W9ught0LKDBqEAs8qj+9UDGsgLf4X6aLDCugi/lJeYzo+jih59O/Bt3WNiBgHF5AA83mFvV85Hh5FQjDCgAMnpE5gRSJ/J6+QnSBebcCWXQLzmKbAqV8AD2EcTU4GJJQAAAAAElFTkSuQmCC');
 			}
 			
 			
@@ -608,6 +613,9 @@
 
 			<input class="tab" id="tab_ore" type="radio" name="tabs">
 			<label class="tab" for="tab_ore">Ore</label>
+			
+			<input class="tab" id="tab_monsters" type="radio" name="tabs">
+			<label class="tab" for="tab_monsters">Monsters</label>
 			
 			<input class="tab" id="tab_options" type="radio" name="tabs">
 			<label class="tab" for="tab_options">Other Options</label>
@@ -3293,6 +3301,890 @@
 										<tr>
 											<td colspan="2">
 												<button class="basic" id="Ore-CustomTileIndex-AddButton" onclick="buttonAddDirect(this);">Add Item</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			
+						<section class="tab" id="content_monsters">
+				<div class="setting">
+					<label for="MonsterSpawnEnabled" class="clickable">Enable monsters<span class="tooltip">?<span class="tooltiptext">Enable or disable this mod's monster spawner.<br/><br/>With the default settings, this will spawn various monsters on the farm at night, similar to the Wilderness farm.</span></span></label>
+					<input type="checkbox" class="big" name="MonsterSpawnEnabled" id="MonsterSpawnEnabled" onclick="enableDiv(this)">
+					<label for="MonsterSpawnEnabled" class="big-checkbox-label"></label>
+				</div>
+				
+				<div id="MonsterSpawnEnabled-div" style="display:none">
+					<div class="selection">
+						<label for="Monster-Area">Select a spawn area<span class="tooltip">?<span class="tooltiptext">Create or select a spawn area to show its settings below.<br/><br/>These names are used in the mod's save data. Duplicate names will be automatically replaced.</span></span></label>
+						<select class="view-areabox" name="Monster-Area" id="Monster-Area" style="width:16em" onchange="areaSelect(this); if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling);}">
+						<option value="blank"></option>
+						<option value="custom">[NEW]</option>
+						<input name="Monster-Area" style="width:16em; display:none" disabled="disabled" onchange="areaCreate(this);" onblur="areaCreate(this);">
+						<input id="Monster-Area-EditArea" style="width:16em; display:none" disabled="disabled" onchange="areaEditIDConfirmed(this);" onblur="areaEditIDConfirmed(this);">
+						<div>
+							<button type="button" class="basic" id="Monster-Area-EditAreaButton" style="margin-top:1em" onclick="areaEditID(this);">Edit Area ID</button>
+							<button type="button" class="basic" id="Monster-Area-DelAreaButton" style="margin-top:1em" onclick="areaDelete(this);" onblur="areaDeleteCancel(this);">Delete Area</button>
+						</div>
+					</div>
+						
+					<fieldset class="areabox" id="Monster-Areabox">
+					<legend>Area settings<span class="tooltip">?<span class="tooltiptext">These settings only affect the selected spawn area.<br/><br/>Use as many areas as you need. The same map can have multiple areas with different settings.</span></span></span></span></legend>
+					
+						<button class="accordion active">Basics</button>
+						<div class="accordion-content active">
+							<div class="setting">
+								<label for="Monster-MapName">Map name<span class="tooltip">?<span class="tooltiptext">Select an in-game map for this spawn area.<br/><br/>Multiple spawn areas can affect the same map.<br/><br/>To find a map's name, go there and type <b>whereami</b> in SMAPI's console.</span></span></label>
+								<select name="Monster-MapName" id="Monster-MapName" style="width:10em" onchange="if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling); this.selectedIndex='0';}">
+									<option></option>
+									<option value="custom">[OTHER]</option>
+									<option>Backwoods</option>
+									<option>Beach</option>
+									<option>BusStop</option>
+									<option>Desert</option>
+									<option>Farm</option>
+									<option>FarmCave</option>
+									<option>Forest</option>
+									<option>Mountain</option>
+									<option>Railroad</option>
+									<option>Town</option>
+									<option>Woods</option>
+									<input name="Monster-MapName" id="Monster-MapName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+								</select>
+							</div>
+					
+							<div class="setting">
+								<label for="Monster-MinimumSpawnsPerDay">Monsters spawned per day<span class="tooltip">?<span class="tooltiptext">Choose a minimum and maximum number of items to spawn.<br/><br/>A number will be chosen randomly each day. Negative numbers count as zero, increasing the chance of no spawns.</span></span></label>
+								<input type="number" id="Monster-MinimumSpawnsPerDay" style="width:5em"> to <input type="number" id="Monster-MaximumSpawnsPerDay" style="width:5em">
+							</div>
+						</div>
+						
+						<button class="accordion">Monster types</button>
+						<div class="accordion-content">						
+							<div class="setting">
+								<fieldset class="border">
+								<legend>Monster types to spawn<span class="tooltip">?<span class="tooltiptext">Create a list of "monster types" to spawn in this area by selecting a "base" monster and optional customization settings.<br/><br/>Each spawned monster will be randomly chosen from this list.</span></span></legend>
+									<div class="setting">
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Monster-MonsterTypes" style="width:8em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-MonsterTypes-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Monster-MonsterTypes-MonsterName">Base monster type<span class="tooltip">?<span class="tooltiptext">Select which monster this "monster type" is based on.<br/><br/>Spawned monsters will behave like the selected monster, but with any customization settings applied.</span></span></label>
+													<select name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName" style="width:10em" onchange="if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling); this.selectedIndex='0';}">
+														<option></option>
+														<option value="custom">[OTHER]</option>
+														<option>Bat</option>
+														<option>Frost Bat</option>
+														<option>Lava Bat</option>
+														<option>Iridium Bat</option>
+														<option>Big Green Slime</option>
+														<option>Big Blue Slime</option>
+														<option>Big Red Slime</option>
+														<option>Big Purple Slime</option>
+														<option>Bug</option>
+														<option>Armored Bug</option>
+														<option>Duggy</option>
+														<option>Dust Sprite</option>
+														<option>Ghost</option>
+														<option>Carbon Ghost</option>
+														<option>Green Slime</option>
+														<option>Blue Slime</option>
+														<option>Red Slime</option>
+														<option>Purple Slime</option>
+														<option>Grub</option>
+														<option>Mutant Grub</option>
+														<option>Fly</option>
+														<option>Mutant Fly</option>
+														<option>Metal Head</option>
+														<option>Mummy</option>
+														<option>Rock Crab</option>
+														<option>Lava Crab</option>
+														<option>Iridium Crab</option>
+														<option>Stone Golem</option>
+														<option>Wilderness Golem</option>
+														<option>Serpent</option>
+														<option>Shadow Brute</option>
+														<option>Shadow Shaman</option>
+														<option>Skeleton</option>
+														<option>Squid Kid</option>
+														<input name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+													</select>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Monster-MonsterTypes-AddButton" onclick="buttonAddDirect(this);">Add Monster Type</button>
+												</td>
+											</tr>
+										</table>
+									</div>
+									
+									<div class="setting" style="padding-top:10em; height:32em">
+										<div class="selection">
+											<label for="Monster-MonsterTypes-Settings">Custom settings for this type<span class="tooltip">?<span class="tooltiptext">Select and view various customization settings you can apply to this new monster type.<br/><br/>Multiple settings can be used at the same time. To disable a setting, leave it blank.</span></span></label>
+											<select class="view" name="Monster-MonsterTypes-Settings" id="Monster-MonsterTypes-Settings" style="width:20em" onchange="viewSelect(this)">
+												<option>Health</option>
+												<option>Damage</option>
+												<option>Defense</option>
+												<option>Dodge chance</option>
+												<option>Speed</option>
+												<option>Experience</option>
+												<option>Related skill</option>
+												<option>Minimum skill level</option>
+												<option>Maximum skill level</option>
+												<option>Percent extra health per skill level</option>
+												<option>Percent extra damage per skill level</option>
+												<option>Percent extra defense per skill level</option>
+												<option>Percent extra dodge chance per skill level</option>
+												<option>Percent extra speed per skill level</option>
+												<option>Percent extra experience per skill level</option>
+												<option>Loot</option>
+												<option>Current health</option>
+												<option>Persistent health</option>
+												<option>Sees players at spawn</option>
+												<option>Sprite</option>
+												<option>Color</option>
+												<option>Random color</option>
+												<option>Spawn weight</option>
+											</select>
+										</div>
+											
+										<div class="setting" id="Monster-MonsterTypes-Settings-HP-Div">
+											<fieldset class="border">
+												<legend>Health<span class="tooltip">?<span class="tooltiptext">Set the monster's maximum health (a.k.a. "HP" or "hit points").</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-HP" id="Monster-MonsterTypes-Settings-HP" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Damage-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Damage<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster's attacks deal.<br/><br/>Note: Some monsters and/or attacks may ignore this setting, e.g. skeletons throwing bones.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-Damage" id="Monster-MonsterTypes-Settings-Damage" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Defense-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Defense<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster resists each time it's attacked.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-Defense" id="Monster-MonsterTypes-Settings-Defense" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-DodgeChance-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Dodge chance<span class="tooltip">?<span class="tooltiptext">Set the percentage of attacks the monster will dodge, taking no damage or knockback.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-DodgeChance" id="Monster-MonsterTypes-Settings-DodgeChance" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Speed-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Speed<span class="tooltip">?<span class="tooltiptext">Set how fast the monster moves (default 1).</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-Speed" id="Monster-MonsterTypes-Settings-Speed" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-EXP-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Experience<span class="tooltip">?<span class="tooltiptext">Set how much Combat experience the player gains when defeating this monster.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-EXP" id="Monster-MonsterTypes-Settings-EXP" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-RelatedSkill-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Related skill<span class="tooltip">?<span class="tooltiptext">Choose which skill affects the other skill-based monster settings.</span></span></legend>
+												<select class="view" name="Monster-MonsterTypes-Settings-RelatedSkill" id="Monster-MonsterTypes-Settings-RelatedSkill" style="width:14em">
+													<option>Farming</option>
+													<option>Fishing</option>
+													<option>Foraging</option>
+													<option>Mining</option>
+													<option>Combat</option>
+												</select>
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-MinimumSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Minimum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>below</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-MinimumSkillLevel" id="Monster-MonsterTypes-Settings-MinimumSkillLevel" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-MaximumSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Maximum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>above</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-MaximumSkillLevel" id="Monster-MonsterTypes-Settings-MaximumSkillLevel" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra health per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much maximum health.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra damage per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much damage.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra defense per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much defense.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra dodge chance per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much dodge chance.<br/><br/>This will <b>multiply</b> the existing dodge chance.<br/><br/>Example: With level 8 Combat skill, setting this to <b>100%</b> will multiply the monster's chance by <b>9</b> (+800%).<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra speed per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much speed.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Percent extra experience per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will provide this much more experience.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" style="width:4em;">%
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Loot-Div" style="display:none">
+											<fieldset class="border multi">
+												<legend>Loot<span class="tooltip">?<span class="tooltiptext">A list of object IDs and/or exact names. The monster will <b>always</b> drop these items when defeated.<br/><br/>To find an item's ID or name, use:<br><br><div style="text-align:left">* <a href="https://stardewvalleywiki.com/Modding:Object_data" target="_blank">This wiki page</a> (click [Expand] in the Raw Data section)<br><br>* The <b>list_items [itemname]</b> command in SMAPI's console</div></span></span></legend>
+												<table class="list-left">
+													<tr>
+														<td>
+															<select size="6" id="Monster-MonsterTypes-Settings-Loot" style="width:8em">
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<button class="basic" id="Monster-MonsterTypes-Settings-Loot-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+														</td>
+													</tr>
+												</table>
+												<table class="list-right">
+													<tr>
+														<td style="line-height:2">
+															<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="clickable">Use default loot</label>
+															<input type="checkbox" class="small" name="Monster-MonsterTypes-Settings-Loot-UseGlobal" id="Monster-MonsterTypes-Settings-Loot-UseGlobal">
+															<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="small-checkbox-label"></label>
+														</td>
+													</tr>
+													<tr>
+														<td>
+															<label for="SpringItemIndex-Local-Add"></label>
+															<input type="text" name="Monster-MonsterTypes-Settings-Loot-Add" id="Monster-MonsterTypes-Settings-Loot-Add" style="width:8em;">
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<button class="basic" id="Monster-MonsterTypes-Settings-Loot-AddButton" onclick="buttonAddDirect(this);">Add Item</button>
+														</td>
+													</tr>
+												</table>
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-CurrentHP-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Current health<span class="tooltip">?<span class="tooltiptext">Set the monster's current health (<b>not</b> maximum health) when spawned.<br/><br/>If this area has an expiration setting, this monster will respawn with this much health every morning (unless "persistent health" is enabled).</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-CurrentHP" id="Monster-MonsterTypes-Settings-CurrentHP" style="width:4em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-PersistentHP-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Persistent health<span class="tooltip">?<span class="tooltiptext">If this is enabled and the area has an expiration setting, this monster will permanently keep any damage it takes.<br/><br/>By default, monsters with expiration dates will fully heal overnight.</span></span></legend>
+												<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-PersistentHP" id="Monster-MonsterTypes-Settings-PersistentHP">
+												<label for="Monster-MonsterTypes-Settings-PersistentHP" class="big-checkbox-label"></label>
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Sees players at spawn<span class="tooltip">?<span class="tooltiptext">If this is enabled, monsters will always act as though they've "spotted" a player.<br/><br/>By default, most monsters will ignore players until approached.</span></span></legend>
+												<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn">
+												<label for="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" class="big-checkbox-label"></label>
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Sprite-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Sprite<span class="tooltip">?<span class="tooltiptext">Set which spritesheet the monster will use instead of its default.<br/><br/>This uses the same format as Stardew's internal code and Content Patcher, e.g.: "<b>Characters/Monsters/Skeleton"</b></span></span></legend>
+												<input type="text" name="Monster-MonsterTypes-Settings-Sprite" id="Monster-MonsterTypes-Settings-Sprite" style="width:12em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-Color-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Color<span class="tooltip">?<span class="tooltiptext">Set the color and trasparency of the monster.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: "<b>255 0 0 127</b>" for a red, half-transparent monster.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
+												<input type="text" name="Monster-MonsterTypes-Settings-Color" id="Monster-MonsterTypes-Settings-Color" style="width:12em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-RandomColor-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Random color<span class="tooltip">?<span class="tooltiptext">Set the minimum and maximum color/trasparency of the monster. Each monster will have a random color in this range.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: "<b>0 0 0 127</b>" and "<b>255 255 255 127</b>" for a random, half-transparent color.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
+													<label for="Monster-MonsterTypes-Settings-MinColor">Minimum</label>
+													<input type="text" name="Monster-MonsterTypes-Settings-MinColor" id="Monster-MonsterTypes-Settings-MinColor" style="width:12em;">
+													<label for="Monster-MonsterTypes-Settings-MaxColor">Maximum</label>
+													<input type="text" name="Monster-MonsterTypes-Settings-MaxColor" id="Monster-MonsterTypes-Settings-MaxColor" style="width:12em;">
+											</fieldset>
+										</div>
+										
+										<div class="setting" id="Monster-MonsterTypes-Settings-SpawnWeight-Div" style="display:none">
+											<fieldset class="border">
+												<legend>Spawn weight<span class="tooltip">?<span class="tooltiptext">Set the odds of this monster type being randomly selected for each spawn (default 1).<br/><br/>Example: If spawn weight is 5, this type will be chosen 5 times as often by this area's spawner.</span></span></legend>
+												<input type="number" name="Monster-MonsterTypes-Settings-SpawnWeight" id="Monster-MonsterTypes-Settings-SpawnWeight" style="width:4em;">
+											</fieldset>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						
+						<button class="accordion">Spawn locations</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<fieldset class="border">
+								<legend>Spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to automatically allow spawning on them.<br/><br/>The <b>All</b> setting allows spawning everywhere on the map.</span></span></legend>
+									<table class="checkboxes">
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-All" value="All">
+												<label for="Monster-IncludeTerrainTypes-All" class="small-checkbox-label">All</label>
+											</td>
+											<td></td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Custom" value="Custom">
+												<label for="Monster-IncludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Monster-IncludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Monster-IncludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Grass" value="Grass">
+												<label for="Monster-IncludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Monster-IncludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Stone" value="Stone">
+												<label for="Monster-IncludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-IncludeTerrainTypes" id="Monster-IncludeTerrainTypes-Wood" value="Wood">
+												<label for="Monster-IncludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Also</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Monsters can spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>Terrain type settings <b>do not</b> affect these; monsters will spawn randomly on valid terrain <i>or</i> in these areas.</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="7" id="Monster-IncludeCoordinates" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="Monster-IncludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="Monster-IncludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Monster-IncludeCoordinates-X1" id="Monster-IncludeCoordinates-X1" style="width:4em;">
+											</td>
+											<td>
+												<label for="Monster-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Monster-IncludeCoordinates-Y1" id="Monster-IncludeCoordinates-Y1" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="Monster-IncludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Monster-IncludeCoordinates-X1" id="Monster-IncludeCoordinates-X2" style="width:4em;">
+											</td>
+											<td>
+												<label for="Monster-IncludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Monster-IncludeCoordinates-Y2" id="Monster-IncludeCoordinates-Y2" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="Monster-IncludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn on these terrain types<span class="tooltip">?<span class="tooltiptext">Select terrain types to <b>prevent</b> spawning on them.<br/><br/>The <b>All</b> setting will prevent spawning entirely, which is not recommended.</span></span></legend>
+									<table class="checkboxes">
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-All" value="All">
+												<label for="Monster-ExcludeTerrainTypes-All" class="small-checkbox-label">All</label>
+											</td>
+											<td></td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Custom" value="Custom">
+												<label for="Monster-ExcludeTerrainTypes-Custom" class="small-checkbox-label">Custom</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Diggable" value="Diggable">
+												<label for="Monster-ExcludeTerrainTypes-Diggable" class="small-checkbox-label">Diggable</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Dirt" value="Dirt">
+												<label for="Monster-ExcludeTerrainTypes-Dirt" class="small-checkbox-label">Dirt</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Grass" value="Grass">
+												<label for="Monster-ExcludeTerrainTypes-Grass" class="small-checkbox-label">Grass</label>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Quarry" value="Quarry">
+												<label for="Monster-ExcludeTerrainTypes-Quarry" class="small-checkbox-label">Quarry</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Stone" value="Stone">
+												<label for="Monster-ExcludeTerrainTypes-Stone" class="small-checkbox-label">Stone</label>
+											</td>
+											<td>
+												<input type="checkbox" class="small" name="Monster-ExcludeTerrainTypes" id="Monster-ExcludeTerrainTypes-Wood" value="Wood">
+												<label for="Monster-ExcludeTerrainTypes-Wood" class="small-checkbox-label">Wood</label>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<fieldset class="border">
+								<legend><b>Don't</b> spawn in these coordinates<span class="tooltip">?<span class="tooltiptext">Enter pairs of X/Y tile coordinates. Monsters <b>cannot</b> spawn anywhere between them.<br/><span class="includeArea"></span><br/>To get a tile's coordinates, type <b>whereami</b> in SMAPI's console.<br/><br/>This will <b>override</b> the other spawn settings.</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="7" id="Monster-ExcludeCoordinates" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="Monster-ExcludeCoordinates-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="Monster-ExcludeCoordinates-X1">X<sub>1</sub></label>
+												<input type="number" name="Monster-ExcludeCoordinates-X1" id="Monster-ExcludeCoordinates-X1" style="width:4em;">
+											</td>
+											<td>
+												<label for="Monster-IncludeCoordinates-Y1">Y<sub>1</sub></label>
+												<input type="number" name="Monster-ExcludeCoordinates-Y1" id="Monster-ExcludeCoordinates-Y1" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<label for="Monster-ExcludeCoordinates-X2">X<sub>2</sub></label>
+												<input type="number" name="Monster-ExcludeCoordinates-X1" id="Monster-ExcludeCoordinates-X2" style="width:4em;">
+											</td>
+											<td>
+												<label for="Monster-ExcludeCoordinates-Y1">Y<sub>2</sub></label>
+												<input type="number" name="Monster-ExcludeCoordinates-Y2" id="Monster-ExcludeCoordinates-Y2" style="width:4em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="Monster-ExcludeCoordinates-AddButton" onclick="buttonAddCoordinates(this)">Add Coordinates</button>
+											</td>
+										</tr>
+									</table>
+								</fieldset>
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-StrictTileChecking">Tile checking strictness<span class="tooltip">?<span class="tooltiptext">This controls how carefully the mod checks tiles before spawning.<br/><br/>If monsters won't spawn on tiles that seem valid, try lowering this setting.<br/><br/>Note that "low" and "none" may cause fewer monsters to spawn by targeting invalid tiles.</span></span></label>
+								<select name="Monster-StrictTileChecking" id="Monster-StrictTileChecking" style="width:6em;">
+								<option>High</option>
+								<option>Medium</option>
+								<option>Low</option>
+								<option>None</option>
+								</select>
+							</div>
+						</div>
+
+						<button class="accordion">Spawn timing</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<label for="Monster-SpawnTiming-StartTime">Starting spawn time<span class="tooltip">?<span class="tooltiptext">The earliest time at which monsters can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Monsters will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Monster-SpawnTiming-StartTime" id="Monster-SpawnTiming-StartTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-SpawnTiming-EndTime">Ending spawn time<span class="tooltip">?<span class="tooltiptext">The latest time at which monsters can spawn (minimum 600, intervals of 10 minutes).<br/><br/>This uses Stardew's internal time system: <b>600</b> is 6:00AM, <b>1350</b> is 1:50PM, <b>2600</b> is 2:00AM at night, etc.<br/><br/>Monsters will spawn at random times within this range.</span></span></label>
+								<input type="number" name="Monster-SpawnTiming-EndTime" id="Monster-SpawnTiming-EndTime" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-SpawnTiming-MinimumTimeBetweenSpawns">Minimum time between spawns<span class="tooltip">?<span class="tooltiptext">The number of in-game minutes between each "group" of monster spawns (minimum 10).<br/><br/>This should be a multiple of 10.<br/><br/>This does <b>not</b> prevent multiple monsters spawning simultaneously; it just sets a minimum "rest period" between spawn times.</span></span></label>
+								<input type="number" name="Monster-SpawnTiming-MinimumTimeBetweenSpawns" id="Monster-SpawnTiming-MinimumTimeBetweenSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-SpawnTiming-MaximumSimultaneousSpawns">Maximum simultaneous spawns<span class="tooltip">?<span class="tooltiptext">The maximum number of monsters that can appear at the same time.<br/><br/>Leave this blank for unlimited.<br/><br/>This <b>will</b> reduce the total amount of monsters if there are no available spawn times left.</span></span></label>
+								<input type="number" name="Monster-SpawnTiming-MinimumTimeBetweenSpawns" id="Monster-SpawnTiming-MaximumSimultaneousSpawns" style="width:5em;">
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="clickable">Only spawn if a player is present<span class="tooltip">?<span class="tooltiptext">If enabled, monsters will only spawn if at least one player is currently present at that map.<br/><br/>The monsters will <b>not</b> be delayed until later; any monsters assigned to that spawn time (randomly or otherwise) will not spawn.</span></span></label>
+								<input type="checkbox" class="small" name="Monster-SpawnTiming-OnlySpawnIfAPlayerIsPresent" id="Monster-SpawnTiming-OnlySpawnIfAPlayerIsPresent">
+								<label for="Monster-SpawnTiming-OnlySpawnIfAPlayerIsPresent" class="small-checkbox-label"></label>
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-SpawnTiming-SpawnSound" class="clickable">Spawn sound<span class="tooltip">?<span class="tooltiptext">If not blank, players at the location will hear this sound effect when monsters spawn.<br/><br/>Use a name from a list of <a href="https://docs.google.com/spreadsheets/d/1CpDrw23peQiq-C7F2FjYOMePaYe0Rc9BwQsj3h6sjyo" target="_blank">Stardew's Sound Bank IDs</a>.<br/><br/>This setting is <b>case-sensitive</b>.</span></span></label>
+								<input type="text" name="Monster-SpawnTiming-SpawnSound" id="Monster-SpawnTiming-SpawnSound" style="width:8em;">
+							</div>
+						</div>
+						
+						<button class="accordion">Extra conditions</button>
+						<div class="accordion-content">
+							<div class="setting">
+								<label for="Monster-DaysUntilSpawnsExpire">Days until spawns expire<span class="tooltip">?<span class="tooltiptext">Spawned monsters will disappear after this number of days.<br/><br/>Leave this blank for default behavior, or set it to <b>0</b> to force spawns to last forever.<br/><br/>By default, monsters spawned by this mod will disappear every night.</span></span></label>
+								<input type="number" name="Monster-DaysUntilSpawnsExpire" id="Monster-DaysUntilSpawnsExpire" style="width:5em;">
+							</div>
+							
+							<div class="setting" style="height: 25em">
+								<div class="selection">
+									<label for="Monster-EC">View extra spawn conditions<span class="tooltip">?<span class="tooltiptext">Select and view various requirements you can apply to monster spawning.<br/><br/>Multiple condition types can be used at the same time. To disable a condition, leave it blank.</span></span></label>
+									<select class="view" name="Monster-EC" id="Monster-EC" style="width:14em" onchange="viewSelect(this)">
+										<option>Years</option>
+										<option>Seasons</option>
+										<option>Days</option>
+										<option>Yesterday's weather</option>
+										<option>Today's weather</option>
+										<option>Tomorrow's weather</option>
+										<option>Limited number of spawn days</option>
+									</select>
+								</div>
+								
+								<div class="setting" id="Monster-EC-Years-Div">
+									<fieldset class="border" style="max-width:400px">
+									<legend>Years<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game years.<br/><br/>Each field can add years in a different format.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="10" id="Monster-EC-Years" style="width:8em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Years-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Years-AddSingle" id="Monster-EC-Years-AddSingle" style="width:4em;">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Years-AddSingle-AddButton" onclick="buttonAddNumberFormats(this)">Add Year (Single)</button>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Years-AddRange1" id="Monster-EC-Years-AddRange1" style="width:4em;"> to <input type="number" name="Monster-EC-Years-AddRange2" id="Monster-EC-Years-AddRange2" style="width:4em;">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Years-AddRange-AddButton" onclick="buttonAddNumberFormats(this)">Add Years (Range)</button>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Years-AddStarting" id="Monster-EC-Years-AddStarting" style="width:4em;"> or later
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Years-AddStarting-AddButton" onclick="buttonAddNumberFormats(this)">Add Year (Starting)</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-Seasons-Div" style="display:none">
+									<fieldset class="border" style="max-width:300px">
+									<legend>Seasons<span class="tooltip">?<span class="tooltiptext">Choose which seasons will spawn monsters.<br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every season.</span></span></legend>
+										<table class="checkboxes">
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-Seasons" id="Monster-EC-Seasons-Spring" value="Spring">
+													<label for="Monster-EC-Seasons-Spring" class="small-checkbox-label">Spring</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-Seasons" id="Monster-EC-Seasons-Summer" value="Summer">
+													<label for="Monster-EC-Seasons-Summer" class="small-checkbox-label">Summer</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-Seasons" id="Monster-EC-Seasons-Fall" value="Fall">
+													<label for="Monster-EC-Seasons-Fall" class="small-checkbox-label">Fall</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-Seasons" id="Monster-EC-Seasons-Winter" value="Winter">
+													<label for="Monster-EC-Seasons-Winter" class="small-checkbox-label">Winter</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-Days-Div" style="display:none">
+									<fieldset class="border" style="max-width:400px">
+									<legend>Days<span class="tooltip">?<span class="tooltiptext">This list can limit monster spawning to specific in-game days.<br/><br/>Each field can add days in a different format.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="10" id="Monster-EC-Days" style="width:8em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Days-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Days-AddSingle" id="Monster-EC-Days-AddSingle" style="width:4em;">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Days-AddSingle-AddButton" onclick="buttonAddNumberFormats(this)">Add Day (Single)</button>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Days-AddRange1" id="Monster-EC-Days-AddRange1" style="width:4em;"> to <input type="number" name="Monster-EC-Days-AddRange2" id="Monster-EC-Days-AddRange2" style="width:4em;">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Days-AddRange-AddButton" onclick="buttonAddNumberFormats(this)">Add Days (Range)</button>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="number" name="Monster-EC-Days-AddStarting" id="Monster-EC-Days-AddStarting" style="width:4em;"> or later
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-Days-AddStarting-AddButton" onclick="buttonAddNumberFormats(this)">Add Day (Starting)</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-WeatherYesterday-Div" style="display:none">
+									<fieldset class="border" style="max-width:400px">
+									<legend>Yesterday's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>after</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<table class="checkboxes">
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherYesterday" id="Monster-EC-WeatherYesterday-Sun" value="Sun">
+													<label for="Monster-EC-WeatherYesterday-Sun" class="small-checkbox-label">Sun</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherYesterday" id="Monster-EC-WeatherYesterday-Wind" value="Wind">
+													<label for="Monster-EC-WeatherYesterday-Wind" class="small-checkbox-label">Wind</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherYesterday" id="Monster-EC-WeatherYesterday-Rain" value="Rain">
+													<label for="Monster-EC-WeatherYesterday-Rain" class="small-checkbox-label">Rain</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherYesterday" id="Monster-EC-WeatherYesterday-Storm" value="Storm">
+													<label for="Monster-EC-WeatherYesterday-Storm" class="small-checkbox-label">Storm</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherYesterday" id="Monster-EC-WeatherYesterday-Snow" value="Snow">
+													<label for="Monster-EC-WeatherYesterday-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-WeatherToday-Div" style="display:none">
+									<fieldset class="border" style="max-width:400px">
+									<legend>Today's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn <b>during</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<table class="checkboxes">
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherToday" id="Monster-EC-WeatherToday-Sun" value="Sun">
+													<label for="Monster-EC-WeatherToday-Sun" class="small-checkbox-label">Sun</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherToday" id="Monster-EC-WeatherToday-Wind" value="Wind">
+													<label for="Monster-EC-WeatherToday-Wind" class="small-checkbox-label">Wind</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherToday" id="Monster-EC-WeatherToday-Rain" value="Rain">
+													<label for="Monster-EC-WeatherToday-Rain" class="small-checkbox-label">Rain</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherToday" id="Monster-EC-WeatherToday-Storm" value="Storm">
+													<label for="Monster-EC-WeatherToday-Storm" class="small-checkbox-label">Storm</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherToday" id="Monster-EC-WeatherToday-Snow" value="Snow">
+													<label for="Monster-EC-WeatherToday-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-WeatherTomorrow-Div" style="display:none">
+									<fieldset class="border" style="max-width:400px">
+									<legend>Tomorrow's weather<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn the day <b>before</b> these weather types.<br/><br/>Sun does <b>not</b> include windy days, and Rain does <b>not</b> include storms. Be sure to choose every necessary weather type. <br/><br/>Leaving this blank will <b>not</b> prevent spawn; it's the same as selecting every weather type.</span></span></legend>
+										<table class="checkboxes">
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Sun" value="Sun">
+													<label for="Monster-EC-WeatherTomorrow-Sun" class="small-checkbox-label">Sun</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Wind" value="Wind">
+													<label for="Monster-EC-WeatherTomorrow-Wind" class="small-checkbox-label">Wind</label>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Rain" value="Rain">
+													<label for="Monster-EC-WeatherTomorrow-Rain" class="small-checkbox-label">Rain</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Storm" value="Storm">
+													<label for="Monster-EC-WeatherTomorrow-Storm" class="small-checkbox-label">Storm</label>
+												</td>
+												<td>
+													<input type="checkbox" class="small" name="Monster-EC-WeatherTomorrow" id="Monster-EC-WeatherTomorrow-Snow" value="Snow">
+													<label for="Monster-EC-WeatherTomorrow-Snow" class="small-checkbox-label">Snow</label>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-EC-LNOS-Div" style="display:none">
+									<fieldset class="border" style="max-width:350px">
+									<legend>Limited number of spawn days<span class="tooltip">?<span class="tooltiptext">If you enter a number here, monsters will only spawn for that many days, and then stop permanently!<br/><br/>If spawning is prevented by another rule (e.g. "only spawn on year 2 or later"), those days won't count toward the total.</span></span></legend>
+										<input type="number" name="Monster-EC-LNOS" id="Monster-EC-LNOS" style="width:6em;">
+									</fieldset>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					
+					<div class="setting">
+						<button class="accordion">Global monster settings</button>
+						<div class="accordion-content">
+							<div class="setting" style="max-width:600px">
+								<fieldset class="border">
+								<legend>Tiles used by the "Custom" terrain type<span class="tooltip">?<span class="tooltiptext">This is a list of spritesheet index numbers for tiles. It can be used to customize a terrain type for monster spawning.<br/><br/>To find a tile's number, stand on it and type <b>whereami</b> in SMAPI's console. Use the "tile image index" number.<br/><br/>Note: Many maps use different tilesheet images, so these numbers might not work on multiple maps at once. Advanced users only!</span></span></legend>
+									<table class="list-left">
+										<tr>
+											<td>
+												<select size="6" id="Monster-CustomTileIndex" style="width:8em">
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button class="basic" id="Monster-CustomTileIndex-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+											</td>
+										</tr>
+									</table>
+									<table class="list-right">
+										<tr>
+											<td>
+												<label for="Monster-CustomTileIndex-Add"></label>
+												<input type="number" name="Monster-CustomTileIndex-Add" id="Monster-CustomTileIndex-Add" style="width:8em;">
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<button class="basic" id="Monster-CustomTileIndex-AddButton" onclick="buttonAddDirect(this);">Add Item</button>
 											</td>
 										</tr>
 									</table>
