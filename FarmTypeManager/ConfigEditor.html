@@ -3364,310 +3364,303 @@
 						</div>
 						
 						<button class="accordion">Monster types</button>
-						<div class="accordion-content">						
+						<div class="accordion-content">
 							<div class="setting">
-								<fieldset class="border">
-								<legend>Monster types to spawn<span class="tooltip">?<span class="tooltiptext">Create a list of "monster types" to spawn in this area by selecting a "base" monster and optional customization settings.<br/><br/>Each spawned monster will be randomly chosen from this list.</span></span></legend>
-									<div class="setting">
+								<table>
+									<tr>
+										<td>
+											<label for="Monster-MonsterTypes">Monster types to spawn<span class="tooltip">?<span class="tooltiptext">Create a list of "monster types" to spawn in this area by selecting a "base" monster and optional customization settings.<br/><br/>Each spawned monster will be randomly chosen from this list.</span></span></label>
+											<select size="8" id="Monster-MonsterTypes" style="width:16em">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<button class="basic" id="Monster-MonsterTypes-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+							
+							<div class="setting">
+								<label for="Monster-MonsterTypes-MonsterName">Base monster type<span class="tooltip">?<span class="tooltiptext">Select which monster this "monster type" is based on.<br/><br/>Spawned monsters will behave like the selected monster, but with any customization settings applied.</span></span></label>
+								<select name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName" style="width:10em" onchange="if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling); this.selectedIndex='0';}">
+									<option></option>
+									<option value="custom">[OTHER]</option>
+									<option>Bat</option>
+									<option>Frost Bat</option>
+									<option>Lava Bat</option>
+									<option>Iridium Bat</option>
+									<option>Big Green Slime</option>
+									<option>Big Blue Slime</option>
+									<option>Big Red Slime</option>
+									<option>Big Purple Slime</option>
+									<option>Bug</option>
+									<option>Armored Bug</option>
+									<option>Duggy</option>
+									<option>Dust Sprite</option>
+									<option>Ghost</option>
+									<option>Carbon Ghost</option>
+									<option>Green Slime</option>
+									<option>Blue Slime</option>
+									<option>Red Slime</option>
+									<option>Purple Slime</option>
+									<option>Grub</option>
+									<option>Mutant Grub</option>
+									<option>Fly</option>
+									<option>Mutant Fly</option>
+									<option>Metal Head</option>
+									<option>Mummy</option>
+									<option>Rock Crab</option>
+									<option>Lava Crab</option>
+									<option>Iridium Crab</option>
+									<option>Stone Golem</option>
+									<option>Wilderness Golem</option>
+									<option>Serpent</option>
+									<option>Shadow Brute</option>
+									<option>Shadow Shaman</option>
+									<option>Skeleton</option>
+									<option>Squid Kid</option>
+									<input name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
+								</select>
+							</div>
+							
+							<div class="setting" style="height:23em; max-width:400px">
+								<div class="selection">
+									<label for="Monster-MonsterTypes-Settings">Custom settings<span class="tooltip">?<span class="tooltiptext">Select and view various customization settings you can apply to this new monster type.<br/><br/>Multiple settings can be used at the same time. To disable a setting, leave it blank.</span></span></label>
+									<select class="view" name="Monster-MonsterTypes-Settings" id="Monster-MonsterTypes-Settings" onchange="viewSelect(this)">
+										<option>Health</option>
+										<option>Damage</option>
+										<option>Defense</option>
+										<option>Dodge chance</option>
+										<option>Speed</option>
+										<option>Experience</option>
+										<option>Related skill</option>
+										<option>Minimum skill level</option>
+										<option>Maximum skill level</option>
+										<option>Percent extra health per skill level</option>
+										<option>Percent extra damage per skill level</option>
+										<option>Percent extra defense per skill level</option>
+										<option>Percent extra dodge chance per skill level</option>
+										<option>Percent extra speed per skill level</option>
+										<option>Percent extra experience per skill level</option>
+										<option>Loot</option>
+										<option>Current health</option>
+										<option>Persistent health</option>
+										<option>Sees players at spawn</option>
+										<option>Sprite</option>
+										<option>Color</option>
+										<option>Random color</option>
+										<option>Spawn weight</option>
+									</select>
+								</div>
+									
+								<div class="setting" id="Monster-MonsterTypes-Settings-HP-Div">
+									<fieldset class="border">
+										<legend>Health<span class="tooltip">?<span class="tooltiptext">Set the monster's maximum health (a.k.a. "HP" or "hit points").</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-HP" id="Monster-MonsterTypes-Settings-HP" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Damage-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Damage<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster's attacks deal.<br/><br/>Note: Some monsters and/or attacks may ignore this setting, e.g. skeletons throwing bones.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-Damage" id="Monster-MonsterTypes-Settings-Damage" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Defense-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Defense<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster resists each time it's attacked.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-Defense" id="Monster-MonsterTypes-Settings-Defense" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-DodgeChance-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Dodge chance<span class="tooltip">?<span class="tooltiptext">Set the percentage of attacks the monster will dodge, taking no damage or knockback.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-DodgeChance" id="Monster-MonsterTypes-Settings-DodgeChance" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Speed-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Speed<span class="tooltip">?<span class="tooltiptext">Set how fast the monster moves (default 1).</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-Speed" id="Monster-MonsterTypes-Settings-Speed" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-EXP-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Experience<span class="tooltip">?<span class="tooltiptext">Set how much Combat experience the player gains when defeating this monster.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-EXP" id="Monster-MonsterTypes-Settings-EXP" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-RelatedSkill-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Related skill<span class="tooltip">?<span class="tooltiptext">Choose which skill affects the other skill-based monster settings.</span></span></legend>
+										<select name="Monster-MonsterTypes-Settings-RelatedSkill" id="Monster-MonsterTypes-Settings-RelatedSkill" style="width:14em">
+											<option></option>
+											<option>Farming</option>
+											<option>Fishing</option>
+											<option>Foraging</option>
+											<option>Mining</option>
+											<option>Combat</option>
+										</select>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-MinimumSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Minimum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>below</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-MinimumSkillLevel" id="Monster-MonsterTypes-Settings-MinimumSkillLevel" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-MaximumSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Maximum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>above</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-MaximumSkillLevel" id="Monster-MonsterTypes-Settings-MaximumSkillLevel" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra health per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much maximum health.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra damage per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much damage.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra defense per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much defense.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra dodge chance per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much dodge chance.<br/><br/>This will <b>multiply</b> the existing dodge chance.<br/><br/>Example: With level 8 Combat skill, setting this to <b>100%</b> will multiply the monster's chance by <b>9</b> (+800%).<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra speed per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much speed.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Percent extra experience per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will provide this much more experience.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" style="width:4em;">%
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Loot-Div" style="display:none">
+									<fieldset class="border multi">
+										<legend>Loot<span class="tooltip">?<span class="tooltiptext">A list of object IDs and/or exact names. The monster will <b>always</b> drop these items when defeated.<br/><br/>To find an item's ID or name, use:<br><br><div style="text-align:left">* <a href="https://stardewvalleywiki.com/Modding:Object_data" target="_blank">This wiki page</a> (click [Expand] in the Raw Data section)<br><br>* The <b>list_items [itemname]</b> command in SMAPI's console</div></span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
-													<select size="6" id="Monster-MonsterTypes" style="width:8em">
+													<select size="6" id="Monster-MonsterTypes-Settings-Loot" style="width:8em">
 												</td>
 											</tr>
 											<tr>
 												<td>
-													<button class="basic" id="Monster-MonsterTypes-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+													<button class="basic" id="Monster-MonsterTypes-Settings-Loot-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
 												</td>
 											</tr>
 										</table>
 										<table class="list-right">
 											<tr>
+												<td style="line-height:2">
+													<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="clickable">Use default loot</label>
+													<input type="checkbox" class="small" name="Monster-MonsterTypes-Settings-Loot-UseGlobal" id="Monster-MonsterTypes-Settings-Loot-UseGlobal">
+													<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="small-checkbox-label"></label>
+												</td>
+											</tr>
+											<tr>
 												<td>
-													<label for="Monster-MonsterTypes-MonsterName">Base monster type<span class="tooltip">?<span class="tooltiptext">Select which monster this "monster type" is based on.<br/><br/>Spawned monsters will behave like the selected monster, but with any customization settings applied.</span></span></label>
-													<select name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName" style="width:10em" onchange="if(this.options[this.selectedIndex].value=='custom'){toggleField(this,this.nextSibling); this.selectedIndex='0';}">
-														<option></option>
-														<option value="custom">[OTHER]</option>
-														<option>Bat</option>
-														<option>Frost Bat</option>
-														<option>Lava Bat</option>
-														<option>Iridium Bat</option>
-														<option>Big Green Slime</option>
-														<option>Big Blue Slime</option>
-														<option>Big Red Slime</option>
-														<option>Big Purple Slime</option>
-														<option>Bug</option>
-														<option>Armored Bug</option>
-														<option>Duggy</option>
-														<option>Dust Sprite</option>
-														<option>Ghost</option>
-														<option>Carbon Ghost</option>
-														<option>Green Slime</option>
-														<option>Blue Slime</option>
-														<option>Red Slime</option>
-														<option>Purple Slime</option>
-														<option>Grub</option>
-														<option>Mutant Grub</option>
-														<option>Fly</option>
-														<option>Mutant Fly</option>
-														<option>Metal Head</option>
-														<option>Mummy</option>
-														<option>Rock Crab</option>
-														<option>Lava Crab</option>
-														<option>Iridium Crab</option>
-														<option>Stone Golem</option>
-														<option>Wilderness Golem</option>
-														<option>Serpent</option>
-														<option>Shadow Brute</option>
-														<option>Shadow Shaman</option>
-														<option>Skeleton</option>
-														<option>Squid Kid</option>
-														<input name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
-													</select>
+													<label for="SpringItemIndex-Local-Add"></label>
+													<input type="text" name="Monster-MonsterTypes-Settings-Loot-Add" id="Monster-MonsterTypes-Settings-Loot-Add" style="width:8em;">
 												</td>
 											</tr>
 											<tr>
 												<td colspan="2">
-													<button class="basic" id="Monster-MonsterTypes-AddButton" onclick="buttonAddDirect(this);">Add Monster Type</button>
+													<button class="basic" id="Monster-MonsterTypes-Settings-Loot-AddButton" onclick="buttonAddDirect(this);">Add Item</button>
 												</td>
 											</tr>
 										</table>
-									</div>
-									
-									<div class="setting" style="padding-top:10em; height:32em">
-										<div class="selection">
-											<label for="Monster-MonsterTypes-Settings">Custom settings for this type<span class="tooltip">?<span class="tooltiptext">Select and view various customization settings you can apply to this new monster type.<br/><br/>Multiple settings can be used at the same time. To disable a setting, leave it blank.</span></span></label>
-											<select class="view" name="Monster-MonsterTypes-Settings" id="Monster-MonsterTypes-Settings" style="width:20em" onchange="viewSelect(this)">
-												<option>Health</option>
-												<option>Damage</option>
-												<option>Defense</option>
-												<option>Dodge chance</option>
-												<option>Speed</option>
-												<option>Experience</option>
-												<option>Related skill</option>
-												<option>Minimum skill level</option>
-												<option>Maximum skill level</option>
-												<option>Percent extra health per skill level</option>
-												<option>Percent extra damage per skill level</option>
-												<option>Percent extra defense per skill level</option>
-												<option>Percent extra dodge chance per skill level</option>
-												<option>Percent extra speed per skill level</option>
-												<option>Percent extra experience per skill level</option>
-												<option>Loot</option>
-												<option>Current health</option>
-												<option>Persistent health</option>
-												<option>Sees players at spawn</option>
-												<option>Sprite</option>
-												<option>Color</option>
-												<option>Random color</option>
-												<option>Spawn weight</option>
-											</select>
-										</div>
-											
-										<div class="setting" id="Monster-MonsterTypes-Settings-HP-Div">
-											<fieldset class="border">
-												<legend>Health<span class="tooltip">?<span class="tooltiptext">Set the monster's maximum health (a.k.a. "HP" or "hit points").</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-HP" id="Monster-MonsterTypes-Settings-HP" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Damage-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Damage<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster's attacks deal.<br/><br/>Note: Some monsters and/or attacks may ignore this setting, e.g. skeletons throwing bones.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-Damage" id="Monster-MonsterTypes-Settings-Damage" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Defense-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Defense<span class="tooltip">?<span class="tooltiptext">Set how much damage the monster resists each time it's attacked.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-Defense" id="Monster-MonsterTypes-Settings-Defense" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-DodgeChance-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Dodge chance<span class="tooltip">?<span class="tooltiptext">Set the percentage of attacks the monster will dodge, taking no damage or knockback.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-DodgeChance" id="Monster-MonsterTypes-Settings-DodgeChance" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Speed-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Speed<span class="tooltip">?<span class="tooltiptext">Set how fast the monster moves (default 1).</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-Speed" id="Monster-MonsterTypes-Settings-Speed" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-EXP-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Experience<span class="tooltip">?<span class="tooltiptext">Set how much Combat experience the player gains when defeating this monster.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-EXP" id="Monster-MonsterTypes-Settings-EXP" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-RelatedSkill-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Related skill<span class="tooltip">?<span class="tooltiptext">Choose which skill affects the other skill-based monster settings.</span></span></legend>
-												<select class="view" name="Monster-MonsterTypes-Settings-RelatedSkill" id="Monster-MonsterTypes-Settings-RelatedSkill" style="width:14em">
-													<option>Farming</option>
-													<option>Fishing</option>
-													<option>Foraging</option>
-													<option>Mining</option>
-													<option>Combat</option>
-												</select>
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-MinimumSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Minimum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>below</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-MinimumSkillLevel" id="Monster-MonsterTypes-Settings-MinimumSkillLevel" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-MaximumSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Maximum skill level<span class="tooltip">?<span class="tooltiptext">If players are <b>above</b> this level in the "related skill", this monster type won't spawn.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-MaximumSkillLevel" id="Monster-MonsterTypes-Settings-MaximumSkillLevel" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra health per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much maximum health.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra damage per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much damage.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra defense per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much defense.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra dodge chance per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much dodge chance.<br/><br/>This will <b>multiply</b> the existing dodge chance.<br/><br/>Example: With level 8 Combat skill, setting this to <b>100%</b> will multiply the monster's chance by <b>9</b> (+800%).<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra speed per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will gain this much speed.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Percent extra experience per skill level<span class="tooltip">?<span class="tooltiptext">For each level players have in the "related skill", this monster type will provide this much more experience.<br/><br/>In multiplayer, this is based on the player with the highest skill level.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" id="Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel" style="width:4em;">%
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Loot-Div" style="display:none">
-											<fieldset class="border multi">
-												<legend>Loot<span class="tooltip">?<span class="tooltiptext">A list of object IDs and/or exact names. The monster will <b>always</b> drop these items when defeated.<br/><br/>To find an item's ID or name, use:<br><br><div style="text-align:left">* <a href="https://stardewvalleywiki.com/Modding:Object_data" target="_blank">This wiki page</a> (click [Expand] in the Raw Data section)<br><br>* The <b>list_items [itemname]</b> command in SMAPI's console</div></span></span></legend>
-												<table class="list-left">
-													<tr>
-														<td>
-															<select size="6" id="Monster-MonsterTypes-Settings-Loot" style="width:8em">
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<button class="basic" id="Monster-MonsterTypes-Settings-Loot-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
-														</td>
-													</tr>
-												</table>
-												<table class="list-right">
-													<tr>
-														<td style="line-height:2">
-															<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="clickable">Use default loot</label>
-															<input type="checkbox" class="small" name="Monster-MonsterTypes-Settings-Loot-UseGlobal" id="Monster-MonsterTypes-Settings-Loot-UseGlobal">
-															<label for="Monster-MonsterTypes-Settings-Loot-UseGlobal" class="small-checkbox-label"></label>
-														</td>
-													</tr>
-													<tr>
-														<td>
-															<label for="SpringItemIndex-Local-Add"></label>
-															<input type="text" name="Monster-MonsterTypes-Settings-Loot-Add" id="Monster-MonsterTypes-Settings-Loot-Add" style="width:8em;">
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2">
-															<button class="basic" id="Monster-MonsterTypes-Settings-Loot-AddButton" onclick="buttonAddDirect(this);">Add Item</button>
-														</td>
-													</tr>
-												</table>
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-CurrentHP-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Current health<span class="tooltip">?<span class="tooltiptext">Set the monster's current health (<b>not</b> maximum health) when spawned.<br/><br/>If this area has an expiration setting, this monster will respawn with this much health every morning (unless "persistent health" is enabled).</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-CurrentHP" id="Monster-MonsterTypes-Settings-CurrentHP" style="width:4em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-PersistentHP-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Persistent health<span class="tooltip">?<span class="tooltiptext">If this is enabled and the area has an expiration setting, this monster will permanently keep any damage it takes.<br/><br/>By default, monsters with expiration dates will fully heal overnight.</span></span></legend>
-												<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-PersistentHP" id="Monster-MonsterTypes-Settings-PersistentHP">
-												<label for="Monster-MonsterTypes-Settings-PersistentHP" class="big-checkbox-label"></label>
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Sees players at spawn<span class="tooltip">?<span class="tooltiptext">If this is enabled, monsters will always act as though they've "spotted" a player.<br/><br/>By default, most monsters will ignore players until approached.</span></span></legend>
-												<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn">
-												<label for="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" class="big-checkbox-label"></label>
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Sprite-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Sprite<span class="tooltip">?<span class="tooltiptext">Set which spritesheet the monster will use instead of its default.<br/><br/>This uses the same format as Stardew's internal code and Content Patcher, e.g.: "<b>Characters/Monsters/Skeleton"</b></span></span></legend>
-												<input type="text" name="Monster-MonsterTypes-Settings-Sprite" id="Monster-MonsterTypes-Settings-Sprite" style="width:12em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-Color-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Color<span class="tooltip">?<span class="tooltiptext">Set the color and trasparency of the monster.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: "<b>255 0 0 127</b>" for a red, half-transparent monster.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
-												<input type="text" name="Monster-MonsterTypes-Settings-Color" id="Monster-MonsterTypes-Settings-Color" style="width:12em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-RandomColor-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Random color<span class="tooltip">?<span class="tooltiptext">Set the minimum and maximum color/trasparency of the monster. Each monster will have a random color in this range.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: "<b>0 0 0 127</b>" and "<b>255 255 255 127</b>" for a random, half-transparent color.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
-													<label for="Monster-MonsterTypes-Settings-MinColor">Minimum</label>
-													<input type="text" name="Monster-MonsterTypes-Settings-MinColor" id="Monster-MonsterTypes-Settings-MinColor" style="width:12em;">
-													<label for="Monster-MonsterTypes-Settings-MaxColor">Maximum</label>
-													<input type="text" name="Monster-MonsterTypes-Settings-MaxColor" id="Monster-MonsterTypes-Settings-MaxColor" style="width:12em;">
-											</fieldset>
-										</div>
-										
-										<div class="setting" id="Monster-MonsterTypes-Settings-SpawnWeight-Div" style="display:none">
-											<fieldset class="border">
-												<legend>Spawn weight<span class="tooltip">?<span class="tooltiptext">Set the odds of this monster type being randomly selected for each spawn (default 1).<br/><br/>Example: If spawn weight is 5, this type will be chosen 5 times as often by this area's spawner.</span></span></legend>
-												<input type="number" name="Monster-MonsterTypes-Settings-SpawnWeight" id="Monster-MonsterTypes-Settings-SpawnWeight" style="width:4em;">
-											</fieldset>
-										</div>
-									</div>
-								</fieldset>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-CurrentHP-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Current health<span class="tooltip">?<span class="tooltiptext">Set the monster's current health (<b>not</b> maximum health) when spawned.<br/><br/>If this area has an expiration setting, this monster will respawn with this much health every morning (unless "persistent health" is enabled).</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-CurrentHP" id="Monster-MonsterTypes-Settings-CurrentHP" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PersistentHP-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Persistent health<span class="tooltip">?<span class="tooltiptext">If this is enabled and the area has an expiration setting, this monster will permanently keep any damage it takes.<br/><br/>By default, monsters with expiration dates will fully heal overnight.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-PersistentHP" id="Monster-MonsterTypes-Settings-PersistentHP">
+										<label for="Monster-MonsterTypes-Settings-PersistentHP" class="big-checkbox-label"></label>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Sees players at spawn<span class="tooltip">?<span class="tooltiptext">If this is enabled, monsters will always act as though they've "spotted" a player.<br/><br/>By default, most monsters will ignore players until approached.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn">
+										<label for="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" class="big-checkbox-label"></label>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Sprite-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Sprite<span class="tooltip">?<span class="tooltiptext">Set which spritesheet the monster will use instead of its default.<br/><br/>This uses the same format as Content Patcher assets, e.g.: <b>Characters/Monsters/Skeleton</b></span></span></legend>
+										<input type="text" name="Monster-MonsterTypes-Settings-Sprite" id="Monster-MonsterTypes-Settings-Sprite" style="width:16em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Color-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Color<span class="tooltip">?<span class="tooltiptext">Set the color and trasparency of the monster.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: <b>255 0 0 127</b> for a red, half-transparent monster.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
+										<input type="text" name="Monster-MonsterTypes-Settings-Color" id="Monster-MonsterTypes-Settings-Color" style="width:8em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-RandomColor-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Random color<span class="tooltip">?<span class="tooltiptext">Set the minimum and maximum color/trasparency of the monster. Each monster will have a random color in this range.<br/><br/>This uses the format "R G B" or "R G B A"; replace each letter with a number from 0 to 255.<br/><br/>Example: <b>0 0 0 127</b> and <b>255 255 255 127</b> for a random, half-transparent color.<br/><br/>Note: This setting only works for slimes, big slimes, and metal heads.</b></span></span></legend>
+											<label for="Monster-MonsterTypes-Settings-MinColor">Minimum</label>
+											<input type="text" name="Monster-MonsterTypes-Settings-MinColor" id="Monster-MonsterTypes-Settings-MinColor" style="width:8em;">
+											<label for="Monster-MonsterTypes-Settings-MaxColor">Maximum</label>
+											<input type="text" name="Monster-MonsterTypes-Settings-MaxColor" id="Monster-MonsterTypes-Settings-MaxColor" style="width:8em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-SpawnWeight-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Spawn weight<span class="tooltip">?<span class="tooltiptext">Set the odds of this monster type being randomly selected for each spawn (default 1).<br/><br/>Example: If spawn weight is 5, this type will be chosen 5 times as often by this area's spawner.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-SpawnWeight" id="Monster-MonsterTypes-Settings-SpawnWeight" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting">
+									<button class="basic" id="Monster-MonsterTypes-AddMonsterType" onclick="buttonAddMonsterType();">Add Monster Type</button>
+								</div>
 							</div>
 						</div>
 						
@@ -7281,7 +7274,7 @@
 			}
 		}
 		
-		//add an entry to a forage item index list
+		//add an entry to a basic list
 		function buttonAddDirect(addButton)
 		{
 			var select = document.getElementById(addButton.id.replace("-AddButton", "")); //get the item list
@@ -7406,6 +7399,242 @@
 				
 				input.value = ""; //clear the input field
 			}
+		}
+		
+		//add an entry to to the monster types list
+		function buttonAddMonsterType()
+		{
+			var monsterName;
+			var nameSelect = document.getElementById("Monster-MonsterTypes-MonsterName");
+			var nameCustom = document.getElementById("Monster-MonsterTypes-MonsterName-Custom");
+			
+			if (nameSelect.selectedIndex <= 1) //if custom/blank option is selected
+			{
+				monsterName = nameCustom.value; //get the custom monster name
+			}
+			else //if a non-custom option is selected
+			{
+				monsterName = nameSelect.options[nameSelect.selectedIndex].text; //get the selected option's text
+			}
+			
+			//validate selected monster name
+			monsterName = monsterName.trim(); //trim whitespace from both ends
+			if (monsterName == null || monsterName == "") //if null or blank
+			{
+				return; //do nothing
+			}
+			
+			//create a settings dictionary and populate it
+			var settings = {};
+			var curr; //the current field being checked
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-HP");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["HP"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Damage");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["Damage"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Defense");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["Defense"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-DodgeChance");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["DodgeChance"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Speed");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["Speed"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-EXP");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["EXP"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-RelatedSkill");
+			if (curr.value != null && curr.value != "")
+			{
+				settings["RelatedSkill"] = curr.value;
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-MinimumSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["MinimumSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-MaximumSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["MaximumSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraHPPerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraHPPerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraDamagePerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraDamagePerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraDefensePerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraDefensePerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraDodgeChancePerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraDodgeChancePerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraSpeedPerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraSpeedPerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PercentExtraEXPPerSkillLevel");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["PercentExtraEXPPerSkillLevel"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Loot");
+			var useDefault = document.getElementById("Monster-MonsterTypes-Settings-Loot-UseGlobal");
+			if (useDefault.checked == false) //if "use default loot" is disabled
+			{
+				var lootArray = []; //create an array for loot
+				for (var x = 0; x < curr.length; x++) //for each option in the loot list
+				{
+					if (Number.isNaN(parseInt(curr.value)) == false) //if it's a valid number
+					{
+						lootArray.push(parseInt(curr.text)); //parse it as a number
+					}
+					else if (curr[x].text != null && curr[x].text != "") //if not a number and not blank
+					{
+						lootArray.push(curr[x].text); //add it as text
+					}
+				}
+				settings["Loot"] = lootArray; //use the loot array for this setting
+			}
+			useDefault.checked = true;
+			toggleUseGlobal(useDefault); //toggle the visual effect for "use default loot"
+			for (var x = curr.length - 1; x >= 0; x--) //for each option in the loot list (looping backward for removal purposes)
+			{
+				curr.remove(x); //remove this option
+			}
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-CurrentHP");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["CurrentHP"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PersistentHP");
+			if (curr.checked == true)
+			{
+				settings["PersistentHP"] = true;
+			}
+			curr.checked = false;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-SeesPlayersAtSpawn");
+			if (curr.checked == true)
+			{
+				settings["SeesPlayersAtSpawn"] = true;
+			}
+			curr.checked = false;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Sprite");
+			if (curr.value != null && curr.value != "")
+			{
+				settings["Sprite"] = curr.value;
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Color");
+			if (curr.value != null && curr.value != "")
+			{
+				settings["Color"] = curr.value;
+			}
+			curr.value = null;
+			
+			var minColor = document.getElementById("Monster-MonsterTypes-Settings-MinColor");
+			var maxColor = document.getElementById("Monster-MonsterTypes-Settings-MaxColor");
+			if (minColor.value != null && minColor.value != "" && maxColor.value != null && maxColor.value != "") //if minColor and maxColor both have values
+			{
+				settings["MinColor"] = minColor.value;
+				settings["MaxColor"] = maxColor.value;
+			}
+			minColor.value = null;
+			maxColor.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-SpawnWeight");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["SpawnWeight"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			//create a temporary monsterType object and fill it with monsterName & settings
+			var monsterType = { "MonsterName": monsterName, "Settings": settings };
+			
+			//create a new option
+			var option = document.createElement("option");
+			var numberOfSettings = Object.keys(settings).length;
+			if (numberOfSettings == 1)
+			{
+				option.text = monsterName + " (1 setting)"; //display the monster name and number of settings
+			}
+			else
+			{
+				option.text = monsterName + " (" + numberOfSettings + " settings)"; //display the monster name and number of settings
+			}
+			
+			var monsterTypeText = JSON.stringify(monsterType); //convert monsterType to json
+			option.value = monsterTypeText;  //use the text as the option's value
+			
+			//add the option to the monster types list
+			document.getElementById("Monster-MonsterTypes").add(option);
+			
+			//clear the monster name fields
+			nameCustom.value = "";
+			toggleField(nameCustom, nameSelect); //hide nameCustom, show nameSelect
+			nameSelect.selectedIndex = 0;
 		}
 		
 		//adds a mod to the OtherMods list
