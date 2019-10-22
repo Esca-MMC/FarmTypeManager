@@ -149,7 +149,7 @@ LargeObjectSpawnEnabled | true, **false** | Enables or disable spawning large ob
 OreSpawnEnabled | true, **false** | Enables or disables spawning ore. | When set to **true** with other default settings, this will work similarly to the Hill-top Farm, spawning various kinds of ore on any "Quarry" terrain your farm may have. (If you're not using the Hill-top Farm or a custom farm with similar-looking quarries, ore will **not** spawn. You'll need to change the **IncludeTerrainTypes** or **IncludeCoordinates** settings in the ore section.)
 MonsterSpawnEnabled | true, **false** | Enables or disables spawning monsters. | When set to **true** with other default settings, this will work similarly to the Wilderness Farm, spawning various monsters on the farm at night when players are present. The monster types change at higher Combat skill levels.
 
-The sections below cover the more advanced options for each spawn type. When the features in Basic Settings above are enabled, the mod will use the Spawn Settings to determine *which* objects should be spawned, *how many* to spawn each day, and *where* to put them.
+The sections below cover the more advanced options for each spawn type. When the basic features above are enabled, the mod will use the Spawn Settings to determine **which** objects should be spawned, **how many** to spawn each day, and **where** to put them.
 
 ### General Spawn Settings
 This section covers the general settings that appear in every spawner section.
@@ -216,7 +216,7 @@ LevelTenSpawnChance (Global) | 0 or more | Each ore type's chance of spawning wi
 ### Monster Spawn Settings
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-MonsterTypes | **{}**, *(see Notes)* | A list of monster types to spawn, containing a name and list of optional settings. | Separate each monster type with commas: `"MonsterTypes": [ { "MonsterName": "bat", "Settings": {} }, { "MonsterName": "ghost", "Settings": {"HP": 1, "Damage": 0} } ]`
+MonsterTypes | A list of "monster type" sections *(see Notes)* | A list of monster types to spawn, containing a name and list of optional settings. | Separate each monster type with commas: `"MonsterTypes": [ { "MonsterName": "bat", "Settings": {} }, { "MonsterName": "ghost", "Settings": {"HP": 1, "Damage": 0} } ]`
 MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters are based on an in-game monster, and then modified by any optional settings in the "Settings" list. To find a monster name, refer to the list of monsters on the [Stardew wiki Monsters page](https://stardewvalleywiki.com/Monsters). 
 Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. See the Monster Type Settings section below for more information about each setting. 
 
