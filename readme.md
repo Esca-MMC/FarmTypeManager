@@ -219,7 +219,7 @@ Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 MonsterTypes | A list of "monster type" sections *(see Notes)* | A list of monster types to spawn, containing a name and list of optional settings. | Separate each monster type with commas: `"MonsterTypes": [ { "MonsterName": "bat", "Settings": {} }, { "MonsterName": "ghost", "Settings": {"HP": 1, "Damage": 0} } ]`
 MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters are based on an in-game monster, and then modified by any optional settings in the "Settings" list. To find a monster name, refer to the list of monsters on the [Stardew wiki Monsters page](https://stardewvalleywiki.com/Monsters). 
-Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. See the Monster Type Settings section below for more information about each setting. 
+Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. | See the Monster Type Settings section below for more information about each setting.
 
 
 #### Monster Type Settings
