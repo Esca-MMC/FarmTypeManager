@@ -17,7 +17,7 @@ This mod allows you to customize the features from Stardew Valley's different fa
     * [Extra Conditions](#extra-conditions)
     * [Other Settings](#other-settings)
     * [File Conditions](#file-conditions)
-    * [Mod Settings](#mod-settings)
+    * [Farm Type Manager Settings](#farm-type-manager-settings)
 * [Content Packs](#content-packs)
 
 ## Installation
@@ -276,8 +276,8 @@ SaveFileNames | A list of save file names, e.g. `["Esca_1234567"]` | If one of t
 OtherMods | A list of mods' UniqueIDs and `true` or `false` (see Notes) | If all of the player's loaded mods match this list, this config file will be used. | This can be used to make a content pack or config file only activate with certain mod requirements. `true` means a mod *must* be installed, while `false` means it *can't* be installed. Example: `OtherMods: { "Esca.FarmTypeManager" : true, "FakeModID" : false }`
 ResetMainDataFolder | true, **false** | When true, this will move any files in `FarmTypeManager\data` to an archive folder. | This is used by mods migrating from older versions to FTM v1.4's content pack format. It will only happen once, unless the content pack's save data is deleted. The data files are moved to `FarmTypeManager\data\archive\[timestamp]`.
 
-### Mod Settings
-These settings are in the **config.json** file, which is in the mod's main folder: `Stardew Valley\Mods\FarmTypeManager`. They change the behavior of the mod itself, rather than one specific farm.
+### Farm Type Manager Settings
+These settings are in the **config.json** file, which is in the mod's main folder: `Stardew Valley\Mods\FarmTypeManager`. They change the behavior of the mod itself, rather than a specific farm or content pack.
 
 Name | Valid settings | Description
 -----|----------------|------------
@@ -285,6 +285,7 @@ EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` con
 EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
 EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
 EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
+MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
 
 ## Content Packs
 In version 1.4 and later, Farm Type Manager can use configuration files from content packs. They will be used *in addition* to the farm-specific files in the `FarmTypeManager\data` folder; they will not replace or override each other.
