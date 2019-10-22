@@ -1,5 +1,5 @@
 # Farm Type Manager
-This mod allows you to customize the features from Stardew Valley's different farm maps. It currently supports spawning ore and forageable plants on any map in the game, and spawning large objects (stumps, boulders, meteorites, etc) on the farm itself. You can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
+This mod allows players and modders to customize features from Stardew Valley's different farm maps. It can spawn forageable plants, ore, and monsters on any map in the game, and spawn large objects (stumps, logs, boulders, meteorites) on the farm. Users can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
 
 ## Contents
 * [Installation](#installation)
@@ -8,11 +8,12 @@ This mod allows you to customize the features from Stardew Valley's different fa
 * [Commands](#commands)
 * [Settings](#settings)
     * [Basic Settings](#basic-settings)
+    * [General Spawn Settings](#general-spawn-settings)
 		* [Spawn Timing Settings](#spawn-timing-settings)
     * [Forage Spawn Settings](#forage-spawn-settings)
     * [Large Object Spawn Settings](#large-object-spawn-settings)
     * [Ore Spawn Settings](#ore-spawn-settings)
-	* [Monster Spawn Settings](#monster-spawn-settings)
+    * [Monster Spawn Settings](#monster-spawn-settings)
 		* [Monster Type Settings](#monster-type-settings)
     * [Extra Conditions](#extra-conditions)
     * [Other Settings](#other-settings)
