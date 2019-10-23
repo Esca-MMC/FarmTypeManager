@@ -16,6 +16,13 @@ namespace FarmTypeManager.Monsters
     class FlyFTM : Fly
     {
         /// <summary>Creates an instance of Stardew's Fly class, but with adjustments made for this mod.</summary>
+        public FlyFTM()
+            : base()
+        {
+
+        }
+
+        /// <summary>Creates an instance of Stardew's Fly class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
         /// <param name="hard">If true, this fly will be the Mutant Fly subtype.</param>
         public FlyFTM(Vector2 position, bool hard)

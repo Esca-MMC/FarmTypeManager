@@ -16,6 +16,13 @@ namespace FarmTypeManager.Monsters
     class SquidKidFTM : SquidKid
     {
         /// <summary>Creates an instance of Stardew's SquidKid class, but with adjustments made for this mod.</summary>
+        public SquidKidFTM()
+            : base()
+        {
+
+        }
+
+        /// <summary>Creates an instance of Stardew's SquidKid class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
         public SquidKidFTM(Vector2 position)
             : base(position)

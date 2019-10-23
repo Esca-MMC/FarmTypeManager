@@ -23,7 +23,7 @@ namespace FarmTypeManager
         {
             /// <summary>Creates a list of all game locations, including building interiors, matching the provided name.</summary>
             /// <param name="name">The name of the location(s) to be listed. Case-insensitive.</param>
-            /// <returns>A list of all locations with a Name property matching </returns>
+            /// <returns>A list of all locations with a Name property matching the provided name.</returns>
             public static List<GameLocation> GetAllLocationsFromName(string name)
             {
                 List<GameLocation> locations; //the final list of matching locations

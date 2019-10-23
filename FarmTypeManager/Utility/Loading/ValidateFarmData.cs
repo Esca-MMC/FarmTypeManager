@@ -140,13 +140,43 @@ namespace FarmTypeManager
                     }
                 }
 
+                //detect invalid sound names and warn the user
+                //NOTE: this will not remove the invalid name, in case the problem is related to custom sound loading
+                foreach (SpawnArea[] areas in allAreas) //for each "Areas" array in allAreas
+                {
+                    foreach (SpawnArea area in areas) //for each area in the current array
+                    {
+                        if (area.SpawnTiming.SpawnSound != null && area.SpawnTiming.SpawnSound.Trim() != "") //if a SpawnSound has been provided for this area
+                        {
+                            try
+                            {
+                                Game1.soundBank.GetCue(area.SpawnTiming.SpawnSound); //test whether this sound exists by retrieving it from the game's soundbank
+                            }
+                            catch //if an exception is thrown while retrieving the sound
+                            {
+                                Monitor.Log($"This spawn sound could not be found: {area.SpawnTiming.SpawnSound}", LogLevel.Debug);
+                                Monitor.Log($"Please make sure the sound's name is spelled and capitalized correctly. Sound names are case-sensitive.", LogLevel.Debug);
+                                Monitor.Log($"Area: {area.UniqueAreaID}", LogLevel.Debug);
+                                if (pack != null) //if this file is from a content pack
+                                {
+                                    Monitor.Log($"Content pack: {pack.Manifest.Name}", LogLevel.Debug);
+                                }
+                                else //if this file is from FarmTypeManager/data
+                                {
+                                    Monitor.Log($"File: FarmTypeManager/data/{Constants.SaveFolderName}.json", LogLevel.Debug);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (pack != null)
                 {
                     Monitor.Log($"Validation complete for content pack: {pack.Manifest.Name}", LogLevel.Trace);
                 }
                 else
                 {
-                    Monitor.Log("Validation complete for this file from FarmTypeManager/data", LogLevel.Trace);
+                    Monitor.Log("Validation complete for data from FarmTypeManager/data", LogLevel.Trace);
                 }
                 return;
             }

@@ -9,6 +9,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using Microsoft.Xna.Framework.Graphics;
+using xTile.Layers;
 
 namespace FarmTypeManager.Monsters
 {
@@ -17,6 +18,13 @@ namespace FarmTypeManager.Monsters
     {
         public int CustomDamage { get; set; } = 8; //implements ICustomDamage (default set to mimic hardcoded values)
         public bool MoveAnywhere { get; set; } = false; //if true, ignore this monster type's default movement restrictions
+
+        /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
+        public DuggyFTM()
+            : base()
+        {
+
+        }
 
         /// <summary>Creates an instance of Stardew's Duggy class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
@@ -117,6 +125,32 @@ namespace FarmTypeManager.Monsters
                     this.SetMovingDown(true);
             }
             this.MovePosition(time, Game1.viewport, this.currentLocation);
+        }
+
+        //this override fixes the following duggy behavioral bugs:
+        // * preventing multiplayer farmhands from loading the game while they exist (caused by null location/map/layer data)
+        public override void update(GameTime time, GameLocation location)
+        {
+            if (this.invincibleCountdown > 0)
+            {
+                this.glowingColor = Color.Cyan;
+                this.invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
+                if (this.invincibleCountdown <= 0)
+                    this.stopGlowing();
+            }
+            if (!location.farmers.Any())
+                return;
+            this.behaviorAtGameTick(time);
+
+            Layer backLayer = location?.map?.GetLayer("Back"); //get the "Back" layer if it exists
+            if (backLayer != null) //if the layer exists
+            {
+                //perform the original layer check
+                if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
+                    location.characters.Remove((NPC)this);
+            }
+
+            this.updateGlow();
         }
     }
 }

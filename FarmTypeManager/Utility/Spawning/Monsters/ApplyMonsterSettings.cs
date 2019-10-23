@@ -9,6 +9,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using FarmTypeManager.Monsters;
+using Newtonsoft.Json.Linq;
 
 namespace FarmTypeManager
 {
@@ -189,8 +190,10 @@ namespace FarmTypeManager
                 //set loot (i.e. items dropped on death by the monster)
                 if (settings.ContainsKey("Loot"))
                 {
+                    List<int> IDs = ((JArray)settings["Loot"]).ToObject<List<int>>(); //cast this list of object IDs (already validated and parsed elsewhere)
+
                     monster.objectsToDrop.Clear(); //clear any existing loot
-                    foreach (int ID in (List<int>)settings["Loot"]) //for each object ID
+                    foreach (int ID in IDs) //for each object ID
                     {
                         monster.objectsToDrop.Add(ID); //add it to the loot list
                     }

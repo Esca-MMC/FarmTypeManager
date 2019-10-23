@@ -24,7 +24,7 @@ namespace FarmTypeManager
 
             Utility.Monitor.IMonitor = Monitor; //pass the monitor for use by other areas of this mod's code
 
-            Utility.LoadModData(helper); //attempt to load the config.json ModConfig file
+            Utility.LoadModConfig(helper); //attempt to load the config.json ModConfig file
 
             if (Utility.MConfig?.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
             {
@@ -37,7 +37,7 @@ namespace FarmTypeManager
         {
             //attempt to load the config.json ModConfig file and update its settings
             //note: this already happens in the Entry method, but doing it here allows certain settings to be changed while the game is running
-            Utility.LoadModData(Helper);
+            Utility.LoadModConfig(Helper);
 
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
@@ -72,6 +72,8 @@ namespace FarmTypeManager
         /// <summary>Tasks performed when the the game's clock time changes, i.e. every 10 in-game minutes. (Note: This event *sometimes* fires at 6:00AM: apaprently every load after the first.)</summary>
         private void TimeChanged(object sender, TimeChangedEventArgs e)
         {
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
+
             if (e.NewTime != 600) //if it's not currently 6:00AM
             {
                 Generation.SpawnTimedSpawns(Utility.TimedSpawns, e.NewTime); //spawn anything set to appear at the current time
@@ -81,6 +83,8 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before a day ends, i.e. right before saving. This is also called when a new farm is created, *before* DayStarted.</summary>
         private void DayEnding(object sender, EventArgs e)
         {
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
+
             if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm data list is blank, do nothing (e.g. when called by a newly created farm)
 
             foreach (FarmData data in Utility.FarmDataList) //for each set of farm data
