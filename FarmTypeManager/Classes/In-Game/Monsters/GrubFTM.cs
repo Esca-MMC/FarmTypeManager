@@ -19,6 +19,13 @@ namespace FarmTypeManager
         class GrubFTM : Grub
         {
             /// <summary>Creates an instance of Stardew's Grub class, but with adjustments made for this mod.</summary>
+            public GrubFTM()
+                : base()
+            {
+
+            }
+
+            /// <summary>Creates an instance of Stardew's Grub class, but with adjustments made for this mod.</summary>
             /// <param name="position">The x,y coordinates of this monster's location.</param>
             /// <param name="hard">If true, this grub will be the Mutant Grub subtype.</param>
             public GrubFTM(Vector2 position, bool hard)

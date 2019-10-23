@@ -20,6 +20,13 @@ namespace FarmTypeManager
             public int MineLevelOfDeathSpawns { get; set; } = 0; //determines the subtype of any monsters spawned when this monster dies
 
             /// <summary>Creates an instance of Stardew's BigSlime class, but with adjustments made for this mod.</summary>
+            public BigSlimeFTM()
+                : base()
+            {
+
+            }
+
+            /// <summary>Creates an instance of Stardew's BigSlime class, but with adjustments made for this mod.</summary>
             /// <param name="position">The x,y coordinates of this monster's location.</param>
             /// <param name="mineLevel">A number that affects the type and/or stats of this monster. This normally represents which floor of the mines the monster spawned on (121+ for skull cavern).</param>
             public BigSlimeFTM(Vector2 position, int mineLevel)

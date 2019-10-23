@@ -16,6 +16,13 @@ namespace FarmTypeManager.Monsters
     class SerpentFTM : Serpent
     {
         /// <summary>Creates an instance of Stardew's Serpent class, but with adjustments made for this mod.</summary>
+        public SerpentFTM()
+            : base()
+        {
+
+        }
+
+        /// <summary>Creates an instance of Stardew's Serpent class, but with adjustments made for this mod.</summary>
         /// <param name="position">The x,y coordinates of this monster's location.</param>
         public SerpentFTM(Vector2 position)
             : base(position)
