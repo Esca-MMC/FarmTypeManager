@@ -4213,12 +4213,12 @@
 									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Riverland" value="Riverland">
 									<label for="OtherOptions-FC-FarmTypes-Riverland" class="small-checkbox-label">Riverland</label>
 								</td>
-							</tr>
-							<tr>
 								<td>
 									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Forest" value="Forest">
 									<label for="OtherOptions-FC-FarmTypes-Forest" class="small-checkbox-label">Forest</label>
 								</td>
+							</tr>
+							<tr>
 								<td>
 									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Hilltop" value="Hilltop">
 									<label for="OtherOptions-FC-FarmTypes-Hilltop" class="small-checkbox-label">Hilltop</label>
@@ -4226,6 +4226,10 @@
 								<td>
 									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-Wilderness" value="Wilderness">
 									<label for="OtherOptions-FC-FarmTypes-Wilderness" class="small-checkbox-label">Wilderness</label>
+								</td>
+								<td>
+									<input type="checkbox" class="small" name="OtherOptions-FC-FarmTypes" id="OtherOptions-FC-FarmTypes-FourCorners" value="FourCorners">
+									<label for="OtherOptions-FC-FarmTypes-FourCorners" class="small-checkbox-label">Four&nbsp;Corners</label>
 								</td>
 							</tr>
 						</table>
@@ -5345,6 +5349,7 @@
 			document.getElementById("OtherOptions-FC-FarmTypes-Forest").checked = false;
 			document.getElementById("OtherOptions-FC-FarmTypes-Hilltop").checked = false;
 			document.getElementById("OtherOptions-FC-FarmTypes-Wilderness").checked = false;
+			document.getElementById("OtherOptions-FC-FarmTypes-FourCorners").checked = false;
 			
 			for (var x = 0; x < json.File_Conditions.FarmTypes.length; x++) //for each loaded farm type
 			{
@@ -5376,6 +5381,13 @@
 					case "COMBAT":
 					case "MONSTER":
 						document.getElementById("OtherOptions-FC-FarmTypes-Wilderness").checked = true;
+						break;
+					case "FOUR CORNERS":
+					case "FOURCORNERS":
+					case "FOUR":
+					case "CORNERS":
+					case "FC":
+						document.getElementById("OtherOptions-FC-FarmTypes-FourCorners").checked = true;
 						break;
 				}
 			}
