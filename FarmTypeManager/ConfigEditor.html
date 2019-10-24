@@ -7814,12 +7814,12 @@
 				var range2 = document.getElementById(addButton.id.replace("-AddButton", "2"));
 				
 				//validate input
-				if (range1.value < 0 || range2.value < 0 || range1.value == "" || range2.value == "") //if negative (conflicts with this format) or blank
+				if (isNaN(parseInt(range1.value)) || isNaN(parseInt(range2.value)) || parseInt(range1.value) < 0 || parseInt(range2.value) < 0 || range1.value == "" || range2.value == "") //if not a number, negative, or blank
 				{
 					return; //do nothing
 				}
 				
-				if (range1.value > range2.value)
+				if (parseInt(range1.value) > parseInt(range2.value))
 				{
 					//swap the two values
 					var temp = range1.value;
