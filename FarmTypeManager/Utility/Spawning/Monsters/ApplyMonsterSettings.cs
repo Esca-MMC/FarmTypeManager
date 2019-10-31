@@ -38,13 +38,11 @@ namespace FarmTypeManager
                 //set damage
                 if (settings.ContainsKey("Damage"))
                 {
+                    monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]); //set DamageToFarmer
+
                     if (monster is ICustomDamage cd) //if this monster type uses the custom damage interface
                     {
-                        cd.CustomDamage = Convert.ToInt32(settings["Damage"]); //set CustomDamage
-                    }
-                    else
-                    {
-                        monster.DamageToFarmer = Convert.ToInt32(settings["Damage"]); //set DamageToFarmer
+                        cd.CustomDamage = Convert.ToInt32(settings["Damage"]); //set CustomDamage as well
                     }
                 }
 

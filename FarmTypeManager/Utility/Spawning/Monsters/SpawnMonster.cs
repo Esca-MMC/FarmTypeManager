@@ -201,7 +201,7 @@ namespace FarmTypeManager
                         monster = new Bug(tile, 121);
                         break;
                     case "duggy":
-                        monster = new DuggyFTM(tile, true);
+                        monster = new DuggyFTM(tile);
                         break;
                     case "dust":
                     case "sprite":
