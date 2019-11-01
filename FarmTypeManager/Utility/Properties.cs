@@ -72,6 +72,9 @@ namespace FarmTypeManager
                 }
             }
 
+            /// <summary>The helper provided to this mod by SMAPI. Should be set during mod startup.</summary>
+            public static IModHelper Helper { get; set; }
+
             /// <summary>A list of all config data for the current farm, related save data, and content pack (if applicable).</summary>
             public static List<FarmData> FarmDataList = new List<FarmData>();
 

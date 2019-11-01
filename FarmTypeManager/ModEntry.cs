@@ -26,6 +26,8 @@ namespace FarmTypeManager
 
             Utility.LoadModConfig(helper); //attempt to load the config.json ModConfig file
 
+            Utility.Helper = helper; //pass the helper for use by other areas of this mod's code
+
             if (Utility.MConfig?.EnableWhereAmICommand == true) //if enabled, add the WhereAmI method as a console command
             {
                 helper.ConsoleCommands.Add("whereami", "Outputs coordinates and other information about the player's current location.", WhereAmI);
