@@ -326,11 +326,9 @@ namespace FarmTypeManager
                         monster = new Skeleton(tile);
                         if (seesPlayers) //if the "SeesPlayersAtSpawn" setting is true
                         {
-                            if (typeof(Skeleton).GetField("spottedPlayer", BindingFlags.NonPublic | BindingFlags.Instance) is FieldInfo field) //try to access this skeleton's private "spottedPlayer" field
-                            {
-                                field.SetValue(monster, true); //set "spottedPlayer" to true
-                                monster.IsWalkingTowardPlayer = true;
-                            }
+                            IReflectedField<bool> spottedPlayer = Helper.Reflection.GetField<bool>(monster, "spottedPlayer"); //try to access this skeleton's private "spottedPlayer" field
+                            spottedPlayer.SetValue(true);
+                            monster.IsWalkingTowardPlayer = true;
                         }
                         break;
                     case "squid":
