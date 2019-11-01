@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -9,6 +10,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 
 namespace FarmTypeManager
 {
@@ -17,7 +19,23 @@ namespace FarmTypeManager
         /// <summary>A subclass of Stardew's BigSlime class, adjusted for use by this mod.</summary>
         class BigSlimeFTM : BigSlime
         {
-            public int MineLevelOfDeathSpawns { get; set; } = 0; //determines the subtype of any monsters spawned when this monster dies
+            [XmlElement("FTM_mineLevelOfDeathSpawns")]
+            public readonly NetInt mineLevelOfDeathSpawns = new NetInt(0);
+
+            /// <summary>A number that affects the type and/or stats of any monsters spawned by this monster's death.</summary>
+            [XmlIgnore]
+            public int MineLevelOfDeathSpawns
+            {
+                get
+                {
+                    return mineLevelOfDeathSpawns.Value;
+                }
+
+                set
+                {
+                    mineLevelOfDeathSpawns.Value = value;
+                }
+            }
 
             /// <summary>Creates an instance of Stardew's BigSlime class, but with adjustments made for this mod.</summary>
             public BigSlimeFTM()
@@ -28,11 +46,26 @@ namespace FarmTypeManager
 
             /// <summary>Creates an instance of Stardew's BigSlime class, but with adjustments made for this mod.</summary>
             /// <param name="position">The x,y coordinates of this monster's location.</param>
+            public BigSlimeFTM(Vector2 position)
+                : base(position, 0)
+            {
+                MineLevelOfDeathSpawns = 0;
+            }
+
+            /// <summary>Creates an instance of Stardew's BigSlime class, but with adjustments made for this mod.</summary>
+            /// <param name="position">The x,y coordinates of this monster's location.</param>
             /// <param name="mineLevel">A number that affects the type and/or stats of this monster. This normally represents which floor of the mines the monster spawned on (121+ for skull cavern).</param>
             public BigSlimeFTM(Vector2 position, int mineLevel)
                 : base(position, mineLevel)
             {
                 MineLevelOfDeathSpawns = mineLevel;
+            }
+
+            /// <summary>This method adds the CustomDamage setting to to the monster's list of net fields for multiplayer functionality.</summary>
+            protected override void initNetFields()
+            {
+                base.initNetFields();
+                this.NetFields.AddField(mineLevelOfDeathSpawns);
             }
 
             //this override fixes the following BigSlime behavioral bugs:
