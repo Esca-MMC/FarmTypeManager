@@ -7,6 +7,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Monsters;
 using StardewValley.TerrainFeatures;
 using Newtonsoft.Json.Linq;
 
@@ -129,7 +130,21 @@ namespace FarmTypeManager
                         case "squid kid":
                             validName = true; //the name is valid
                             break;
-                        default: break; //the name is invalid
+                        default: //if the name doesn't match any directly known monster types
+                            Type externalType = GetTypeFromName(validTypes[x].MonsterName, typeof(Monster)); //find a monster subclass with a matching name
+                            if (externalType != null) //if a matching type was found
+                            {
+                                if (externalType.GetConstructor(new[] { typeof(Vector2) }) != null) //if this type has a constructor that takes a Vector2
+                                {
+                                    validName = true; //the name is valid
+                                }
+
+                                /* NOTE: Accepting monsters' default constructors would be dangerous and is not recommended.
+                                 * Many monsters' defaults create them without filling game-critical fields, and this code can't reasonably account for them.
+                                 * The game will often freeze or crash if they are used here.
+                                 */
+                            }
+                            break;
                     }
 
                     if (!validName) //if the name is invalid
