@@ -229,7 +229,6 @@ HP | An integer (minimum 1) | The monster's maximum health. |
 Damage | An integer (minimum 0) | The amount of damage the monster's attacks deal. | Some monster types/attacks ignore this setting and use hard-coded damage values, e.g. skeleton bone-throwing attacks.
 Defense | An integer (minimum 0) | Attacks that hit the monster are reduced by this much damage. | 
 DodgeChance | An integer (minimum 0) | The percent chance the monster will completely ignore each attack. | 
-Speed | An integer | The monster's movement speed is multiplied by this number. | 
 EXP | An integer (minimum 0) | Defeating the monster will give players this amount of Combat skill experience. | Even with this setting, Stardew does **not** give players experience for defeating monsters at the farm.
 RelatedSkill | "Farming", "Fishing", "Foraging", "Mining", "Combat" | The player skill that affects the "Skill Level" settings below. | If this setting isn't provided, the "Skill Level" settings below will be ignored.  In multiplayer, these settings check the highest skill level among **all** players.
 MinimumSkillLevel | An integer (minimum 0) | The minimum skill level required to spawn this monster type. | This is based on the RelatedSkill setting.
@@ -238,7 +237,6 @@ PercentExtraHPPerSkillLevel | An integer | The monster's HP is increased by this
 PercentExtraDamagePerSkillLevel | An integer | The monster's damage is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraDefensePerSkillLevel | An integer | The monster's defense is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraDodgeChancePerSkillLevel | An integer | The monster's dodge chance is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
-PercentExtraSpeedPerSkillLevel | An integer | The monster's speed is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 PercentExtraEXPPerSkillLevel | An integer | The monster's EXP is increased by this percentage, once for each skill level. | This is based on the RelatedSkill setting. Negative values are valid and will decrease instead.
 Loot | A list of integers and/or item names, e.g. `[16, "Red Mushroom"]` | A list of items the monster will drop when defeated. | Loot is **not** randomized; this monster type will always drop these items. Use multiple monster types to randomize loot. An empty list will cause the monster to drop nothing. See the forage spawner's `ItemIndex` settings for formatting guidelines. 
 PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
