@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
     <Compile Include="Classes\Config\Data\ContentPackSaveData.cs" />
