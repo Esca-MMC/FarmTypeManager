@@ -17,11 +17,6 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
-            Utility.Monitor.Log($"TEST: message event fired", LogLevel.Warn);
-            Utility.Monitor.Log($"e.FromModID: {e.FromModID}", LogLevel.Warn);
-            Utility.Monitor.Log($"e.FromPlayerID: {e.FromPlayerID}", LogLevel.Warn);
-            Utility.Monitor.Log($"e.Type: {e.Type}", LogLevel.Warn);
-
             if (e.FromModID != ModManifest.UniqueID) { return; } //if this message is from another mod, don't do anything
 
             //handle SavedObject messages
