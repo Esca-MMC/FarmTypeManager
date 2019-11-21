@@ -60,7 +60,7 @@ namespace FarmTypeManager
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
 
-                                if (saved.MonType != null && (!saved.MonType.Settings.ContainsKey("PersistentHP") || (bool)saved.MonType.Settings["PersistentHP"])) //if PersistentHP wasn't provided OR is set to true
+                                if (saved.MonType != null && saved.MonType.Settings.ContainsKey("PersistentHP") && (bool)saved.MonType.Settings["PersistentHP"]) //if the PersistentHP setting is enabled for this monster
                                 {
                                     saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
                                 }
