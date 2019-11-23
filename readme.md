@@ -1,5 +1,5 @@
 # Farm Type Manager
-This mod allows players and modders to customize features from Stardew Valley's different farm maps. It can spawn forageable plants, ore, and monsters on any map in the game, and spawn large objects (stumps, logs, boulders, meteorites) on the farm. Users can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
+This mod allows players and modders to customize features from Stardew Valley's different farm maps. It can spawn forageable plants, large objects (e.g. stumps and boulders), ore, and monsters at any location in the game. Users can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
 
 ## Contents
 * [Installation](#installation)
@@ -147,7 +147,7 @@ Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 ForageSpawnEnabled | true, **false** | Enables or disables spawning forageable plants. | When set to **true** with other default settings, this will work similarly to the Forest Farm, randomly spawning forage items on the farm each day.
 LargeObjectSpawnEnabled | true, **false** | Enables or disable spawning large objects (e.g. stumps). | When set to **true** with other default settings, this will find any existing large stumps on your farm and cause those to respawn each day.
-OreSpawnEnabled | true, **false** | Enables or disables spawning ore. | When set to **true** with other default settings, this will work similarly to the Hill-top Farm, spawning various kinds of ore on any "Quarry" terrain your farm may have. (If you're not using the Hill-top Farm or a custom farm with similar-looking quarries, ore will **not** spawn. You'll need to change the **IncludeTerrainTypes** or **IncludeCoordinates** settings in the ore section.)
+OreSpawnEnabled | true, **false** | Enables or disables spawning ore. | When set to **true** with other default settings, this will work similarly to the Hill-top Farm, spawning various kinds of ore on any "Quarry" terrain your farm may have. (If you're not using the Hill-top Farm or a custom farm with similar-looking quarries, ore might not spawn. You'll need to change the **IncludeTerrainTypes** or **IncludeCoordinates** settings in the ore section.)
 MonsterSpawnEnabled | true, **false** | Enables or disables spawning monsters. | When set to **true** with other default settings, this will work similarly to the Wilderness Farm, spawning various monsters on the farm at night when players are present. The monster types change at higher Combat skill levels.
 
 The sections below cover the more advanced options for each spawn type. When the basic features above are enabled, the mod will use the Spawn Settings to determine **which** objects should be spawned, **how many** to spawn each day, and **where** to put them.
