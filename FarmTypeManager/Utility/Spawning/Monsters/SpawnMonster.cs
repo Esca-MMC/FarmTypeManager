@@ -285,7 +285,7 @@ namespace FarmTypeManager
                         }
                         break;
                     case "mummy":
-                        monster = new Mummy(tile);
+                        monster = new MummyFTM(tile);
                         break;
                     case "rockcrab":
                     case "rock crab":

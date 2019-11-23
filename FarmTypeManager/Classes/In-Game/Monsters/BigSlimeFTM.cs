@@ -90,25 +90,28 @@ namespace FarmTypeManager
                         ++Game1.stats.SlimesKilled;
                         if (Game1.gameMode == (byte)3 && Game1.random.NextDouble() < 0.75)
                         {
-                            //find any existing farm data to save this slime in
-                            //NOTE: this hacky workaround is used because SavedObjects are only processed in relation to Utility.FarmDataList, each of which generates a data file
-                            if (Utility.FarmDataList.Count > 0) //if any farm data exists
+                            int num2 = Game1.random.Next(2, 5);
+                            for (int index = 0; index < num2; ++index)
                             {
-                                int num2 = Game1.random.Next(2, 5);
-                                for (int index = 0; index < num2; ++index)
+                                this.currentLocation.characters.Add((NPC)new GreenSlime(this.Position, MineLevelOfDeathSpawns)); //use MineLevelOfDeathSpawns instead of checking the game state
+                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
+                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].willDestroyObjectsUnderfoot = false;
+                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].moveTowardPlayer(4);
+                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].Scale = (float)(0.75 + (double)Game1.random.Next(-5, 10) / 100.0);
+                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].currentLocation = this.currentLocation;
+
+                                int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
+                                this.currentLocation.characters[currentLocation.characters.Count - 1].id = ID; //assign the ID to this slime
+                                SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for this slime (set to expire overnight) 
+
+                                if (Context.IsMainPlayer) //if this method was run by the host player
                                 {
-                                    this.currentLocation.characters.Add((NPC)new GreenSlime(this.Position, MineLevelOfDeathSpawns)); //use MineLevelOfDeathSpawns instead of checking the game state
-                                    this.currentLocation.characters[this.currentLocation.characters.Count - 1].setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
-                                    this.currentLocation.characters[this.currentLocation.characters.Count - 1].willDestroyObjectsUnderfoot = false;
-                                    this.currentLocation.characters[this.currentLocation.characters.Count - 1].moveTowardPlayer(4);
-                                    this.currentLocation.characters[this.currentLocation.characters.Count - 1].Scale = (float)(0.75 + (double)Game1.random.Next(-5, 10) / 100.0);
-                                    this.currentLocation.characters[this.currentLocation.characters.Count - 1].currentLocation = this.currentLocation;
-
-                                    int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
-                                    this.currentLocation.characters[currentLocation.characters.Count - 1].id = ID; //assign the ID to this slime
-
-                                    SavedObject save = new SavedObject(currentLocation.Name, Position, SavedObject.ObjectType.Monster, ID, null, 1); //create save data for this slime (set to expire overnight) 
-                                    Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store it in the first listed FarmData
+                                    Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store the save data in the first listed FarmData
+                                }
+                                else //if this method was run by a client player (farmhand)
+                                {
+                                    //send a message to the host player to process this save data
+                                    Utility.Helper.Multiplayer.SendMessage<SavedObject>(save, "SavedObject", new string[] { Utility.Helper.ModRegistry.ModID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
                                 }
                             }
                         }

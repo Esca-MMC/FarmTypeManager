@@ -245,27 +245,6 @@ namespace FarmTypeManager
                         }
                     }
 
-                    //validate movement speed
-                    if (validTypes[x].Settings.ContainsKey("Speed"))
-                    {
-                        if (validTypes[x].Settings["Speed"] is long) //if this is a readable integer
-                        {
-                            int speed = Convert.ToInt32(validTypes[x].Settings["Speed"]);
-                            if (speed < 0) //if the setting is too low
-                            {
-                                Monitor.Log($"The \"Speed\" setting for monster type \"{validTypes[x].MonsterName}\" is {speed}. Setting it to 0.", LogLevel.Trace);
-                                validTypes[x].Settings["Speed"] = (long)0; //set the validated setting to 0
-                            }
-                        }
-                        else //if this isn't a readable integer
-                        {
-                            Monitor.Log($"The \"Speed\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
-
-                            validTypes[x].Settings.Remove("Speed"); //remove the setting
-                        }
-                    }
-
                     //validate experience points
                     if (validTypes[x].Settings.ContainsKey("EXP"))
                     {
@@ -449,19 +428,6 @@ namespace FarmTypeManager
 
                             validTypes[x].Settings.Remove("PercentExtraDodgeChancePerSkillLevel"); //remove the setting
                         }
-                    }
-
-                    //validate speed multiplier
-                    if (validTypes[x].Settings.ContainsKey("PercentExtraSpeedPerSkillLevel"))
-                    {
-                        if (!(validTypes[x].Settings["PercentExtraSpeedPerSkillLevel"] is long)) //if this isn't a readable integer
-                        {
-                            Monitor.Log($"The \"PercentExtraSpeedPerSkillLevel\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's an integer.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
-
-                            validTypes[x].Settings.Remove("PercentExtraSpeedPerSkillLevel"); //remove the setting
-                        }
-
                     }
 
                     //validate experience multiplier
