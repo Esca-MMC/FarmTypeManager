@@ -1,10 +1,10 @@
 ﻿{
    "Name": "Farm Type Manager",
    "Author": "Esca",
-   "Version": "1.7.1",
-   "Description": "Allows custom spawning of content from each farm type, such as ore and forage",
+   "Version": "1.8.0",
+   "Description": "Allows custom spawning of content from each farm type: forage, large objects, ore, and monsters",
    "UniqueID": "Esca.FarmTypeManager",
    "EntryDll": "FarmTypeManager.dll",
-   "MinimumApiVersion": "2.0",
+   "MinimumApiVersion": "3.0.0-beta",
    "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ]
 }
