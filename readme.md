@@ -248,8 +248,8 @@ LevelTenSpawnChance (Global) | 0 or more | Each ore type's chance of spawning wi
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 MonsterTypes | A list of "monster type" sections *(see Notes)* | A list of monster types to spawn, containing a name and list of optional settings. | Separate each monster type with commas: `"MonsterTypes": [ { "MonsterName": "bat", "Settings": {} }, { "MonsterName": "ghost", "Settings": {"HP": 1, "Damage": 0} } ]`
-MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters are based on an in-game monster, and then modified by any optional settings in the "Settings" list. To find a monster name, refer to the list of monsters on the [Stardew wiki Monsters page](https://stardewvalleywiki.com/Monsters). 
-Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. | See the Monster Type Settings section below for more information about each setting.
+MonsterName | The name of an in-game monster, e.g. `"green slime"` | The "base" monster used by a Monster Type. | Spawned monsters use existing monster classes, but can be individually customized by the optional "Settings" list below. To find a monster name, use the [list_monsters](#list_monsters) command. 
+Settings | A list of setting names and values, e.g. `"HP": 1` | A list of optional customization settings to apply to a Monster Type. | See the Monster Type Settings section below for more information about each setting. Separate each setting with commas: `"Settings": {"HP": 999, "Sprite":"Characters/Monsters/Skeleton"}`
 
 
 #### Monster Type Settings
@@ -344,4 +344,4 @@ Creating a custom class works as follows:
 4. Customize the monster as needed. Override virtual methods to change the monster's "base" behavior, and if the monster needs any new properties, remember to add them to the `NetFields` list and use ISerializable types.
 5. Once the mod is complete, you should be able to use the [list_monsters](#list_monsters) command to find your custom monster's full name. Use that name with Farm Type Manager's MonsterName setting to spawn your monster.
 
-An example project may be added in a future update. For now, please see Farm Type Manager's custom "fixed" monster classes for examples: https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters
+An example project will likely be added in a future update. For now, please see Farm Type Manager's [custom monster classes](https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters) for examples of formatting and a few necessary bugfixes.
