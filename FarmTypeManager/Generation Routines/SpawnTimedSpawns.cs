@@ -104,8 +104,9 @@ namespace FarmTypeManager
                             break;
                     }
 
-                    //generate a new list of valid tiles for this spawn area
+                    //generate a list of included tiles for this spawn area, then pass it to a tile validator
                     List<Vector2> tiles = Utility.GenerateTileList(spawns[0].SpawnArea, location, spawns[0].FarmData.Save, spawns[0].FarmData.Config.QuarryTileIndex, customTiles);
+                    TileValidator validator = new TileValidator(location, tiles, spawns[0].SpawnArea.StrictTileChecking); 
 
                     for (int y = spawns.Count - 1; y >= 0; y--) //for each object to be spawned (looping backward for removal purposes)
                     {
@@ -114,20 +115,11 @@ namespace FarmTypeManager
                             break; //skip the rest of this spawn list
                         }
 
-                        Vector2? chosenTile = null;
-                        while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
-                        {
-                            int randomIndex = Utility.RNG.Next(tiles.Count); //get the array index for a random valid tile
-                            if (Utility.IsTileValid(location, tiles[randomIndex], spawns[y].SavedObject.Size, spawns[y].SpawnArea.StrictTileChecking)) //if this tile is valid
-                            {
-                                chosenTile = tiles[randomIndex]; //choose this tile
-                            }
-                            tiles.RemoveAt(randomIndex); //remove the tile from the list
-                        }
+                        Vector2? chosenTile = validator.GetTile(spawns[y].SavedObject.Size); //get a random valid tile of the object's size
 
-                        if (!chosenTile.HasValue) //if no remaining tiles were valid
+                        if (!chosenTile.HasValue) //if no available tiles were valid
                         {
-                            break; //skip the rest of this spawn list
+                            continue; //skip to the next object in this list
                         }
 
                         spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
@@ -191,8 +183,10 @@ namespace FarmTypeManager
                             }                            
                         }
                     }
+
+                    Utility.Monitor.VerboseLog($"Current spawn list complete. Location: {location.Name}. Area ID: {spawns[0].SpawnArea.UniqueAreaID}. Listed objects spawned: {spawnedByThisList} of {spawns.Count}.");
                 }
-                Utility.Monitor.VerboseLog($"Spawn process complete for time: {time?.Time.ToString() ?? "(any)"}. Objects spawned: {spawnedTotal}.");
+                Utility.Monitor.VerboseLog($"Spawn process complete. Time: {time?.Time.ToString() ?? "(any)"}. Total objects spawned: {spawnedTotal}.");
             }
         }
     }

@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
+    <Compile Include="Classes\TileValidator.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\ListMonsters.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
