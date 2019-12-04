@@ -106,7 +106,7 @@ namespace FarmTypeManager
                         {
                             missing++; //increment missing tracker
 
-                            if (IsTileValid(location, saved.Tile, true, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
+                            if (IsTileValid(location, saved.Tile, saved.Size, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
                             {
                                 SpawnLargeObject(saved.ID.Value, location, saved.Tile); //respawn the object
                                 respawned++; //increment respawn tracker

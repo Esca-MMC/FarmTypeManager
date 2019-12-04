@@ -80,7 +80,6 @@ namespace FarmTypeManager
                         }
                     }
 
-                    bool isLarge = spawns[0].SavedObject.Type == SavedObject.ObjectType.LargeObject; //whether these spawns are large (2x2 tiles); checked via the first spawn in the list
                     int[] customTiles = { }; //the set of custom tiles to use (to be selected based on the spawn object's type)
                     int? monstersAtLocation = null; //the number of existing monsters at a location (used to optionally limit monster spawns)
 
@@ -119,7 +118,7 @@ namespace FarmTypeManager
                         while (tiles.Count > 0 && !chosenTile.HasValue) //while potential tiles exist & a valid tile has not been chosen yet
                         {
                             int randomIndex = Utility.RNG.Next(tiles.Count); //get the array index for a random valid tile
-                            if (Utility.IsTileValid(location, tiles[randomIndex], isLarge, spawns[y].SpawnArea.StrictTileChecking)) //if this tile is valid
+                            if (Utility.IsTileValid(location, tiles[randomIndex], spawns[y].SavedObject.Size, spawns[y].SpawnArea.StrictTileChecking)) //if this tile is valid
                             {
                                 chosenTile = tiles[randomIndex]; //choose this tile
                             }
