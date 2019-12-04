@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using StardewModdingAPI;
@@ -21,6 +22,7 @@ namespace FarmTypeManager
             public StardewTime SpawnTime { get; set; } = 600; //default to 6:00AM for backward compatibility
 
             /// <summary>A point representing this object's size in tiles.</summary>
+            [JsonIgnore]
             public Point Size
             {
                 get
