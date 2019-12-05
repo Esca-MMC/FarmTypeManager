@@ -5516,7 +5516,14 @@
 			var types = document.getElementsByName("OtherOptions-FC-FarmTypes");
 			for (var x = 0; x < document.getElementById("OtherOptions-FC-FarmTypes").options.length; x++) //for each farm type condition
 			{
-				json.File_Conditions.FarmTypes.push(document.getElementById("OtherOptions-FC-FarmTypes").options[x].text);
+				var text = document.getElementById("OtherOptions-FC-FarmTypes").options[x].text;
+
+				if (isNaN(parseInt(text)) == false) //if this is a number, i.e. a custom farm type ID
+				{
+					text = parseInt(text); //parse it as a number
+				}
+
+				json.File_Conditions.FarmTypes.push(text);
 			}
 			
 			json.File_Conditions.FarmerNames = [];
@@ -7746,10 +7753,7 @@
 			selectList.add(option);
 			
 			document.getElementById(input.id.replace("-Add", "-Add-Custom")).value = ""; //clear the custom text field
-			if (input.options[input.selectedIndex].value == 'custom') //if custom was selected
-			{
-				toggleField(input, input.nextSibling); //toggle visibility back to the select element
-			}
+			toggleField(input.nextSibling, input); //toggle visibility back to the select element
 			input.selectedIndex = 0; //reset the select index
 		}
 		
