@@ -138,9 +138,9 @@ namespace FarmTypeManager
                         //a list was selected, so parse "forageObjects" into a list of valid forage IDs
                         List<int> forageIDs = Utility.GetIDsFromObjects(forageObjects.ToList(), area.UniqueAreaID);
 
-                        if (forageIDs.Count <= 0) //no valid items were added to the list
+                        if (forageIDs.Count <= 0)
                         {
-                            Utility.Monitor.Log($"Forage list selected, but contained no valid forage items. Skipping to the next forage area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"Forage list contained no valid items. Skipping to the next forage area...", LogLevel.Trace);
                             continue;
                         }
 

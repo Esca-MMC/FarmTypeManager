@@ -93,7 +93,7 @@ namespace FarmTypeManager
 
                         if (oreChances.Count < 1) //if there's no chance of spawning any ore for some reason, just stop working on this area now
                         {
-                            Utility.Monitor.Log("No chance of spawning any ore. Next area...", LogLevel.Trace);
+                            Utility.Monitor.Log("No chance of spawning any ore. Skipping to the next area...", LogLevel.Trace);
                             continue;
                         }
 

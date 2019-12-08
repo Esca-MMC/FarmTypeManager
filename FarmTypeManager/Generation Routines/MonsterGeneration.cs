@@ -75,7 +75,7 @@ namespace FarmTypeManager
 
                         if (validMonsterTypes.Count <= 0)
                         {
-                            Utility.Monitor.Log($"The monster type list is empty. Next area...", LogLevel.Trace);
+                            Utility.Monitor.Log($"No monster types were curently valid for this area. Skipping to the next area...", LogLevel.Trace);
                             continue;
                         }
 
