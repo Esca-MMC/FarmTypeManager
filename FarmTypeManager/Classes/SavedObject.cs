@@ -15,6 +15,7 @@ namespace FarmTypeManager
             public string MapName { get; set; }
             public Vector2 Tile { get; set; }
             public ObjectType Type { get; set; }
+            public ObjectSubtype Subtype { get; set; } = ObjectSubtype.None;
             public int? ID { get; set; }
             public string Name { get; set; }
             public int? DaysUntilExpire { get; set; }
@@ -79,7 +80,8 @@ namespace FarmTypeManager
             /// <param name="daysUntilExpire">The remaining number of days before this object should be removed from the game.</param>
             /// <param name="monsterType">The monster type spawn data used to respawn a monster; null if this isn't a monster.</param>
             /// <param name="spawnTime">The specific in-game time at which this object will spawn. Uses Stardew's internal time format, i.e. multiples of 10 from 600 to 2600.</param>
-            public SavedObject(string mapName, Vector2 tile, ObjectType type, int? id, string name, int? daysUntilExpire, MonsterType monsterType = null, StardewTime spawnTime = default(StardewTime))
+            /// <param name="subtype">The enumerated subtype of this object, if applicable.</param>
+            public SavedObject(string mapName, Vector2 tile, ObjectType type, int? id, string name, int? daysUntilExpire, MonsterType monsterType = null, StardewTime spawnTime = default(StardewTime), ObjectSubtype subtype = ObjectSubtype.None)
             {
                 MapName = mapName;
                 Tile = tile;
@@ -89,10 +91,14 @@ namespace FarmTypeManager
                 DaysUntilExpire = daysUntilExpire;
                 MonType = monsterType;
                 SpawnTime = spawnTime;
+                Subtype = subtype;
             }
 
-            /// <summary>Enumerated list of object types managed by Farm Type Manager. Used to process saved object information.</summary>
+            /// <summary>Enumerated list of general object types managed by this mod. Used to process saved object information.</summary>
             public enum ObjectType { Forage, LargeObject, Ore, Monster }
+
+            /// <summary>Enumerated list of object subtypes managed by this mod. Used to detect and handle unusual ObjectType members without complicating backward compatibility.</summary>
+            public enum ObjectSubtype { None, ForageItem }
         }
     }
 }

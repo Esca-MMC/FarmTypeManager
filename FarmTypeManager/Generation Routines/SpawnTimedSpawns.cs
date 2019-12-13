@@ -128,7 +128,7 @@ namespace FarmTypeManager
                         switch (spawns[y].SavedObject.Type)
                         {
                             case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn forage
+                                Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
                                 Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object

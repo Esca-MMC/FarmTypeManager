@@ -122,6 +122,9 @@
     <Compile Include="Utility\Conditions\CheckFileConditions.cs" />
     <Compile Include="Utility\Loading\LoadFarmData.cs" />
     <Compile Include="Utility\Loading\ValidateFarmData.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetItemDictionary.cs" />
+    <Compile Include="Utility\Spawning\Forage\GetItemID.cs" />
+    <Compile Include="Utility\Spawning\Forage\ParseSavedObjectsFromItemList.cs" />
     <Compile Include="Utility\Spawning\Monsters\ApplyMonsterSettings.cs" />
     <Compile Include="Utility\Clone.cs" />
     <Compile Include="Utility\Spawning\PopulateTimedSpawnList.cs" />
