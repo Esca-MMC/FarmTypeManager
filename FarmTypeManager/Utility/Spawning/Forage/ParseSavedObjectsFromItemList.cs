@@ -53,9 +53,9 @@ namespace FarmTypeManager
                                 Monitor.Log($"This may be caused by an error in the item list or a modded object that wasn't loaded. The affected object(s) will be skipped.", LogLevel.Info);
                             }
                         }
-                        else //if this is a "category:name" description of an Item
+                        else //if this is a "category:name" description
                         {
-                            string[] catAndName = rawString.Split(new char[] { ':' }, 2); //split the string around the first ':' (resulting in a "category" and "name")
+                            string[] catAndName = rawString.Split(':'); //split the string, resulting in a "category" and "name" (among other possible strings)
                             int? ID = GetItemID(catAndName[0], catAndName[1]); //get an item ID for the category and name
                             if (ID.HasValue) //if a matching item ID was found
                             {
