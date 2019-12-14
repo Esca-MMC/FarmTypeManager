@@ -38,7 +38,9 @@ namespace FarmTypeManager
                 Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
             }
 
-            Utility.TimedSpawns.Clear(); //clear any existing spawn data
+            //clear any leftover data from previous days/saves/etc
+            Utility.TimedSpawns.Clear(); 
+            Utility.MonsterTracker.Clear();
 
             //run each generation process to fill the TimedSpawns list for today
             Generation.ForageGeneration();
