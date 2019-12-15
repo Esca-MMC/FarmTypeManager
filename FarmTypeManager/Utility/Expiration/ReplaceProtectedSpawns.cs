@@ -17,9 +17,9 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Check each saved object with an expiration setting, respawning them if they were removed overnight (e.g. by the weekly forage removal process).</summary>
+            /// <summary>Check each saved object with an expiration setting, respawning them if they were removed after being saved (e.g. by the weekly forage removal process).</summary>
             /// <param name="save">The save data to the checked.</param>
-            public static void ReplaceProtectedSpawnsOvernight(InternalSaveData save)
+            public static void ReplaceProtectedSpawns(InternalSaveData save)
             {
                 int missing = 0; //# of objects missing
                 int blocked = 0; //# of objects that could not respawn due to blocked locations

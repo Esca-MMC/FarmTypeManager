@@ -35,7 +35,7 @@ namespace FarmTypeManager
                     Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
                 }
 
-                Utility.ReplaceProtectedSpawnsOvernight(data.Save); //protect unexpired spawns listed in the save data
+                Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data
             }
 
             //clear any leftover data from previous days/saves/etc
@@ -48,7 +48,11 @@ namespace FarmTypeManager
             Generation.OreGeneration();
             Generation.MonsterGeneration();
 
-            Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at 6:00AM
+            Utility.StartOfDay = Game1.timeOfDay; //record the current time of day (in case other mods have changed this)
+            if (Utility.StartOfDay.Time == 600) //if the current time of day is 6:00AM, as expected
+            {
+                Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at this time
+            } 
         }
     }
 }

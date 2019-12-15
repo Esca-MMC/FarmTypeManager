@@ -18,9 +18,10 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Check each saved object's expiration data, updating counters & removing missing/expired objects from the data and game.</summary>
+            /// <summary>Check each saved object's expiration data, updating counters & removing missing/expired objects from the data and custom classes from the game world.</summary>
             /// <param name="save">The save data to the checked.</param>
-            public static void ProcessObjectExpiration(InternalSaveData save)
+            /// <param name="endOfDay">If false, expiration dates will be ignored. Used to temporarily remove custom classes during the day.</param>
+            public static void ProcessObjectExpiration(InternalSaveData save, bool endOfDay = true)
             {
                 List<SavedObject> objectsToRemove = new List<SavedObject>(); //objects to remove from saved data after processing (note: do not remove them while looping through them)
 
@@ -51,14 +52,17 @@ namespace FarmTypeManager
                             if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
                             {
                                 stillExists = true;
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight (including monsters generated without expiration settings)
+                                if (endOfDay) //if expirations should be processed
                                 {
-                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                                    objectsToRemove.Add(saved); //mark this for removal from save
-                                }
-                                else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
-                                {
-                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                    if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight (including monsters generated without expiration settings)
+                                    {
+                                        Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                                        objectsToRemove.Add(saved); //mark this for removal from save
+                                    }
+                                    else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                    {
+                                        saved.DaysUntilExpire--; //decrease counter by 1
+                                    }
                                 }
 
                                 if (saved.MonType != null && saved.MonType.Settings.ContainsKey("PersistentHP") && (bool)saved.MonType.Settings["PersistentHP"]) //if the PersistentHP setting is enabled for this monster
@@ -116,30 +120,33 @@ namespace FarmTypeManager
 
                         if (existingObject != null) //if the object still exists
                         {
-                            if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                            if (endOfDay) //if expirations should be processed
                             {
-                                Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-
-                                if (existingObject is ResourceClump clump)
+                                if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                 {
-                                    if (location is Farm farmLoc)
+                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+
+                                    if (existingObject is ResourceClump clump) //if this is NOT a custom class that always needs removal
                                     {
-                                        farmLoc.resourceClumps.Remove(clump); //remove this object from the farm's resource clumps list
+                                        if (location is Farm farmLoc)
+                                        {
+                                            farmLoc.resourceClumps.Remove(clump); //remove this object from the farm's resource clumps list
+                                        }
+                                        else if (location is MineShaft mineLoc)
+                                        {
+                                            mineLoc.resourceClumps.Remove(clump); //remove this object from the mine's resource clumps list
+                                        }
                                     }
-                                    else if (location is MineShaft mineLoc)
-                                    {
-                                        mineLoc.resourceClumps.Remove(clump); //remove this object from the mine's resource clumps list
-                                    }
+
+                                    objectsToRemove.Add(saved); //mark object for removal from save
                                 }
-
-                                objectsToRemove.Add(saved); //mark object for removal from save
-                            }
-                            else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
-                            {
-                                saved.DaysUntilExpire--; //decrease counter by 1
+                                else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
                             }
 
-                            if (existingObject is LargeResourceClump largeClump)
+                            if (existingObject is LargeResourceClump largeClump) //if this is a custom class that always needs removal
                             {
                                 location.largeTerrainFeatures.Remove(largeClump); //remove this object from the large terrain features list (NOTE: this must be done even for unexpired LargeResourceClumps to avoid SDV save errors)
                             }
@@ -161,14 +168,17 @@ namespace FarmTypeManager
                                 stillExists = true;
                                 location.debris.RemoveAt(x); //remove this debris (though the game will generally do this anyway)
 
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                if (endOfDay) //if expirations should be processed
                                 {
-                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                                    objectsToRemove.Add(saved); //mark this for removal from save
-                                }
-                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
-                                {
-                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                    if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                    {
+                                        Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                                        objectsToRemove.Add(saved); //mark this for removal from save
+                                    }
+                                    else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                    {
+                                        saved.DaysUntilExpire--; //decrease counter by 1
+                                    }
                                 }
 
                                 break;
@@ -186,18 +196,20 @@ namespace FarmTypeManager
 
                         if (realObject != null && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
                         {
-                            if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                            if (endOfDay) //if expirations should be processed
                             {
-                                Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
-                                location.removeObject(saved.Tile, false); //remove the object from the game
-                                objectsToRemove.Add(saved); //mark object for removal from save
+                                if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                                {
+                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                    realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                    location.removeObject(saved.Tile, false); //remove the object from the game
+                                    objectsToRemove.Add(saved); //mark object for removal from save
+                                }
+                                else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
                             }
-                            else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
-                            {
-                                saved.DaysUntilExpire--; //decrease counter by 1
-                            }
-
                         }
                         else //if the object no longer exists
                         {
@@ -212,6 +224,8 @@ namespace FarmTypeManager
                 {
                     save.SavedObjects.Remove(saved); //remove it
                 }
+
+                MonsterTracker.Clear(); //clear all monster IDs and related data, since they've all been removed
             }
         }
     }
