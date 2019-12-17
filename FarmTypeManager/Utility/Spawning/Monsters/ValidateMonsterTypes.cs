@@ -480,7 +480,19 @@ namespace FarmTypeManager
                             }
                             else //if an actual list was provided
                             {
-                                validTypes[x].Settings["Loot"] = ParseSavedObjectsFromItemList(rawList, areaID); //parse the object list into a SavedObject list
+                                List<SavedObject> lootList = ParseSavedObjectsFromItemList(rawList, areaID); //parse the object list into a SavedObject list
+
+                                foreach (SavedObject loot in lootList)
+                                {
+                                    //convert any "object" categories to "item" for the loot list
+                                    string category = loot.ConfigItem?.Category?.ToLower();
+                                    if (category == "object" || category == "objects")
+                                    {
+                                        loot.ConfigItem.Category = "item";
+                                    }
+                                }
+
+                                validTypes[x].Settings["Loot"] = lootList;
                             }
                         }
                     }

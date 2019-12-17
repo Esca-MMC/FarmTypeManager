@@ -10,17 +10,30 @@ namespace FarmTypeManager
     public partial class ModEntry : Mod
     {
         /// <summary>A class containing all necessary information about an in-game object.</summary>
-        private class SavedObject
+        public class SavedObject
         {
-            public string MapName { get; set; }
-            public Vector2 Tile { get; set; }
-            public ObjectType Type { get; set; }
-            public ObjectSubtype Subtype { get; set; } = ObjectSubtype.None;
-            public int? ID { get; set; }
-            public string Name { get; set; }
-            public int? DaysUntilExpire { get; set; }
-            public MonsterType MonType { get; set; }
-            public StardewTime SpawnTime { get; set; } = 600; //default to 6:00AM for backward compatibility
+            /// <summary>The name of the in-game location where this object exists.</summary>
+            public string MapName { get; set; } = null;
+            /// <summary>The name of this object. Used for ID generation and log messages.</summary>
+            public string Name { get; set; } = null;
+            /// <summary>A tile indicating where this object exists.</summary>
+            public Vector2 Tile { get; set; } = default(Vector2);
+            /// <summary>The enumerated spawn type of the object.</summary>
+            public ObjectType Type { get; set; } = default(ObjectType);
+            /// <summary>The ID of this object. Also known as index or parentSheetIndex.</summary>
+            public int? ID { get; set; } = null;
+            /// <summary>The remaining number of days before this object should be removed from the game.</summary>
+            public int? DaysUntilExpire { get; set; } = null;
+            /// <summary>The specific in-game time at which this object will spawn.</summary>
+            public StardewTime SpawnTime { get; set; } = 600; //default to 6:00AM
+            /// <summary>The list of definitions for this saved object's contents. Null if this type does not use the ConfigItem format.</summary>
+            public ConfigItem ConfigItem { get; set; } = null;
+            /// <summary>The monster type of this saved object. Null if this type is not a monster.</summary>
+            public MonsterType MonType { get; set; } = null;
+
+            /// <summary>A cache of monster classes' tile sizes. Used to improve the speed of the Size property.</summary>
+            [JsonIgnore]
+            private static Dictionary<string, Point> MonsterSizeCache = new Dictionary<string, Point>();
 
             /// <summary>A point representing this object's size in tiles.</summary>
             [JsonIgnore]
@@ -30,7 +43,8 @@ namespace FarmTypeManager
                 {
                     switch (Type)
                     {
-                        case ObjectType.Forage:
+                        case ObjectType.Object:
+                        case ObjectType.Item:
                         case ObjectType.Ore:
                             return new Point(1, 1);
                         case ObjectType.LargeObject:
@@ -70,35 +84,20 @@ namespace FarmTypeManager
                 }
             }
 
-            private static Dictionary<string, Point> MonsterSizeCache = new Dictionary<string, Point>();
-
-            /// <param name="mapName">The name of the in-game location where this object exists.</param>
-            /// <param name="tile">A tile indicating where this object exists.</param>
-            /// <param name="id">The object's ID, often called parentSheetIndex.</param>
-            /// <param name="type">The enumerated spawn type of the object, e.g. Forage.</param>
-            /// <param name="name">The object's name. Used informally by spawners that do not rely on ID.</param>
-            /// <param name="daysUntilExpire">The remaining number of days before this object should be removed from the game.</param>
-            /// <param name="monsterType">The monster type spawn data used to respawn a monster; null if this isn't a monster.</param>
-            /// <param name="spawnTime">The specific in-game time at which this object will spawn. Uses Stardew's internal time format, i.e. multiples of 10 from 600 to 2600.</param>
-            /// <param name="subtype">The enumerated subtype of this object, if applicable.</param>
-            public SavedObject(string mapName, Vector2 tile, ObjectType type, int? id, string name, int? daysUntilExpire, MonsterType monsterType = null, StardewTime spawnTime = default(StardewTime), ObjectSubtype subtype = ObjectSubtype.None)
+            /// <summary>Enumerated list of general object types managed by this mod. Used to process saved object information.</summary>
+            public enum ObjectType
             {
-                MapName = mapName;
-                Tile = tile;
-                Type = type;
-                ID = id;
-                Name = name;
-                DaysUntilExpire = daysUntilExpire;
-                MonType = monsterType;
-                SpawnTime = spawnTime;
-                Subtype = subtype;
+                Object, Forage = Object,
+                ResourceClump, LargeObject = ResourceClump,
+                Ore,
+                Monster,
+                Item,
+                Container
             }
 
-            /// <summary>Enumerated list of general object types managed by this mod. Used to process saved object information.</summary>
-            public enum ObjectType { Forage, LargeObject, Ore, Monster }
-
-            /// <summary>Enumerated list of object subtypes managed by this mod. Used to detect and handle unusual ObjectType members without complicating backward compatibility.</summary>
-            public enum ObjectSubtype { None, ForageItem }
+            public SavedObject()
+            {
+            }
         }
     }
 }

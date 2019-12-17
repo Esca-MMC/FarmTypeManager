@@ -25,6 +25,8 @@ namespace FarmTypeManager
                 int blocked = 0; //# of objects that could not respawn due to blocked locations
                 int respawned = 0; //# of objects respawned
                 int unloaded = 0; //# of objects skipped due to missing (unloaded) or invalid map names
+                int uninstalled = 0; //# of objects skipped due to missing object data, generally caused by removed mods
+
                 foreach (SavedObject saved in save.SavedObjects)
                 {
                     if (saved.DaysUntilExpire == null) //if the object's expiration setting is null
@@ -109,20 +111,28 @@ namespace FarmTypeManager
                             }
                         }
                     }
-                    else if (saved.Subtype == SavedObject.ObjectSubtype.ForageItem) //if this is a forage item
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item
                     {
                         missing++; //increment missing tracker (note: items should always be removed overnight)
 
                         //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
                         if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's is clear enough to respawn
                         {
-                            respawned++; //increment respawn tracker
-
                             //update this item's ID, in case it changed due to other mods
                             string[] categoryAndName = saved.Name.Split(':');
-                            saved.ID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
 
-                            SpawnForage(saved, location, saved.Tile); //respawn the forage
+                            if (newID.HasValue) //if a new ID was successfully generated
+                            {
+                                respawned++; //increment respawn tracker
+                                saved.ID = newID; //save the new ID
+                                SpawnForage(saved, location, saved.Tile); //respawn the item
+                            }
+                            else //if a new ID could not be generated
+                            {
+                                uninstalled++; //increment uninstalled mod tracker
+                                Monitor.Log($"Failed to generated a new ID for a saved forage item overnight. Item name: {saved.Name}", LogLevel.Trace);
+                            }
                         }
                         else //if this object's tile is obstructed
                         {
@@ -139,7 +149,7 @@ namespace FarmTypeManager
 
                             if (!location.isTileOccupiedForPlacement(saved.Tile)) //if the object's tile is not occupied
                             {
-                                if (saved.Type == SavedObject.ObjectType.Forage) //if this is forage
+                                if (saved.Type == SavedObject.ObjectType.Object) //if this is a forage object
                                 {
                                     if (saved.Name != null) //if this forage was originally assigned a name
                                     {
@@ -163,6 +173,10 @@ namespace FarmTypeManager
                 }
 
                 Monitor.VerboseLog($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.");
+                if (uninstalled > 0) //if any objects could not respawn due to missing mod data
+                {
+                    Monitor.Log($"{uninstalled} objects could not be respawned overnight due to missing mod data.", LogLevel.Debug);
+                }
             }
         }
     }

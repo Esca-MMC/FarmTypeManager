@@ -159,14 +159,15 @@ namespace FarmTypeManager
                                 SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
 
                                 //create a new saved object based on the randomly selected forage (still using a "blank" tile location)
-                                SavedObject forage = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, default(Vector2), SavedObject.ObjectType.Forage, randomForage.ID, randomForage.Name, area.DaysUntilSpawnsExpire)
+                                SavedObject forage = new SavedObject()
                                 {
-                                    Subtype = randomForage.Subtype
+                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    Type = randomForage.Type,
+                                    Name = randomForage.Name,
+                                    ID = randomForage.ID,
+                                    DaysUntilExpire = area.DaysUntilSpawnsExpire,
+                                    ConfigItem = randomForage.ConfigItem
                                 };
-                                if (forage.Subtype == SavedObject.ObjectSubtype.ForageItem && !forage.DaysUntilExpire.HasValue) //if this is an item without an expiration date
-                                {
-                                    forage.DaysUntilExpire = 1; //assign a default expiration
-                                }
                                 spawns.Add(forage); //add it to the list
                             }
 

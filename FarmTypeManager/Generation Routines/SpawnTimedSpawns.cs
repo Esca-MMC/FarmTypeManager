@@ -125,19 +125,22 @@ namespace FarmTypeManager
                         spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
 
                         //spawn the object based on its type
+                        bool spawned = false;
                         switch (spawns[y].SavedObject.Type)
                         {
-                            case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
+                            case SavedObject.ObjectType.Object:
+                            case SavedObject.ObjectType.Item:
+                                spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
+                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
                                 int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
                                 if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
+                                    spawned = true;
                                 }
                                 break;
                             case SavedObject.ObjectType.Monster:
@@ -148,12 +151,13 @@ namespace FarmTypeManager
                                     if (monstersAtLocation.HasValue) //if the monster counter is being used
                                     {
                                         monstersAtLocation++; //increment monster counter
+                                        spawned = true;
                                     }
                                 }
                                 break;
                         }
 
-                        if (spawns[y].SavedObject.ID.HasValue) //if this object spawned successfully
+                        if (spawned) //if this object spawned successfully
                         {
                             //increment the spawn trackers
                             spawnedTotal++;

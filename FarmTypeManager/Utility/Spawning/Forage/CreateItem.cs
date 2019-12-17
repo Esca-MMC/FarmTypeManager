@@ -19,31 +19,43 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Generates an item described by a saved object.</summary>
-            /// <param name="save">A saved object with a "category:item name" Name and valid item ID.</param>
+            /// <param name="save">A saved object of the "Item" type.</param>
             public static Item CreateItem(SavedObject save)
             {
-                Item item = null; //the item to be generated
-
-                string[] nameStrings = save.Name.Split(':'); //split the provided name into a category and name
+                if (save.Type != SavedObject.ObjectType.Item && save.Type != SavedObject.ObjectType.Object)
+                {
+                    Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
+                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                    return null;
+                }
 
                 if (!save.ID.HasValue) //if this save doesn't have an ID
                 {
-                    GetItemID(nameStrings[0], nameStrings[1]); //generate it
-                    if (!save.ID.HasValue) //if this save *still* doesn't have an ID
-                    {
-                        Monitor.Log("Failed to create an item. Saved object contained no ID and one could not be generated.", LogLevel.Debug);
-                        Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
-                        return null;
-                    }
+                    Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
+                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                    return null;
                 }
 
-                switch (nameStrings[0].ToLower()) //based on the category
+                Item item = null; //the item to be generated
+                ConfigItem configItem = save.ConfigItem; //the ConfigItem class describing the item (null if unavailable)
+
+                string category = "item";
+                if (configItem != null && configItem.Category != null)
+                {
+                    category = configItem.Category.ToLower();
+                }
+
+                switch (category) //based on the category
                 {
                     case "bigcraftable":
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
                         item = new StardewValley.Object(default(Vector2), save.ID.Value, false); //create an object as a "big craftable" item
+                        if (configItem?.Stack > 1) //if this item has a valid stack setting
+                        {
+                            item.Stack = configItem.Stack.Value; //apply it
+                        }
                         break;
                     case "boot":
                     case "boots":
@@ -69,12 +81,10 @@ namespace FarmTypeManager
                     case "item":
                     case "items":
                         int stackSize = 1;
-                        if (nameStrings.Length >= 3) //if a stack size was provided (e.g. the format is "category:name:stacksize")
+                        if (configItem?.Stack > 1) //if this item has a valid stack setting
                         {
-                            int.TryParse(nameStrings[2], out stackSize); //try to parse the provided stack size
-                            stackSize = Math.Max(stackSize, 1); //if stackSize is less than 1 (including if parsing failed), set it to 1
+                            stackSize = configItem.Stack.Value; //apply it
                         }
-
                         item = new StardewValley.Object(default(Vector2), save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
                         break;
                     case "ring":
@@ -89,8 +99,8 @@ namespace FarmTypeManager
 
                 if (item == null) //if no item could be generated
                 {
-                    Monitor.Log("Failed to create an item due to invalid category.", LogLevel.Debug);
-                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                    Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
+                    Monitor.Log($"Item Category: {save.Name}", LogLevel.Debug);
                     Monitor.Log($"Item ID: {save.ID}", LogLevel.Debug);
                     return null;
                 }

@@ -149,7 +149,7 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
-                    else if (saved.Subtype == SavedObject.ObjectSubtype.ForageItem) //if this is a forage item, i.e. "debris" containing an item
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item, i.e. "debris" containing an item
                     {
                         bool stillExists = false; //does this item still exist?
 

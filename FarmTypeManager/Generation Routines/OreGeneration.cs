@@ -132,7 +132,13 @@ namespace FarmTypeManager
                                     if (randomOreNum < ore.Value) //this ore "wins"
                                     {
                                         //create a saved object representing this spawn (with a "blank" tile location)
-                                        SavedObject saved = new SavedObject(locations[x].uniqueName.Value ?? locations[x].Name, new Vector2(), SavedObject.ObjectType.Ore, null, ore.Key, area.DaysUntilSpawnsExpire);
+                                        SavedObject saved = new SavedObject()
+                                        {
+                                            MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                            Type = SavedObject.ObjectType.Ore,
+                                            Name = ore.Key,
+                                            DaysUntilExpire = area.DaysUntilSpawnsExpire
+                                        };
                                         spawns.Add(saved); //add it to the list
 
                                         break;

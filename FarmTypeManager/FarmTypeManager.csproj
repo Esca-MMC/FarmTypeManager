@@ -68,6 +68,7 @@
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\MonsterTracker.cs" />
     <Compile Include="Classes\TileValidator.cs" />
+    <Compile Include="Classes\ConfigItem.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\ListMonsters.cs" />
     <Compile Include="Commands\WhereAmI.cs" />
