@@ -45,7 +45,7 @@ namespace FarmTypeManager
                 {
                     Item forageItem = CreateItem(forage); //create the item to be spawned
 
-                    if (forageItem == null) //if no item could be created
+                    if (forageItem == null) //if the item couldn't be created
                     {
                         Monitor.Log("The SpawnForage method failed to generate an item. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
                         Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
@@ -62,6 +62,29 @@ namespace FarmTypeManager
                     };
                     itemDebris.Chunks[0].bounces = 3; //prevent the debris bouncing when spawned by increasing its "number of bounces so far" counter
                     location.debris.Add(itemDebris); //place the debris at the the location
+                    return true;
+                }
+
+                if (forage.Type == SavedObject.ObjectType.Container)
+                {
+                    Item container = CreateItem(forage); //create the container to be spawned
+
+                    if (container == null) //if the container couldn't be created
+                    {
+                        Monitor.Log("The SpawnForage method failed to generate a container. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
+                        Monitor.Log($"Container type: {forage.Name}", LogLevel.Warn);
+                        Monitor.Log($"Item ID: {forage.ID}", LogLevel.Warn);
+                        return false;
+                    }
+
+                    if (container is Chest chest)
+                    {
+                        chest.TileLocation = tile;
+                        chest.boundingBox.Value = new Rectangle((int)tile.X * Game1.tileSize, (int)tile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
+                    }
+
+                    Monitor.VerboseLog($"Spawning container. Type: {container.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    location.dropObject((StardewValley.Object)container, forage.Tile * Game1.tileSize, Game1.viewport, true, null); //place the container at the location
                     return true;
                 }
 

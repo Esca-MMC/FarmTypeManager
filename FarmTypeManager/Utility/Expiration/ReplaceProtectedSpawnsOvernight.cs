@@ -116,7 +116,7 @@ namespace FarmTypeManager
                         missing++; //increment missing tracker (note: items should always be removed overnight)
 
                         //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
-                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's is clear enough to respawn
+                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
                         {
                             //update this item's ID, in case it changed due to other mods
                             string[] categoryAndName = saved.Name.Split(':');
@@ -139,6 +139,16 @@ namespace FarmTypeManager
                             blocked++; //increment obstruction tracker
                         }
                     }
+                    else if (saved.Type == SavedObject.ObjectType.Container) //if this is a container
+                    {
+                        missing++; //increment missing tracker (note: chests should always be removed overnight)
+
+                        //this mod should remove all of its containers overnight, so respawn this container without checking for its existence
+                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the container's tile is clear enough to respawn
+                        {
+                            SpawnForage(saved, location, saved.Tile); //respawn the container
+                        }
+                    }
                     else //if this is forage or ore
                     {
                         StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
@@ -147,7 +157,7 @@ namespace FarmTypeManager
                         {
                             missing++; //increment missing object tracker
 
-                            if (!location.isTileOccupiedForPlacement(saved.Tile)) //if the object's tile is not occupied
+                            if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the object's tile is clear enough to respawn
                             {
                                 if (saved.Type == SavedObject.ObjectType.Object) //if this is a forage object
                                 {
@@ -175,7 +185,7 @@ namespace FarmTypeManager
                 Monitor.VerboseLog($"Missing objects: {missing}. Respawned: {respawned}. Not respawned due to obstructions: {blocked}. Skipped due to missing maps: {unloaded}.");
                 if (uninstalled > 0) //if any objects could not respawn due to missing mod data
                 {
-                    Monitor.Log($"{uninstalled} objects could not be respawned overnight due to missing mod data.", LogLevel.Debug);
+                    Monitor.Log($"{uninstalled} objects could not be respawned overnight due to missing item mods.", LogLevel.Debug);
                 }
             }
         }

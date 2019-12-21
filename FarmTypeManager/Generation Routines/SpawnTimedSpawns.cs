@@ -85,10 +85,12 @@ namespace FarmTypeManager
 
                     switch (spawns[0].SavedObject.Type)
                     {
-                        case SavedObject.ObjectType.Forage:
+                        case SavedObject.ObjectType.Object:
+                        case SavedObject.ObjectType.Item:
+                        case SavedObject.ObjectType.Container:
                             customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
                             break;
-                        case SavedObject.ObjectType.LargeObject:
+                        case SavedObject.ObjectType.ResourceClump:
                             customTiles = spawns[0].FarmData.Config.Large_Object_Spawn_Settings.CustomTileIndex;
                             break;
                         case SavedObject.ObjectType.Ore:
@@ -130,6 +132,7 @@ namespace FarmTypeManager
                         {
                             case SavedObject.ObjectType.Object:
                             case SavedObject.ObjectType.Item:
+                            case SavedObject.ObjectType.Container:
                                 spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:

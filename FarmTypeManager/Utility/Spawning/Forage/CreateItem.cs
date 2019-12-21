@@ -22,14 +22,20 @@ namespace FarmTypeManager
             /// <param name="save">A saved object of the "Item" type.</param>
             public static Item CreateItem(SavedObject save)
             {
-                if (save.Type != SavedObject.ObjectType.Item && save.Type != SavedObject.ObjectType.Object)
+                switch (save.Type) //check the object's type
                 {
-                    Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
-                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
-                    return null;
-                }
+                    case SavedObject.ObjectType.Object:
+                    case SavedObject.ObjectType.Item:
+                    case SavedObject.ObjectType.Container:
+                        //these are valid item types
+                        break;
+                    default:
+                        Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
+                        Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                        return null;
+                }   
 
-                if (!save.ID.HasValue) //if this save doesn't have an ID
+                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container) //if this save doesn't have an ID (and isn't a container)
                 {
                     Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
                     Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
@@ -38,6 +44,23 @@ namespace FarmTypeManager
 
                 Item item = null; //the item to be generated
                 ConfigItem configItem = save.ConfigItem; //the ConfigItem class describing the item (null if unavailable)
+
+                //parse container contents, if applicable
+                List<Item> contents = new List<Item>();
+                if (save.Type == SavedObject.ObjectType.Container) //if this is a container
+                {
+                    string areaID = $"[unknown; parsing chest contents at {save.MapName}]"; //placeholder string; this method has no easy access to the areaID that created a given item
+                    List<SavedObject> contentSaves = ParseSavedObjectsFromItemList(configItem.Contents, areaID); //parse the contents into saved objects for validation purposes
+
+                    foreach (SavedObject contentSave in contentSaves) //for each successfully parsed save
+                    {
+                        Item content = CreateItem(contentSave); //call this method recursively to create this item
+                        if (content != null) //if this item was created successfully
+                        {
+                            contents.Add(content); //add it to the contents list
+                        }
+                    }
+                }
 
                 string category = "item";
                 if (configItem != null && configItem.Category != null)
@@ -60,6 +83,10 @@ namespace FarmTypeManager
                     case "boot":
                     case "boots":
                         item = new Boots(save.ID.Value);
+                        break;
+                    case "chest":
+                    case "chests":
+                        item = new Chest(0, contents, default(Vector2), false, 0); //create a mineshaft-style chest with the given contents
                         break;
                     case "cloth":
                     case "clothes":
@@ -100,12 +127,14 @@ namespace FarmTypeManager
                 if (item == null) //if no item could be generated
                 {
                     Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
-                    Monitor.Log($"Item Category: {save.Name}", LogLevel.Debug);
-                    Monitor.Log($"Item ID: {save.ID}", LogLevel.Debug);
+                    Monitor.Log($"Item Category: {category}", LogLevel.Debug);
                     return null;
                 }
 
-                item.ParentSheetIndex = save.ID.Value; //manually set this, due to it being ignored by some item subclasses
+                if (save.ID.HasValue) //if this object type uses an ID
+                {
+                    item.ParentSheetIndex = save.ID.Value; //manually set this index value, due to it being ignored by some item subclasses
+                }
 
                 return item;
             }

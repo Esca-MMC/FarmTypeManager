@@ -166,8 +166,29 @@ namespace FarmTypeManager
                                     Name = randomForage.Name,
                                     ID = randomForage.ID,
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire,
-                                    ConfigItem = randomForage.ConfigItem
+                                    ConfigItem = Utility.Clone(randomForage.ConfigItem) //use a separate copy of this (TODO: make a more efficient clone method for this class)
                                 };
+
+                                if (forage.DaysUntilExpire == null && forage.Type != SavedObject.ObjectType.Object) //if this is an item or container without an expiration setting
+                                {
+                                    forage.DaysUntilExpire = 1; //default to overnight expiration
+                                }
+
+                                //if this object has contents with spawn chances, process them
+                                if (forage.ConfigItem?.Contents != null) //if this forage item has contents
+                                {
+                                    for (int content = forage.ConfigItem.Contents.Count - 1; content >= 0; content--) //for each of the contents
+                                    {
+                                        List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { forage.ConfigItem.Contents[content] }, area.UniqueAreaID); //parse this into a saved object
+
+                                        int? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                        if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                                        {
+                                            forage.ConfigItem.Contents.RemoveAt(content); //remove this content from the forage object
+                                        }
+                                    }
+                                }
+
                                 spawns.Add(forage); //add it to the list
                             }
 
