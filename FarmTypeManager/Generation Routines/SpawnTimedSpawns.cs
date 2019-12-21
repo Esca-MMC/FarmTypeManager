@@ -148,10 +148,11 @@ namespace FarmTypeManager
                                 if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
+                                    spawned = true;
+
                                     if (monstersAtLocation.HasValue) //if the monster counter is being used
                                     {
                                         monstersAtLocation++; //increment monster counter
-                                        spawned = true;
                                     }
                                 }
                                 break;
