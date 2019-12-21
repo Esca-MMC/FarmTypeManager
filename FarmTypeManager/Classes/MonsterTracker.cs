@@ -25,10 +25,10 @@ namespace FarmTypeManager
                 /// <summary>A dictionary of monster ID keys and sets of saved objects (i.e. "loot" items).</summary>
                 private static Dictionary<int, IEnumerable<SavedObject>> MonsterLoot = new Dictionary<int, IEnumerable<SavedObject>>();
 
-                /// <summary>Clears all of this class's internal values.</summary>
+                /// <summary>Clears this class's monster data and resets internal values.</summary>
                 public static void Clear()
                 {
-                    MonsterLoot = new Dictionary<int, IEnumerable<SavedObject>>();
+                    MonsterLoot.Clear();
                     nextID = HighestID;
                 }
 

@@ -142,21 +142,21 @@ namespace FarmTypeManager
                             //calculate how much forage to spawn today
                             int spawnCount = Utility.AdjustedSpawnCount(area.MinimumSpawnsPerDay, area.MaximumSpawnsPerDay, data.Config.Forage_Spawn_Settings.PercentExtraSpawnsPerForagingLevel, Utility.Skills.Foraging);
 
-                            if (locations.Count > 1) //if this area targets multiple locations
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawnCount}.", LogLevel.Trace);
-                            }
-                            else //if this area only targets one location
-                            {
-                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawnCount}.", LogLevel.Trace);
-                            }
+                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
+                            int skippedSpawns = 0; //the number of objects skipped due to their spawn chances
 
                             //begin to generate forage
-                            List<SavedObject> spawns = new List<SavedObject>(); //the list of objects to be spawned
                             while (spawnCount > 0) //while more forage should be spawned
                             {
                                 spawnCount--;
                                 SavedObject randomForage = forageObjects[Utility.RNG.Next(forageObjects.Count)]; //select a random object from the forage list
+
+                                int? spawnChance = randomForage.ConfigItem?.PercentChanceToSpawn; //get this object's spawn chance, if provided
+                                if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this object "fails" its chance to spawn
+                                {
+                                    skippedSpawns++; //increment skip counter
+                                    continue; //skip to the next spawn
+                                }
 
                                 //create a new saved object based on the randomly selected forage (still using a "blank" tile location)
                                 SavedObject forage = new SavedObject()
@@ -169,6 +169,20 @@ namespace FarmTypeManager
                                     ConfigItem = randomForage.ConfigItem
                                 };
                                 spawns.Add(forage); //add it to the list
+                            }
+
+                            if (locations.Count > 1) //if this area targets multiple locations
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name} #{x + 1}: {spawns.Count}", LogLevel.Trace);
+                            }
+                            else //if this area only targets one location
+                            {
+                                Utility.Monitor.Log($"Potential spawns at {locations[x].Name}: {spawns.Count}", LogLevel.Trace);
+                            }
+
+                            if (skippedSpawns > 0) //if any spawns were skipped due to their spawn chances
+                            {
+                                Utility.Monitor.Log($"Spawns skipped due to spawn chance settings: {skippedSpawns}", LogLevel.Trace);
                             }
 
                             Utility.PopulateTimedSpawnList(spawns, data, area); //process the listed spawns and add them to Utility.TimedSpawns

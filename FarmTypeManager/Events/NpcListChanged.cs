@@ -32,6 +32,12 @@ namespace FarmTypeManager
 
                         foreach (SavedObject loot in lootList) //for each loot object
                         {
+                            int? spawnChance = loot.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                            if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                            {
+                                continue; //skip to the next item
+                            }
+
                             monster.currentLocation.debris.Add(new Debris(Utility.CreateItem(loot), lootPosition, lootPosition)); //create and "drop" the loot at the monster's location
                         }
                     }

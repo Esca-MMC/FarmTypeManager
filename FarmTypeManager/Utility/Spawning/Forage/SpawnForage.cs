@@ -43,13 +43,6 @@ namespace FarmTypeManager
 
                 if (forage.Type == SavedObject.ObjectType.Item)
                 {
-                    int? spawnChance = forage.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
-                    if (spawnChance.HasValue && spawnChance.Value < RNG.Next(100)) //if this item "fails" its chance to spawn
-                    {
-                        Monitor.VerboseLog($"Skipping forage item due to spawn chance. Type: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                        return false;
-                    }
-
                     Item forageItem = CreateItem(forage); //create the item to be spawned
 
                     if (forageItem == null) //if no item could be created
