@@ -43,7 +43,7 @@ namespace FarmTypeManager
 
                 if (forage.Type == SavedObject.ObjectType.Item)
                 {
-                    Item forageItem = CreateItem(forage); //create the item to be spawned
+                    Item forageItem = CreateItem(forage, tile); //create the item to be spawned
 
                     if (forageItem == null) //if the item couldn't be created
                     {
@@ -67,7 +67,7 @@ namespace FarmTypeManager
 
                 if (forage.Type == SavedObject.ObjectType.Container)
                 {
-                    Item container = CreateItem(forage); //create the container to be spawned
+                    Item container = CreateItem(forage, tile); //create the container to be spawned
 
                     if (container == null) //if the container couldn't be created
                     {
@@ -75,12 +75,6 @@ namespace FarmTypeManager
                         Monitor.Log($"Container type: {forage.Name}", LogLevel.Warn);
                         Monitor.Log($"Item ID: {forage.ID}", LogLevel.Warn);
                         return false;
-                    }
-
-                    if (container is Chest chest)
-                    {
-                        chest.TileLocation = tile;
-                        chest.boundingBox.Value = new Rectangle((int)tile.X * Game1.tileSize, (int)tile.Y * Game1.tileSize, Game1.tileSize, Game1.tileSize);
                     }
 
                     Monitor.VerboseLog($"Spawning container. Type: {container.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");

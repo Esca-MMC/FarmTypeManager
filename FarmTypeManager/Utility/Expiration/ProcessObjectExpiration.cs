@@ -77,9 +77,9 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark this for removal from save
                         }
                     }
-                    else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
+                    else if (saved.Type == SavedObject.ObjectType.ResourceClump) //if this is a resource clump
                     {
-                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
+                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of resource clumps at this location
                         if (location is Farm farm)
                         {
                             resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
@@ -190,6 +190,17 @@ namespace FarmTypeManager
                             bool sameContainerCategory = false;
                             switch (saved.ConfigItem?.Category.ToLower()) //compare the saved object's category to this object's class
                             {
+                                case "barrel":
+                                case "barrels":
+                                case "breakable":
+                                case "breakables":
+                                case "crate":
+                                case "crates":
+                                    if (realObject is BreakableContainerFTM)
+                                    {
+                                        sameContainerCategory = true;
+                                    }
+                                    break;
                                 case "chest":
                                 case "chests":
                                     if (realObject is Chest)

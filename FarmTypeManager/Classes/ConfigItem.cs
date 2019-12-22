@@ -37,8 +37,14 @@ namespace FarmTypeManager
                         case "object":
                         case "objects":
                             return SavedObject.ObjectType.Object;
+                        case "barrel":
+                        case "barrels":
+                        case "breakable":
+                        case "breakables":
                         case "chest":
                         case "chests":
+                        case "crate":
+                        case "crates":
                             return SavedObject.ObjectType.Container;
                     }
 

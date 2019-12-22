@@ -20,7 +20,8 @@ namespace FarmTypeManager
         {
             /// <summary>Generates an item described by a saved object.</summary>
             /// <param name="save">A saved object of the "Item" type.</param>
-            public static Item CreateItem(SavedObject save)
+            /// <param name="tile">The object's intended tile location. Generally necessary for items derived from StardewValley.Object.</param>
+            public static Item CreateItem(SavedObject save, Vector2 tile = default(Vector2))
             {
                 switch (save.Type) //check the object's type
                 {
@@ -70,11 +71,15 @@ namespace FarmTypeManager
 
                 switch (category) //based on the category
                 {
+                    case "barrel":
+                    case "barrels":
+                        item = new BreakableContainerFTM(tile, contents, true); //create a mineshaft-style breakable barrel with the given contents
+                        break;
                     case "bigcraftable":
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, false); //create an object as a "big craftable" item
+                        item = new StardewValley.Object(tile, save.ID.Value, false); //create an object as a "big craftable" item
                         if (configItem?.Stack > 1) //if this item has a valid stack setting
                         {
                             item.Stack = configItem.Stack.Value; //apply it
@@ -84,9 +89,14 @@ namespace FarmTypeManager
                     case "boots":
                         item = new Boots(save.ID.Value);
                         break;
+                    case "breakable":
+                    case "breakables":
+                        bool barrel = RNG.Next(0, 2) == 0 ? true : false; //randomly select whether this is a barrel or crate
+                        item = new BreakableContainerFTM(tile, contents, barrel); //create a mineshaft-style breakable container with the given contents
+                        break;
                     case "chest":
                     case "chests":
-                        item = new Chest(0, contents, default(Vector2), false, 0); //create a mineshaft-style chest with the given contents
+                        item = new Chest(0, contents, tile, false, 0); //create a mineshaft-style chest with the given contents
                         break;
                     case "cloth":
                     case "clothes":
@@ -94,8 +104,12 @@ namespace FarmTypeManager
                     case "clothings":
                         item = new Clothing(save.ID.Value);
                         break;
+                    case "crate":
+                    case "crates":
+                        item = new BreakableContainerFTM(tile, contents, false); //create a mineshaft-style breakable crate with the given contents
+                        break;
                     case "furniture":
-                        item = new Furniture(save.ID.Value, default(Vector2));
+                        item = new Furniture(save.ID.Value, tile);
                         break;
                     case "hat":
                     case "hats":
@@ -103,7 +117,7 @@ namespace FarmTypeManager
                         break;
                     case "object":
                     case "objects":
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, null, false, true, false, true); //create an object with the preferred constructor for "placed" objects
+                        item = new StardewValley.Object(tile, save.ID.Value, null, false, true, false, true); //create an object with the preferred constructor for "placed" objects
                         break;
                     case "item":
                     case "items":
@@ -112,7 +126,7 @@ namespace FarmTypeManager
                         {
                             stackSize = configItem.Stack.Value; //apply it
                         }
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(tile, save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
                         break;
                     case "ring":
                     case "rings":

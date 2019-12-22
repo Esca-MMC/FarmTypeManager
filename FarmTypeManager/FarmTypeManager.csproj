@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\In-Game\Forage\BreakableContainerFTM.cs" />
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\MonsterTracker.cs" />

@@ -146,7 +146,12 @@ namespace FarmTypeManager
                         //this mod should remove all of its containers overnight, so respawn this container without checking for its existence
                         if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the container's tile is clear enough to respawn
                         {
+                            respawned++; //increment respawn tracker
                             SpawnForage(saved, location, saved.Tile); //respawn the container
+                        }
+                        else //if this object's tile is obstructed
+                        {
+                            blocked++; //increment obstruction tracker
                         }
                     }
                     else //if this is forage or ore
