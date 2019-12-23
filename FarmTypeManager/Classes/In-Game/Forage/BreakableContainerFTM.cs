@@ -46,7 +46,9 @@ namespace FarmTypeManager
             protected const string BreakSound = "barrelBreak";
             protected readonly Color color = new Color(130, 80, 30);
 
-            //omit unused constants for containerType/parentSheetIndex
+            //replace or remove unused constants
+            public const int barrel = 118;
+            public const int crate = 119;
 
             private new int shakeTimer;
 
@@ -64,14 +66,14 @@ namespace FarmTypeManager
             /// <summary>Create a new breakable container with the specified item contents.</summary>
             /// <param name="tile">The tile location of the container.</param>
             /// <param name="items">A set of items the container will drop when broken. Null or empty lists are valid.</param>
-            /// <param name="barrel">If true, the container will use the "barrel" sprite. If false, it will use the "crate" sprite.</param>
-            public BreakableContainerFTM(Vector2 tile, IEnumerable<Item> items, bool barrel = true)
-                : base(tile, 118, false)
+            /// <param name="isBarrel">If true, the container will use the "barrel" sprite. If false, it will use the "crate" sprite.</param>
+            public BreakableContainerFTM(Vector2 tile, IEnumerable<Item> items, bool isBarrel = true)
+                : base(tile, barrel, false)
             {
                 Items.AddRange(items);
 
-                if (barrel) //uses an argument instead of a 50% chance
-                    ++ParentSheetIndex;
+                if (!isBarrel) //uses a parameter instead of a 50% chance
+                    ParentSheetIndex = crate;
 
                 HitsToBreak.Value = 3;
                 debris.Value = 12;

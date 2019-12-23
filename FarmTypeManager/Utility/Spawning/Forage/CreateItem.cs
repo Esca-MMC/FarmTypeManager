@@ -92,6 +92,18 @@ namespace FarmTypeManager
                     case "breakable":
                     case "breakables":
                         bool barrel = RNG.Next(0, 2) == 0 ? true : false; //randomly select whether this is a barrel or crate
+                        if (configItem != null)
+                        {
+                            //rewrite the category to save the selection
+                            if (barrel)
+                            {
+                                configItem.Category = "barrel";
+                            }
+                            else
+                            {
+                                configItem.Category = "crate";
+                            }
+                        }
                         item = new BreakableContainerFTM(tile, contents, barrel); //create a mineshaft-style breakable container with the given contents
                         break;
                     case "chest":
