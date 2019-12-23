@@ -173,6 +173,10 @@ namespace FarmTypeManager
                                 spawns[y].FarmData.Save.SavedObjects.Add(saved); //add the spawn to the relevant save data
                             }
                         }
+                        else //if this object failed to spawn
+                        {
+                            Utility.Monitor.Log($"Failed to spawn object on a seemingly valid tile. Type: {spawns[y].SavedObject.Type}. Location: {spawns[y].SavedObject.Tile.X},{spawns[y].SavedObject.Tile.Y} ({location.Name}).", LogLevel.Trace);
+                        }
                     }
 
                     if (spawns[0].SpawnArea.SpawnTiming.SpawnSound != null && spawns[0].SpawnArea.SpawnTiming.SpawnSound.Trim() != "") //if this area has a SpawnSound setting

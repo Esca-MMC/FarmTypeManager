@@ -25,9 +25,10 @@ namespace FarmTypeManager
             public static bool SpawnForage(int index, GameLocation location, Vector2 tile)
             {
                 StardewValley.Object forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the forage object
+
+                //try to spawn the object and return the result
                 Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //place the forage at the location
-                return true;
+                return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null);
             }
 
             /// <summary>Generates a item from a saved object and places it on the specified map and tile.</summary>
@@ -77,9 +78,9 @@ namespace FarmTypeManager
                         return false;
                     }
 
+                    //try to spawn the container and return the result
                     Monitor.VerboseLog($"Spawning container. Type: {container.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    location.dropObject((StardewValley.Object)container, forage.Tile * Game1.tileSize, Game1.viewport, true, null); //place the container at the location
-                    return true;
+                    return location.dropObject((StardewValley.Object)container, forage.Tile * Game1.tileSize, Game1.viewport, true, null);
                 }
 
                 return false; //TODO: error message for unsupported forage types (should be unreachable, however)
