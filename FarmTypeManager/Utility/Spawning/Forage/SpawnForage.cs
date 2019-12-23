@@ -70,7 +70,7 @@ namespace FarmTypeManager
                 {
                     Item container = CreateItem(forage, tile); //create the container to be spawned
 
-                    if (container == null) //if the container couldn't be created
+                    if (container == null || !(container is StardewValley.Object)) //if the container couldn't be created or isn't a StardewValley.Object
                     {
                         Monitor.Log("The SpawnForage method failed to generate a container. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
                         Monitor.Log($"Container type: {forage.Name}", LogLevel.Warn);
@@ -78,9 +78,14 @@ namespace FarmTypeManager
                         return false;
                     }
 
-                    //try to spawn the container and return the result
+                    if (location.objects.ContainsKey(tile)) //if this tile is already occupied in the object dictionary
+                    {
+                        Monitor.VerboseLog("Tile is already occupied by an object. Skipping container spawn.");
+                    }
+
                     Monitor.VerboseLog($"Spawning container. Type: {container.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    return location.dropObject((StardewValley.Object)container, forage.Tile * Game1.tileSize, Game1.viewport, true, null);
+                    location.objects.Add(tile, (StardewValley.Object)container); //add the container to the location's object array
+                    return true;
                 }
 
                 return false; //TODO: error message for unsupported forage types (should be unreachable, however)
