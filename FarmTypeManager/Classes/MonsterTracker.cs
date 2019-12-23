@@ -41,7 +41,7 @@ namespace FarmTypeManager
                         return null;
                     }
 
-                    MonsterLoot.Add(nextID, null); //add the monster with a blank set of loot
+                    MonsterLoot.Add(nextID, new List<SavedObject>(0)); //add the monster with a blank set of loot
 
                     return nextID--; //return the ID used, then decrement the static field
                 }
@@ -77,7 +77,7 @@ namespace FarmTypeManager
 
                 /// <summary>Get the set of loot assigned to a monster.</summary>
                 /// <param name="ID">The unique ID assigned to the monster.</param>
-                /// <returns>A set of saved objects representing items this monster should drop when defeated.</returns>
+                /// <returns>A set of saved objects representing items this monster should drop when defeated. Null if no matching monster ID exists.</returns>
                 public static IEnumerable<SavedObject> GetLoot(int ID)
                 {
                     if (MonsterLoot.ContainsKey(ID)) //if the ID exists
@@ -86,7 +86,6 @@ namespace FarmTypeManager
                     }
                     else //if the ID doesn't exist
                     {
-                        Monitor.Log($"MonsterTracker error: Attempted to get loot for a monster with an unrecognized ID: {ID}", LogLevel.Debug);
                         return null;
                     }
                 }
