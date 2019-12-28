@@ -233,15 +233,18 @@ namespace FarmTypeManager
                                 realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 
-                                if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                                if (endOfDay) //if expirations should be processed
                                 {
-                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                    if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                                    {
+                                        Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
 
-                                    objectsToRemove.Add(saved); //mark object for removal from save
-                                }
-                                else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
-                                {
-                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                        objectsToRemove.Add(saved); //mark object for removal from save
+                                    }
+                                    else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                    {
+                                        saved.DaysUntilExpire--; //decrease counter by 1
+                                    }
                                 }
                             }
                             else //if the real object does NOT match the saved object's category
