@@ -23,6 +23,10 @@ namespace FarmTypeManager
 
             Utility.LoadFarmData(); //load all available data files
 
+            //clear any leftover data from previous days/saves/etc
+            Utility.TimedSpawns.Clear();
+            Utility.MonsterTracker.Clear();
+
             Monitor.Log($"Checking for saved objects that went missing overnight...", LogLevel.Trace);
             foreach (FarmData data in Utility.FarmDataList) //for each loaded set of data
             {
@@ -37,10 +41,6 @@ namespace FarmTypeManager
 
                 Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data
             }
-
-            //clear any leftover data from previous days/saves/etc
-            Utility.TimedSpawns.Clear(); 
-            Utility.MonsterTracker.Clear();
 
             //run each generation process to fill the TimedSpawns list for today
             Generation.ForageGeneration();

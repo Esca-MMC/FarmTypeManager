@@ -192,8 +192,13 @@ namespace FarmTypeManager
 
                                 int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
 
-                                //create a saved object representing this spawn (with a "blank" tile location)
-                                SavedObject saved = new SavedObject(area.MapName, new Vector2(), SavedObject.ObjectType.LargeObject, randomObject, null, area.DaysUntilSpawnsExpire ?? 0);
+                                SavedObject saved = new SavedObject() //create a saved object representing this spawn (with a "blank" tile location)
+                                {
+                                    MapName = locations[x].uniqueName.Value ?? locations[x].Name,
+                                    Type = SavedObject.ObjectType.LargeObject,
+                                    ID = randomObject,
+                                    DaysUntilExpire = area.DaysUntilSpawnsExpire ?? 0
+                                };
                                 spawns.Add(saved); //add it to the list
                             }
 

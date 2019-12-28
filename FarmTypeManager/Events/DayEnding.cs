@@ -17,6 +17,8 @@ namespace FarmTypeManager
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
 
+            Utility.MonsterTracker.Clear(); //clear any tracked monster data (note: this should happen *before* handling monster expiration/removal)
+
             if (Utility.FarmDataList == null || Utility.FarmDataList.Count < 1) { return; } //if the farm data list is blank, do nothing (e.g. when called by a newly created farm)
 
             foreach (FarmData data in Utility.FarmDataList) //for each set of farm data

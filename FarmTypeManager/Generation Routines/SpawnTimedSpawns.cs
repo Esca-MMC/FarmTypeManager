@@ -85,10 +85,12 @@ namespace FarmTypeManager
 
                     switch (spawns[0].SavedObject.Type)
                     {
-                        case SavedObject.ObjectType.Forage:
+                        case SavedObject.ObjectType.Object:
+                        case SavedObject.ObjectType.Item:
+                        case SavedObject.ObjectType.Container:
                             customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
                             break;
-                        case SavedObject.ObjectType.LargeObject:
+                        case SavedObject.ObjectType.ResourceClump:
                             customTiles = spawns[0].FarmData.Config.Large_Object_Spawn_Settings.CustomTileIndex;
                             break;
                         case SavedObject.ObjectType.Ore:
@@ -125,19 +127,23 @@ namespace FarmTypeManager
                         spawns[y].SavedObject.Tile = chosenTile.Value; //apply the random tile to this spawn  
 
                         //spawn the object based on its type
+                        bool spawned = false;
                         switch (spawns[y].SavedObject.Type)
                         {
-                            case SavedObject.ObjectType.Forage:
-                                Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
+                            case SavedObject.ObjectType.Object:
+                            case SavedObject.ObjectType.Item:
+                            case SavedObject.ObjectType.Container:
+                                spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
+                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.Value, location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
                                 int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful
                                 if (oreID.HasValue) //if the ore spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = oreID.Value; //record this spawn's ID
+                                    spawned = true;
                                 }
                                 break;
                             case SavedObject.ObjectType.Monster:
@@ -145,6 +151,8 @@ namespace FarmTypeManager
                                 if (monID.HasValue) //if the monster spawned successfully (i.e. generated an ID)
                                 {
                                     spawns[y].SavedObject.ID = monID.Value; //record this spawn's ID
+                                    spawned = true;
+
                                     if (monstersAtLocation.HasValue) //if the monster counter is being used
                                     {
                                         monstersAtLocation++; //increment monster counter
@@ -153,7 +161,7 @@ namespace FarmTypeManager
                                 break;
                         }
 
-                        if (spawns[y].SavedObject.ID.HasValue) //if this object spawned successfully
+                        if (spawned) //if this object spawned successfully
                         {
                             //increment the spawn trackers
                             spawnedTotal++;
@@ -164,6 +172,10 @@ namespace FarmTypeManager
                                 SavedObject saved = Utility.Clone(spawns[y].SavedObject); //clone this object to avoid any accidental modification
                                 spawns[y].FarmData.Save.SavedObjects.Add(saved); //add the spawn to the relevant save data
                             }
+                        }
+                        else //if this object failed to spawn
+                        {
+                            Utility.Monitor.Log($"Failed to spawn object on a seemingly valid tile. Type: {spawns[y].SavedObject.Type}. Location: {spawns[y].SavedObject.Tile.X},{spawns[y].SavedObject.Tile.Y} ({location.Name}).", LogLevel.Trace);
                         }
                     }
 

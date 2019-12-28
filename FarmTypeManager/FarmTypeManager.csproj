@@ -64,10 +64,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\In-Game\Forage\BreakableContainerFTM.cs" />
     <Compile Include="Classes\In-Game\Large Objects\LargeResourceClump.cs" />
     <Compile Include="Classes\In-Game\Monsters\MummyFTM.cs" />
     <Compile Include="Classes\MonsterTracker.cs" />
     <Compile Include="Classes\TileValidator.cs" />
+    <Compile Include="Classes\ConfigItem.cs" />
     <Compile Include="Classes\TimedSpawn.cs" />
     <Compile Include="Commands\ListMonsters.cs" />
     <Compile Include="Commands\WhereAmI.cs" />

@@ -19,35 +19,96 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Generates an item described by a saved object.</summary>
-            /// <param name="save">A saved object with a "category:item name" Name and valid item ID.</param>
-            public static Item CreateItem(SavedObject save)
+            /// <param name="save">A saved object of the "Item" type.</param>
+            /// <param name="tile">The object's intended tile location. Generally necessary for items derived from StardewValley.Object.</param>
+            public static Item CreateItem(SavedObject save, Vector2 tile = default(Vector2))
             {
-                Item item = null; //the item to be generated
-
-                string[] nameStrings = save.Name.Split(':'); //split the provided name into a category and name
-
-                if (!save.ID.HasValue) //if this save doesn't have an ID
+                switch (save.Type) //check the object's type
                 {
-                    GetItemID(nameStrings[0], nameStrings[1]); //generate it
-                    if (!save.ID.HasValue) //if this save *still* doesn't have an ID
-                    {
-                        Monitor.Log("Failed to create an item. Saved object contained no ID and one could not be generated.", LogLevel.Debug);
+                    case SavedObject.ObjectType.Object:
+                    case SavedObject.ObjectType.Item:
+                    case SavedObject.ObjectType.Container:
+                        //these are valid item types
+                        break;
+                    default:
+                        Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
                         Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
                         return null;
+                }   
+
+                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container) //if this save doesn't have an ID (and isn't a container)
+                {
+                    Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
+                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                    return null;
+                }
+
+                Item item = null; //the item to be generated
+                ConfigItem configItem = save.ConfigItem; //the ConfigItem class describing the item (null if unavailable)
+
+                //parse container contents, if applicable
+                List<Item> contents = new List<Item>();
+                if (save.Type == SavedObject.ObjectType.Container) //if this is a container
+                {
+                    string areaID = $"[unknown; parsing chest contents at {save.MapName}]"; //placeholder string; this method has no easy access to the areaID that created a given item
+                    List<SavedObject> contentSaves = ParseSavedObjectsFromItemList(configItem.Contents, areaID); //parse the contents into saved objects for validation purposes
+
+                    foreach (SavedObject contentSave in contentSaves) //for each successfully parsed save
+                    {
+                        Item content = CreateItem(contentSave); //call this method recursively to create this item
+                        if (content != null) //if this item was created successfully
+                        {
+                            contents.Add(content); //add it to the contents list
+                        }
                     }
                 }
 
-                switch (nameStrings[0].ToLower()) //based on the category
+                string category = "item";
+                if (configItem != null && configItem.Category != null)
                 {
+                    category = configItem.Category.ToLower();
+                }
+
+                switch (category) //based on the category
+                {
+                    case "barrel":
+                    case "barrels":
+                        item = new BreakableContainerFTM(tile, contents, true); //create a mineshaft-style breakable barrel with the given contents
+                        break;
                     case "bigcraftable":
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, false); //create an object as a "big craftable" item
+                        item = new StardewValley.Object(tile, save.ID.Value, false); //create an object as a "big craftable" item
+                        if (configItem?.Stack > 1) //if this item has a valid stack setting
+                        {
+                            item.Stack = configItem.Stack.Value; //apply it
+                        }
                         break;
                     case "boot":
                     case "boots":
                         item = new Boots(save.ID.Value);
+                        break;
+                    case "breakable":
+                    case "breakables":
+                        bool barrel = RNG.Next(0, 2) == 0 ? true : false; //randomly select whether this is a barrel or crate
+                        if (configItem != null)
+                        {
+                            //rewrite the category to save the selection
+                            if (barrel)
+                            {
+                                configItem.Category = "barrel";
+                            }
+                            else
+                            {
+                                configItem.Category = "crate";
+                            }
+                        }
+                        item = new BreakableContainerFTM(tile, contents, barrel); //create a mineshaft-style breakable container with the given contents
+                        break;
+                    case "chest":
+                    case "chests":
+                        item = new Chest(0, contents, tile, false, 0); //create a mineshaft-style chest with the given contents
                         break;
                     case "cloth":
                     case "clothes":
@@ -55,8 +116,12 @@ namespace FarmTypeManager
                     case "clothings":
                         item = new Clothing(save.ID.Value);
                         break;
+                    case "crate":
+                    case "crates":
+                        item = new BreakableContainerFTM(tile, contents, false); //create a mineshaft-style breakable crate with the given contents
+                        break;
                     case "furniture":
-                        item = new Furniture(save.ID.Value, default(Vector2));
+                        item = new Furniture(save.ID.Value, tile);
                         break;
                     case "hat":
                     case "hats":
@@ -64,18 +129,16 @@ namespace FarmTypeManager
                         break;
                     case "object":
                     case "objects":
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, null, false, true, false, true); //create an object with the preferred constructor for "placed" objects
+                        item = new StardewValley.Object(tile, save.ID.Value, null, false, true, false, true); //create an object with the preferred constructor for "placed" objects
                         break;
                     case "item":
                     case "items":
                         int stackSize = 1;
-                        if (nameStrings.Length >= 3) //if a stack size was provided (e.g. the format is "category:name:stacksize")
+                        if (configItem?.Stack > 1) //if this item has a valid stack setting
                         {
-                            int.TryParse(nameStrings[2], out stackSize); //try to parse the provided stack size
-                            stackSize = Math.Max(stackSize, 1); //if stackSize is less than 1 (including if parsing failed), set it to 1
+                            stackSize = configItem.Stack.Value; //apply it
                         }
-
-                        item = new StardewValley.Object(default(Vector2), save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(tile, save.ID.Value, stackSize); //create an object with the preferred constructor for "held" or "dropped" items
                         break;
                     case "ring":
                     case "rings":
@@ -89,13 +152,15 @@ namespace FarmTypeManager
 
                 if (item == null) //if no item could be generated
                 {
-                    Monitor.Log("Failed to create an item due to invalid category.", LogLevel.Debug);
-                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
-                    Monitor.Log($"Item ID: {save.ID}", LogLevel.Debug);
+                    Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
+                    Monitor.Log($"Item Category: {category}", LogLevel.Debug);
                     return null;
                 }
 
-                item.ParentSheetIndex = save.ID.Value; //manually set this, due to it being ignored by some item subclasses
+                if (save.ID.HasValue) //if this object type uses an ID
+                {
+                    item.ParentSheetIndex = save.ID.Value; //manually set this index value, due to it being ignored by some item subclasses
+                }
 
                 return item;
             }

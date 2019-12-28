@@ -8,8 +8,9 @@ using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
 using StardewValley.Monsters;
+using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
 {
@@ -70,7 +71,7 @@ namespace FarmTypeManager
                                     saved.MonType.Settings["CurrentHP"] = monster.Health; //save this monster's current HP
                                 }
 
-                                location.characters.RemoveAt(x); //remove this monster from the location (NOTE: this must be done even for unexpired monsters to avoid SDV save errors)
+                                location.characters.RemoveAt(x); //remove this monster from the location, regardless of expiration
                                 break; //stop searching the character list
                             }
                         }
@@ -80,9 +81,9 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark this for removal from save
                         }
                     }
-                    else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
+                    else if (saved.Type == SavedObject.ObjectType.ResourceClump) //if this is a resource clump
                     {
-                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
+                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of resource clumps at this location
                         if (location is Farm farm)
                         {
                             resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
@@ -156,7 +157,7 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
-                    else if (saved.Subtype == SavedObject.ObjectSubtype.ForageItem) //if this is a forage item, i.e. "debris" containing an item
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item, i.e. "debris" containing an item
                     {
                         bool stillExists = false; //does this item still exist?
 
@@ -166,7 +167,7 @@ namespace FarmTypeManager
                             if (location.debris[x].item != null && location.debris[x].DroppedByPlayerID.Value == 0 && location.debris[x].item.ParentSheetIndex == saved.ID && location.debris[x].item.Name.Equals(saved.Name.Split(':')[1], StringComparison.OrdinalIgnoreCase))
                             {
                                 stillExists = true;
-                                location.debris.RemoveAt(x); //remove this debris (though the game will generally do this anyway)
+                                location.debris.RemoveAt(x); //remove this debris, regardless of expiration
 
                                 if (endOfDay) //if expirations should be processed
                                 {
@@ -188,6 +189,69 @@ namespace FarmTypeManager
                         if (!stillExists) //if this item no longer exists
                         {
                             objectsToRemove.Add(saved); //mark this for removal from save
+                        }
+                    }
+                    else if (saved.Type == SavedObject.ObjectType.Container) //if this is a container
+                    {
+                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+                        
+                        if (realObject != null) //if an object exists in the saved location
+                        {
+                            bool sameContainerCategory = false;
+                            switch (saved.ConfigItem?.Category.ToLower()) //compare the saved object's category to this object's class
+                            {
+                                case "barrel":
+                                case "barrels":
+                                case "breakable":
+                                case "breakables":
+                                case "crate":
+                                case "crates":
+                                    if (realObject is BreakableContainerFTM)
+                                    {
+                                        sameContainerCategory = true;
+                                    }
+                                    break;
+                                case "chest":
+                                case "chests":
+                                    if (realObject is Chest)
+                                    {
+                                        sameContainerCategory = true;
+                                    }
+                                    break;
+                            }
+                            
+                            if (sameContainerCategory) //if the real object matches the saved object's category
+                            {
+                                if (realObject is Chest chest) //if this is a chest
+                                {
+                                    while (chest.items.Count < saved.ConfigItem?.Contents.Count) //while this chest has less items than the saved object's "contents"
+                                    {
+                                        saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
+                                    }
+                                }
+                                
+                                realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
+
+                                if (saved.DaysUntilExpire == 1) //if the object should expire tonight
+                                {
+                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+
+                                    objectsToRemove.Add(saved); //mark object for removal from save
+                                }
+                                else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
+                            }
+                            else //if the real object does NOT match the saved object's category
+                            {
+                                objectsToRemove.Add(saved); //mark object for removal from save
+                            }
+                        }
+                        else //if the object no longer exists
+                        {
+                            objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
                     else //if this is a StardewValley.Object (e.g. forage or ore)
