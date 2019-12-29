@@ -23,7 +23,7 @@ namespace FarmTypeManager
         /// <summary>Saves and removes objects/data that cannot be handled by Stardew Valley's save process.</summary>
         private void SaveAnywhere_BeforeSave()
         {
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
 
             Utility.Monitor.Log($"Modded save event started. Saving and removing custom objects/data.", LogLevel.Trace);
 
@@ -58,6 +58,8 @@ namespace FarmTypeManager
         /// <summary>Restores saved objects/data that could not be handled by Stardew Valley's save process.</summary>
         private void SaveAnywhere_AfterSave()
         {
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
+
             Monitor.Log($"Modded save event ended. Restoring custom objects/data.", LogLevel.Trace);
 
             //note: do not clear Utility.TimedSpawns here; that should only happen when in the DayStarted event

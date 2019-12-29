@@ -21,7 +21,23 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log("Save Anywhere API loaded. Sending compatibility events.", LogLevel.Trace);
                 saveAnywhere.addBeforeSaveEvent(ModManifest.UniqueID, SaveAnywhere_BeforeSave);
+                /*
+                 * disable "aftersave" due to the current version of SaveAnywhere not executing it; a workaround has been added below
+                 * 
                 saveAnywhere.addAfterSaveEvent(ModManifest.UniqueID, SaveAnywhere_AfterSave);
+                */
+
+                Utility.Helper.Events.Display.MenuChanged += SaveAnywhere_MenuChanged;
+            }
+        }
+
+        private void SaveAnywhere_MenuChanged(object sender, MenuChangedEventArgs e)
+        {
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
+
+            if (e.OldMenu != null && e.OldMenu.GetType().FullName.Contains("SaveAnywhere") && e.NewMenu == null) //if the old menu was a SaveAnywhere menu & no new menu is being displayed
+            {
+                SaveAnywhere_AfterSave(); //call the AfterSave method directly
             }
         }
     }
