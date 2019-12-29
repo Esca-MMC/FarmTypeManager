@@ -20,7 +20,7 @@ namespace FarmTypeManager
 
             foreach (Monster monster in e.Removed.OfType<Monster>()) //for each monster that was removed
             {
-                IEnumerable<SavedObject> lootList = Utility.MonsterTracker.GetLoot(monster.id); //get this monster's custom loot list, if any
+                IEnumerable<SavedObject> lootList = Utility.MonsterTracker.GetLoot(monster); //get this monster's custom loot list, if any
 
                 if (lootList != null) //if this monster has a loot list
                 {
