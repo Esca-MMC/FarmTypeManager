@@ -78,6 +78,7 @@ namespace FarmTypeManager
 
                         if (!stillExists) //if this monster no longer exists
                         {
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark this for removal from save
                         }
                     }
@@ -154,6 +155,7 @@ namespace FarmTypeManager
                         }
                         else //if the object no longer exists
                         {
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
@@ -188,6 +190,7 @@ namespace FarmTypeManager
 
                         if (!stillExists) //if this item no longer exists
                         {
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark this for removal from save
                         }
                     }
@@ -249,11 +252,13 @@ namespace FarmTypeManager
                             }
                             else //if the real object does NOT match the saved object's category
                             {
+                                Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
                         }
                         else //if the object no longer exists
                         {
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
@@ -280,13 +285,14 @@ namespace FarmTypeManager
                         }
                         else //if the object no longer exists
                         {
+                            Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
 
                 }
 
-                Monitor.Log($"Expiration check complete. Clearing {objectsToRemove.Count} missing/expired objects.", LogLevel.Trace);
+                Monitor.Log($"Object check complete. Removing {objectsToRemove.Count} missing/expired objects from save data.", LogLevel.Trace);
                 foreach (SavedObject saved in objectsToRemove) //for each object that should be removed from the save data
                 {
                     save.SavedObjects.Remove(saved); //remove it
