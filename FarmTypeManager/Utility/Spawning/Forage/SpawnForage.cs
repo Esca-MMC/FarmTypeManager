@@ -24,11 +24,25 @@ namespace FarmTypeManager
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
             public static bool SpawnForage(int index, GameLocation location, Vector2 tile)
             {
-                StardewValley.Object forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the forage object
+                StardewValley.Object forageObj;
 
-                //try to spawn the object and return the result
+                switch (index) //if this object ID requires a different placement method
+                {
+                    case 590: //artifact dig spot
+                    case 792: //"forest farm" weed (spring)
+                    case 793: //"forest farm" weed (summer)
+                    case 794: //"forest farm" weed (fall)
+                        //note: these objects can be picked up unless this spawn method is used, which causes issues
+                        forageObj = new StardewValley.Object(tile, index, 1); //use an alternative constructor
+                        Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        location.objects.Add(tile, forageObj); //add the object directly to the objects list
+                        return true;
+                }
+
+                //no special case for this object ID was found, so use the typical spawn method
+                forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the forage object
                 Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null);
+                return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
             }
 
             /// <summary>Generates a item from a saved object and places it on the specified map and tile.</summary>
