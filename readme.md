@@ -220,29 +220,30 @@ Here is an example loot list that uses all three formats:
 ```
 "Loot":
 [
-	16,
-	"joja cola",
-	{
-		"category": "weapon",
-		"name": "galaxy sword"
-	}
+  16,
+  "joja cola",
+  {
+    "category": "weapon",
+    "name": "galaxy sword"
+  }
 ],
 ```
 Here is an example forage list that spawns a chest with those items inside it:
 ```
-"SpringItemIndex": [
-	{
-        "category": "chest",
-        "contents":
-		[
-			16,
-			"joja cola",
-			{
-				"category": "weapon",
-				"name": "galaxy sword"
-			}
-		]
-	}
+"SpringItemIndex":
+[
+  {
+    "category": "chest",
+    "contents":
+    [
+      16,
+      "joja cola",
+      {
+        "category": "weapon",
+        "name": "galaxy sword"
+      }
+    ]
+  }
 ]
 ```
 #### Spawn Timing Settings
