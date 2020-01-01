@@ -217,8 +217,8 @@ PercentChanceToSpawn | An integer (minimum 0), e.g. `50` for a 50% chance | The 
 Contents | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
 
 Here is an example loot list that uses all three formats:
-
-`"Loot":
+```
+"Loot":
 [
 	16,
 	"joja cola",
@@ -226,11 +226,11 @@ Here is an example loot list that uses all three formats:
 		"category": "weapon",
 		"name": "galaxy sword"
 	}
-],`
-
+],
+```
 Here is an example forage list that spawns a chest with those items inside it:
-
-`"SpringItemIndex": [
+```
+"SpringItemIndex": [
 	{
         "category": "chest",
         "contents":
@@ -243,8 +243,8 @@ Here is an example forage list that spawns a chest with those items inside it:
 			}
 		]
 	}
-]`
-
+]
+```
 #### Spawn Timing Settings
 This section is available for each spawn area and affects the time of day when objects will be spawned.
 
