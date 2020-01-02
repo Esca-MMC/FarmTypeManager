@@ -90,7 +90,7 @@ namespace FarmTypeManager
                         case SavedObject.ObjectType.Container:
                             customTiles = spawns[0].FarmData.Config.Forage_Spawn_Settings.CustomTileIndex;
                             break;
-                        case SavedObject.ObjectType.ResourceClump:
+                        case SavedObject.ObjectType.LargeObject:
                             customTiles = spawns[0].FarmData.Config.Large_Object_Spawn_Settings.CustomTileIndex;
                             break;
                         case SavedObject.ObjectType.Ore:
@@ -121,6 +121,7 @@ namespace FarmTypeManager
 
                         if (!chosenTile.HasValue) //if no available tiles were valid
                         {
+                            Utility.Monitor.VerboseLog($"No valid tiles are available for this object. Type: {spawns[y].SavedObject.Type}. Location: {location.Name}.");
                             continue; //skip to the next object in this list
                         }
 
