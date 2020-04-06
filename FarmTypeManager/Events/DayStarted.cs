@@ -53,6 +53,8 @@ namespace FarmTypeManager
             {
                 Generation.SpawnTimedSpawns(Utility.TimedSpawns, 600); //spawn anything set to appear at this time
             }
+
+            Utility.DayIsEnding = false; //reset the "day is ending" flag
         }
     }
 }
