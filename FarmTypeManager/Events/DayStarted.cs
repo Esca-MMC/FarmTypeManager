@@ -20,7 +20,9 @@ namespace FarmTypeManager
             Utility.LoadModConfig();
 
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
-            
+
+            Utility.Monitor.Log($"Day is starting. Loading config data.", LogLevel.Trace);
+
             Utility.LoadFarmData(); //load all available data files
 
             //clear any leftover data from previous days/saves/etc
