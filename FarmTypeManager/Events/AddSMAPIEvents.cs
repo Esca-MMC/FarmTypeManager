@@ -26,6 +26,8 @@ namespace FarmTypeManager
             helper.Events.GameLoop.UpdateTicked += PlayerUsedTool;
             helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;
             helper.Events.World.NpcListChanged += NpcListChanged;
+
+            helper.Events.GameLoop.GameLaunched += EnableGMCM;
         }
     }
 }
