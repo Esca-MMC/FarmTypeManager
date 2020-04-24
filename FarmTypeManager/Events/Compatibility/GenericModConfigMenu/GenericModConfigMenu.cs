@@ -17,18 +17,17 @@ namespace FarmTypeManager
         public void EnableGMCM(object sender, GameLaunchedEventArgs e)
         {
             GenericModConfigMenuAPI api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
-            Utility.Monitor.Log($"TEST: Tried to load GMCM API. The API is {(api == null ? "null" : "NOT null")}", LogLevel.Warn);
-            Utility.Monitor.Log($"TEST: Is GMCM even loaded yet?: {Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu")}", LogLevel.Warn);
+
             if (api == null) //if the API is not available
                 return;
             
             api.RegisterModConfig(ModManifest, () => Utility.MConfig = new ModConfig(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
 
             //register an option for each of this mod's config settings
-            api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility. NOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
-            api.RegisterSimpleOption(ModManifest, "Enable content packs", "Uncheck this box to disable all FTM content packs. Only the \"personal\" files in the FarmTypeManager/data will be used.", () => Utility.MConfig.EnableContentPacks, (bool val) => Utility.MConfig.EnableContentPacks = val);
-            api.RegisterSimpleOption(ModManifest, "Enable trace log messages", "Uncheck this box to disable FTM's [TRACE] message type in SMAPI's log files. Logs will be smaller but provide less info.", () => Utility.MConfig.EnableTraceLogMessages, (bool val) => Utility.MConfig.EnableTraceLogMessages = val);
-            api.RegisterSimpleOption(ModManifest, "Monster limit per location", "The maximum number of monsters FTM will spawn on a single map. Enter NULL for unlimited monsters.", () => MonsterLimitAsString, (string val) => MonsterLimitAsString = val);
+            api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility.\nNOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
+            api.RegisterSimpleOption(ModManifest, "Enable content packs", "Uncheck this box to disable all FTM content packs.\nOnly the \"personal\" files in FarmTypeManager/data will be used.", () => Utility.MConfig.EnableContentPacks, (bool val) => Utility.MConfig.EnableContentPacks = val);
+            api.RegisterSimpleOption(ModManifest, "Enable trace log messages", "Uncheck this box to disable FTM's [TRACE] message type in SMAPI's log files.\nLogs will be smaller but provide less info.", () => Utility.MConfig.EnableTraceLogMessages, (bool val) => Utility.MConfig.EnableTraceLogMessages = val);
+            api.RegisterSimpleOption(ModManifest, "Monster limit per location", "The maximum number of monsters FTM will spawn on a single map.\nEnter NULL for unlimited monsters.", () => MonsterLimitAsString, (string val) => MonsterLimitAsString = val);
         }
 
         private string MonsterLimitAsString
