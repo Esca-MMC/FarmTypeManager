@@ -156,9 +156,8 @@ These settings are in the **config.json** file, which is in the mod's main folde
 
 Name | Valid settings | Description
 -----|----------------|------------
-EnableWhereAmICommand | **true**, false | Enables or disables the `whereami` console command.
-EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager.
-EnableContentPackFileChanges | **true**, false | Enables or disables special file changes by content packs, such as resetting the `FarmTypeManager\data` folder.
+EnableConsoleCommands | **true**, false | Enables or disables this mod's commands in the SMAPI console. This may be helpful if other mods use similar command names.
+EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager. If disabled, only "personal" config files in the `FarmTypeManager/data` folder will be used.
 EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
 MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
 
