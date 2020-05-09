@@ -6,5 +6,11 @@
    "UniqueID": "Esca.FarmTypeManager",
    "EntryDll": "FarmTypeManager.dll",
    "MinimumApiVersion": "3.0.0-beta",
-   "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ]
+   "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ],
+   "Dependencies": [
+	   {
+		  "UniqueID": "spacechase0.GenericModConfigMenu",
+		  "IsRequired": false
+	   }
+   ]
 }
