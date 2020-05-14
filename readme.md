@@ -212,7 +212,7 @@ Name | Valid settings | Description | Notes
 Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "Furniture", "Hat", "Object", "Item", "Ring", "Weapon" | The category of the spawned item.| This setting is required by all items. The "item" category (and several others) will "drop" items on the ground, but the "object" category will place them like normal forage objects. Using "breakable" will randomly generate a barrel or crate.
 Name | An item name, e.g. `"Red Mushroom"` | The name of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
 Stack | An integer (minimum 1) | The number of items spawned, a.k.a. the "stack size". | Currently, these item categories can be stacked: "object", "item", and "big craftable". Items with other categories will ignore this setting.
-PercentChanceToSpawn | An integer (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
+PercentChanceToSpawn | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
 Contents | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
 
 Here is an example loot list that uses all three formats:
