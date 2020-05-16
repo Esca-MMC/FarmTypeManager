@@ -367,7 +367,7 @@ To create a content pack for Farm Type Manager:
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "Esca.FarmTypeManager",
-    "MinimumVersion": "1.8.0"
+    "MinimumVersion": "1.10.1"
   }
 }
 ```
