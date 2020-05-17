@@ -59,7 +59,7 @@ namespace FarmTypeManager
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)
         {
-            return false; //NOTE: Clump.performToolAction is called elsewhere, because SDV only implements LargeTerrainFeature actions for axes
+            return Clump.Value.performToolAction(t, damage, tileLocation, location);
         }
 
         new public Rectangle getBoundingBox() //this overrides accidental use of LargeTerrainFeature.getBoundingBox() where possible
