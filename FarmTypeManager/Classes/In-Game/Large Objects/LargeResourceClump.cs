@@ -59,7 +59,12 @@ namespace FarmTypeManager
 
         public override bool performToolAction(Tool t, int damage, Vector2 tileLocation, GameLocation location)
         {
-            return Clump.Value.performToolAction(t, damage, tileLocation, location);
+            bool result = Clump.Value.performToolAction(t, damage, tileLocation, location); //hit the clump and get the result
+
+            if (result) //if the clump's method returned true, it was harvested (i.e. broken)
+                location.largeTerrainFeatures.Remove(this); //remove this from the location
+
+            return false; //return false (to discourage tool code from trying to remove this)
         }
 
         new public Rectangle getBoundingBox() //this overrides accidental use of LargeTerrainFeature.getBoundingBox() where possible
