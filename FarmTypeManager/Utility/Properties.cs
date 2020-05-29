@@ -81,9 +81,6 @@ namespace FarmTypeManager
             /// <summary>A series of object lists to be spawned during the current in-game day.</summary>
             public static List<List<TimedSpawn>> TimedSpawns = new List<List<TimedSpawn>>();
 
-            /// <summary>A list of dynamically accessed class types (e.g. classes from other mods) used by this mod, stored here for more efficient reuse.</summary>
-            public static List<Type> DynamicTypes = new List<Type>();
-
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }
 
