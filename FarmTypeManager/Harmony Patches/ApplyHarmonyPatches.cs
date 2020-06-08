@@ -24,7 +24,7 @@ namespace FarmTypeManager
             HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
 
             //apply all patches
-            HarmonyPatch_SpawnedMineralCollection.ApplyPatch(harmony);
+            HarmonyPatch_AddSpawnedMineralsToCollections.ApplyPatch(harmony);
         }
     }
 }

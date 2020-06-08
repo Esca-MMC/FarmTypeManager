@@ -18,15 +18,16 @@ namespace FarmTypeManager
 {
     public partial class ModEntry : Mod
     {
-        public class HarmonyPatch_SpawnedMineralCollection
+        public class HarmonyPatch_AddSpawnedMineralsToCollections
         {
             /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
             /// <param name="harmony">This mod's Harmony instance.</param>
             public static void ApplyPatch(HarmonyInstance harmony)
             {
+                Utility.Monitor.Log($"Applying Harmony prefix patch \"{nameof(HarmonyPatch_AddSpawnedMineralsToCollections)}\" to SDV method \"Farmer.addItemToInventoryBool(Item, bool)\".", LogLevel.Trace);
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), new[] { typeof(Item), typeof(bool) }), //original method: Farmer.addItemToInventoryBool(Item, bool)
-                    prefix: new HarmonyMethod(typeof(HarmonyPatch_SpawnedMineralCollection), nameof(addItemToInventoryBool_Prefix)) //prefix method: addItemToInventoryBool_Prefix
+                    prefix: new HarmonyMethod(typeof(HarmonyPatch_AddSpawnedMineralsToCollections), nameof(addItemToInventoryBool_Prefix)) //prefix method: addItemToInventoryBool_Prefix
                 );
             }
 
@@ -58,7 +59,7 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce("A Harmony patch encountered an error. Minerals spawned by this mod might not be added to your collection when picked up. The auto-generated error message is displayed below:\n" +
+                    Utility.Monitor.LogOnce("A Harmony patch encountered an error. Minerals spawned by this mod might not be added to your collection menu when picked up. The auto-generated error message is displayed below:\n" +
                         "----------\n" +
                         ex.ToString(), LogLevel.Warn);
                 }
