@@ -116,7 +116,7 @@ namespace FarmTypeManager
                         missing++; //increment missing tracker (note: items should always be removed overnight)
 
                         //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
-                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
+                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
                         {
                             //update this item's ID, in case it changed due to other mods
                             string[] categoryAndName = saved.Name.Split(':');
@@ -171,7 +171,7 @@ namespace FarmTypeManager
                                         saved.ID = GetItemID("object", saved.Name); //update this forage's ID, in case it changed due to other mods
                                     }
 
-                                    SpawnForage(saved.ID.Value, location, saved.Tile); //respawn it
+                                    SpawnForage(saved, location, saved.Tile); //respawn it
                                 }
                                 else //if this is ore
                                 {

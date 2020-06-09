@@ -41,7 +41,10 @@ namespace FarmTypeManager
                     {
                         case "object":
                         case "objects":
-                            return SavedObject.ObjectType.Object;
+                            if (Stack > 1) //if this has a custom stack size
+                                return SavedObject.ObjectType.Item; //treat it as an item
+                            else
+                                return SavedObject.ObjectType.Object;
                         case "barrel":
                         case "barrels":
                         case "breakable":
