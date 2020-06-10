@@ -100,12 +100,11 @@ namespace FarmTypeManager
             /// <see cref="isPassable(Character)"/>and <see cref="doCollisionAction(Rectangle, int, Vector2, Character, GameLocation)"/> are used as a conditional workaround.</remarks>
             public override bool performUseAction(Vector2 tileLocation, GameLocation location)
             {
+                SetForageQuality(location); //if this is forage, set its quality
                 if (!Game1.player.canMove || this.isTemporarilyInvisible || !Game1.player.couldInventoryAcceptThisItem(Item)) //if this isn't the local player OR they can't currently pick this up
                     return false; //this placed item was not used
 
                 //add the contained item to the player's inventory and remove this placed item
-
-                SetForageQuality(location); //if this is forage, set its quality
                 if (Game1.player.addItemToInventoryBool(Item, true)) //add this item to the player's inventory; if successful,
                 {
                     OnForagePickup(Item, location); //if this is forage, perform related tasks
