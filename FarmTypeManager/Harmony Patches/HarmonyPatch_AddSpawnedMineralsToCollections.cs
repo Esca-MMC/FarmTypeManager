@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Monsters;
-using StardewValley.Network;
 using StardewValley.TerrainFeatures;
 using Harmony;
 
@@ -18,16 +15,17 @@ namespace FarmTypeManager
 {
     public partial class ModEntry : Mod
     {
+        /// <summary>A Harmony patch that adds spawned minerals to the player's collection menu when picked up.</summary>
         public class HarmonyPatch_AddSpawnedMineralsToCollections
         {
             /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
             /// <param name="harmony">This mod's Harmony instance.</param>
             public static void ApplyPatch(HarmonyInstance harmony)
             {
-                Utility.Monitor.Log($"Applying Harmony prefix patch \"{nameof(HarmonyPatch_AddSpawnedMineralsToCollections)}\" to SDV method \"Farmer.addItemToInventoryBool(Item, bool)\".", LogLevel.Trace);
+                Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_AddSpawnedMineralsToCollections)}\": prefixing SDV method \"Farmer.addItemToInventoryBool(Item, bool)\".", LogLevel.Trace);
                 harmony.Patch(
-                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), new[] { typeof(Item), typeof(bool) }), //original method: Farmer.addItemToInventoryBool(Item, bool)
-                    prefix: new HarmonyMethod(typeof(HarmonyPatch_AddSpawnedMineralsToCollections), nameof(addItemToInventoryBool_Prefix)) //prefix method: addItemToInventoryBool_Prefix
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.addItemToInventoryBool), new[] { typeof(Item), typeof(bool) }),
+                    prefix: new HarmonyMethod(typeof(HarmonyPatch_AddSpawnedMineralsToCollections), nameof(addItemToInventoryBool_Prefix))
                 );
             }
 
