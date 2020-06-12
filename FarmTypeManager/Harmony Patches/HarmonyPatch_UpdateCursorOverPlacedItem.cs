@@ -33,7 +33,7 @@ namespace FarmTypeManager
             /// This method imitates the check performed in the original, but targets <see cref="PlacedItem"/> instead of harvestable crops within <see cref="HoeDirt"/>.
             /// </remarks>
             /// <param name="who">The player </param>
-            public static void canGrabSomethingFromHere_Postfix(int x, int y, Farmer who, bool __result)
+            public static void canGrabSomethingFromHere_Postfix(int x, int y, Farmer who, ref bool __result)
             {
                 try
                 {
