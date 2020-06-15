@@ -168,7 +168,15 @@ namespace FarmTypeManager
                                 {
                                     if (saved.Name != null) //if this forage was originally assigned a name
                                     {
-                                        saved.ID = GetItemID("object", saved.Name); //update this forage's ID, in case it changed due to other mods
+                                        //update this forage's ID, in case it changed due to other mods
+
+                                        if (saved.Name.Contains(':')) //if this is "category:name"
+                                        {
+                                            string[] categoryAndName = saved.Name.Split(':');
+                                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                                        }
+                                        else //if this is just an object name
+                                            saved.ID = GetItemID("object", saved.Name); 
                                     }
 
                                     SpawnForage(saved, location, saved.Tile); //respawn it
