@@ -124,6 +124,7 @@
     <Compile Include="Classes\In-Game\Monsters\SquidKidFTM.cs" />
     <Compile Include="Classes\In-Game\Monsters\SerpentFTM.cs" />
     <Compile Include="Harmony Patches\ApplyHarmonyPatches.cs" />
+    <Compile Include="Harmony Patches\HarmonyPatch_OptimizeMonsterCode.cs" />
     <Compile Include="Harmony Patches\HarmonyPatch_UpdateCursorOverPlacedItem.cs" />
     <Compile Include="Harmony Patches\HarmonyPatch_AddSpawnedMineralsToCollections.cs" />
     <Compile Include="ModEntry.cs" />

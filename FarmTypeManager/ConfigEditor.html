@@ -284,6 +284,10 @@
 				content: url(' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAEISURBVFhH7ZKxDcIwEEWzAWIJRI+QmIMCOloKxETMwAYwGxDHDzlf5zgkBLvgS6+48939j0j116eazVePLvzYdLJMQ/zY96QG293Fsd6cHcfbteF0d+i8PzNcevBnATiwWO4dahgLQl8D+bP9lS0ACxzEQOEdNNDgINkC9DXmMMTetU4GKSYAH51+fFqDGmqfH0RdXgAaLKoRBxTeAQNq5ui/d/WvKCYAxsBCaFKTegd9JwiUGyB2IFbrnsJcuQFeOtSkgsT61CmYD41RmQHUkDpmHJtXigyAOoNgrH0YY4yyB0CtIGAdtdA9aE73U/YAyAUB66hFsDNa2QOoWoEMJpdlGjJAVfUEirr09fJuNMQAAAAASUVORK5CYII=');
 			}
 
+			span.radioactive::before {
+				content: url(' data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAwUExURQAAAAAAAAAAAAD/AxhESigZJChVJChxWSiqJCiyJF6IYoj/A9H/A///Tv//rv////8RxPkAAAADdFJOUwBemVedn+QAAACnSURBVCjPfcxBYQQxDENRUwiFoSAKohAKS0EUTMEUTCEUTCEUQiF7mPbQnXT/Te8gMzMD7G+fMObAV0Ct6TR2/gtrl2dH/n4/4DUKnkqfG2fo6R5AeM0zEMoYNUdEkCfolFBrjchUP4JErL1HSGB/AgNQjCrIPXUCzC0FQj43zlBTpESvdYRGdxGkEki2A7SL7OyUkmz2BGvt6j9dzU5grV137d4f8AZFVa5BLVjKFAAAAABJRU5ErkJggg==');
+			}
+
 			span.diamond::before {
 				content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAqUExURQAAAAAAAAAAACtxny46PzlLUVJiaFaj3XuLkYLt/63//7jBxODg4P/58mfF4tUAAAADdFJOUwBemVedn+QAAACcSURBVCjPjdFRDcMwDATQUCiFUTCFo2AKpmAKplAKoWAKoRAuu6Q/1epp89+96BJLae2fEfkJk6SqPHGvQGY/TSNDvc8auiNyzJFydikBMOY5R4iXAAs2hruk7hU/AcocuZ6U0BpYCelcT9LwhINgAfHORkYN7AAiK1sFr9VRAGErF3AJL17cCtjCiznY+QmURZyjfYFNnNtf3uENqm2T0/fdpTgAAAAASUVORK5CYII=');
 			}
@@ -2273,7 +2277,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Local-MiningLevelRequired-Geode" id="Ore-TypeSettings-Local-MiningLevelRequired-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Local-MiningLevelRequired-Mystic" id="Ore-TypeSettings-Local-MiningLevelRequired-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Local-MiningLevelRequired-Radioactive" id="Ore-TypeSettings-Local-MiningLevelRequired-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -2371,7 +2380,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Local-StartingSpawnChance-Geode" id="Ore-TypeSettings-Local-StartingSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Local-StartingSpawnChance-Mystic" id="Ore-TypeSettings-Local-StartingSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Local-StartingSpawnChance-Radioactive" id="Ore-TypeSettings-Local-StartingSpawnChance-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -2469,7 +2483,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Local-LevelTenSpawnChance-Geode" id="Ore-TypeSettings-Local-LevelTenSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Local-LevelTenSpawnChance-Mystic" id="Ore-TypeSettings-Local-LevelTenSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Local-LevelTenSpawnChance-Radioactive" id="Ore-TypeSettings-Local-LevelTenSpawnChance-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -3067,7 +3086,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Global-MiningLevelRequired-Geode" id="Ore-TypeSettings-Global-MiningLevelRequired-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Global-MiningLevelRequired-Mystic" id="Ore-TypeSettings-Global-MiningLevelRequired-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Global-MiningLevelRequired-Radioactive" id="Ore-TypeSettings-Global-MiningLevelRequired-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -3160,7 +3184,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Global-StartingSpawnChance-Geode" id="Ore-TypeSettings-Global-StartingSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Global-StartingSpawnChance-Mystic" id="Ore-TypeSettings-Global-StartingSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Global-StartingSpawnChance-Radioactive" id="Ore-TypeSettings-Global-StartingSpawnChance-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -3253,7 +3282,12 @@
 										</tr>
 										<tr>
 											<td>
-												Mystic: <input type="number" name="Ore-TypeSettings-Global-LevelTenSpawnChance-Geode" id="Ore-TypeSettings-Global-LevelTenSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+												Mystic: <input type="number" name="Ore-TypeSettings-Global-LevelTenSpawnChance-Mystic" id="Ore-TypeSettings-Global-LevelTenSpawnChance-Mystic" style="width:4em;"><span class="icon mystic"></span>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												Radioactive: <input type="number" name="Ore-TypeSettings-Global-LevelTenSpawnChance-Radioactive" id="Ore-TypeSettings-Global-LevelTenSpawnChance-Radioactive" style="width:4em;"><span class="icon radioactive"></span>
 											</td>
 										</tr>
 										<tr>
@@ -3409,35 +3443,55 @@
 									<option>Frost Bat</option>
 									<option>Lava Bat</option>
 									<option>Iridium Bat</option>
+									<option>Cursed Doll</option>
+									<option>Haunted Skull</option>
+									<option>Magma Sprite</option>
+									<option>Magma Sparker</option>
 									<option>Big Green Slime</option>
 									<option>Big Blue Slime</option>
 									<option>Big Red Slime</option>
 									<option>Big Purple Slime</option>
+									<option>Blue Squid</option>
 									<option>Bug</option>
 									<option>Armored Bug</option>
+									<option>Pepper Rex</option>
 									<option>Duggy</option>
+									<option>Magma Duggy</option>
 									<option>Dust Sprite</option>
+									<option>Dwarvish Sentry</option>
 									<option>Ghost</option>
 									<option>Carbon Ghost</option>
+									<option>Putrid Slime</option>
 									<option>Green Slime</option>
 									<option>Blue Slime</option>
 									<option>Red Slime</option>
 									<option>Purple Slime</option>
-									<option>Grub</option>
+									<option>Tiger Slime</option>
+									<option>Prismatic Slime</option>
+									<option>Cave Grub</option>
+									<option>Cave Fly</option>
 									<option>Mutant Grub</option>
-									<option>Fly</option>
 									<option>Mutant Fly</option>
 									<option>Metal Head</option>
+									<option>Hot Head</option>
+									<option>Lava Lurk</option>
+									<option>Leaper</option>
 									<option>Mummy</option>
 									<option>Rock Crab</option>
 									<option>Lava Crab</option>
 									<option>Iridium Crab</option>
+									<option>False Magma Cap</option>
+									<option>Stick Bug</option>
 									<option>Stone Golem</option>
 									<option>Wilderness Golem</option>
 									<option>Serpent</option>
+									<option>Royal Serpent</option>
 									<option>Shadow Brute</option>
 									<option>Shadow Shaman</option>
+									<option>Shadow Sniper</option>
 									<option>Skeleton</option>
+									<option>Skeleton Mage</option>
+									<option>Spiker</option>
 									<option>Squid Kid</option>
 									<input name="Monster-MonsterTypes-MonsterName" id="Monster-MonsterTypes-MonsterName-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
 								</select>
@@ -3467,7 +3521,10 @@
 										<option>Sprite</option>
 										<option>Color</option>
 										<option>Random color</option>
+										<option>Facing direction</option>
+										<option>Segments</option>
 										<option>Spawn weight</option>
+										
 									</select>
 								</div>
 									
@@ -3658,6 +3715,26 @@
 									<fieldset class="border">
 										<legend>Spawn weight<span class="tooltip">?<span class="tooltiptext">Set the odds of this monster type being randomly selected for each spawn (default 1).<br/><br/>Example: If spawn weight is 5, this type will be chosen 5 times as often by this area's spawner.</span></span></legend>
 										<input type="number" name="Monster-MonsterTypes-Settings-SpawnWeight" id="Monster-MonsterTypes-Settings-SpawnWeight" style="width:4em;">
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-FacingDirection-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Facing direction<span class="tooltip">?<span class="tooltiptext">Set which direction the monster will look when it spawns. This also affects which direction Spikers will attack.</span></span></legend>
+										<select name="Monster-MonsterTypes-Settings-FacingDirection" id="Monster-MonsterTypes-Settings-FacingDirection" style="width:14em">
+											<option></option>
+											<option>Up</option>
+											<option>Right</option>
+											<option>Down</option>
+											<option>Left</option>
+										</select>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-Segments-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Segments<span class="tooltip">?<span class="tooltiptext">Set the number of extra body parts this monster will have. This currently affects Royal Serpents (number of body segments, minimum 2) and small Slimes (number of "stacked" slimes, minimum 0).</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-Segments" id="Monster-MonsterTypes-Settings-Segments" style="width:4em;">
 									</fieldset>
 								</div>
 								
@@ -4230,7 +4307,8 @@
 									<option>Forest</option>
 									<option>Hilltop</option>
 									<option>Wilderness</option>
-									<option>Four Corners</option>
+									<option>FourCorners</option>
+									<option>Beach</option>
 									<input type="number" name="OtherOptions-FC-FarmTypes-Add" id="OtherOptions-FC-FarmTypes-Add-Custom" style="width:10em; display:none" disabled="disabled" onblur="if(this.value==''){toggleField(this,this.previousSibling);}">
 								</select>
 								</td>
@@ -4719,6 +4797,7 @@
 				"Gold": 7,
 				"Iridium": 9,
 				"Mystic": 10,
+				"Radioactive": 10,
 				"Diamond": 6,
 				"Ruby": 6,
 				"Jade": 6,
@@ -4738,6 +4817,7 @@
 				"Gold": 10,
 				"Iridium": 1,
 				"Mystic": 1,
+				"Radioactive": 0,
 				"Diamond": 0,
 				"Ruby": 0,
 				"Jade": 0,
@@ -4757,6 +4837,7 @@
 				"Gold": 10,
 				"Iridium": 1,
 				"Mystic": 1,
+				"Radioactive": 0,
 				"Diamond": 0,
 				"Ruby": 0,
 				"Jade": 0,
@@ -5015,6 +5096,7 @@
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-MagmaGeode").value = json.Ore_Spawn_Settings.MiningLevelRequired["MagmaGeode"];
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Gem").value = json.Ore_Spawn_Settings.MiningLevelRequired["Gem"];
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Mystic").value = json.Ore_Spawn_Settings.MiningLevelRequired["Mystic"];
+			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Radioactive").value = json.Ore_Spawn_Settings.MiningLevelRequired["Radioactive"];
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Diamond").value = json.Ore_Spawn_Settings.MiningLevelRequired["Diamond"];
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Ruby").value = json.Ore_Spawn_Settings.MiningLevelRequired["Ruby"];
 			document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Jade").value = json.Ore_Spawn_Settings.MiningLevelRequired["Jade"];
@@ -5033,6 +5115,7 @@
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-MagmaGeode").value = json.Ore_Spawn_Settings.StartingSpawnChance["MagmaGeode"];
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Gem").value = json.Ore_Spawn_Settings.StartingSpawnChance["Gem"];
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Mystic").value = json.Ore_Spawn_Settings.StartingSpawnChance["Mystic"];
+			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Radioactive").value = json.Ore_Spawn_Settings.StartingSpawnChance["Radioactive"];
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Diamond").value = json.Ore_Spawn_Settings.StartingSpawnChance["Diamond"];
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Ruby").value = json.Ore_Spawn_Settings.StartingSpawnChance["Ruby"];
 			document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Jade").value = json.Ore_Spawn_Settings.StartingSpawnChance["Jade"];
@@ -5051,6 +5134,7 @@
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-MagmaGeode").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["MagmaGeode"];
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Gem").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Gem"];
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Mystic").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Mystic"];
+			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Radioactive").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Radioactive"];
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Diamond").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Diamond"];
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Ruby").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Ruby"];
 			document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Jade").value = json.Ore_Spawn_Settings.LevelTenSpawnChance["Jade"];
@@ -5228,6 +5312,7 @@
 			json.Ore_Spawn_Settings.MiningLevelRequired["Gold"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Gold").value) || 0;
 			json.Ore_Spawn_Settings.MiningLevelRequired["Iridium"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Iridium").value) || 0;
 			json.Ore_Spawn_Settings.MiningLevelRequired["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Mystic").value) || 0;
+			json.Ore_Spawn_Settings.MiningLevelRequired["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Radioactive").value) || 0;
 			json.Ore_Spawn_Settings.MiningLevelRequired["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Diamond").value) || 0;
 			json.Ore_Spawn_Settings.MiningLevelRequired["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Ruby").value) || 0;
 			json.Ore_Spawn_Settings.MiningLevelRequired["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Global-MiningLevelRequired-Jade").value) || 0;
@@ -5247,6 +5332,7 @@
 			json.Ore_Spawn_Settings.StartingSpawnChance["Gold"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Gold").value) || 0;
 			json.Ore_Spawn_Settings.StartingSpawnChance["Iridium"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Iridium").value) || 0;
 			json.Ore_Spawn_Settings.StartingSpawnChance["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Mystic").value) || 0;
+			json.Ore_Spawn_Settings.StartingSpawnChance["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Radioactive").value) || 0;
 			json.Ore_Spawn_Settings.StartingSpawnChance["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Diamond").value) || 0;
 			json.Ore_Spawn_Settings.StartingSpawnChance["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Ruby").value) || 0;
 			json.Ore_Spawn_Settings.StartingSpawnChance["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Global-StartingSpawnChance-Jade").value) || 0;
@@ -5266,6 +5352,7 @@
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Gold"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Gold").value) || 0;
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Iridium"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Iridium").value) || 0;
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Mystic").value) || 0;
+			json.Ore_Spawn_Settings.LevelTenSpawnChance["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Radioactive").value) || 0;
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Diamond").value) || 0;
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Ruby").value) || 0;
 			json.Ore_Spawn_Settings.LevelTenSpawnChance["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Global-LevelTenSpawnChance-Jade").value) || 0;
@@ -6706,6 +6793,7 @@
 						prev.MiningLevelRequired["MagmaGeode"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-MagmaGeode").value) || 0;
 						prev.MiningLevelRequired["Gem"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Gem").value) || 0;
 						prev.MiningLevelRequired["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Mystic").value) || 0;
+						prev.MiningLevelRequired["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Radioactive").value) || 0;
 						prev.MiningLevelRequired["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Diamond").value) || 0;
 						prev.MiningLevelRequired["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Ruby").value) || 0;
 						prev.MiningLevelRequired["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Jade").value) || 0;
@@ -6732,6 +6820,7 @@
 						prev.StartingSpawnChance["MagmaGeode"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-MagmaGeode").value) || 0;
 						prev.StartingSpawnChance["Gem"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Gem").value) || 0;
 						prev.StartingSpawnChance["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Mystic").value) || 0;
+						prev.StartingSpawnChance["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Radioactive").value) || 0;
 						prev.StartingSpawnChance["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Diamond").value) || 0;
 						prev.StartingSpawnChance["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Ruby").value) || 0;
 						prev.StartingSpawnChance["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Jade").value) || 0;
@@ -6758,6 +6847,7 @@
 						prev.LevelTenSpawnChance["MagmaGeode"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-MagmaGeode").value) || 0;
 						prev.LevelTenSpawnChance["Gem"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Gem").value) || 0;
 						prev.LevelTenSpawnChance["Mystic"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Mystic").value) || 0;
+						prev.LevelTenSpawnChance["Radioactive"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Radioactive").value) || 0;
 						prev.LevelTenSpawnChance["Diamond"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Diamond").value) || 0;
 						prev.LevelTenSpawnChance["Ruby"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Ruby").value) || 0;
 						prev.LevelTenSpawnChance["Jade"] = parseInt(document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Jade").value) || 0;
@@ -6937,6 +7027,7 @@
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-MagmaGeode").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["MagmaGeode"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Gem").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Gem"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Mystic").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Mystic"] : 0;
+					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Radioactive").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Radioactive"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Diamond").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Diamond"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Ruby").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Ruby"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-MiningLevelRequired-Jade").value = curr.MiningLevelRequired ? curr.MiningLevelRequired["Jade"] : 0;
@@ -6965,6 +7056,7 @@
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-MagmaGeode").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["MagmaGeode"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Gem").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Gem"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Mystic").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Mystic"] : 0;
+					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Radioactive").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Radioactive"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Diamond").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Diamond"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Ruby").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Ruby"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-StartingSpawnChance-Jade").value = curr.StartingSpawnChance ? curr.StartingSpawnChance["Jade"] : 0;
@@ -6993,6 +7085,7 @@
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-MagmaGeode").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["MagmaGeode"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Gem").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Gem"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Mystic").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Mystic"] : 0;
+					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Radioactive").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Radioactive"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Diamond").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Diamond"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Ruby").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Ruby"] : 0;
 					document.getElementById("Ore-TypeSettings-Local-LevelTenSpawnChance-Jade").value = curr.LevelTenSpawnChance ? curr.LevelTenSpawnChance["Jade"] : 0;
@@ -7854,6 +7947,20 @@
 			}
 			minColor.value = null;
 			maxColor.value = null;
+
+			curr = document.getElementById("Monster-MonsterTypes-Settings-FacingDirection");
+			if (curr.value != null && curr.value != "")
+			{
+				settings["FacingDirection"] = curr.value;
+			}
+			curr.value = null;
+
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Segments");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["Segments"] = parseInt(curr.value);
+			}
+			curr.value = null;
 			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-SpawnWeight");
 			if (Number.isNaN(parseInt(curr.value)) == false)

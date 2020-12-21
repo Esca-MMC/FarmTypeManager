@@ -26,6 +26,7 @@ namespace FarmTypeManager
             //apply all patches
             HarmonyPatch_AddSpawnedMineralsToCollections.ApplyPatch(harmony);
             HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
+            HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
         }
     }
 }
