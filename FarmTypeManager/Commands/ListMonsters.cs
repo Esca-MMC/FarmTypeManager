@@ -134,6 +134,7 @@ namespace FarmTypeManager
                     "rock crab",
                     "lava crab",
                     "iridium crab",
+                    "stick bug",
                     "false magma cap",
                     "rock golem",
                     "stone golem",
