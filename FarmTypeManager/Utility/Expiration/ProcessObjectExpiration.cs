@@ -35,11 +35,10 @@ namespace FarmTypeManager
                         continue; //skip to the next object
                     }
 
-                    if (saved.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //if this saved object was in a mine level (i.e. temporary location)
+                    if (saved.DaysUntilExpire.HasValue //if this saved object has an expiration setting
+                        && saved.MapName.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase)) //AND if this saved object was in a mine level (i.e. temporary location)
                     {
-                        Monitor.VerboseLog($"Removing object data saved for a temporary location. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
-                        objectsToRemove.Add(saved); //mark this for removal from save
-                        continue; //skip to the next object
+                        saved.DaysUntilExpire = 1; //force this object to expire below
                     }
 
                     GameLocation location = Game1.getLocationFromName(saved.MapName); //get the saved object's location
