@@ -30,8 +30,8 @@ namespace FarmTypeManager
             public readonly NetObjectList<Item> Items = new NetObjectList<Item>();
 
             public BuriedItems()
+                : base()
             {
-                initNetFields();
             }
 
             /// <summary>Create a new buried item location with the specified contents.</summary>
