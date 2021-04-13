@@ -62,7 +62,14 @@ namespace FarmTypeManager
                     case 793: //forest farm weed (forest farm, summer version)
                     case 794: //forest farm weed (forest farm, fall version)
                     case 590: //artifact dig spot
-
+                    case 816: //fossil stone
+                    case 817: //
+                    case 818: //clay stone
+                    case 833: //cinder shard ore
+                    case 834: //
+                    case 845: //stone
+                    case 846: //
+                    case 847: //
                         forageObj = new StardewValley.Object(tile, index, 1); //use an alternative constructor
                         Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.objects.Add(tile, forageObj); //add the object directly to the objects list
