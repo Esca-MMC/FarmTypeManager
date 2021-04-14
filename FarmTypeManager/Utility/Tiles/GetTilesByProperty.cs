@@ -39,7 +39,7 @@ namespace FarmTypeManager
                         }
                         else if (type.Equals("diggable", StringComparison.OrdinalIgnoreCase)) //if the tile's "Diggable" property matches (case-insensitive)
                         {
-                            string diggable = (location?.doesTileHaveProperty(x, y, "Diggable", "Back")) ?? ""; //get the current "Diggable" property of this tile (empty if null)
+                            string diggable = location.doesTileHavePropertyNoNull(x, y, "Diggable", "Back"); //get the current "Diggable" property of this tile (empty if null)
 
                             if (diggable == "T") //NOTE: the string "T" means "true" for several tile property checks
                             {
@@ -48,7 +48,7 @@ namespace FarmTypeManager
                         }
                         else //assumed to be checking for a specific value in the tile's "Type" property, e.g. "Grass" or "Dirt"
                         {
-                            string currentType = (location?.doesTileHaveProperty(x, y, "Type", "Back")) ?? ""; //get the current "Type" property of this tile (empty if null)
+                            string currentType = location.doesTileHavePropertyNoNull(x, y, "Type", "Back"); //get the current "Type" property of this tile (empty if null)
 
                             if (currentType.Equals(type, StringComparison.OrdinalIgnoreCase)) //if the tile's "Type" property matches (case-insensitive)
                             {
