@@ -15,6 +15,8 @@ namespace FarmTypeManager
         /// <summary>Tasks performed before the game saves.</summary>
         private void GameLoop_Saving(object sender, SavingEventArgs e)
         {
+            Utility.GameIsSaving = true;
+
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
             if (Utility.DayIsEnding || SaveAnywhereIsSaving) { return; } //if a specialized save process is already handling this, don't do anything
 

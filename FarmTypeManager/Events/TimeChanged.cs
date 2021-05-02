@@ -16,6 +16,7 @@ namespace FarmTypeManager
         private void TimeChanged(object sender, TimeChangedEventArgs e)
         {
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything; most of this mod's functions should be limited to the host player
+            if (Utility.GameIsSaving) { return; } //if the game is currently saving, don't do anything; as of SDV v1.5.4, time occasionally changes during the save/day-ending process
 
             if (Utility.StartOfDay.Time < e.NewTime) //if the new time isn't the start of the day
             {
