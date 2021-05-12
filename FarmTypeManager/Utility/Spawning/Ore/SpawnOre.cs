@@ -84,7 +84,7 @@ namespace FarmTypeManager
                         ore = new StardewValley.Object(tile, 14, "Stone", true, false, false, false);
                         break;
                     case "mussel":
-                        ore = new StardewValley.Object(tile, 14, "Stone", true, false, false, false);
+                        ore = new StardewValley.Object(tile, 25, "Stone", true, false, false, false);
                         break;
                     case "fossil":
                         ore = new StardewValley.Object(tile, 816 + RNG.Next(2), 1); //either of the two random fossil nodes
