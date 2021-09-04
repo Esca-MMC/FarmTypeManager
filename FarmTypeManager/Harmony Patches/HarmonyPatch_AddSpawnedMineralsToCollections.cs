@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+
+using HarmonyLib;
+
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.TerrainFeatures;
-using Harmony;
 
 namespace FarmTypeManager
 {
@@ -20,7 +16,7 @@ namespace FarmTypeManager
         {
             /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
             /// <param name="harmony">This mod's Harmony instance.</param>
-            public static void ApplyPatch(HarmonyInstance harmony)
+            public static void ApplyPatch(Harmony harmony)
             {
                 Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_AddSpawnedMineralsToCollections)}\": prefixing SDV method \"Farmer.addItemToInventoryBool(Item, bool)\".", LogLevel.Trace);
                 harmony.Patch(
