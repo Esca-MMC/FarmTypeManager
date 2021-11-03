@@ -77,6 +77,10 @@ namespace FarmTypeManager
                     location.objects.Add(tile, (StardewValley.Object)container); //add the container to the location's object array
                     return true;
                 }
+                else if (forage.Type == SavedObject.ObjectType.DGA) //if this is a DGA item
+                {
+                    return SpawnDGAItem(forage, location, tile);
+                }
                 else //if this is an item
                 {
                     if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
@@ -92,10 +96,62 @@ namespace FarmTypeManager
                         return false;
                     }
 
-                    Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     PlacedItem placed = new PlacedItem(tile, forageItem); //create a terrainfeature containing the item
                     location.terrainFeatures.Add(tile, placed); //add the placed item to this location
                     return true;
+                }
+            }
+
+            /// <summary>Attempts to generate and place an item using the <see cref="Utility.DGAItemAPI"/> interface.</summary>
+            /// <param name="forage">The SavedObject containing this forage's information.</param>
+            /// <param name="location">The GameLocation where the forage should be spawned.</param>
+            /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
+            /// <returns>True if the item spawned successfully; false otherwise.</returns>
+            private static bool SpawnDGAItem(SavedObject forage, GameLocation location, Vector2 tile)
+            {
+                try
+                {
+                    object rawDGA = DGAItemAPI.SpawnDGAItem(forage.Name); //try to create this item with DGA's API
+
+                    if (rawDGA is StardewValley.Object objectDGA) //if the resulting item is a SDV object (i.e. can be treated like normal forage)
+                    {
+                        objectDGA.IsSpawnedObject = true;
+                        Monitor.VerboseLog($"Spawning DGA forage object. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        return location.dropObject(objectDGA, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
+                    }
+                    else if (rawDGA is Item itemDGA) //if the resulting item is NOT a SDV object, but is an Item (i.e. can be treated as a placed item)
+                    {
+                        if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
+                            return false; //fail to spawn
+
+                        Monitor.VerboseLog($"Spawning DGA forage item. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        PlacedItem placed = new PlacedItem(tile, itemDGA); //create a terrainfeature containing the item
+                        location.terrainFeatures.Add(tile, placed); //add the placed item to this location
+                        return true;
+                    }
+                    else if (rawDGA != null) //if DGA spawned an item, but it isn't a recognized type
+                    {
+                        Monitor.Log("Dynamic Game Assets (DGA) created an item, but FTM doesn't recognize its type. This may be caused by the item or a problem with FTM's logic.", LogLevel.Warn);
+                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
+                        Monitor.Log($"Item type (C# code): {rawDGA.GetType()?.Name ?? "null"}", LogLevel.Warn);
+                        return false;
+                    }
+                    else //if DGA did not spawn an item
+                    {
+                        Monitor.Log("The SpawnForage method failed to generate a Dynamic Game Assets (DGA) item. This may be caused by a problem with this mod's logic. Please report this to FTM's developer if possible.", LogLevel.Warn);
+                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
+                        return false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"An error occurred while spawning a Dynamic Game Assets (DGA) item.", LogLevel.Warn);
+                    Monitor.Log($"Item name: \"{forage.Name}\"", LogLevel.Warn);
+                    Monitor.Log($"The affected item will be skipped. The auto-generated error message has been added to the log.", LogLevel.Warn);
+                    Monitor.Log($"----------", LogLevel.Trace);
+                    Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                    return false;
                 }
             }
         }

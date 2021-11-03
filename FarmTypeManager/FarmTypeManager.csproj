@@ -9,4 +9,10 @@
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="3.4.0-beta.20210813" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="ConfigEditor.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

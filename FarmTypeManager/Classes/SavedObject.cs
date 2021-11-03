@@ -45,6 +45,7 @@ namespace FarmTypeManager
                     {
                         case ObjectType.Object:
                         case ObjectType.Item:
+                        case ObjectType.DGA:
                         case ObjectType.Ore:
                             return new Point(1, 1);
                         case ObjectType.LargeObject:
@@ -92,7 +93,8 @@ namespace FarmTypeManager
                 Ore,
                 Monster,
                 Item,
-                Container
+                Container,
+                DGA //an Item instance from the mod Dynamic Game Assets
             }
 
             public SavedObject()

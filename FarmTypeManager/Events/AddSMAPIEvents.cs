@@ -32,6 +32,7 @@ namespace FarmTypeManager
             helper.Events.GameLoop.GameLaunched += EnableGMCM;
             helper.Events.GameLoop.GameLaunched += EnableSaveAnywhere;
             helper.Events.GameLoop.GameLaunched += EnableEPU;
+            helper.Events.GameLoop.GameLaunched += EnableDGA;
         }
     }
 }

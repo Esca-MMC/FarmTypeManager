@@ -59,6 +59,8 @@ namespace FarmTypeManager
                         case "crate":
                         case "crates":
                             return SavedObject.ObjectType.Container;
+                        case "dga":
+                            return SavedObject.ObjectType.DGA;
                     }
 
                     return SavedObject.ObjectType.Item;

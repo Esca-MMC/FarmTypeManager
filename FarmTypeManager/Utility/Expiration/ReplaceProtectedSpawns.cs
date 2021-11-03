@@ -154,6 +154,32 @@ namespace FarmTypeManager
                             blocked++; //increment obstruction tracker
                         }
                     }
+                    else if (saved.Type == SavedObject.ObjectType.DGA) //if this is a DGA item
+                    {
+                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+                        bool featureExists = location.terrainFeatures.TryGetValue(saved.Tile, out TerrainFeature realFeature); //try to get a terrain feature at this location
+
+                        if (DGAItemAPI == null) //if DGA isn't available
+                        {
+                            uninstalled++; //increment uninstalled mod tracker
+                            Monitor.LogOnce($"The interface for Dynamic Game Assets (DGA) is unavailable, so a DGA item couldn't be respawned from save data.", LogLevel.Trace);
+                        }
+                        else if ((realObject == null || DGAItemAPI.GetDGAItemId(realObject) != saved.Name) //if a matching DGA object is NOT here
+                                && (!featureExists || realFeature is not PlacedItem placed || placed.Item == null || DGAItemAPI.GetDGAItemId(placed.Item) != saved.Name)) //AND a matching DGA item is NOT here
+                        {
+                            missing++; //increment missing object tracker
+
+                            if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
+                            {
+                                respawned++; //increment respawn tracker
+                                SpawnForage(saved, location, saved.Tile); //respawn the DGA item
+                            }
+                            else //if the object's tile is obstructed
+                            {
+                                blocked++; //increment obstruction tracker
+                            }
+                        }
+                    }
                     else //if this is forage or ore
                     {
                         StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
@@ -181,6 +207,7 @@ namespace FarmTypeManager
 
                                     if (saved.ID.HasValue) //if a valid ID was found for this object
                                     {
+                                        respawned++; //increment respawn tracker
                                         SpawnForage(saved, location, saved.Tile); //respawn it
                                     }
                                     else
@@ -191,9 +218,9 @@ namespace FarmTypeManager
                                 }
                                 else //if this is ore
                                 {
+                                    respawned++; //increment respawn tracker
                                     SpawnOre(saved.Name, location, saved.Tile); //respawn it
                                 }
-                                respawned++; //increment respawn tracker
                             }
                             else //if the object's tile is occupied
                             {
