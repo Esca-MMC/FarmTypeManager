@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -156,7 +153,8 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.DGA) //if this is a DGA item
                     {
-                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+                        StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location (if any)
+                        Furniture realFurniture = location.GetFurnitureAt(saved.Tile); //get the furniture at the saved location (if any)
                         bool featureExists = location.terrainFeatures.TryGetValue(saved.Tile, out TerrainFeature realFeature); //try to get a terrain feature at this location
 
                         if (DGAItemAPI == null) //if DGA isn't available
@@ -165,6 +163,7 @@ namespace FarmTypeManager
                             Monitor.LogOnce($"The interface for Dynamic Game Assets (DGA) is unavailable, so a DGA item couldn't be respawned from save data.", LogLevel.Trace);
                         }
                         else if ((realObject == null || DGAItemAPI.GetDGAItemId(realObject) != saved.Name) //if a matching DGA object is NOT here
+                                && (realFurniture == null || DGAItemAPI.GetDGAItemId(realFurniture) != saved.Name) //AND a matching DGA furniture is NOT here
                                 && (!featureExists || realFeature is not PlacedItem placed || placed.Item == null || DGAItemAPI.GetDGAItemId(placed.Item) != saved.Name)) //AND a matching DGA item is NOT here
                         {
                             missing++; //increment missing object tracker

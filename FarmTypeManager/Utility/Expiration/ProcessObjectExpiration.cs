@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -277,10 +273,7 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.DGA) //if this is a DGA item
                     {
-                        bool stillExists = false; //does this item still exist?
-
-                        //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
-                        if
+                        if //if a matching PlacedItem exists here
                         (
                             location.terrainFeatures.ContainsKey(saved.Tile) //if this tile has a features
                             && location.terrainFeatures[saved.Tile] is PlacedItem placedItem //and it's a placed item
@@ -288,7 +281,6 @@ namespace FarmTypeManager
                             && DGAItemAPI?.GetDGAItemId(placedItem.Item) == saved.Name //and the contained item matches the saved name (according to DGA's API)
                         )
                         {
-                            stillExists = true;
                             location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
 
                             if (endOfDay) //if expirations should be processed
@@ -304,11 +296,25 @@ namespace FarmTypeManager
                                 }
                             }
                         }
-
-                        if (!stillExists) //if a matching PlacedItem does not exist
+                        else if (location.GetFurnitureAt(saved.Tile) is Furniture realFurniture && DGAItemAPI?.GetDGAItemId(realFurniture) == saved.Name) //if matching furniture exists here
                         {
-                            //check for a normal object instead
+                            location.furniture.Remove(realFurniture); //remove this furniture, regardless of expiration
 
+                            if (endOfDay) //if expirations should be processed
+                            {
+                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                {
+                                    Monitor.VerboseLog($"Removing expired object. Type: DGA furniture. Name: {saved.Name}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                    objectsToRemove.Add(saved); //mark this for removal from save
+                                }
+                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                {
+                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                }
+                            }
+                        }
+                        else //if a matching PlacedItem or furniture does not exist, check for a normal object
+                        {
                             StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
 
                             if (realObject != null && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
@@ -328,9 +334,9 @@ namespace FarmTypeManager
                                     }
                                 }
                             }
-                            else //if this tile does NOT have a matching PlacedItem or SDV object
+                            else //if this tile does NOT contain this DGA item in any form
                             {
-                                Monitor.VerboseLog($"Removing missing object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.MapName}.");
+                                Monitor.VerboseLog($"Removing missing object. Type: DGA item. Name: {saved.Name}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
                                 objectsToRemove.Add(saved); //mark object for removal from save
                             }
                         }

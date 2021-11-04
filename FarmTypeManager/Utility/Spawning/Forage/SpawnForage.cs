@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
+using System;
 
 namespace FarmTypeManager
 {
@@ -113,14 +106,23 @@ namespace FarmTypeManager
                 try
                 {
                     object rawDGA = DGAItemAPI.SpawnDGAItem(forage.Name); //try to create this item with DGA's API
-
-                    if (rawDGA is StardewValley.Object objectDGA) //if the resulting item is a SDV object (i.e. can be treated like normal forage)
+                    if (rawDGA is Furniture furnitureDGA) //if the resulting item is furniture
                     {
-                        objectDGA.IsSpawnedObject = true;
+                        Monitor.VerboseLog($"Spawning DGA forage furniture. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        furnitureDGA.TileLocation = tile;
+                        Rectangle originalBoundingBox = furnitureDGA.boundingBox.Value; //get "original" bounding box
+                        furnitureDGA.boundingBox.Value = new Rectangle((int)tile.X * 64, (int)tile.Y * 64, originalBoundingBox.Width, originalBoundingBox.Height); //adjust for tile position
+                        furnitureDGA.updateDrawPosition();
+                        location.furniture.Add(furnitureDGA); //add the furniture to this location
+                        return true;
+                    }
+                    else if (rawDGA is StardewValley.Object objectDGA) //if the resulting item is a SDV object (i.e. can be treated like normal forage)
+                    {
                         Monitor.VerboseLog($"Spawning DGA forage object. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        objectDGA.IsSpawnedObject = true;
                         return location.dropObject(objectDGA, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
                     }
-                    else if (rawDGA is Item itemDGA) //if the resulting item is NOT a SDV object, but is an Item (i.e. can be treated as a placed item)
+                    else if (rawDGA is Item itemDGA) //if the resulting item is any other type of Item (i.e. can be treated as a PlacedItem)
                     {
                         if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
                             return false; //fail to spawn
