@@ -210,7 +210,7 @@ For a more detailed description of the complex item settings, see the table belo
 
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "DGAItem", "Furniture", "Hat", "Object", "Ring", "Weapon" | The category of the spawned item.| This setting is required. "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
+Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "DGA", "Furniture", "Hat", "Object", "Ring", "Weapon" | The category of the spawned item.| This setting is required. "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
 Name | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
 Stack | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
 PercentChanceToSpawn | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
