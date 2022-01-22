@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -25,6 +18,8 @@ namespace FarmTypeManager
             public static List<SavedObject> ParseSavedObjectsFromItemList(IEnumerable<object> rawItems, string areaID = "")
             {
                 List<SavedObject> SavedObjects = new List<SavedObject>();
+                
+                if (rawItems == null) return SavedObjects;
 
                 foreach (object raw in rawItems) //for each object in the raw list
                 {
@@ -82,7 +77,7 @@ namespace FarmTypeManager
                             Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
                             Monitor.Log($"This may be caused by a formatting error in the item list. The affected item will be skipped.", LogLevel.Info);
                         }
-                        
+
                         if (saved != null) //if parsing was successful
                         {
                             SavedObjects.Add(saved); //add this to the list
@@ -105,8 +100,8 @@ namespace FarmTypeManager
             /// <returns>A saved object representing the designated StardewValley.Object. Null if creation failed.</returns>
             private static SavedObject CreateSavedObject(int objectID, string areaID = "")
             {
-                IDictionary<int, string> objDictionary = GetItemDictionary("object"); //get currently loaded object data
-                if (objDictionary.ContainsKey(objectID)) //if data exists for this object ID
+                IDictionary<string, string> objDictionary = GetItemDictionary("object"); //get currently loaded object data
+                if (objDictionary.ContainsKey(objectID.ToString())) //if data exists for this object ID
                 {
                     SavedObject saved = new SavedObject() //generate a saved object with the appropriate type and ID
                     {
@@ -132,15 +127,15 @@ namespace FarmTypeManager
             /// <returns>A saved object representing the designated StardewValley.Object. Null if creation failed.</returns>
             private static SavedObject CreateSavedObject(string objectName, string areaID = "")
             {
-                int? objectID = GetItemID("object", objectName); //get an object ID for this name
+                string objectID = GetItemID("object", objectName); //get an object ID for this name
 
-                if (objectID.HasValue) //if a matching object ID was found
+                if (objectID != null) //if a matching object ID was found
                 {
                     SavedObject saved = new SavedObject() //generate a saved object with the appropriate type, ID, and name
                     {
                         Type = SavedObject.ObjectType.Object,
                         Name = objectName,
-                        ID = objectID.Value
+                        StringID = objectID
                     };
                     Monitor.VerboseLog($"Parsed \"{objectName}\" into object ID: {objectID}");
                     return saved;
@@ -264,14 +259,14 @@ namespace FarmTypeManager
 
                 string savedName = item.Category + ":" + item.Name;
 
-                int? itemID = GetItemID(item.Category, item.Name); //get an item ID for the category and name
-                if (itemID.HasValue) //if a matching item ID was found
+                string itemID = GetItemID(item.Category, item.Name); //get an item ID for the category and name
+                if (itemID != null) //if a matching item ID was found
                 {
                     SavedObject saved = new SavedObject() //generate a saved object with these settings
                     {
                         Type = item.Type,
                         Name = savedName,
-                        ID = itemID.Value,
+                        StringID = itemID,
                         ConfigItem = item
                     };
                     Monitor.VerboseLog($"Parsed \"{item.Category}\": \"{item.Name}\" into item ID: {itemID}");

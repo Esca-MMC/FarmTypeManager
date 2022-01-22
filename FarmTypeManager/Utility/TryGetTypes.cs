@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using StardewModdingAPI;
+using System;
 using System.Reflection;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
-using Newtonsoft.Json;
 
 namespace FarmTypeManager
 {
@@ -27,10 +18,10 @@ namespace FarmTypeManager
                 {
                     return assembly.GetTypes(); //attempt to return this assembly's types
                 }
-                catch (Exception ex) //if an error happens
+                catch (Exception) //if an error happens
                 {
                     Monitor.VerboseLog($"TryGetTypes skipped an unreadable assembly. Assembly name: {assembly?.GetName()?.Name ?? "(null)"}");
-                    return new Type[0]; //return an empty type array
+                    return Array.Empty<Type>(); //return an empty type array
                 }
             }
         }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.TerrainFeatures;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -19,9 +13,9 @@ namespace FarmTypeManager
             /// <summary>Get a dictionary of the game's loaded item information for a given category of items.</summary>
             /// <param name="category">The name of the item category to retrieve.</param>
             /// <returns>A dictionary of IDs and data strings for each item of that category.</returns>
-            public static IDictionary<int, string> GetItemDictionary(string category)
+            public static IDictionary<string, string> GetItemDictionary(string category)
             {
-                IDictionary<int, string> dictionary = null;
+                IDictionary<string, string> dictionary = null;
 
                 switch (category.ToLower()) //based on the category
                 {
@@ -33,7 +27,7 @@ namespace FarmTypeManager
                         break;
                     case "boot":
                     case "boots":
-                        dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\Boots");
+                        dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\Boots");
                         break;
                     case "cloth":
                     case "clothes":
@@ -42,11 +36,11 @@ namespace FarmTypeManager
                         dictionary = Game1.clothingInformation;
                         break;
                     case "furniture":
-                        dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\Furniture");
+                        dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\Furniture");
                         break;
                     case "hat":
                     case "hats":
-                        dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\hats");
+                        dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\hats");
                         break;
                     case "object":
                     case "objects":
@@ -60,7 +54,7 @@ namespace FarmTypeManager
                         break;
                     case "weapon":
                     case "weapons":
-                        dictionary = Game1.content.Load<Dictionary<int, string>>("Data\\weapons");
+                        dictionary = Game1.content.Load<Dictionary<string, string>>("Data\\weapons");
                         break;
                 }
 

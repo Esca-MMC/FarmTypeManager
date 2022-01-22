@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Network;
-using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
-using Netcode;
-
-using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace FarmTypeManager
 {
@@ -38,7 +29,7 @@ namespace FarmTypeManager
             /// <param name="tileLocation">The tile location of the buried items.</param>
             /// <param name="items">>A set of items the container will drop when broken. Null or empty lists are valid.</param>
             public BuriedItems(Vector2 tileLocation, IEnumerable<Item> items)
-                : base(tileLocation, 590, 1) //use the typical constructor for an artifact spot
+                : base(tileLocation, "590", 1) //use the typical constructor for an artifact spot
             {
                 Items.AddRange(items); //add the provided set of items to this object's list
             }

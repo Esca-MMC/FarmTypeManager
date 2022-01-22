@@ -15,7 +15,7 @@ namespace FarmTypeManager
             /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
             /// <param name="location">The GameLocation where the forage should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            public static bool SpawnForage(int index, GameLocation location, Vector2 tile)
+            public static bool SpawnForage(string index, GameLocation location, Vector2 tile)
             {
                 StardewValley.Object forageObj;
 
@@ -47,7 +47,7 @@ namespace FarmTypeManager
             {
                 if (forage.Type == SavedObject.ObjectType.Object) //if this is a basic object
                 {
-                    return SpawnForage(forage.ID.Value, location, tile); //call the object ID version of this method
+                    return SpawnForage(forage.StringID, location, tile); //call the object ID version of this method
                 }
                 else if (forage.Type == SavedObject.ObjectType.Container) //if this is a container
                 {

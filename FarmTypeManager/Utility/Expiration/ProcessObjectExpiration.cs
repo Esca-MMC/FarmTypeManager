@@ -54,7 +54,7 @@ namespace FarmTypeManager
 
                         for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for removal purposes)
                         {
-                            if (location.characters[x] is Monster monster && monster.id == saved.ID) //if this is a monster with an ID that matches the saved ID
+                            if (location.characters[x] is Monster monster && int.TryParse(saved.ID?.ToString(), out int monsterID) && monster.id == monsterID) //if this is a monster with an ID that matches the saved ID
                             {
                                 stillExists = true;
                                 if (endOfDay) //if expirations should be processed
@@ -108,7 +108,7 @@ namespace FarmTypeManager
                         {
                             if (clump is ResourceClump smallClump)
                             {
-                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int smallClumpID) && smallClump.parentSheetIndex.Value == smallClumpID) //if this clump's location & ID match the saved object
                                 {
                                     existingObject = smallClump;
                                     break; //stop searching the clump list
@@ -116,7 +116,7 @@ namespace FarmTypeManager
                             }
                             else if (clump is LargeResourceClump largeClump)
                             {
-                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int largeClumpID) && largeClump.Clump.Value.parentSheetIndex.Value == largeClumpID) //if this clump's location & ID match the saved object
                                 {
                                     existingObject = largeClump;
                                     break; //stop searching the clump list
@@ -168,7 +168,7 @@ namespace FarmTypeManager
                         bool stillExists = false; //does this item still exist?
 
                         //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
-                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ParentSheetIndex == saved.ID.Value)
+                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemID == saved.StringID)
                         {
                             stillExists = true;
                             location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
@@ -231,7 +231,7 @@ namespace FarmTypeManager
                                     }
                                     break;
                             }
-                            
+
                             if (sameContainerCategory) //if the real object matches the saved object's category
                             {
                                 if (realObject is Chest chest) //if this is a chest
@@ -241,7 +241,7 @@ namespace FarmTypeManager
                                         saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
                                     }
                                 }
-                                
+
                                 realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 
@@ -345,7 +345,7 @@ namespace FarmTypeManager
                     {
                         StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
 
-                        if (realObject != null && realObject.ParentSheetIndex == saved.ID) //if an object exists in the saved location & matches the saved object's ID
+                        if (realObject != null && realObject.ItemID == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
                             if (endOfDay) //if expirations should be processed
                             {

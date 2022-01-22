@@ -6,6 +6,7 @@ using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace FarmTypeManager
 {
@@ -77,7 +78,7 @@ namespace FarmTypeManager
                         {
                             if (clump is ResourceClump smallClump)
                             {
-                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && smallClump.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int smallClumpID) && smallClump.parentSheetIndex.Value == smallClumpID) //if this clump's location & ID match the saved object
                                 {
                                     stillExists = true;
                                     break; //stop searching the clump list
@@ -85,7 +86,7 @@ namespace FarmTypeManager
                             }
                             else if (clump is LargeResourceClump largeClump)
                             {
-                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && largeClump.Clump.Value.parentSheetIndex.Value == saved.ID) //if this clump's location & ID match the saved object
+                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int largeClumpID) && largeClump.Clump.Value.parentSheetIndex.Value == largeClumpID) //if this clump's location & ID match the saved object
                                 {
                                     stillExists = true;
                                     break; //stop searching the clump list
@@ -99,7 +100,7 @@ namespace FarmTypeManager
 
                             if (IsTileValid(location, saved.Tile, saved.Size, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
                             {
-                                SpawnLargeObject(saved.ID.Value, location, saved.Tile); //respawn the object
+                                SpawnLargeObject(Convert.ToInt32(saved.ID), location, saved.Tile); //respawn the object
                                 respawned++; //increment respawn tracker
                             }
                             else //if the object's tile is invalid
@@ -117,9 +118,9 @@ namespace FarmTypeManager
                         {
                             //update this item's ID, in case it changed due to other mods
                             string[] categoryAndName = saved.Name.Split(':');
-                            int? newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                            string newID = GetItemID(categoryAndName[0], categoryAndName[1]);
 
-                            if (newID.HasValue) //if a new ID was successfully generated
+                            if (newID != null) //if a new ID was successfully generated
                             {
                                 respawned++; //increment respawn tracker
                                 saved.ID = newID; //save the new ID
@@ -204,7 +205,7 @@ namespace FarmTypeManager
                                             saved.ID = GetItemID("object", saved.Name);
                                     }
 
-                                    if (saved.ID.HasValue) //if a valid ID was found for this object
+                                    if (saved.ID != null) //if a valid ID was found for this object
                                     {
                                         respawned++; //increment respawn tracker
                                         SpawnForage(saved, location, saved.Tile); //respawn it

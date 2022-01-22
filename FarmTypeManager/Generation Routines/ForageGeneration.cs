@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
-using StardewValley.Locations;
-using StardewValley.TerrainFeatures;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -129,7 +121,7 @@ namespace FarmTypeManager
                                 break;
                         }
 
-                        if (forageObjects == null || forageObjects.Count <= 0) 
+                        if (forageObjects == null || forageObjects.Count <= 0)
                         {
                             Utility.Monitor.Log($"This area's forage list is null or empty. This generally means the {Game1.currentSeason}IndexList contains no valid items. Skipping to the next forage area...", LogLevel.Trace);
                             continue;

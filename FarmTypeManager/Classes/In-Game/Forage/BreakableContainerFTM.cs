@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Network;
-using StardewValley.Objects;
-using StardewValley.Monsters;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
-using Netcode;
+using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace FarmTypeManager
 {
@@ -68,7 +61,7 @@ namespace FarmTypeManager
             /// <param name="items">A set of items the container will drop when broken. Null or empty lists are valid.</param>
             /// <param name="isBarrel">If true, the container will use the "barrel" sprite. If false, it will use the "crate" sprite.</param>
             public BreakableContainerFTM(Vector2 tile, IEnumerable<Item> items, bool isBarrel = true)
-                : base(tile, barrel, false)
+                : base(tile, barrel.ToString(), false)
             {
                 Items.AddRange(items);
 

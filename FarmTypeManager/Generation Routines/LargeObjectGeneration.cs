@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Netcode;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
+﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -121,7 +115,7 @@ namespace FarmTypeManager
                                     {
                                         continue; //skip to the next clump
                                     }
-                                    
+
                                     bool alreadyListed = false; //whether newInclude is already listed in area.IncludeAreas
 
                                     foreach (string include in area.IncludeCoordinates) //check each existing include string

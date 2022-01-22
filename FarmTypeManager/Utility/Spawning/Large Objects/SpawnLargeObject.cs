@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
@@ -28,7 +22,7 @@ namespace FarmTypeManager
                 ResourceClump clump;
                 if (index == 190 || index == 254 || index == 276) //if this should be a GiantCrop
                 {
-                    clump = new GiantCrop(index, tile);
+                    clump = new GiantCrop(index.ToString(), tile);
                 }
                 else //if this should be a ResourceClump
                 {

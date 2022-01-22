@@ -1,13 +1,6 @@
-﻿using System;
+﻿using StardewModdingAPI;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using StardewValley.TerrainFeatures;
 
 namespace FarmTypeManager
 {
@@ -20,25 +13,22 @@ namespace FarmTypeManager
             /// <param name="category">The name of the item category to search (e.g. "furniture" or "weapon").</param>
             /// <param name="name">The item's name.</param>
             /// <returns>The ID of the item. Null if the item was not found.</returns>
-            public static int? GetItemID(string category, string name)
+            public static string GetItemID(string category, string name)
             {
-                IDictionary<int, string> itemsInfo = GetItemDictionary(category); //get a dictionary of item information for the provided category
+                IDictionary<string, string> itemsInfo = GetItemDictionary(category); //get a dictionary of item information for the provided category
 
                 if (itemsInfo != null) //if the category's information was successfully retrieved
                 {
-                    foreach (KeyValuePair<int, string> itemInfo in itemsInfo) //for each entry in the dictionary
+                    if (itemsInfo.ContainsKey(name)) //if this ID exists in the item dictionary
+                        return name; //return the provided ID
+
+                    //if the provided name was not an existing item ID, compare it to item names
+                    foreach (KeyValuePair<string, string> itemInfo in itemsInfo) //for each entry in the dictionary
                     {
                         if (itemInfo.Value.Split('/')[0].Equals(name, StringComparison.OrdinalIgnoreCase)) //if this entry's item name matches the provided name
                         {
                             return itemInfo.Key; //return the item's ID
                         }
-                    }
-
-                    //if no items matched the provided name
-                    if (int.TryParse(name.Trim(), out int nameAsID)) //if the name can be parsed as an item ID
-                    {
-                        if (itemsInfo.ContainsKey(nameAsID)) //if this ID exists in the item dictionary
-                            return nameAsID; //return the provided ID
                     }
                 }
 

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -35,9 +30,9 @@ namespace FarmTypeManager
                         Monitor.Log($"Failed to create an item. Saved object does not appear to be an item.", LogLevel.Debug);
                         Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
                         return null;
-                }   
+                }
 
-                if (!save.ID.HasValue && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
+                if (save.ID == null && save.Type != SavedObject.ObjectType.Container && save.Type != SavedObject.ObjectType.DGA) //if this save doesn't have an ID (and isn't a container or a DGA item)
                 {
                     Monitor.Log("Failed to create an item. Saved object contained no ID.", LogLevel.Debug);
                     Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
@@ -80,11 +75,11 @@ namespace FarmTypeManager
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(tile, save.ID.Value, false); //create an object as a "big craftable" item
+                        item = new StardewValley.Object(tile, save.StringID, false); //create an object as a "big craftable" item
                         break;
                     case "boot":
                     case "boots":
-                        item = new Boots(save.ID.Value);
+                        item = new Boots(save.StringID);
                         break;
                     case "breakable":
                     case "breakables":
@@ -118,7 +113,7 @@ namespace FarmTypeManager
                     case "clothes":
                     case "clothing":
                     case "clothings":
-                        item = new Clothing(save.ID.Value);
+                        item = new Clothing(save.StringID);
                         break;
                     case "crate":
                     case "crates":
@@ -147,25 +142,25 @@ namespace FarmTypeManager
                         }
                         break;
                     case "furniture":
-                        item = new Furniture(save.ID.Value, tile);
+                        item = new Furniture(save.StringID, tile);
                         break;
                     case "hat":
                     case "hats":
-                        item = new Hat(save.ID.Value);
+                        item = new Hat(save.StringID);
                         break;
                     case "object": //treat objects as items when creating them as Items
                     case "objects":
                     case "item":
                     case "items":
-                        item = new StardewValley.Object(tile, save.ID.Value, 1); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(tile, save.StringID, 1); //create an object with the preferred constructor for "held" or "dropped" items
                         break;
                     case "ring":
                     case "rings":
-                        item = new Ring(save.ID.Value);
+                        item = new Ring(save.StringID);
                         break;
                     case "weapon":
                     case "weapons":
-                        item = new MeleeWeapon(save.ID.Value);
+                        item = new MeleeWeapon(save.StringID);
                         break;
                 }
 
@@ -181,10 +176,13 @@ namespace FarmTypeManager
                     item.Stack = configItem.Stack.Value; //apply it
                 }
 
+                //TODO: Test saving each item type (i.e. using an expiration timer in the FTM settings). Unclear if the code below is necessary to convert for SDV v1.6
+                /*
                 if (save.ID.HasValue) //if this object type uses an ID
                 {
                     item.ParentSheetIndex = save.ID.Value; //manually set this index value, due to it being ignored by some item subclasses
                 }
+                */
 
                 return item;
             }

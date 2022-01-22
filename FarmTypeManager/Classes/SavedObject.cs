@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley.Monsters;
+using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -21,7 +21,11 @@ namespace FarmTypeManager
             /// <summary>The enumerated spawn type of the object.</summary>
             public ObjectType Type { get; set; } = default(ObjectType);
             /// <summary>The ID of this object. Also known as index or parentSheetIndex.</summary>
-            public int? ID { get; set; } = null;
+            public object ID { get; set; } = null;
+            /// <summary><see cref="ID"/> treated a string.</summary>
+            /// <remarks>This is part of a quick workaround for item IDs' conversion from integers to strings in SDV v1.6.</remarks>
+            [JsonIgnore]
+            public string StringID { get { return ID?.ToString(); } set { ID = value; } }
             /// <summary>The remaining number of days before this object should be removed from the game.</summary>
             public int? DaysUntilExpire { get; set; } = null;
             /// <summary>The specific in-game time at which this object will spawn.</summary>
@@ -49,7 +53,7 @@ namespace FarmTypeManager
                         case ObjectType.Ore:
                             return new Point(1, 1);
                         case ObjectType.LargeObject:
-                            if (ID == 190 || ID == 254 || ID == 276) //if this seems to be a giant crop
+                            if (StringID == "190" || StringID == "254" || StringID == "276") //if this seems to be a giant crop
                                 return new Point(3, 3);
                             else //if this seems to be a resource clump
                                 return new Point(2, 2);
