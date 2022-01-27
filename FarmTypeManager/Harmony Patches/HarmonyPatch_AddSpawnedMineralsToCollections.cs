@@ -1,11 +1,8 @@
-﻿using System;
-
-using HarmonyLib;
-
+﻿using HarmonyLib;
 using StardewModdingAPI;
-
 using StardewValley;
 using StardewValley.Menus;
+using System;
 
 namespace FarmTypeManager
 {

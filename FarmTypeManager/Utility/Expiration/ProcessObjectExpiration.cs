@@ -229,7 +229,7 @@ namespace FarmTypeManager
                                     }
                                     break;
                             }
-                            
+
                             if (sameContainerCategory) //if the real object matches the saved object's category
                             {
                                 if (realObject is Chest chest) //if this is a chest
@@ -239,7 +239,7 @@ namespace FarmTypeManager
                                         saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
                                     }
                                 }
-                                
+
                                 realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 

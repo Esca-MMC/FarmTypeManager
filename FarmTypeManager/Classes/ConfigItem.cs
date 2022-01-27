@@ -1,7 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using StardewModdingAPI;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {

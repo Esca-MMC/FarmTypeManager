@@ -1,12 +1,9 @@
-﻿using System;
-
-using HarmonyLib;
-
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
-
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System;
 
 namespace FarmTypeManager
 {
@@ -55,7 +52,7 @@ namespace FarmTypeManager
                 catch (Exception ex)
                 {
                     Utility.Monitor.LogOnce("A Harmony patch encountered an error. Your cursor might not change when hovering over spawned items. The auto-generated error message is displayed below:\n----------\n" +
-                                            ex.ToString(), 
+                                            ex.ToString(),
                                             LogLevel.Warn);
                 }
             }
