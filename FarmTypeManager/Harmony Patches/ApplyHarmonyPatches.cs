@@ -16,6 +16,7 @@ namespace FarmTypeManager
             //apply all patches
             HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
             HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
+            HarmonyPatch_ToggleExtraLoot.ApplyPatch(harmony);
         }
     }
 }
