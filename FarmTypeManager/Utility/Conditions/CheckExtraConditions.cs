@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using System;
+using static StardewValley.GameLocation;
 
 namespace FarmTypeManager
 {
@@ -198,35 +199,41 @@ namespace FarmTypeManager
                             break; //skip the rest of these checks
                         }
 
+                        if (weather.Equals(save.WeatherForYesterday, StringComparison.OrdinalIgnoreCase)) //if the given weather name matches (SDV v1.6+)
+                        {
+                            validWeather = true;
+                            break; //skip the rest of these checks
+                        }
+
                         switch (save.WeatherForYesterday) //compare to yesterday's weather
                         {
-                            case Utility.Weather.Sunny:
-                            case Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
-                            case Utility.Weather.Wedding:
+                            case Game1.weather_sunny:
+                            case Game1.weather_festival: //festival and wedding = sunny, as far as this mod is concerned
+                            case Game1.weather_wedding:
                                 if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Rain:
+                            case Game1.weather_rain:
                                 if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Debris:
+                            case Game1.weather_debris:
                                 if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Lightning:
+                            case Game1.weather_lightning:
                                 if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Snow:
+                            case Game1.weather_snow:
                                 if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
@@ -267,35 +274,43 @@ namespace FarmTypeManager
                             break; //skip the rest of these checks
                         }
 
-                        switch (Utility.WeatherForToday()) //compare to today's weather
+                        string weatherToday = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default).weather.Value;
+
+                        if (weather.Equals(weatherToday, StringComparison.OrdinalIgnoreCase)) //if the given weather name matches (SDV v1.6+)
                         {
-                            case Utility.Weather.Sunny:
-                            case Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
-                            case Utility.Weather.Wedding:
+                            validWeather = true;
+                            break; //skip the rest of these checks
+                        }
+
+                        switch (weatherToday) //compare to today's weather 
+                        {
+                            case Game1.weather_sunny:
+                            case Game1.weather_festival: //festival and wedding = sunny, as far as this mod is concerned
+                            case Game1.weather_wedding:
                                 if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Rain:
+                            case Game1.weather_rain:
                                 if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Debris:
+                            case Game1.weather_debris:
                                 if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Lightning:
+                            case Game1.weather_lightning:
                                 if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case Utility.Weather.Snow:
+                            case Game1.weather_snow:
                                 if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
@@ -334,35 +349,41 @@ namespace FarmTypeManager
                             break; //skip the rest of these checks
                         }
 
+                        if (weather.Equals(Game1.weatherForTomorrow, StringComparison.OrdinalIgnoreCase)) //if the given weather name matches (SDV v1.6+)
+                        {
+                            validWeather = true;
+                            break; //skip the rest of these checks
+                        }
+
                         switch (Game1.weatherForTomorrow) //compare to tomorrow's weather
                         {
-                            case (int)Utility.Weather.Sunny:
-                            case (int)Utility.Weather.Festival: //festival and wedding = sunny, as far as this mod is concerned
-                            case (int)Utility.Weather.Wedding:
+                            case Game1.weather_sunny:
+                            case Game1.weather_festival: //festival and wedding = sunny, as far as this mod is concerned
+                            case Game1.weather_wedding:
                                 if (weather.Equals("Sun", StringComparison.OrdinalIgnoreCase) || weather.Equals("Sunny", StringComparison.OrdinalIgnoreCase) || weather.Equals("Clear", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case (int)Utility.Weather.Rain:
+                            case Game1.weather_rain:
                                 if (weather.Equals("Rain", StringComparison.OrdinalIgnoreCase) || weather.Equals("Rainy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Raining", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case (int)Utility.Weather.Debris:
+                            case Game1.weather_debris:
                                 if (weather.Equals("Wind", StringComparison.OrdinalIgnoreCase) || weather.Equals("Windy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Debris", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case (int)Utility.Weather.Lightning:
+                            case Game1.weather_lightning:
                                 if (weather.Equals("Storm", StringComparison.OrdinalIgnoreCase) || weather.Equals("Stormy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Storming", StringComparison.OrdinalIgnoreCase) || weather.Equals("Lightning", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
                                 }
                                 break;
-                            case (int)Utility.Weather.Snow:
+                            case Game1.weather_snow:
                                 if (weather.Equals("Snow", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowy", StringComparison.OrdinalIgnoreCase) || weather.Equals("Snowing", StringComparison.OrdinalIgnoreCase))
                                 {
                                     validWeather = true;
