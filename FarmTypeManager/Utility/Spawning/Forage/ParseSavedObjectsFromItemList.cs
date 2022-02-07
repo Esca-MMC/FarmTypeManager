@@ -18,7 +18,7 @@ namespace FarmTypeManager
             public static List<SavedObject> ParseSavedObjectsFromItemList(IEnumerable<object> rawItems, string areaID = "")
             {
                 List<SavedObject> SavedObjects = new List<SavedObject>();
-                
+
                 if (rawItems == null) return SavedObjects;
 
                 foreach (object raw in rawItems) //for each object in the raw list
