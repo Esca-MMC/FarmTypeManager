@@ -133,7 +133,7 @@ namespace FarmTypeManager
                         {
                             if (Game1.random.NextDouble() < 0.5)
                             {
-                                base.currentLocation.projectiles.Add(new DebuffingProjectile(19, 14, 4, 4, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), base.currentLocation, this));
+                                base.currentLocation.projectiles.Add(new DebuffingProjectile("19", 14, 4, 4, (float)Math.PI / 16f, v.X, v.Y, new Vector2(base.Position.X, base.Position.Y), base.currentLocation, this));
                             }
                             else
                             {
