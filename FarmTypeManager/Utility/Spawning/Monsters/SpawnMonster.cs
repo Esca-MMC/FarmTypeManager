@@ -276,7 +276,7 @@ namespace FarmTypeManager
                     case "spirit":
                     case "dustspirit":
                     case "dust spirit":
-                        monster = new DustSpirit(tile);
+                        monster = new DustSpiritFTM(tile);
                         break;
                     case "dwarvishsentry":
                     case "dwarvish sentry":
