@@ -101,6 +101,9 @@ namespace FarmTypeManager
             /// <summary>The API for Expanded Preconditions Utility (EPU), used to check precondition strings. Null if unavailable.</summary>
             public static IConditionsChecker EPUConditionsChecker { get; set; } = null;
 
+            /// <summary>The API for Monsters The Framework (MTF), used to handle its custom monsters. Null if unavailable.</summary>
+            public static MTFPseudoAPI MonstersTheFrameworkAPI { get; set; } = null;
+
             /// <summary>The API for Dynamic Game Assets (DGA), used to spawn its custom items. Null if unavailable.</summary>
             public static IDynamicGameAssetsApi DGAItemAPI { get; set; } = null;
 

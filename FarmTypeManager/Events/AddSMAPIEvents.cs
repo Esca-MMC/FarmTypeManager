@@ -26,6 +26,7 @@ namespace FarmTypeManager
             helper.Events.GameLoop.GameLaunched += EnableEPU;
             helper.Events.GameLoop.GameLaunched += EnableDGA;
             helper.Events.GameLoop.GameLaunched += EnableContentPatcher;
+            helper.Events.GameLoop.GameLaunched += EnableMTF;
         }
     }
 }
