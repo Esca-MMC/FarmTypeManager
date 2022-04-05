@@ -136,7 +136,7 @@ namespace FarmTypeManager
                                 spawned = Utility.SpawnForage(spawns[y].SavedObject, location, spawns[y].SavedObject.Tile); //spawn forage
                                 break;
                             case SavedObject.ObjectType.LargeObject:
-                                spawned = Utility.SpawnLargeObject(Convert.ToInt32(spawns[y].SavedObject.ID), location, spawns[y].SavedObject.Tile); //spawn large object
+                                spawned = Utility.SpawnLargeObject(spawns[y].SavedObject.ID.ToString(), location, spawns[y].SavedObject.Tile); //spawn large object
                                 break;
                             case SavedObject.ObjectType.Ore:
                                 int? oreID = Utility.SpawnOre(spawns[y].SavedObject.Name, location, spawns[y].SavedObject.Tile); //spawn ore and get its ID if successful

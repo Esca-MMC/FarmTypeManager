@@ -16,7 +16,6 @@ namespace FarmTypeManager
             helper.Events.GameLoop.TimeChanged += TimeChanged;
 
             //custom object/monster handler events
-            helper.Events.GameLoop.UpdateTicked += PlayerUsedTool;
             helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived;
             helper.Events.World.NpcListChanged += NpcListChanged;
 

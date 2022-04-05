@@ -66,7 +66,7 @@ namespace FarmTypeManager
 
                         Utility.Monitor.Log("Current map supports large objects. Checking the Find Existing Objects setting...", LogLevel.Trace);
 
-                        List<int> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes, area.UniqueAreaID); //get a list of index numbers for this area's object types
+                        List<string> objectIDs = Utility.GetLargeObjectIDs(area.ObjectTypes, area.UniqueAreaID); //get a list of index numbers for this area's object types
 
                         if (objectIDs.Count <= 0)
                         {
@@ -91,23 +91,17 @@ namespace FarmTypeManager
 
                                 List<string> existingObjects = new List<string>(); //any new object location strings to be added to area.IncludeAreas
 
-                                foreach (TerrainFeature clump in Game1.getLocationFromName(locations[0]).resourceClumps) //for each of this location's large objects
+                                foreach (ResourceClump clump in Game1.getLocationFromName(locations[0]).resourceClumps) //for each of this location's large objects
                                 {
                                     string newInclude = "";
 
                                     bool validObjectID = false; //whether this clump's ID is listed in this area's config
-                                    foreach (int ID in objectIDs) //for each valid object ID for this area
+                                    foreach (string ID in objectIDs) //for each valid object ID for this area
                                     {
-                                        if (clump is ResourceClump smallClump && smallClump.parentSheetIndex.Value == ID) //if this clump's ID matches one of the listed object IDs
+                                        if (clump.parentSheetIndex.Value == ID) //if this clump's ID matches one of the listed object IDs
                                         {
                                             validObjectID = true;
-                                            newInclude = $"{smallClump.tile.X},{smallClump.tile.Y};{smallClump.tile.X},{smallClump.tile.Y}"; //generate an include string for this clump's tile
-                                            break;
-                                        }
-                                        else if (clump is LargeResourceClump largeClump && largeClump.Clump.Value.parentSheetIndex.Value == ID) //if this large clump's ID matches one of the listed object IDs
-                                        {
-                                            validObjectID = true;
-                                            newInclude = $"{largeClump.Clump.Value.tile.X},{largeClump.Clump.Value.tile.Y};{largeClump.Clump.Value.tile.X},{largeClump.Clump.Value.tile.Y}"; //generate an include string for this large clump's tile
+                                            newInclude = $"{clump.tile.X},{clump.tile.Y};{clump.tile.X},{clump.tile.Y}"; //generate an include string for this clump's tile
                                             break;
                                         }
                                     }
@@ -167,7 +161,7 @@ namespace FarmTypeManager
                             {
                                 spawnCount--;
 
-                                int randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
+                                string randomObject = objectIDs[Utility.RNG.Next(objectIDs.Count)]; //get a random object ID to spawn
 
                                 SavedObject saved = new SavedObject() //create a saved object representing this spawn (with a "blank" tile location)
                                 {

@@ -1,4 +1,6 @@
 ﻿using StardewModdingAPI;
+using StardewValley;
+using StardewValley.GameData;
 using System.Collections.Generic;
 
 namespace FarmTypeManager
@@ -8,73 +10,83 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Generate an array of index numbers for large objects (a.k.a. resource clumps) based on an array of names. Duplicates are allowed; invalid entries are discarded.</summary>
+            /// <summary>Generates a list of IDs for large objects (a.k.a. resource clumps) from a list of IDs and/or nicknames. Duplicates are kept; invalid entries are removed.</summary>
             /// <param name="names">A list of names representing large objects (e.g. "Stump", "boulders").</param>
             /// /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
-            /// <returns>An array of index numbers for large object spawning purposes.</returns>
-            public static List<int> GetLargeObjectIDs(string[] names, string areaID = "")
+            /// <returns>A list of valid large object IDs parsed from the provided list.</returns>
+            public static List<string> GetLargeObjectIDs(string[] names, string areaID = "")
             {
-                List<int> IDs = new List<int>(); //a list of index numbers to be returned
+                List<string> IDs = new List<string>(); //a list of index numbers to be returned
 
                 foreach (string name in names)
                 {
                     //for each valid name, add the game's internal ID for that large object (a.k.a. resource clump)
                     switch (name.ToLower())
                     {
+                        case "600":
                         case "stump":
                         case "stumps":
-                            IDs.Add(600);
+                            IDs.Add("600");
                             break;
+                        case "602":
                         case "log":
                         case "logs":
-                            IDs.Add(602);
+                            IDs.Add("602");
                             break;
+                        case "672":
                         case "boulder":
                         case "boulders":
-                            IDs.Add(672);
+                            IDs.Add("672");
                             break;
+                        case "622":
                         case "meteor":
                         case "meteors":
                         case "meteorite":
                         case "meteorites":
-                            IDs.Add(622);
+                            IDs.Add("622");
                             break;
+                        case "752":
                         case "minerock1":
                         case "mine rock 1":
-                            IDs.Add(752);
+                            IDs.Add("752");
                             break;
                         case "minerock2":
                         case "mine rock 2":
-                            IDs.Add(754);
+                            IDs.Add("754");
                             break;
+                        case "756":
                         case "minerock3":
                         case "mine rock 3":
-                            IDs.Add(756);
+                            IDs.Add("756");
                             break;
+                        case "758":
                         case "minerock4":
                         case "mine rock 4":
-                            IDs.Add(758);
+                            IDs.Add("758");
                             break;
+                        case "190":
                         case "cauliflower":
                         case "giantcauliflower":
                         case "giant cauliflower":
-                            IDs.Add(190);
+                            IDs.Add("190");
                             break;
+                        case "254":
                         case "melon":
                         case "giantmelon":
                         case "giant melon":
-                            IDs.Add(254);
+                            IDs.Add("254");
                             break;
+                        case "276":
                         case "pumpkin":
                         case "giantpumpkin":
                         case "giant pumpkin":
-                            IDs.Add(276);
+                            IDs.Add("276");
                             break;
-                        default: //"name" isn't recognized as any existing object names
-                            int parsed;
-                            if (int.TryParse(name, out parsed)) //if the string seems to be a valid integer, save it to "parsed" and add it to the list
+                        default: //if "name" isn't a known object name or ID
+                            Dictionary<string, GiantCrops> giantCropsData = Game1.content.Load<Dictionary<string, GiantCrops>>("Data\\GiantCrops"); //load SDV's giant crop data
+                            if (giantCropsData.ContainsKey(name)) //if this is a giant crop ID
                             {
-                                IDs.Add(parsed);
+                                IDs.Add(name);
                             }
                             else
                             {

@@ -58,39 +58,14 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
-                        IEnumerable<TerrainFeature> resourceClumps = null; //a list of large objects at this location
-                        if (location is Farm farm)
-                        {
-                            resourceClumps = farm.resourceClumps.ToList(); //use the farm's clump list
-                        }
-                        else if (location is MineShaft mine)
-                        {
-                            resourceClumps = mine.resourceClumps.ToList(); //use the mine's clump list
-                        }
-                        else
-                        {
-                            resourceClumps = location.largeTerrainFeatures.OfType<LargeResourceClump>(); //use this location's large resource clump list
-                        }
-
                         bool stillExists = false; //does this large object still exist?
 
-                        foreach (TerrainFeature clump in resourceClumps) //for each of this location's large objects
+                        foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
-                            if (clump is ResourceClump smallClump)
+                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && saved.ID?.ToString() == clump.parentSheetIndex.Value) //if this clump's location & ID match the saved object
                             {
-                                if (smallClump.tile.X == saved.Tile.X && smallClump.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int smallClumpID) && smallClump.parentSheetIndex.Value == smallClumpID) //if this clump's location & ID match the saved object
-                                {
-                                    stillExists = true;
-                                    break; //stop searching the clump list
-                                }
-                            }
-                            else if (clump is LargeResourceClump largeClump)
-                            {
-                                if (largeClump.Clump.Value.tile.X == saved.Tile.X && largeClump.Clump.Value.tile.Y == saved.Tile.Y && int.TryParse(saved.ID.ToString(), out int largeClumpID) && largeClump.Clump.Value.parentSheetIndex.Value == largeClumpID) //if this clump's location & ID match the saved object
-                                {
-                                    stillExists = true;
-                                    break; //stop searching the clump list
-                                }
+                                stillExists = true;
+                                break; //stop searching the clump list
                             }
                         }
 
@@ -100,7 +75,7 @@ namespace FarmTypeManager
 
                             if (IsTileValid(location, saved.Tile, saved.Size, "High")) //if the object's tile is valid for large object placement (defaulting to "high" strictness)
                             {
-                                SpawnLargeObject(Convert.ToInt32(saved.ID), location, saved.Tile); //respawn the object
+                                SpawnLargeObject(saved.ID?.ToString(), location, saved.Tile); //respawn the object
                                 respawned++; //increment respawn tracker
                             }
                             else //if the object's tile is invalid
