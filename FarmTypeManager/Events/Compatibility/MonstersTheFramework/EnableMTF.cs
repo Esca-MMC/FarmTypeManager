@@ -31,7 +31,7 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log($"An error happened while loading FTM's Monsters The Framework (MTF) interface. FTM will be unable to spawn custom monsters from that mod. The auto-generated error message has been added to the log.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Trace);
-                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex}", LogLevel.Trace);
             }
         }
 
@@ -53,7 +53,7 @@ namespace FarmTypeManager
                 if (getCachedResult)
                     return KnownMonsterTypes.Contains(id); //return the most recent cached result (false if never validated)
 
-                ICollection<string> assetKeys = null; //MTF's current monster IDs
+                ICollection<string> assetKeys; //MTF's current monster IDs
                 try
                 {
                     assetKeys = Game1.content.Load<IDictionary>("spacechase0.MonstersTheFramework/Monsters")?.Keys as ICollection<string>; //try to load the asset
@@ -82,7 +82,7 @@ namespace FarmTypeManager
             /// <returns>Every currently available monster ID from MTF.</returns>
             public IEnumerable<string> GetAllMonsterTypes()
             {
-                IDictionary asset = null; //MTF's monster data asset
+                IDictionary asset; //MTF's monster data asset
                 try
                 {
                     asset = Game1.content.Load<IDictionary>("spacechase0.MonstersTheFramework/Monsters"); //try to load the asset (without referencing its value type)
