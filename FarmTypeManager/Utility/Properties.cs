@@ -1,7 +1,5 @@
 ﻿using ContentPatcher;
 using StardewModdingAPI;
-using StardewValley;
-using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 
@@ -81,7 +79,7 @@ namespace FarmTypeManager
 
             /// <summary>The API for Content Patcher (CP), used to check "When" conditions. Null if unavailable.</summary>
             public static IContentPatcherAPI ContentPatcherAPI { get; set; } = null;
-            
+
             /// <summary>The currently installed version of Content Patcher. Defaults to the latest known version if unavailable.</summary>
             public static ISemanticVersion ContentPatcherVersion { get; set; } = new SemanticVersion("1.25.0");
 

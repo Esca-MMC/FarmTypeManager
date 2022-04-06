@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {

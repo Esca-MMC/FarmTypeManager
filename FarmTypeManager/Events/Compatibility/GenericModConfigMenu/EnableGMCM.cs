@@ -15,14 +15,11 @@ namespace FarmTypeManager
 
                 if (api == null) //if the API is NOT available
                 {
-                    Monitor.Log($"Optional API not found: Generic Mod Config Menu (GMCM).", LogLevel.Trace);
+                    Monitor.Log($"API not found: Generic Mod Config Menu (GMCM).", LogLevel.Trace);
                     return;
                 }
-                else //if the API is available
-                {
-                    Monitor.Log($"Optional API found: Generic Mod Config Menu (GMCM).", LogLevel.Trace);
-                }
 
+                Monitor.Log($"API found: Generic Mod Config Menu (GMCM).", LogLevel.Trace);
                 api.RegisterModConfig(ModManifest, () => ResetConfigToDefault(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
                 api.SetDefaultIngameOptinValue(ModManifest, true); //allow in-game setting changes (rather than just at the main menu)
 
@@ -37,7 +34,7 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log($"An error happened while loading FTM's GMCM options menu. That menu might be missing or fail to work. The auto-generated error message has been added to the log.", LogLevel.Warn);
                 Utility.Monitor.Log($"----------", LogLevel.Trace);
-                Utility.Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
+                Utility.Monitor.Log($"{ex}", LogLevel.Trace);
             }
         }
 
