@@ -5,7 +5,7 @@
 		<meta name="author" content="Esca-MMC">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>Farm Type Manager Config Editor</title>
+		<title>Farm Type Manager Config Editor v1.16.0</title>
 		
 		<style>		
 			/* title box */
@@ -614,7 +614,7 @@
 	<body class="preload">
 		<header>
 			<div class="titlebox">
-				<h1>Farm Type Manager<br/>Config Editor</h1>
+				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.16.0</sub></h1>
 				
 				<nav>
 					<button class="titlebox-button" id="load" onclick="document.getElementById('load-input').click();">Load</button>
@@ -3768,6 +3768,8 @@
 									<label for="Monster-MonsterTypes-Settings">Custom settings<span class="tooltip">?<span class="tooltiptext">Select and view various customization settings you can apply to this new monster type.<br/><br/>Multiple settings can be used at the same time. To disable a setting, leave it blank.</span></span></label>
 									<select class="view" name="Monster-MonsterTypes-Settings" id="Monster-MonsterTypes-Settings" onchange="viewSelect(this)">
 										<option>Health</option>
+										<option>Current health</option>
+										<option>Persistent health</option>
 										<option>Damage</option>
 										<option>Defense</option>
 										<option>Dodge chance</option>
@@ -3781,9 +3783,10 @@
 										<option>Percent extra dodge chance per skill level</option>
 										<option>Percent extra experience per skill level</option>
 										<option>Loot</option>
-										<option>Current health</option>
-										<option>Persistent health</option>
+										<option>Extra loot</option>
+										<option>Sight range</option>
 										<option>Sees players at spawn</option>
+										<option>Ranged attacks</option>
 										<option>Sprite</option>
 										<option>Color</option>
 										<option>Random color</option>
@@ -3798,6 +3801,21 @@
 									<fieldset class="border">
 										<legend>Health<span class="tooltip">?<span class="tooltiptext">Set the monster's maximum health (a.k.a. "HP" or "hit points").</span></span></legend>
 										<input type="number" name="Monster-MonsterTypes-Settings-HP" id="Monster-MonsterTypes-Settings-HP" style="width:4em;">
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-CurrentHP-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Current health<span class="tooltip">?<span class="tooltiptext">Set the monster's current health (<b>not</b> maximum health) when spawned.<br/><br/>If this area has an expiration setting, this monster will respawn with this much health every morning (unless "persistent health" is enabled).</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-CurrentHP" id="Monster-MonsterTypes-Settings-CurrentHP" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-PersistentHP-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Persistent health<span class="tooltip">?<span class="tooltiptext">If this is enabled and the area has an expiration setting, this monster will permanently keep any damage it takes.<br/><br/>By default, monsters with expiration dates will fully heal overnight.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-PersistentHP" id="Monster-MonsterTypes-Settings-PersistentHP">
+										<label for="Monster-MonsterTypes-Settings-PersistentHP" class="big-checkbox-label"></label>
 									</fieldset>
 								</div>
 								
@@ -3929,27 +3947,35 @@
 										</table>
 									</fieldset>
 								</div>
-								
-								<div class="setting" id="Monster-MonsterTypes-Settings-CurrentHP-Div" style="display:none">
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-ExtraLoot-Div" style="display:none">
 									<fieldset class="border">
-										<legend>Current health<span class="tooltip">?<span class="tooltiptext">Set the monster's current health (<b>not</b> maximum health) when spawned.<br/><br/>If this area has an expiration setting, this monster will respawn with this much health every morning (unless "persistent health" is enabled).</span></span></legend>
-										<input type="number" name="Monster-MonsterTypes-Settings-CurrentHP" id="Monster-MonsterTypes-Settings-CurrentHP" style="width:4em;">
+										<legend>Extra loot<span class="tooltip">?<span class="tooltiptext">If this is disabled, will no longer drop certain type-specific items when defeated.<br/><br/>This can be used to disable loot that otherwise ignores the "Loot" setting. Examples include Slime color-specific items, Pepper Rex eggs and bones, etc.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-ExtraLoot" id="Monster-MonsterTypes-Settings-ExtraLoot" checked>
+										<label for="Monster-MonsterTypes-Settings-ExtraLoot" class="big-checkbox-label"></label>
 									</fieldset>
 								</div>
-								
-								<div class="setting" id="Monster-MonsterTypes-Settings-PersistentHP-Div" style="display:none">
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-SightRange-Div" style="display:none">
 									<fieldset class="border">
-										<legend>Persistent health<span class="tooltip">?<span class="tooltiptext">If this is enabled and the area has an expiration setting, this monster will permanently keep any damage it takes.<br/><br/>By default, monsters with expiration dates will fully heal overnight.</span></span></legend>
-										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-PersistentHP" id="Monster-MonsterTypes-Settings-PersistentHP">
-										<label for="Monster-MonsterTypes-Settings-PersistentHP" class="big-checkbox-label"></label>
+										<legend>Sight range<span class="tooltip">?<span class="tooltiptext">Set the tile distance (in a square pattern) at which this monster can see players and become aggressive.</span></span></legend>
+										<input type="number" name="Monster-MonsterTypes-Settings-SightRange" id="Monster-MonsterTypes-Settings-SightRange" style="width:4em;">
 									</fieldset>
 								</div>
 								
 								<div class="setting" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn-Div" style="display:none">
 									<fieldset class="border">
-										<legend>Sees players at spawn<span class="tooltip">?<span class="tooltiptext">If this is enabled, monsters will always act as though they've "spotted" a player.<br/><br/>By default, most monsters will ignore players until approached.</span></span></legend>
+										<legend>Sees players at spawn<span class="tooltip">?<span class="tooltiptext">If this is enabled, this monster will always act as though it has "spotted" a player.<br/><br/>By default, most monsters ignore players until approached within their sight range.</span></span></legend>
 										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" id="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn">
 										<label for="Monster-MonsterTypes-Settings-SeesPlayersAtSpawn" class="big-checkbox-label"></label>
+									</fieldset>
+								</div>
+
+								<div class="setting" id="Monster-MonsterTypes-Settings-RangedAttacks-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Ranged attacks<span class="tooltip">?<span class="tooltiptext">If this is disabled, this monster will not use any ranged attacks.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-RangedAttacks" id="Monster-MonsterTypes-Settings-RangedAttacks" checked>
+										<label for="Monster-MonsterTypes-Settings-RangedAttacks" class="big-checkbox-label"></label>
 									</fieldset>
 								</div>
 								
@@ -8227,6 +8253,20 @@
 			}
 			curr.value = null;
 			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-CurrentHP");
+			if (Number.isNaN(parseInt(curr.value)) == false)
+			{
+				settings["CurrentHP"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-PersistentHP");
+			if (curr.checked == true)
+			{
+				settings["PersistentHP"] = true;
+			}
+			curr.checked = false;
+			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-Damage");
 			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
@@ -8335,20 +8375,21 @@
 			{
 				curr.remove(x); //remove this option
 			}
-			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-CurrentHP");
+
+			//defaults to true instead of false
+			curr = document.getElementById("Monster-MonsterTypes-Settings-ExtraLoot");
+			if (curr.checked == false)
+			{
+				settings["ExtraLoot"] = false;
+			}
+			curr.checked = true;
+
+			curr = document.getElementById("Monster-MonsterTypes-Settings-SightRange");
 			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
-				settings["CurrentHP"] = parseInt(curr.value);
+				settings["SightRange"] = parseInt(curr.value);
 			}
 			curr.value = null;
-			
-			curr = document.getElementById("Monster-MonsterTypes-Settings-PersistentHP");
-			if (curr.checked == true)
-			{
-				settings["PersistentHP"] = true;
-			}
-			curr.checked = false;
 			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-SeesPlayersAtSpawn");
 			if (curr.checked == true)
@@ -8356,6 +8397,14 @@
 				settings["SeesPlayersAtSpawn"] = true;
 			}
 			curr.checked = false;
+
+			//defaults to true instead of false
+			curr = document.getElementById("Monster-MonsterTypes-Settings-RangedAttacks");
+			if (curr.checked == false)
+			{
+				settings["RangedAttacks"] = false;
+			}
+			curr.checked = true;
 			
 			curr = document.getElementById("Monster-MonsterTypes-Settings-Sprite");
 			if (curr.value != null && curr.value != "")
