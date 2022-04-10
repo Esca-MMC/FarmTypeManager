@@ -1106,7 +1106,8 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
-										<option>EPU Preconditions</option>
+										<option>CP conditions</option>
+										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -1335,9 +1336,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Forage-EC-CPConditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Forage-EC-CPConditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Forage-EC-CPConditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Forage-EC-CPConditions-Add"></label>
+													<input type="text" name="Forage-EC-CPConditions-Add" id="Forage-EC-CPConditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Forage-EC-CPConditions-AddButton" onclick="buttonAddKeyAndValue(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Forage-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Forage will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -1359,7 +1391,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<button class="basic" id="Forage-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
+													<button class="basic" id="Forage-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
 												</td>
 											</tr>
 										</table>
@@ -1934,7 +1966,8 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
-										<option>EPU Preconditions</option>
+										<option>CP conditions</option>
+										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -2163,9 +2196,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="LargeObject-EC-CPConditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="LargeObject-EC-CPConditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="LargeObject-EC-CPConditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="LargeObject-EC-CPConditions-Add"></label>
+													<input type="text" name="LargeObject-EC-CPConditions-Add" id="LargeObject-EC-CPConditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="LargeObject-EC-CPConditions-AddButton" onclick="buttonAddKeyAndValue(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="LargeObject-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Objects will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -2187,7 +2251,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<button class="basic" id="LargeObject-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
+													<button class="basic" id="LargeObject-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
 												</td>
 											</tr>
 										</table>
@@ -2939,7 +3003,8 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
-										<option>EPU Preconditions</option>
+										<option>CP conditions</option>
+										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -3168,9 +3233,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Ore-EC-CPConditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>all</b> of these conditions are true at the start of each day. Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Ore-EC-CPConditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Ore-EC-CPConditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Ore-EC-CPConditions-Add"></label>
+													<input type="text" name="Ore-EC-CPConditions-Add" id="Ore-EC-CPConditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Ore-EC-CPConditions-AddButton" onclick="buttonAddKeyAndValue(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Ore-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Ore will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -3192,7 +3288,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<button class="basic" id="Ore-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
+													<button class="basic" id="Ore-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
 												</td>
 											</tr>
 										</table>
@@ -4285,7 +4381,8 @@
 										<option>Yesterday's weather</option>
 										<option>Today's weather</option>
 										<option>Tomorrow's weather</option>
-										<option>EPU Preconditions</option>
+										<option>CP conditions</option>
+										<option>EPU preconditions</option>
 										<option>Limited number of spawn days</option>
 									</select>
 								</div>
@@ -4514,9 +4611,40 @@
 									</fieldset>
 								</div>
 
+								<div class="setting" id="Monster-EC-CPConditions-Div" style="max-width:600px; display:none">
+									<fieldset class="border">
+									<legend>CP conditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>all</b> of these conditions are true at the start of each day.<br/><br/>Its format is based on Content Patcher's "When" field.<br/></br>Example entry:<br/>"DayOfWeek": "Tuesday"<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/1915" target="_blank">Content Patcher</a>. See the <a href="https://github.com/Pathoschild/StardewMods/tree/develop/ContentPatcher#for-mod-authors" target="_blank">CP readme</a> for more info.</span></span></legend>
+										<table class="list-left">
+											<tr>
+												<td>
+													<select size="6" id="Monster-EC-CPConditions" style="width:12em">
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<button class="basic" id="Monster-EC-CPConditions-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+												</td>
+											</tr>
+										</table>
+										<table class="list-right">
+											<tr>
+												<td>
+													<label for="Monster-EC-CPConditions-Add"></label>
+													<input type="text" name="Monster-EC-CPConditions-Add" id="Monster-EC-CPConditions-Add" style="width:12em;">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<button class="basic" id="Monster-EC-CPConditions-AddButton" onclick="buttonAddKeyAndValue(this)">Add Entry</button>
+												</td>
+											</tr>
+										</table>
+									</fieldset>
+								</div>
+
 								<div class="setting" id="Monster-EC-EPUPreconditions-Div" style="max-width:600px; display:none">
 									<fieldset class="border">
-									<legend>EPU Preconditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
+									<legend>EPU preconditions<span class="tooltip">?<span class="tooltiptext">Monsters will only spawn if <b>at least one</b> of these precondition strings is true.<br/><br/>This requires the mod <a href="https://www.nexusmods.com/stardewvalley/mods/6529" target="_blank">Expanded Preconditions Utility</a>. See the <a href="https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility" target="_blank">EPU readme</a> for more info.<br/><br/>Note that "t [mintime] [maxtime]" and "x [letter ID]" <b>should not be used</b> and are not supported.</span></span></legend>
 										<table class="list-left">
 											<tr>
 												<td>
@@ -4538,7 +4666,7 @@
 											</tr>
 											<tr>
 												<td colspan="2">
-													<button class="basic" id="Monster-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Name</button>
+													<button class="basic" id="Monster-EC-EPUPreconditions-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
 												</td>
 											</tr>
 										</table>
@@ -5239,7 +5367,7 @@
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems to be the wrong kind of config file.\n\nLook for .json files in the FarmTypeManager/data folder, or for content packs, the content.json file.";
 						return; //quit without filling in settings
 					}
-					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null || text.includes("EPUPreconditions") == false) //if this seems like an out-of-date confg file
+					else if (jsonTemp.ForageSpawnEnabled == null || jsonTemp.LargeObjectSpawnEnabled == null || jsonTemp.OreSpawnEnabled == null || jsonTemp.MonsterSpawnEnabled == null || text.includes("CPConditions") == false) //if this seems like an out-of-date confg file
 					{
 						document.getElementById("alertbox-message").textContent = "\n\nError - \"" + file.name + "\" seems outdated or incomplete.\n\nPlease load a Stardew farm that uses this config to automatically update it.";
 						return; //quit without filling in settings
@@ -5971,6 +6099,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
@@ -6014,6 +6143,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
@@ -6054,6 +6184,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
@@ -6092,6 +6223,7 @@
 						  "WeatherYesterday": [],
 						  "WeatherToday": [],
 						  "WeatherTomorrow": [],
+						  "CPConditions": {},
 						  "EPUPreconditions": [],
 						  "LimitedNumberOfSpawns": null
 						},
@@ -6522,6 +6654,31 @@
 						}
 					}
 
+					prev.ExtraConditions.CPConditions = {};
+					var CPConditionsText = "{"; //start with an opening brace
+					for (var x = 0; x < document.getElementById("Forage-EC-CPConditions").options.length; x++) //for each CP condition
+					{
+						CPConditionsText += document.getElementById("Forage-EC-CPConditions").options[x].text; //add it to the text
+						if (CPConditionsText.endsWith(',') == false) //if this line did not end with a comma
+						{
+							CPConditionsText += ','; //add one
+						}
+					}
+					if (CPConditionsText.endsWith(',')) //if this text now ends with a comma (i.e. any conditions exist)
+					{
+						CPConditionsText = CPConditionsText.slice(0, -1); //remove it
+					}
+					CPConditionsText += "}"; //add a closing brace
+					try
+					{
+						//try to parse the completed text into an object
+						prev.ExtraConditions.CPConditions = JSON.parse(CPConditionsText);
+					}
+					catch (e) //if parsing fails
+					{
+						//do nothing
+					}
+
 					prev.ExtraConditions.EPUPreconditions = [];
 					for (var x = 0; x < document.getElementById("Forage-EC-EPUPreconditions").options.length; x++) //for each EPU condition
 					{
@@ -6768,6 +6925,14 @@
 						}
 					}
 
+					document.getElementById("Forage-EC-CPConditions").options.length = 0;
+					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
+					{
+						var option = document.createElement("option");
+						option.text = "\"" + x + "\": \"" + curr.ExtraConditions.CPConditions[x] + "\""; //create a string e.g. "key": "value"
+						document.getElementById("Forage-EC-CPConditions").options.add(option);
+					}
+
 					document.getElementById("Forage-EC-EPUPreconditions").options.length = 0;
 					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
 					{
@@ -6939,6 +7104,31 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.CPConditions = {};
+					var CPConditionsText = "{"; //start with an opening brace
+					for (var x = 0; x < document.getElementById("LargeObject-EC-CPConditions").options.length; x++) //for each CP condition
+					{
+						CPConditionsText += document.getElementById("LargeObject-EC-CPConditions").options[x].text; //add it to the text
+						if (CPConditionsText.endsWith(',') == false) //if this line did not end with a comma
+						{
+							CPConditionsText += ','; //add one
+						}
+					}
+					if (CPConditionsText.endsWith(',')) //if this text now ends with a comma (i.e. any conditions exist)
+					{
+						CPConditionsText = CPConditionsText.slice(0, -1); //remove it
+					}
+					CPConditionsText += "}"; //add a closing brace
+					try
+					{
+						//try to parse the completed text into an object
+						prev.ExtraConditions.CPConditions = JSON.parse(CPConditionsText);
+					}
+					catch (e) //if parsing fails
+					{
+						//do nothing
 					}
 
 					prev.ExtraConditions.EPUPreconditions = [];
@@ -7132,6 +7322,14 @@
 								break; //skip the rest of the "y" loop
 							}
 						}
+					}
+
+					document.getElementById("LargeObject-EC-CPConditions").options.length = 0;
+					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
+					{
+						var option = document.createElement("option");
+						option.text = "\"" + x + "\": \"" + curr.ExtraConditions.CPConditions[x] + "\""; //create a string e.g. "key": "value"
+						document.getElementById("LargeObject-EC-CPConditions").options.add(option);
 					}
 
 					document.getElementById("LargeObject-EC-EPUPreconditions").options.length = 0;
@@ -7385,6 +7583,31 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.CPConditions = {};
+					var CPConditionsText = "{"; //start with an opening brace
+					for (var x = 0; x < document.getElementById("Ore-EC-CPConditions").options.length; x++) //for each CP condition
+					{
+						CPConditionsText += document.getElementById("Ore-EC-CPConditions").options[x].text; //add it to the text
+						if (CPConditionsText.endsWith(',') == false) //if this line did not end with a comma
+						{
+							CPConditionsText += ','; //add one
+						}
+					}
+					if (CPConditionsText.endsWith(',')) //if this text now ends with a comma (i.e. any conditions exist)
+					{
+						CPConditionsText = CPConditionsText.slice(0, -1); //remove it
+					}
+					CPConditionsText += "}"; //add a closing brace
+					try
+					{
+						//try to parse the completed text into an object
+						prev.ExtraConditions.CPConditions = JSON.parse(CPConditionsText);
+					}
+					catch (e) //if parsing fails
+					{
+						//do nothing
 					}
 
 					prev.ExtraConditions.EPUPreconditions = [];
@@ -7663,6 +7886,14 @@
 						}
 					}
 
+					document.getElementById("Ore-EC-CPConditions").options.length = 0;
+					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
+					{
+						var option = document.createElement("option");
+						option.text = "\"" + x + "\": \"" + curr.ExtraConditions.CPConditions[x] + "\""; //create a string e.g. "key": "value"
+						document.getElementById("Ore-EC-CPConditions").options.add(option);
+					}
+
 					document.getElementById("Ore-EC-EPUPreconditions").options.length = 0;
 					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
 					{
@@ -7827,6 +8058,31 @@
 						{
 							prev.ExtraConditions.WeatherTomorrow.push(tomorrow[x].value);
 						}
+					}
+
+					prev.ExtraConditions.CPConditions = {};
+					var CPConditionsText = "{"; //start with an opening brace
+					for (var x = 0; x < document.getElementById("Monster-EC-CPConditions").options.length; x++) //for each CP condition
+					{
+						CPConditionsText += document.getElementById("Monster-EC-CPConditions").options[x].text; //add it to the text
+						if (CPConditionsText.endsWith(',') == false) //if this line did not end with a comma
+						{
+							CPConditionsText += ','; //add one
+						}
+					}
+					if (CPConditionsText.endsWith(',')) //if this text now ends with a comma (i.e. any conditions exist)
+					{
+						CPConditionsText = CPConditionsText.slice(0, -1); //remove it
+					}
+					CPConditionsText += "}"; //add a closing brace
+					try
+					{
+						//try to parse the completed text into an object
+						prev.ExtraConditions.CPConditions = JSON.parse(CPConditionsText);
+					}
+					catch (e) //if parsing fails
+					{
+						//do nothing
 					}
 
 					prev.ExtraConditions.EPUPreconditions = [];
@@ -8026,6 +8282,14 @@
 						}
 					}
 
+					document.getElementById("Monster-EC-CPConditions").options.length = 0;
+					for (let x in curr.ExtraConditions.CPConditions) //for each CP condition
+					{
+						var option = document.createElement("option");
+						option.text = "\"" + x + "\": \"" + curr.ExtraConditions.CPConditions[x] + "\""; //create a string e.g. "key": "value"
+						document.getElementById("Monster-EC-CPConditions").options.add(option);
+					}
+
 					document.getElementById("Monster-EC-EPUPreconditions").options.length = 0;
 					for (var x = 0; x < curr.ExtraConditions.EPUPreconditions.length; x++) //for each EPU condition
 					{
@@ -8057,6 +8321,38 @@
 			{
 				div.style.display = "none"; //hide it
 			}
+		}
+
+		//add a key-value entry to a list if its syntax is valid
+		function buttonAddKeyAndValue(addButton)
+		{
+			var select = document.getElementById(addButton.id.replace("-AddButton", "")); //get the item list
+			var input = document.getElementById(addButton.id.replace("-AddButton", "-Add")); //get the input field
+			var text = input.value; //get the input text
+			
+			//validate input
+			text = text.trim(); //trim whitespace from both ends
+			if (text == null || text == "") //if null or blank
+			{
+				return; //do nothing
+			}
+
+			try
+			{
+				JSON.parse("{" + text + "}"); //try to parse this entry as an object
+			}
+			catch (e)
+			{
+				alert("Failed to parse this entry. Please use the format \"Key\": \"Value\" for each entry.\n\nParse test used:\n{" + text + "}\n\nResult:\n" + e);
+				return; //don't add this to the list
+			}
+			
+			//create a new option with the validated text & add it to the list
+			var option = document.createElement("option");
+			option.text = text;
+			select.add(option);
+			
+			input.value = ""; //clear the input field
 		}
 		
 		//add an entry to a basic list
