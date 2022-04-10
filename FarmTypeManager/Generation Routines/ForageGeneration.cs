@@ -52,7 +52,7 @@ namespace FarmTypeManager
                             Utility.Monitor.Log($"No map named \"{area.MapName}\" could be found. Forage won't be spawned there.", LogLevel.Trace);
                             continue;
                         }
-                        
+
                         //validate extra conditions, if any
                         if (Utility.CheckExtraConditions(area, data.Save, data.Pack?.Manifest) != true)
                         {

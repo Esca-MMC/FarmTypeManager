@@ -56,7 +56,7 @@ namespace FarmTypeManager
                 Utility.Monitor.Log($"Mod: MonstersTheFramework", LogLevel.Info);
                 Utility.Monitor.Log($"-----", LogLevel.Info);
                 Utility.Monitor.Log($"", LogLevel.Info);
-                
+
                 foreach (string id in monstersFromMTF)
                 {
                     Utility.Monitor.Log($"{id}", LogLevel.Info); //display this ID
