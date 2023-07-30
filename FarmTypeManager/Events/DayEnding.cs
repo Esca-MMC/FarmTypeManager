@@ -2,7 +2,6 @@
 using StardewValley;
 using System;
 using System.IO;
-using static StardewValley.GameLocation;
 
 namespace FarmTypeManager
 {
