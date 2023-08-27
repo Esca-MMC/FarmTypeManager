@@ -96,7 +96,7 @@ namespace FarmTypeManager
             /// </remarks>
             public override void behaviorAtGameTick(GameTime time)
             {
-                if (!this.throwing)
+                if (!throwing.Value)
                 {
                     Monster_behaviorAtGameTick(time); //replace inaccessible "base" call with a local copy
                 }
@@ -112,7 +112,7 @@ namespace FarmTypeManager
                     base.currentLocation.playSound("skeletonStep");
                     base.IsWalkingTowardPlayer = true;
                 }
-                else if ((bool)this.throwing)
+                else if (throwing.Value)
                 {
                     if (base.invincibleCountdown > 0)
                     {
@@ -146,7 +146,7 @@ namespace FarmTypeManager
                         }
                     }
                 } //check the ranged attacks setting before attempting to start throwing
-                else if (RangedAttacks && this.spottedPlayer && base.controller == null && Game1.random.NextDouble() < (this.isMage ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), 8))
+                else if (RangedAttacks && this.spottedPlayer && base.controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), 8))
                 {
                     this.throwing.Value = true;
                     this.Halt();
