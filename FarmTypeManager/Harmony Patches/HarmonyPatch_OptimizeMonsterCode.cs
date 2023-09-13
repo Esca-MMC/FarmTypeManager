@@ -158,7 +158,7 @@ namespace FarmTypeManager
                 {
                     if (!Context.IsMultiplayer) //if this is NOT a multiplayer session
                     {
-                        __result = null; //return the current player
+                        __result = Game1.player; //return the current player
                         return false; //skip the original method
                     }
                     else
