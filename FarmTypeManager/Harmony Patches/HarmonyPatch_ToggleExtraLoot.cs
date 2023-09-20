@@ -4,6 +4,7 @@ using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace FarmTypeManager
@@ -31,15 +32,14 @@ namespace FarmTypeManager
             {
                 try
                 {
-                    HashSet<Type> typesToPatch = new HashSet<Type>(); //dynamic set of types that implement (e.g. override) the target method
-                    foreach (Type type in AccessTools.AllTypes()) //for every type
+                    HashSet<Type> typesToPatch = new HashSet<Type>(); //a set of types to patch
+
+                    foreach (Type type in Utility.GetAllSubclassTypes(typeof(Monster))) //for each existing monster type (including Monster itself)
                     {
-                        if (typeof(Monster).IsAssignableFrom(type)) //if this is a subclass of monster
-                        {
-                            if (AccessTools.Method(type, nameof(Monster.getExtraDropItems)) is MethodInfo info) //if this type has an extra loot method
-                                typesToPatch.Add(info.DeclaringType); //add that method's declaring type to the set
-                        }
+                        if (AccessTools.Method(type, nameof(Monster.getExtraDropItems)) is MethodInfo info) //if this type has an extra loot method
+                            typesToPatch.Add(info.DeclaringType); //add that method's declaring type to the set (if it hasn't already been added)
                     }
+
                     Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_ToggleExtraLoot)}\": postfixing {typesToPatch.Count} implementations of SDV method \"Monster.getExtraDropitems()\".", LogLevel.Trace);
                     foreach (Type type in typesToPatch) //for each type that implements a unique version of the target method
                     {
@@ -53,7 +53,7 @@ namespace FarmTypeManager
                         }
                         catch (Exception ex)
                         {
-                            Utility.Monitor.VerboseLog($"Encountered an error while patching. Skipping {type.Name}. Full error message: {ex.ToString()}");
+                            Utility.Monitor.VerboseLog($"* Encountered an error while patching {type.Name}. That type will be skipped. Full error message: {ex.ToString()}");
                         }
                     }
                 }
