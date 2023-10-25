@@ -20,7 +20,7 @@ namespace FarmTypeManager
         /// As of SaveAnywhere v3.2.7, saving mid-day causes a DayStarted event after saving is complete.
         /// This should be skipped by FTM to avoid errors (additional spawns, saved spawn issues, untracked monsters leading to serialization failure).
         /// </remarks>
-        public static bool SkipDayStartedEvents {  get; set; } = false;
+        public static bool SkipDayStartedEvents { get; set; } = false;
 
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves).</summary>
         public void EnableSaveAnywhere(object sender, GameLaunchedEventArgs e)
