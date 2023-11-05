@@ -133,7 +133,7 @@ namespace FarmTypeManager
                         }
                         catch (Exception ex)
                         {
-                            Monitor.LogOnce($"Error spawning a Dynamic Game Assets (DGA) item. The auto-generated error message has been added to the log.", LogLevel.Info);
+                            Monitor.Log($"Error spawning a Dynamic Game Assets (DGA) item. The auto-generated error message has been added to the log.", LogLevel.Info);
                             Monitor.Log($"----------", LogLevel.Trace);
                             Monitor.Log($"{ex.ToString()}", LogLevel.Trace);
                             return null;
@@ -198,7 +198,8 @@ namespace FarmTypeManager
 
                 if (configItem?.Stack > 1) //if this item has a custom stack setting
                 {
-                    item.Stack = configItem.Stack.Value; //apply it
+                    int clampedStackValue = Math.Min(configItem.Stack.Value, item.maximumStackSize()); //limit the custom stack value to the maximum allowed by this item
+                    item.Stack = clampedStackValue; //apply it
                 }
 
                 return item;
