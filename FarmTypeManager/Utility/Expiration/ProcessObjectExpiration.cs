@@ -87,13 +87,25 @@ namespace FarmTypeManager
                     else if (saved.Type == SavedObject.ObjectType.ResourceClump) //if this is a resource clump
                     {
                         ResourceClump existingObject = null; //the in-game object, if it currently exists
-
+                        
+                        string largeObjectStringID = saved.ID?.ToString();
                         foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
-                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && saved.ID?.ToString() == clump.parentSheetIndex.Value) //if this clump's location & ID match the saved object
+                            if (clump.Tile.X == saved.Tile.X && clump.Tile.Y == saved.Tile.Y) //if its tile location matches
                             {
-                                existingObject = clump;
-                                break; //stop searching the clump list
+                                if (clump is GiantCrop crop)
+                                {
+                                    if (crop.Id == largeObjectStringID) //if this is a crop and the ID matches
+                                    {
+                                        existingObject = clump;
+                                        break;
+                                    }
+                                }
+                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT a giant crop and the index matches
+                                {
+                                    existingObject = clump;
+                                    break;
+                                }
                             }
                         }
 
@@ -126,7 +138,7 @@ namespace FarmTypeManager
                         bool stillExists = false; //does this item still exist?
 
                         //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
-                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemID == saved.StringID)
+                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemId == saved.StringID)
                         {
                             stillExists = true;
                             location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
@@ -192,7 +204,7 @@ namespace FarmTypeManager
                             {
                                 if (realObject is Chest chest) //if this is a chest
                                 {
-                                    while (chest.items.Count < saved.ConfigItem?.Contents.Count) //while this chest has less items than the saved object's "contents"
+                                    while (chest.Items.Count < saved.ConfigItem?.Contents.Count) //while this chest has less items than the saved object's "contents"
                                     {
                                         saved.ConfigItem.Contents.RemoveAt(0); //remove a missing item from the ConfigItem's contents (note: chests output the item at index 0 when used)
                                     }
@@ -297,7 +309,7 @@ namespace FarmTypeManager
                     }
                     else //if this is a StardewValley.Object (e.g. forage or ore)
                     {
-                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.ItemID == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
+                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
                             if (endOfDay) //if expirations should be processed
                             {

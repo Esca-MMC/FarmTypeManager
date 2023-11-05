@@ -29,7 +29,7 @@ namespace FarmTypeManager
                     case "754":
                     case "756":
                     case "758":
-                        location.resourceClumps.Add(new ResourceClump(index, 2, 2, tile));
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile));
                         return true;
                     default: //if this is NOT a known clump, assume it's a giant crop
                         location.resourceClumps.Add(new GiantCrop(index.ToString(), tile));

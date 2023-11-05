@@ -34,7 +34,7 @@ namespace FarmTypeManager
 
                 Utility.ProcessObjectExpiration(save: data.Save, endOfDay: true); //remove custom object classes, but do not process expiration settings
 
-                data.Save.WeatherForYesterday = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default).weather.Value; //update saved weather info
+                data.Save.WeatherForYesterday = Game1.netWorldState.Value.GetWeatherForLocation("Default").weather.Value; //update saved weather info
 
                 if (data.Pack != null) //if this data is from a content pack
                 {

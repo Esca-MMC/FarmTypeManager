@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.GiantCrops;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace FarmTypeManager
                         case ObjectType.LargeObject:
                             if (!LargeObjectSizeCache.ContainsKey(StringID)) //if this large object type's size has not been cached yet
                             {
-                                Dictionary<string, GiantCrops> giantCropsData = Game1.content.Load<Dictionary<string, GiantCrops>>("Data\\GiantCrops"); //load SDV's giant crop data
+                                var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops"); //load SDV's giant crop data
                                 if (giantCropsData.TryGetValue(StringID, out var giantCrop)) //if this is a giant crop ID
                                 {
                                     //cache its size from the data

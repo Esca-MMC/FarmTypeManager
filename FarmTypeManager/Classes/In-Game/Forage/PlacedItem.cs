@@ -38,30 +38,28 @@ namespace FarmTypeManager
             }
 
             /// <summary>Create a new placed item.</summary>
-            /// <param name="tileLocation">The tile location of the placed item.</param>
             /// <param name="item">The item contained by this object.</param>
-            public PlacedItem(Vector2 tileLocation, Item item)
+            public PlacedItem(Item item)
                 : this() //call this class's default constructor
             {
-                currentTileLocation = tileLocation;
                 this.item.Value = item;
             }
 
-            protected virtual void initNetFields()
+            public override void initNetFields()
             {
-                NetFields.AddFields(item); //include this class's custom field
+                NetFields.AddField(item);
             }
 
-            public override void draw(SpriteBatch spriteBatch, Vector2 tileLocation)
+            public override void draw(SpriteBatch spriteBatch)
             {
                 if (Item != null)
                 {
-                    Vector2 screenPosition = Game1.GlobalToLocal(tileLocation * 64);
+                    Vector2 screenPosition = Game1.GlobalToLocal(Tile * 64);
                     Item.drawInMenu(spriteBatch, screenPosition, 1f, 1f, 0.01f, StackDrawType.Hide);
                 }
-                else if (currentLocation != null) //if this 
+                else //if this does NOT contain an item
                 {
-                    currentLocation.terrainFeatures.Remove(tileLocation); //remove it from the game
+                    Location?.terrainFeatures.Remove(Tile); //remove it from the game
                 }
             }
 
@@ -75,36 +73,38 @@ namespace FarmTypeManager
             }
 
             /// <summary>Performs behavior when a character collides with this placed item.</summary>
-            public override void doCollisionAction(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who, GameLocation location)
+            public override void doCollisionAction(Rectangle positionOfCollider, int speedOfCollision, Vector2 tileLocation, Character who)
             {
                 if (Constants.TargetPlatform == GamePlatform.Android) //if this is running on Android
                 {
                     if (who is Farmer farmer && farmer.IsLocalPlayer) //if the colliding character is the local player
                     {
-                        performUseAction(tileLocation, location); //attempt to pick up the item
+                        performUseAction(tileLocation); //attempt to pick up the item
                     }
                 }
             }
 
             /// <summary>Performs behavior when a player "grabs" this placed item.</summary>
-            /// <remarks>This method does not seem to be properly invoked by Android.
-            /// <see cref="isPassable(Character)"/>and <see cref="doCollisionAction(Rectangle, int, Vector2, Character, GameLocation)"/> are used as a conditional workaround.</remarks>
-            public override bool performUseAction(Vector2 tileLocation, GameLocation location)
+            /// <remarks>
+            /// This method does not seem to be properly invoked by Android (prior to the 1.5 update; further testing required).
+            /// <see cref="isPassable(Character)"/>and <see cref="doCollisionAction(Rectangle, int, Vector2, Character, GameLocation)"/> are used as a conditional workaround.
+            /// </remarks>
+            public override bool performUseAction(Vector2 tileLocation)
             {
-                SetForageQuality(location); //if this is forage, set its quality
+                SetForageQuality(Location); //if this is forage, set its quality
                 if (!Game1.player.canMove || this.isTemporarilyInvisible || !Game1.player.couldInventoryAcceptThisItem(Item)) //if this isn't the local player OR they can't currently pick this up
                     return false; //this placed item was not used
 
                 //add the contained item to the player's inventory and remove this placed item
                 if (Game1.player.addItemToInventoryBool(Item, true)) //add this item to the player's inventory; if successful,
                 {
-                    OnForagePickup(Item, location); //if this is forage, perform related tasks
+                    OnForagePickup(Item, Location); //if this is forage, perform related tasks
 
-                    location.localSound("pickUpItem");
-                    DelayedAction.playSoundAfterDelay("coin", 300, location, -1);
+                    Location.localSound("pickUpItem");
+                    DelayedAction.playSoundAfterDelay("coin", 300);
                     Game1.player.animateOnce(279 + Game1.player.FacingDirection); //do the player's "pick up object" animation
 
-                    if (Item.GetType() != typeof(StardewValley.Object) || (Item as StardewValley.Object).bigCraftable.Value) //if this item is anything other than a basic StardewValley.Object
+                    if (!Item.TypeDefinitionId.Equals("(O)")) //if this item is anything other than a basic StardewValley.Object
                     {
                         //prevent displaying the item during the "pick up object" animation
                         for (int x = 0; x < Game1.player.FarmerSprite.CurrentAnimation.Count; x++) //modify each frame of the player's "pick up object" animation
@@ -120,7 +120,7 @@ namespace FarmTypeManager
                     }
 
                     Item = null; //clear this placed item's reference to the item
-                    currentLocation.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
+                    Location.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
                 }
 
                 return true; //this placed item was used
@@ -130,7 +130,7 @@ namespace FarmTypeManager
             /// <param name="location">The current location of this item.</param>
             private void SetForageQuality(GameLocation location)
             {
-                if (Item is StardewValley.Object obj && obj.isForage(location)) //if this item is forage
+                if (Item is StardewValley.Object obj && obj.isForage()) //if this item is forage
                 {
                     //determine forage quality
                     if (Game1.player.professions.Contains(Farmer.botanist)) //if the player has the Botanist profession
@@ -138,7 +138,7 @@ namespace FarmTypeManager
                     else
                     {
                         //imitate Stardew's random seed, which produces the same result when give the same object position and in-game day
-                        Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)currentTileLocation.X + (int)currentTileLocation.Y * 777);
+                        Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)Tile.X + (int)Tile.Y * 777);
 
                         //set random qualities based on the player's Foraging skill
                         if (random.NextDouble() < Game1.player.ForagingLevel / 30.0)
@@ -156,7 +156,7 @@ namespace FarmTypeManager
             /// <param name="location">The item's current location.</param>
             private void OnForagePickup(Item item, GameLocation location)
             {
-                if (Item is StardewValley.Object obj && obj.isForage(location)) //if this is a forage object
+                if (Item is StardewValley.Object obj && obj.isForage()) //if this is a forage object
                 {
                     int totalStackSize = obj.Stack;
 

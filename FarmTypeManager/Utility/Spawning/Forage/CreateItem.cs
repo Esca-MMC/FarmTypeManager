@@ -71,12 +71,16 @@ namespace FarmTypeManager
                     case "barrels":
                         item = new BreakableContainerFTM(tile, contents, true); //create a mineshaft-style breakable barrel with the given contents
                         break;
+                    case "(bc)":
+                    case "bc":
                     case "bigcraftable":
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(tile, save.StringID, false); //create an object as a "big craftable" item
+                        item = new StardewValley.Object(tile, save.StringID); //create an object with the BC constructor
                         break;
+                    case "(b)":
+                    case "b":
                     case "boot":
                     case "boots":
                         item = new Boots(save.StringID);
@@ -103,17 +107,11 @@ namespace FarmTypeManager
                     case "burieditems":
                     case "buried item":
                     case "buried items":
-                        item = new BuriedItems(tile, contents); //create an item burial location with the given contents
+                        item = new BuriedItems(contents); //create an item burial location with the given contents
                         break;
                     case "chest":
                     case "chests":
-                        item = new Chest(0, contents, tile, false, 0); //create a mineshaft-style chest with the given contents
-                        break;
-                    case "cloth":
-                    case "clothes":
-                    case "clothing":
-                    case "clothings":
-                        item = new Clothing(save.StringID);
+                        item = new Chest(contents, tile); //create a mineshaft-style chest with the given contents
                         break;
                     case "crate":
                     case "crates":
@@ -141,23 +139,49 @@ namespace FarmTypeManager
                             return null;
                         }
                         break;
+                    case "(f)":
+                    case "f":
                     case "furniture":
                         item = new Furniture(save.StringID, tile);
                         break;
+                    case "(h)":
+                    case "h":
                     case "hat":
                     case "hats":
                         item = new Hat(save.StringID);
                         break;
-                    case "object": //treat objects as items when creating them as Items
+                    case "(o)":
+                    case "o":
+                    case "object":
                     case "objects":
                     case "item":
                     case "items":
-                        item = new StardewValley.Object(tile, save.StringID, 1); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(save.StringID, 1); //create an object with the preferred constructor for "held" or "dropped" items
+                        break;
+                    case "(p)":
+                    case "p":
+                    case "pant":
+                    case "pants":
+                        item = ItemRegistry.Create("(P)" + save.StringID);
                         break;
                     case "ring":
                     case "rings":
                         item = new Ring(save.StringID);
                         break;
+                    case "(s)":
+                    case "s":
+                    case "shirt":
+                    case "shirts":
+                        item = ItemRegistry.Create("(S)" + save.StringID);
+                        break;
+                    case "(t)":
+                    case "t":
+                    case "tool":
+                    case "tools":
+                        item = ItemRegistry.Create("(T)" + save.StringID);
+                        break;
+                    case "(w)":
+                    case "w":
                     case "weapon":
                     case "weapons":
                         item = new MeleeWeapon(save.StringID);
@@ -175,14 +199,6 @@ namespace FarmTypeManager
                 {
                     item.Stack = configItem.Stack.Value; //apply it
                 }
-
-                //TODO: Test saving each item type (i.e. using an expiration timer in the FTM settings). Unclear if the code below is necessary to convert for SDV v1.6
-                /*
-                if (save.ID.HasValue) //if this object type uses an ID
-                {
-                    item.ParentSheetIndex = save.ID.Value; //manually set this index value, due to it being ignored by some item subclasses
-                }
-                */
 
                 return item;
             }

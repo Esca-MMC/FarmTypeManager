@@ -49,7 +49,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (location.isTileOccupiedForPlacement(t)) //if this tile is occupied
+                        if (location.IsTileOccupiedBy(t)) //if this tile is occupied
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -60,7 +60,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (!location.isTileLocationTotallyClearAndPlaceable(t) || !IsTileClearOfDebrisItems(location, t)) //if the tile is *not* totally clear OR contains debris items
+                        if (!location.CanItemBePlacedHere(t) || !IsTileClearOfDebrisItems(location, t)) //if the tile is *not* totally clear, or contains debris items
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -71,9 +71,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        string noSpawn = location.doesTileHaveProperty((int)t.X, (int)t.Y, "NoSpawn", "Back"); //get the "NoSpawn" property for this tile
-
-                        if ((noSpawn != null && noSpawn != "") || !location.isTileLocationTotallyClearAndPlaceable(t) || !IsTileClearOfDebrisItems(location, t)) //if noSpawn is *not* empty OR if the tile is *not* totally clear OR contains debris items
+                        if (location.IsNoSpawnTile(t) || !location.CanItemBePlacedHere(t) || !IsTileClearOfDebrisItems(location, t)) //if this tile has "NoSpawn", is *not* totally clear, or contains debris items
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles

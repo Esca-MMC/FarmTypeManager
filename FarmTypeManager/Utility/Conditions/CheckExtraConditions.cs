@@ -275,7 +275,7 @@ namespace FarmTypeManager
                             break; //skip the rest of these checks
                         }
 
-                        string weatherToday = Game1.netWorldState.Value.GetWeatherForLocation(LocationContext.Default).weather.Value;
+                        string weatherToday = Game1.netWorldState.Value.GetWeatherForLocation("Default").weather.Value;
 
                         if (weather.Equals(weatherToday, StringComparison.OrdinalIgnoreCase)) //if the given weather name matches (SDV v1.6+)
                         {

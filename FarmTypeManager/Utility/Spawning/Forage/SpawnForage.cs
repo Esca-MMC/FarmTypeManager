@@ -21,14 +21,20 @@ namespace FarmTypeManager
 
                 if (CanBePickedUp(index)) //if this object can be picked up
                 {
-                    forageObj = new StardewValley.Object(tile, index, null, false, true, false, true); //generate the object (use the constructor that allows pickup)
+                    forageObj = new StardewValley.Object(index, 1)
+                    {
+                        IsSpawnedObject = true
+                    };
 
                     Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
                 }
                 else //if this object CANNOT be picked up
                 {
-                    forageObj = new StardewValley.Object(tile, index, 1); //generate the object (use the constructor that prevents pickup)
+                    forageObj = new StardewValley.Object(index, 1)
+                    {
+                        CanBeGrabbed = false
+                    };
                     int? durability = GetDefaultDurability(index); //try to get this item's default durability
                     if (durability.HasValue) //if a default exists
                         forageObj.MinutesUntilReady = durability.Value; //use it
@@ -90,7 +96,7 @@ namespace FarmTypeManager
                     }
 
                     Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    PlacedItem placed = new PlacedItem(tile, forageItem); //create a terrainfeature containing the item
+                    PlacedItem placed = new PlacedItem(forageItem); //create a terrainfeature containing the item
                     location.terrainFeatures.Add(tile, placed); //add the placed item to this location
                     return true;
                 }
@@ -128,7 +134,7 @@ namespace FarmTypeManager
                             return false; //fail to spawn
 
                         Monitor.VerboseLog($"Spawning DGA forage item. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                        PlacedItem placed = new PlacedItem(tile, itemDGA); //create a terrainfeature containing the item
+                        PlacedItem placed = new PlacedItem(itemDGA); //create a terrainfeature containing the item
                         location.terrainFeatures.Add(tile, placed); //add the placed item to this location
                         return true;
                     }

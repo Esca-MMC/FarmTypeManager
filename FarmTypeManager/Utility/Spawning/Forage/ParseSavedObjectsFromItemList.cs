@@ -23,43 +23,17 @@ namespace FarmTypeManager
 
                 foreach (object raw in rawItems) //for each object in the raw list
                 {
-                    if (raw is long rawLong) //if this is the ID of a StardewValley.Object
+                    if (raw is long rawLong) //if this is an integer
                     {
-                        SavedObject saved = null;
-                        try
-                        {
-                            int objectID = Convert.ToInt32(rawLong); //parse the number into a 32-bit integer
-                            saved = CreateSavedObject(objectID, areaID); //use the parsed ID to create a saved object
-                        }
-                        catch //if parsing caused an exception
-                        {
-                            Monitor.Log($"An area's item list contains a number that could not be parsed correctly.", LogLevel.Info);
-                            Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
-                            Monitor.Log($"This may be caused by a formatting error in the item list. The affected item will be skipped.", LogLevel.Info);
-                        }
-
-                        if (saved != null) //if parsing was successful
-                        {
-                            SavedObjects.Add(saved); //add this to the list
-                        }
+                        SavedObject saved = CreateSavedObject(rawLong.ToString(), areaID); //treat this as a string ID, try to create a saved object
+                        if (saved != null)
+                            SavedObjects.Add(saved);
                     }
                     else if (raw is string rawString) //if this is a string
                     {
-                        SavedObject saved = null;
-
-                        if (int.TryParse(rawString, out int objectID)) //if this string is the ID of a StardewValley.Object
-                        {
-                            saved = CreateSavedObject(objectID, areaID); //use the parsed ID to create a saved object
-                        }
-                        else //if this string is the name of a StardewValley.Object
-                        {
-                            saved = CreateSavedObject(rawString, areaID); //use the string to create a saved object
-                        }
-
-                        if (saved != null) //if parsing was successful
-                        {
-                            SavedObjects.Add(saved); //add this to the list
-                        }
+                        SavedObject saved = CreateSavedObject(rawString, areaID); //try to create a saved object
+                        if (saved != null)
+                            SavedObjects.Add(saved);
 
                     }
                     else if (raw is JObject rawObj) //if this is a ConfigItem
@@ -92,33 +66,6 @@ namespace FarmTypeManager
                 }
 
                 return SavedObjects;
-            }
-
-            /// <summary>Uses an integer to create a saved object respresenting a StardewValley.Object.</summary>
-            /// <param name="objectID">The object's ID, also known as index or parentSheetIndex.</param>
-            /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
-            /// <returns>A saved object representing the designated StardewValley.Object. Null if creation failed.</returns>
-            private static SavedObject CreateSavedObject(int objectID, string areaID = "")
-            {
-                IDictionary<string, string> objDictionary = GetItemDictionary("object"); //get currently loaded object data
-                if (objDictionary.ContainsKey(objectID.ToString())) //if data exists for this object ID
-                {
-                    SavedObject saved = new SavedObject() //generate a saved object with the appropriate type and ID
-                    {
-                        Type = SavedObject.ObjectType.Object,
-                        ID = objectID
-                    };
-                    Monitor.VerboseLog($"Parsed integer object ID: {objectID}");
-                    return saved;
-                }
-                else //if no data exists for this object ID
-                {
-                    Monitor.Log($"An area's item list contains an object ID that did not match any loaded objects.", LogLevel.Info);
-                    Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
-                    Monitor.Log($"Object ID: \"{objectID}\"", LogLevel.Info);
-                    Monitor.Log($"This may be caused by an error in the item list or a modded object that wasn't loaded. The affected object will be skipped.", LogLevel.Info);
-                    return null;
-                }
             }
 
             /// <summary>Uses a string to create a saved object representing a StardewValley.Object.</summary>

@@ -12,7 +12,7 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Check each saved object with an expiration setting, respawning them if they were removed after being saved (e.g. by the weekly forage removal process).</summary>
+            /// <summary>Check each saved object with an expiration setting and respawn it if it disappeared after saving (e.g. due to automatic cleanup or not being serialized).</summary>
             /// <param name="save">The save data to the checked.</param>
             public static void ReplaceProtectedSpawns(InternalSaveData save)
             {
@@ -63,13 +63,25 @@ namespace FarmTypeManager
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
                         bool stillExists = false; //does this large object still exist?
-
+                        
+                        string largeObjectStringID = saved.ID?.ToString();
                         foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
-                            if (clump.tile.X == saved.Tile.X && clump.tile.Y == saved.Tile.Y && saved.ID?.ToString() == clump.parentSheetIndex.Value) //if this clump's location & ID match the saved object
+                            if (clump.Tile.X == saved.Tile.X && clump.Tile.Y == saved.Tile.Y) //if its tile location matches
                             {
-                                stillExists = true;
-                                break; //stop searching the clump list
+                                if (clump is GiantCrop crop)
+                                {
+                                    if (crop.Id == largeObjectStringID) //if this is a crop and the ID matches
+                                    {
+                                        stillExists = true;
+                                        break;
+                                    }
+                                }
+                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT a giant crop and the index matches
+                                {
+                                    stillExists = true;
+                                    break;
+                                }
                             }
                         }
 

@@ -410,7 +410,7 @@ namespace FarmTypeManager
                         break;
                     case "lavacrab":
                     case "lava crab":
-                        monster = new LavaCrab(tile);
+                        monster = new RockCrab(tile, "Lava Crab");
                         break;
                     case "iridiumcrab":
                     case "iridium crab":

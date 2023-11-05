@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData.GiantCrops;
 using System.Collections.Generic;
 
 namespace FarmTypeManager
@@ -10,7 +11,7 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>Generates a list of IDs for large objects (a.k.a. resource clumps) from a list of IDs and/or nicknames. Duplicates are kept; invalid entries are removed.</summary>
-            /// <param name="names">A list of names representing large objects (e.g. "Stump", "boulders").</param>
+            /// <param name="names">A list of names representing large objects (e.g. "Stump", "boulders", and/or specific IDs).</param>
             /// /// <param name="areaID">The UniqueAreaID of the related SpawnArea. Required for log messages.</param>
             /// <returns>A list of valid large object IDs parsed from the provided list.</returns>
             public static List<string> GetLargeObjectIDs(string[] names, string areaID = "")
@@ -82,11 +83,9 @@ namespace FarmTypeManager
                             IDs.Add("276");
                             break;
                         default: //if "name" isn't a known object name or ID
-                            Dictionary<string, GiantCrops> giantCropsData = Game1.content.Load<Dictionary<string, GiantCrops>>("Data\\GiantCrops"); //load SDV's giant crop data
+                            var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops");
                             if (giantCropsData.ContainsKey(name)) //if this is a giant crop ID
-                            {
                                 IDs.Add(name);
-                            }
                             else
                             {
                                 Monitor.Log($"An area's large object list contains a name that did not match any objects.", LogLevel.Info);
