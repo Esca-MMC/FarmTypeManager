@@ -42,11 +42,12 @@ namespace FarmTypeManager
             public PlacedItem(Item item)
                 : this() //call this class's default constructor
             {
-                this.item.Value = item;
+                this.Item = item;
             }
 
             public override void initNetFields()
             {
+                base.initNetFields();
                 NetFields.AddField(item);
             }
 
@@ -137,8 +138,8 @@ namespace FarmTypeManager
                         obj.Quality = StardewValley.Object.bestQuality; //maximize the object's quality
                     else
                     {
-                        //imitate Stardew's random seed, which produces the same result when give the same object position and in-game day
-                        Random random = new Random((int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed + (int)Tile.X + (int)Tile.Y * 777);
+                        //imitate Stardew's random seed, which produces the same result when give the same save ID, in-game day, and tile
+                        Random random = StardewValley.Utility.CreateDaySaveRandom(Tile.X, Tile.Y * 777f);
 
                         //set random qualities based on the player's Foraging skill
                         if (random.NextDouble() < Game1.player.ForagingLevel / 30.0)
