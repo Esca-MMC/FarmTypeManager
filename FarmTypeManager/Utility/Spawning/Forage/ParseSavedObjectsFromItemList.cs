@@ -89,7 +89,7 @@ namespace FarmTypeManager
                 }
                 else //if no matching object ID was found
                 {
-                    Monitor.Log($"An area's item list contains an object name that did not match any loaded objects.", LogLevel.Info);
+                    Monitor.Log($"An area's item list contains an object ID or name that did not match any loaded objects.", LogLevel.Info);
                     Monitor.Log($"Affected spawn area: \"{areaID}\"", LogLevel.Info);
                     Monitor.Log($"Object name: \"{objectName}\"", LogLevel.Info);
                     Monitor.Log($"This may be caused by an error in the item list or a modded object that wasn't loaded. The affected object will be skipped.", LogLevel.Info);

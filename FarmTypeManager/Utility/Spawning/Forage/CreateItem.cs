@@ -190,8 +190,9 @@ namespace FarmTypeManager
 
                 if (item == null) //if no item could be generated
                 {
-                    Monitor.Log("Failed to create an item. Category setting was not recognized.", LogLevel.Debug);
-                    Monitor.Log($"Item Category: {category}", LogLevel.Debug);
+                    Monitor.Log("Failed to create an item. This is usually caused by an unrecognized \"Category\" setting.", LogLevel.Debug);
+                    Monitor.Log($"Item category: {category}", LogLevel.Debug);
+                    Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
                     return null;
                 }
 
