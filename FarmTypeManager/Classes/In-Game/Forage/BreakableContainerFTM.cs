@@ -90,8 +90,6 @@ namespace FarmTypeManager
 
                 if (t != null && t.isHeavyHitter())
                 {
-                    Multiplayer multiplayer = Utility.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue(); //reflect to access SDV's multiplayer field
-
                     --HitsToBreak.Value;
                     if (t is MeleeWeapon weapon && weapon.type.Value == 2)
                         --HitsToBreak.Value;
@@ -103,7 +101,7 @@ namespace FarmTypeManager
                         int numDebris = Game1.random.Next(4, 12);
                         //removed the code that determines color based on parent sheet index
                         for (int i = 0; i < numDebris; ++i)
-                            multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0f, (float)((double)Game1.random.Next(-5, 6) * Math.PI / 8.0), (float)((double)Game1.random.Next(-5, 6) * Math.PI / 64.0))
+                            Game1.Multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0f, (float)((double)Game1.random.Next(-5, 6) * Math.PI / 8.0), (float)((double)Game1.random.Next(-5, 6) * Math.PI / 64.0))
                             {
                                 motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, (float)Game1.random.Next(-10, -7)),
                                 acceleration = new Vector2(0.0f, 0.3f)
@@ -126,13 +124,11 @@ namespace FarmTypeManager
                 if (who == null)
                     who = Game1.player;
 
-                Multiplayer multiplayer = Utility.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue(); //reflect to access SDV's multiplayer field
-
                 releaseContents();
                 int numDebris = Game1.random.Next(4, 12);
                 for (int i = 0; i < numDebris; i++)
                 {
-                    multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? this.breakDebrisSource.Value : this.breakDebrisSource2.Value, 999f, 1, 0, TileLocation * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (TileLocation.Y * 64f + 32f) / 10000f, 0.01f, color, 4f, 0f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 8f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 64f)
+                    Game1.Multiplayer.broadcastSprites(Location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextBool() ? this.breakDebrisSource.Value : this.breakDebrisSource2.Value, 999f, 1, 0, TileLocation * 64f + new Vector2(32f, 32f), flicker: false, Game1.random.NextBool(), (TileLocation.Y * 64f + 32f) / 10000f, 0.01f, color, 4f, 0f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 8f, (float)Game1.random.Next(-5, 6) * (float)Math.PI / 64f)
                     {
                         motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, Game1.random.Next(-10, -7)),
                         acceleration = new Vector2(0f, 0.3f)
