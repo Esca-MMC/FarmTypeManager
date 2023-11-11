@@ -68,19 +68,19 @@ namespace FarmTypeManager
                         case "cauliflower":
                         case "giantcauliflower":
                         case "giant cauliflower":
-                            IDs.Add("190");
+                            IDs.Add("Cauliflower");
                             break;
                         case "254":
                         case "melon":
                         case "giantmelon":
                         case "giant melon":
-                            IDs.Add("254");
+                            IDs.Add("Melon");
                             break;
                         case "276":
                         case "pumpkin":
                         case "giantpumpkin":
                         case "giant pumpkin":
-                            IDs.Add("276");
+                            IDs.Add("Pumpkin");
                             break;
                         default: //if "name" isn't a known object name or ID
                             var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops");
