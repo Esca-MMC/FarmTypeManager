@@ -77,7 +77,7 @@ namespace FarmTypeManager
                     case "bigcraftables":
                     case "big craftable":
                     case "big craftables":
-                        item = new StardewValley.Object(tile, save.StringID); //create an object with the BC constructor
+                        item = ItemRegistry.Create("(BC)" + save.StringID);
                         break;
                     case "(b)":
                     case "b":
@@ -148,7 +148,7 @@ namespace FarmTypeManager
                     case "h":
                     case "hat":
                     case "hats":
-                        item = new Hat(save.StringID);
+                        item = ItemRegistry.Create("(H)" + save.StringID);
                         break;
                     case "(o)":
                     case "o":
@@ -156,7 +156,7 @@ namespace FarmTypeManager
                     case "objects":
                     case "item":
                     case "items":
-                        item = new StardewValley.Object(save.StringID, 1); //create an object with the preferred constructor for "held" or "dropped" items
+                        item = new StardewValley.Object(save.StringID, 1); //create an "normal" object (in whatever way is preferable for a held/dropped item)
                         break;
                     case "(p)":
                     case "p":
@@ -184,7 +184,7 @@ namespace FarmTypeManager
                     case "w":
                     case "weapon":
                     case "weapons":
-                        item = new MeleeWeapon(save.StringID);
+                        item = ItemRegistry.Create("(W)" + save.StringID);
                         break;
                 }
 
