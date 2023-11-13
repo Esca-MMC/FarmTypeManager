@@ -11,14 +11,15 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Determines whether a specific tile on a map is valid for object placement, using any necessary checks from Stardew's native methods.</summary>
-            /// <param name="location">The game location to be checked.</param>
-            /// <param name="tile">The tile to be validated for object placement (for a large object, this is effectively its upper left corner).</param>
-            /// <param name="size">A point representing the size of this object in tiles.</param>
-            /// <returns>Whether the provided tile is valid for the given area and object size, based on the area's StrictTileChecking setting.</returns>
+            /// <summary>Determines whether a specific tile on a map is valid for object placement.</summary>
+            /// <param name="location">The game location to check.</param>
+            /// <param name="tile">The tile to validate for object placement. If the object is larger than 1 tile, this is the top left corner.</param>
+            /// <param name="size">A point representing the object's size in tiles (horizontal, vertical).</param>
+            /// <returns>True if the tile is currently valid for object placement.</returns>
             public static bool IsTileValid(GameLocation location, Vector2 tile, Point size, string strictTileChecking)
             {
-                bool valid = true; //whether the provided tile is valid with the given parameters
+                if (strictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation required
+                    return true;
 
                 List<Vector2> tilesToCheck = new List<Vector2>(); //a list of tiles that need to be valid (based on spawn object size)
 
@@ -30,18 +31,13 @@ namespace FarmTypeManager
                     }
                 }
 
-                if (strictTileChecking.Equals("none", StringComparison.OrdinalIgnoreCase)) //no validation at all
-                {
-                    valid = true;
-                }
-                else if (strictTileChecking.Equals("low", StringComparison.OrdinalIgnoreCase)) //low-strictness validation
+                if (strictTileChecking.Equals("low", StringComparison.OrdinalIgnoreCase)) //low-strictness validation
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (location.isObjectAtTile((int)t.X, (int)t.Y)) //if this tile is blocked by another object
+                        if (location.isObjectAtTile((int)t.X, (int)t.Y)) //if this tile is blocked by an object
                         {
-                            valid = false; //prevent spawning here
-                            break; //skip checking the other tiles
+                            return false;
                         }
                     }
                 }
@@ -51,8 +47,7 @@ namespace FarmTypeManager
                     {
                         if (location.IsTileOccupiedBy(t)) //if this tile is occupied
                         {
-                            valid = false; //prevent spawning here
-                            break; //skip checking the other tiles
+                            return false;
                         }
                     }
                 }
@@ -60,10 +55,9 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (!location.CanItemBePlacedHere(t)) //if the tile is *not* totally clear
+                        if (location.IsTileOccupiedBy(t) || !location.CanItemBePlacedHere(t)) //if the tile is occupied OR not clear for placement
                         {
-                            valid = false; //prevent spawning here
-                            break; //skip checking the other tiles
+                            return false;
                         }
                     }
                 }
@@ -71,15 +65,14 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (location.IsNoSpawnTile(t) || !location.CanItemBePlacedHere(t)) //if this tile has "NoSpawn", is *not* totally clear
+                        if (location.IsNoSpawnTile(t) || location.IsTileOccupiedBy(t) || !location.CanItemBePlacedHere(t)) //if this tile has "NoSpawn", is *not* totally clear
                         {
-                            valid = false; //prevent spawning here
-                            break; //skip checking the other tiles
+                            return false;
                         }
                     }
                 }
 
-                return valid;
+                return true; //all relevant tests passed, so the tile is valid
             }
         }
     }

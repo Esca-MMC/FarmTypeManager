@@ -102,7 +102,7 @@ namespace FarmTypeManager
                     ore.MinutesUntilReady = durability.Value; //use it
 
                 Utility.Monitor.VerboseLog($"Spawning ore. Type: {oreName}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                location.setObject(tile, ore); //actually spawn the ore object into the world
+                location.objects.TryAdd(tile, ore); //actually spawn the ore object into the world
                 return ore.ParentSheetIndex;
             }
         }

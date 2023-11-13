@@ -21,23 +21,30 @@ namespace FarmTypeManager
 
                 if (CanBePickedUp(index)) //if this object can be picked up
                 {
-                    forageObj = new StardewValley.Object(index, 1);
+                    forageObj = new StardewValley.Object(index, 1)
+                    {
+                        Location = location,
+                        TileLocation = tile,
+                        IsSpawnedObject = true //allow "normal" forage behavior if applicable
+                    };
                     Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure (note: this method sets isSpawnedObject, etc)
+                    return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
                 }
                 else //if this object CANNOT be picked up
                 {
                     forageObj = new StardewValley.Object(index, 1)
                     {
-                        CanBeGrabbed = false
+                        Location = location,
+                        TileLocation = tile,
+                        CanBeGrabbed = false //attempt to prevent pickup
                     };
+
                     int? durability = GetDefaultDurability(index); //try to get this item's default durability
                     if (durability.HasValue) //if a default exists
                         forageObj.MinutesUntilReady = durability.Value; //use it
 
                     Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    location.objects.Add(tile, forageObj); //add the object directly to the objects list
-                    return true;
+                    return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
                 }
             }
 
