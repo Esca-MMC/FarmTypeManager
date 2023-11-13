@@ -60,7 +60,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (!location.CanItemBePlacedHere(t) || !IsTileClearOfDebrisItems(location, t)) //if the tile is *not* totally clear, or contains debris items
+                        if (!location.CanItemBePlacedHere(t)) //if the tile is *not* totally clear
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -71,7 +71,7 @@ namespace FarmTypeManager
                 {
                     foreach (Vector2 t in tilesToCheck) //for each tile to be checked
                     {
-                        if (location.IsNoSpawnTile(t) || !location.CanItemBePlacedHere(t) || !IsTileClearOfDebrisItems(location, t)) //if this tile has "NoSpawn", is *not* totally clear, or contains debris items
+                        if (location.IsNoSpawnTile(t) || !location.CanItemBePlacedHere(t)) //if this tile has "NoSpawn", is *not* totally clear
                         {
                             valid = false; //prevent spawning here
                             break; //skip checking the other tiles
@@ -80,24 +80,6 @@ namespace FarmTypeManager
                 }
 
                 return valid;
-            }
-
-            private static bool IsTileClearOfDebrisItems(GameLocation location, Vector2 tile)
-            {
-                foreach (Debris debris in location.debris) //for each debris at this location
-                {
-                    if (debris.item != null && debris.Chunks.Count > 0) //if this debris contains an item
-                    {
-                        Vector2 debrisTile = new Vector2((int)(debris.Chunks[0].position.X / Game1.tileSize) + 1, (int)(debris.Chunks[0].position.Y / Game1.tileSize) + 1);
-
-                        if (debrisTile == tile) //if this debris's position matches the provided tile
-                        {
-                            return false; //the tile is NOT clear
-                        }
-                    }
-                }
-
-                return true; //the tile is clear
             }
         }
     }
