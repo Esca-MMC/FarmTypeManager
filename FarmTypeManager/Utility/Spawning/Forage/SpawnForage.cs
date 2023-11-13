@@ -85,12 +85,7 @@ namespace FarmTypeManager
                     Item forageItem = CreateItem(forage, tile); //create the item to be spawned
 
                     if (forageItem == null) //if the item couldn't be created
-                    {
-                        Monitor.Log("The SpawnForage method failed to generate an item. This may be caused by a problem with this mod's logic. Please report this to the developer if possible.", LogLevel.Warn);
-                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
-                        Monitor.Log($"Item ID: {forage.ID}", LogLevel.Warn);
-                        return false;
-                    }
+                        return false; //do nothing (log messages should be handled by the creation process)
 
                     if (forageItem is Furniture furniture)
                     {
