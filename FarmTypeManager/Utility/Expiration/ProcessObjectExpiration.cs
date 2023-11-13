@@ -137,57 +137,83 @@ namespace FarmTypeManager
                     {
                         bool stillExists = false; //does this item still exist?
 
-                        //if a PlacedItem terrain feature exists at the saved tile & contains an item with a matching name
-                        if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemId == saved.StringID)
+                        switch (saved.ConfigItem?.Category.ToLower())
                         {
-                            stillExists = true;
-                            location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                            case "(bc)":
+                            case "bc":
+                            case "bigcraftable":
+                            case "bigcraftables":
+                            case "big craftable":
+                            case "big craftables":
+                                //if a big craftable exists at the saved tile with a matching ID
+                                if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == true && realObject.ItemId == saved.StringID)
+                                {
+                                    stillExists = true;
 
-                            if (endOfDay) //if expirations should be processed
-                            {
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
-                                {
-                                    Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. Name: {placedItem.Item?.Name}. Location: {saved.MapName}.");
-                                    objectsToRemove.Add(saved); //mark this for removal from save
-                                }
-                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
-                                {
-                                    saved.DaysUntilExpire--; //decrease counter by 1
-                                }
-                            }
-                        }
-                        else 
-                        {
-                            switch (saved.ConfigItem?.Category.ToLower()) //if this is a furniture-category item (note: Only "normal", serializeable furniture should be handled here; DGA and similar mods should use another ObjectType)
-                            {
-                                case "(f)":
-                                case "f":
-                                case "furniture":
-                                    foreach (Furniture realFurniture in location.furniture)
+                                    if (endOfDay) //if expirations should be processed
                                     {
-                                        if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                        if (saved.DaysUntilExpire == 1) //if the BC should expire tonight
                                         {
-                                            stillExists = true;
-
-                                            if (endOfDay) //if expirations should be processed
-                                            {
-                                                if (saved.DaysUntilExpire == 1) //if this should expire tonight
-                                                {
-                                                    Monitor.VerboseLog($"Removing expired object. Type: Furniture. Name: {realFurniture.Name}. Location: {saved.MapName}.");
-                                                    location.furniture.Remove(realFurniture); //remove the furniture from the game
-                                                    objectsToRemove.Add(saved); //mark this for removal from save
-                                                }
-                                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
-                                                {
-                                                    saved.DaysUntilExpire--; //decrease counter by 1
-                                                }
-                                            }
-
-                                            break; //stop checking furniture after finding a match
+                                            Monitor.VerboseLog($"Removing expired object. Type: Big Craftable. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                            realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                            location.removeObject(saved.Tile, false); //remove the object from the game
+                                            objectsToRemove.Add(saved); //mark object for removal from save
+                                        }
+                                        else if (saved.DaysUntilExpire > 1) //if the object should expire, but not tonight
+                                        {
+                                            saved.DaysUntilExpire--; //decrease counter by 1
                                         }
                                     }
-                                    break;
-                            }
+                                }
+                                break;
+                            case "(f)":
+                            case "f":
+                            case "furniture":
+                                foreach (Furniture realFurniture in location.furniture)
+                                {
+                                    if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                    {
+                                        stillExists = true;
+
+                                        if (endOfDay) //if expirations should be processed
+                                        {
+                                            if (saved.DaysUntilExpire == 1) //if this should expire tonight
+                                            {
+                                                Monitor.VerboseLog($"Removing expired object. Type: Furniture. Name: {realFurniture.Name}. Location: {saved.MapName}.");
+                                                location.furniture.Remove(realFurniture); //remove the furniture from the game
+                                                objectsToRemove.Add(saved); //mark this for removal from save
+                                            }
+                                            else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                            {
+                                                saved.DaysUntilExpire--; //decrease counter by 1
+                                            }
+                                        }
+
+                                        break; //stop checking furniture after finding a match
+                                    }
+                                }
+                                break;
+                            default:
+                                //if a PlacedItem exists at the saved tile & contains an item with a matching ID
+                                if (location.terrainFeatures.ContainsKey(saved.Tile) && location.terrainFeatures[saved.Tile] is PlacedItem placedItem && placedItem.Item?.ItemId == saved.StringID)
+                                {
+                                    stillExists = true;
+                                    location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+
+                                    if (endOfDay) //if expirations should be processed
+                                    {
+                                        if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                        {
+                                            Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. Name: {placedItem.Item?.Name}. Location: {saved.MapName}.");
+                                            objectsToRemove.Add(saved); //mark this for removal from save
+                                        }
+                                        else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                        {
+                                            saved.DaysUntilExpire--; //decrease counter by 1
+                                        }
+                                    }
+                                }
+                                break;
                         }
 
                         if (!stillExists) //if this item no longer exists
@@ -342,7 +368,7 @@ namespace FarmTypeManager
                     }
                     else //if this is a StardewValley.Object (e.g. forage or ore)
                     {
-                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
+                        if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == false && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
                             if (endOfDay) //if expirations should be processed
                             {

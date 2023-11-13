@@ -21,13 +21,9 @@ namespace FarmTypeManager
 
                 if (CanBePickedUp(index)) //if this object can be picked up
                 {
-                    forageObj = new StardewValley.Object(index, 1)
-                    {
-                        IsSpawnedObject = true
-                    };
-
+                    forageObj = new StardewValley.Object(index, 1);
                     Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
+                    return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure (note: this method sets isSpawnedObject, etc)
                 }
                 else //if this object CANNOT be picked up
                 {
@@ -80,20 +76,26 @@ namespace FarmTypeManager
                 {
                     return SpawnDGAItem(forage, location, tile);
                 }
-                else //if this is furniture or a PlacedItem
+                else //assume ObjectType.Item
                 {
                     Item forageItem = CreateItem(forage, tile); //create the item to be spawned
 
                     if (forageItem == null) //if the item couldn't be created
                         return false; //do nothing (log messages should be handled by the creation process)
-
-                    if (forageItem is Furniture furniture)
+                    
+                    if (forageItem is StardewValley.Object bc && bc.bigCraftable.Value) //if this item is a big craftable
+                    {
+                        Monitor.VerboseLog($"Spawning big craftable. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        location.objects.Add(tile, bc);
+                        return true;
+                    }
+                    else if (forageItem is Furniture furniture)
                     {
                         Monitor.VerboseLog($"Spawning furniture. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.furniture.Add(furniture);
                         return true;
                     }
-                    else //if this is any other kind of item
+                    else //handle this as a PlacedItem
                     {
                         if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
                             return false; //fail to spawn

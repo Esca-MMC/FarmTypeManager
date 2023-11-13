@@ -105,6 +105,39 @@ namespace FarmTypeManager
                     {
                         switch (saved.ConfigItem?.Category.ToLower()) //check category to determine how to replace this item
                         {
+                            case "(bc)":
+                            case "bc":
+                            case "bigcraftable":
+                            case "bigcraftables":
+                            case "big craftable":
+                            case "big craftables":
+                                StardewValley.Object realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
+
+                                if (realObject == null) //if the object no longer exists
+                                {
+                                    missing++; //increment missing object tracker
+
+                                    if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the object's tile is clear enough to respawn
+                                    {
+                                        saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                        if (saved.ID != null) //if a valid ID was found for this object
+                                        {
+                                            respawned++; //increment respawn tracker
+                                            SpawnForage(saved, location, saved.Tile); //respawn it
+                                        }
+                                        else
+                                        {
+                                            uninstalled++; //increment uninstalled mod tracker
+                                            Monitor.LogOnce($"Couldn't find a valid ID for a previously saved big craftable. Name: {saved.Name}", LogLevel.Trace);
+                                        }
+                                    }
+                                    else //if the object's tile is occupied
+                                    {
+                                        blocked++; //increment obstruction tracker
+                                    }
+                                }
+                                break;
+
                             case "(f)":
                             case "f":
                             case "furniture": //if this has the furniture category
@@ -122,9 +155,18 @@ namespace FarmTypeManager
                                 {
                                     missing++; //increment missing tracker
 
-                                    //note: furniture can overlap with anything, so tile validity isn't checked here
-                                    SpawnForage(saved, location, saved.Tile); //respawn the furniture
-                                    respawned++; //increment respawn tracker
+                                    saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                    //note: furniture can overlap and should be more persistent than most objects, so tile validity is not checked here
+                                    if (saved.ID != null) //if a valid ID was found for this object
+                                    {
+                                        respawned++; //increment respawn tracker
+                                        SpawnForage(saved, location, saved.Tile); //respawn it
+                                    }
+                                    else
+                                    {
+                                        uninstalled++; //increment uninstalled mod tracker
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved furniture item. Name: {saved.Name}", LogLevel.Trace);
+                                    }
                                 }
                                 break;
 
@@ -132,22 +174,18 @@ namespace FarmTypeManager
                                 missing++; //increment missing tracker (PlacedItem should always be removed overnight)
 
                                 //assume that this must have been removed overnight; respawn the item without checking for its existence
-                                if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
+                                if (!location.terrainFeatures.ContainsKey(saved.Tile) && IsTileValid(location, saved.Tile, new Point(1, 1), "Medium")) //if the item's tile is clear enough to respawn
                                 {
-                                    //update this item's ID, in case it changed due to other mods
-                                    string[] categoryAndName = saved.Name.Split(':');
-                                    string newID = GetItemID(categoryAndName[0], categoryAndName[1]);
-
-                                    if (newID != null) //if a new ID was successfully generated
+                                    saved.ID = GetItemID(saved.ConfigItem.Category, saved.ConfigItem.Name); //try to regenerate this item's ID from its config data
+                                    if (saved.ID != null) //if a valid ID was found for this object
                                     {
                                         respawned++; //increment respawn tracker
-                                        saved.ID = newID; //save the new ID
-                                        SpawnForage(saved, location, saved.Tile); //respawn the item
+                                        SpawnForage(saved, location, saved.Tile); //respawn it (note: furniture exists in a list, so a tile validity check isn't required)
                                     }
-                                    else //if a new ID could not be generated
+                                    else
                                     {
                                         uninstalled++; //increment uninstalled mod tracker
-                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Item name: {saved.Name}", LogLevel.Trace);
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Name: {saved.Name}", LogLevel.Trace);
                                     }
                                 }
                                 else //if this object's tile is obstructed
