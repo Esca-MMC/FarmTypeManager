@@ -223,14 +223,15 @@ The lists can contain a mixture of object IDs (e.g. `206`), object names (e.g. `
 
 For a more detailed description of the complex item settings, see the table below.
 
-Name | Valid settings | Description | Notes
------|----------------|-------------|------
-Category | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Clothing", "Crate", "DGA", "Furniture", "Hat", "Object", "Ring", "Weapon" | The category of the spawned item.| This setting is required. "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
-Name | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
-Stack | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
-PercentChanceToSpawn | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
-SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this forage type. | Increases the odds of spawning this forage type instead of others, similar to adding multiple copies of it to a forage list. Has no effect in "loot" or "contents" lists. Example: If this forage type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
-Contents | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
+Name | Required | Valid settings | Description | Notes
+-----|----------|----------------|-------------|------
+Category | Yes | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Weapon" | The category of the spawned item.| "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
+Name | Yes | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
+Contents | No | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
+PercentChanceToSpawn | No | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
+Rotation | No | An integer (minimum/default 0) | The number of times to rotate a furniture item before spawning it. | This setting will be ignored by non-furniture items. The number of possible orientations is determined by each furniture item; 1, 2, and 4 are the most common.
+SpawnWeight | No | An integer (minimum/default 1) | The weighted spawn chance of this forage type. | Increases the odds of spawning this forage type instead of others, similar to adding multiple copies of it to a forage list. Has no effect in "loot" or "contents" lists. Example: If this forage type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
+Stack | No | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
 
 Here is an example loot list that uses all three formats. It would cause a defeated monster to drop Wild Horseradish, Joja Cola, and a Galaxy Sword.
 ```
