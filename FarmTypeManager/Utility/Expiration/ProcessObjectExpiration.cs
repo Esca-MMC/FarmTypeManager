@@ -87,7 +87,7 @@ namespace FarmTypeManager
                     else if (saved.Type == SavedObject.ObjectType.ResourceClump) //if this is a resource clump
                     {
                         ResourceClump existingObject = null; //the in-game object, if it currently exists
-                        
+
                         string largeObjectStringID = saved.ID?.ToString();
                         foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {

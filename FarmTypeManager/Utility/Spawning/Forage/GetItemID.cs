@@ -1,10 +1,4 @@
 ﻿using StardewModdingAPI;
-using StardewValley.GameData.BigCraftables;
-using StardewValley.GameData.Objects;
-using StardewValley.GameData.Pants;
-using StardewValley.GameData.Shirts;
-using StardewValley.GameData.Tools;
-using StardewValley.GameData.Weapons;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -23,7 +17,7 @@ namespace FarmTypeManager
             public static string GetItemID(string category, string idOrName)
             {
                 //depending on the category name, load a specific data asset and compare the item ID/name to its entries
-                switch (category.ToLower()) 
+                switch (category.ToLower())
                 {
                     case "(bc)":
                     case "bc":

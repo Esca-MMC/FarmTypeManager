@@ -88,7 +88,7 @@ namespace FarmTypeManager
                             else //if this config+farm hasn't been checked for existing objects yet 
                             {
                                 Utility.Monitor.Log("Find Existing Objects enabled. Finding...", LogLevel.Trace);
-                                
+
                                 HashSet<int> idsToFind = new HashSet<int>(); //integer IDs for large objects spawned by this area (note: this intentionally excludes giant crops and other subclasses)
                                 foreach (string id in objectIDs)
                                 {

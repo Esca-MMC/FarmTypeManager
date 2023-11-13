@@ -89,7 +89,7 @@ namespace FarmTypeManager
 
                     if (forageItem == null) //if the item couldn't be created
                         return false; //do nothing (log messages should be handled by the creation process)
-                    
+
                     if (forageItem is StardewValley.Object bc && bc.bigCraftable.Value) //if this item is a big craftable
                     {
                         Monitor.VerboseLog($"Spawning big craftable. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");

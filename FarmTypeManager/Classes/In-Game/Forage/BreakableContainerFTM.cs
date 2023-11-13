@@ -5,12 +5,10 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.ItemTypeDefinitions;
-using StardewValley.Network;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using xTile.Dimensions;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace FarmTypeManager

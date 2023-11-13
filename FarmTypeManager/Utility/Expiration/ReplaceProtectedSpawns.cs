@@ -64,7 +64,7 @@ namespace FarmTypeManager
                     else if (saved.Type == SavedObject.ObjectType.LargeObject) //if this is a large object
                     {
                         bool stillExists = false; //does this large object still exist?
-                        
+
                         string largeObjectStringID = saved.ID?.ToString();
                         foreach (ResourceClump clump in location.resourceClumps) //for each of this location's large objects
                         {
