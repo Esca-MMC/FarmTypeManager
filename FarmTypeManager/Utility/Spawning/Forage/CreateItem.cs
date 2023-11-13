@@ -142,7 +142,7 @@ namespace FarmTypeManager
                     case "(f)":
                     case "f":
                     case "furniture":
-                        item = new Furniture(save.StringID, tile);
+                        item = ItemRegistry.Create("(F)" + save.StringID);
                         break;
                     case "(h)":
                     case "h":
@@ -200,6 +200,12 @@ namespace FarmTypeManager
                 {
                     int clampedStackValue = Math.Min(configItem.Stack.Value, item.maximumStackSize()); //limit the custom stack value to the maximum allowed by this item
                     item.Stack = clampedStackValue; //apply it
+                }
+
+                if (item is Furniture furniture) //if the created item is furniture (including from DGA, etc)
+                {
+                    int rotations = configItem.Rotation ?? 0; //if this item has a custom rotation setting, use it
+                    furniture.SetPlacement(tile, rotations); //set the furniture's tile and rotation
                 }
 
                 return item;

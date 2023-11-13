@@ -3,6 +3,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
+using System;
 using System.Collections.Generic;
 
 namespace FarmTypeManager
@@ -102,30 +103,58 @@ namespace FarmTypeManager
                     }
                     else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item
                     {
-                        missing++; //increment missing tracker (note: items should always be removed overnight)
-
-                        //this mod should remove all of its forage items overnight, so respawn this item without checking for its existence
-                        if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
+                        switch (saved.ConfigItem?.Category.ToLower()) //check category to determine how to replace this item
                         {
-                            //update this item's ID, in case it changed due to other mods
-                            string[] categoryAndName = saved.Name.Split(':');
-                            string newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+                            case "(f)":
+                            case "f":
+                            case "furniture": //if this has the furniture category
+                                bool stillExists = false;
+                                foreach (Furniture realFurniture in location.furniture)
+                                {
+                                    if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                    {
+                                        stillExists = true;
+                                        break; //stop checking furniture after finding a match
+                                    }
+                                }
 
-                            if (newID != null) //if a new ID was successfully generated
-                            {
-                                respawned++; //increment respawn tracker
-                                saved.ID = newID; //save the new ID
-                                SpawnForage(saved, location, saved.Tile); //respawn the item
-                            }
-                            else //if a new ID could not be generated
-                            {
-                                uninstalled++; //increment uninstalled mod tracker
-                                Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Item name: {saved.Name}", LogLevel.Trace);
-                            }
-                        }
-                        else //if this object's tile is obstructed
-                        {
-                            blocked++; //increment obstruction tracker
+                                if (!stillExists) //if the furniture no longer exists
+                                {
+                                    missing++; //increment missing tracker
+
+                                    //note: furniture can overlap with anything, so tile validity isn't checked here
+                                    SpawnForage(saved, location, saved.Tile); //respawn the furniture
+                                    respawned++; //increment respawn tracker
+                                }
+                                break;
+
+                            default: //if this is any other kind of item (and thus a PlacedItem)
+                                missing++; //increment missing tracker (PlacedItem should always be removed overnight)
+
+                                //assume that this must have been removed overnight; respawn the item without checking for its existence
+                                if (IsTileValid(location, saved.Tile, new Point(1, 1), "Medium") && !location.terrainFeatures.ContainsKey(saved.Tile)) //if the item's tile is clear enough to respawn
+                                {
+                                    //update this item's ID, in case it changed due to other mods
+                                    string[] categoryAndName = saved.Name.Split(':');
+                                    string newID = GetItemID(categoryAndName[0], categoryAndName[1]);
+
+                                    if (newID != null) //if a new ID was successfully generated
+                                    {
+                                        respawned++; //increment respawn tracker
+                                        saved.ID = newID; //save the new ID
+                                        SpawnForage(saved, location, saved.Tile); //respawn the item
+                                    }
+                                    else //if a new ID could not be generated
+                                    {
+                                        uninstalled++; //increment uninstalled mod tracker
+                                        Monitor.LogOnce($"Couldn't find a valid ID for a previously saved forage item. Item name: {saved.Name}", LogLevel.Trace);
+                                    }
+                                }
+                                else //if this object's tile is obstructed
+                                {
+                                    blocked++; //increment obstruction tracker
+                                }
+                                break;
                         }
                     }
                     else if (saved.Type == SavedObject.ObjectType.Container) //if this is a container

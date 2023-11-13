@@ -11,7 +11,7 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Generates a object from an index and places it on the specified map and tile.</summary>
+            /// <summary>Generates an object from an index and places it on the specified map and tile.</summary>
             /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
             /// <param name="location">The GameLocation where the forage should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
@@ -26,7 +26,7 @@ namespace FarmTypeManager
                         IsSpawnedObject = true
                     };
 
-                    Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     return location.dropObject(forageObj, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
                 }
                 else //if this object CANNOT be picked up
@@ -39,13 +39,13 @@ namespace FarmTypeManager
                     if (durability.HasValue) //if a default exists
                         forageObj.MinutesUntilReady = durability.Value; //use it
 
-                    Monitor.VerboseLog($"Spawning forage object. Type: {forageObj.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     location.objects.Add(tile, forageObj); //add the object directly to the objects list
                     return true;
                 }
             }
 
-            /// <summary>Generates a item from a saved object and places it on the specified map and tile.</summary>
+            /// <summary>Generates an item from a saved object and places it on the specified map and tile.</summary>
             /// <param name="forage">The SavedObject containing this forage's information.</param>
             /// <param name="location">The GameLocation where the forage should be spawned.</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
@@ -72,7 +72,7 @@ namespace FarmTypeManager
                         Monitor.VerboseLog("Tile is already occupied by an object. Skipping container spawn.");
                     }
 
-                    Monitor.VerboseLog($"Spawning container. Type: {container.DisplayName}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                    Monitor.VerboseLog($"Spawning container. Name: {container.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     location.objects.Add(tile, (StardewValley.Object)container); //add the container to the location's object array
                     return true;
                 }
@@ -80,11 +80,8 @@ namespace FarmTypeManager
                 {
                     return SpawnDGAItem(forage, location, tile);
                 }
-                else //if this is an item
+                else //if this is furniture or a PlacedItem
                 {
-                    if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
-                        return false; //fail to spawn
-
                     Item forageItem = CreateItem(forage, tile); //create the item to be spawned
 
                     if (forageItem == null) //if the item couldn't be created
@@ -95,10 +92,22 @@ namespace FarmTypeManager
                         return false;
                     }
 
-                    Monitor.VerboseLog($"Spawning forage item. Type: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    PlacedItem placed = new PlacedItem(forageItem); //create a terrainfeature containing the item
-                    location.terrainFeatures.Add(tile, placed); //add the placed item to this location
-                    return true;
+                    if (forageItem is Furniture furniture)
+                    {
+                        Monitor.VerboseLog($"Spawning furniture. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        location.furniture.Add(furniture);
+                        return true;
+                    }
+                    else //if this is any other kind of item
+                    {
+                        if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
+                            return false; //fail to spawn
+
+                        Monitor.VerboseLog($"Spawning forage item. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                        PlacedItem placed = new PlacedItem(forageItem); //create a terrainfeature containing the item
+                        location.terrainFeatures.Add(tile, placed); //add the placed item to this location
+                        return true;
+                    }
                 }
             }
 

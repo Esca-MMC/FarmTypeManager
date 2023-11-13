@@ -133,7 +133,7 @@ namespace FarmTypeManager
                             objectsToRemove.Add(saved); //mark object for removal from save
                         }
                     }
-                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a forage item, i.e. "debris" containing an item
+                    else if (saved.Type == SavedObject.ObjectType.Item) //if this is a non-standard forage item (PlacedItem, furniture, etc)
                     {
                         bool stillExists = false; //does this item still exist?
 
@@ -154,6 +154,39 @@ namespace FarmTypeManager
                                 {
                                     saved.DaysUntilExpire--; //decrease counter by 1
                                 }
+                            }
+                        }
+                        else 
+                        {
+                            switch (saved.ConfigItem?.Category.ToLower()) //if this is a furniture-category item (note: Only "normal", serializeable furniture should be handled here; DGA and similar mods should use another ObjectType)
+                            {
+                                case "(f)":
+                                case "f":
+                                case "furniture":
+                                    foreach (Furniture realFurniture in location.furniture)
+                                    {
+                                        if (realFurniture.TileLocation.Equals(saved.Tile) && realFurniture.ItemId.Equals(saved.StringID, StringComparison.Ordinal)) //if furniture exists with a matching tile and ID
+                                        {
+                                            stillExists = true;
+
+                                            if (endOfDay) //if expirations should be processed
+                                            {
+                                                if (saved.DaysUntilExpire == 1) //if this should expire tonight
+                                                {
+                                                    Monitor.VerboseLog($"Removing expired object. Type: Furniture. Name: {realFurniture.Name}. Location: {saved.MapName}.");
+                                                    location.furniture.Remove(realFurniture); //remove the furniture from the game
+                                                    objectsToRemove.Add(saved); //mark this for removal from save
+                                                }
+                                                else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
+                                                {
+                                                    saved.DaysUntilExpire--; //decrease counter by 1
+                                                }
+                                            }
+
+                                            break; //stop checking furniture after finding a match
+                                        }
+                                    }
+                                    break;
                             }
                         }
 
