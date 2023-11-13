@@ -27,16 +27,16 @@ namespace FarmTypeManager
             /// <remarks>
             /// This method imitates the check performed in the original, but targets <see cref="PlacedItem"/> instead of harvestable crops within <see cref="HoeDirt"/>.
             /// </remarks>
-            /// <param name="who">The player </param>
+            /// <param name="who">The player attempting to grab the item. As of SDV v1.6, the target method assumes this is not null.</param>
             public static void canGrabSomethingFromHere_Postfix(int x, int y, Farmer who, ref bool __result)
             {
                 try
                 {
-                    if (!__result && Game1.mouseCursor <= 0) //if the original result is false & the cursor appears to be in its default state
+                    if (!__result && Game1.mouseCursor <= 0) //if the original result is false & the cursor seems to be in its default state
                     {
-                        if (who.IsLocalPlayer && Context.IsPlayerFree && Game1.currentLocation != null) //if "who" is the local player, free to act, and at a known location
+                        if (who?.IsLocalPlayer == true && Context.IsPlayerFree && Game1.currentLocation != null) //if "who" is the local player, free to act, and at a known location
                         {
-                            //imitate the original "harvestable crops" check, but just look for PlacedItem instead
+                            //imitate the original "harvestable crops" check, but look for PlacedItem instead
                             Vector2 index = new Vector2(x / 64, y / 64); //get the tile position from the provided pixel position
                             if (Game1.currentLocation.terrainFeatures.ContainsKey(index) && Game1.currentLocation.terrainFeatures[index] is PlacedItem) //if there's a placed item at the tile
                             {
