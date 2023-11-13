@@ -26,10 +26,10 @@ namespace FarmTypeManager
                 switch (category.ToLower()) 
                 {
                     case "(bc)":
-                    case "big craftable":
-                    case "bigcraftables":
                     case "bc":
                     case "bigcraftable":
+                    case "bigcraftables":
+                    case "big craftable":
                     case "big craftables":
                         if (Game1.bigCraftableData.ContainsKey(idOrName))
                             return idOrName;
@@ -39,9 +39,9 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "boot":
-                    case "b":
                     case "(b)":
+                    case "b":
+                    case "boot":
                     case "boots":
                         var bootsData = Game1.content.Load<Dictionary<string, string>>("Data\\Boots");
                         if (bootsData.ContainsKey(idOrName))
@@ -52,8 +52,8 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "f":
                     case "(f)":
+                    case "f":
                     case "furniture":
                         var furnitureData = Game1.content.Load<Dictionary<string, string>>("Data\\Furniture");
                         if (furnitureData.ContainsKey(idOrName))
@@ -64,10 +64,10 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "hats":
-                    case "h":
                     case "(h)":
+                    case "h":
                     case "hat":
+                    case "hats":
                         var hatsData = Game1.content.Load<Dictionary<string, string>>("Data\\hats");
                         if (hatsData.ContainsKey(idOrName))
                             return idOrName;
@@ -77,12 +77,12 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "item":
-                    case "o":
                     case "(o)":
-                    case "items":
+                    case "o":
                     case "object":
                     case "objects":
+                    case "item":
+                    case "items":
                         if (Game1.objectData.ContainsKey(idOrName))
                             return idOrName;
                         foreach (var entry in Game1.objectData)
@@ -91,9 +91,9 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "pant":
-                    case "p":
                     case "(p)":
+                    case "p":
+                    case "pant":
                     case "pants":
                         if (Game1.pantsData.ContainsKey(idOrName))
                             return idOrName;
@@ -114,8 +114,8 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "s":
                     case "(s)":
+                    case "s":
                     case "shirt":
                     case "shirts":
                         if (Game1.shirtData.ContainsKey(idOrName))
@@ -126,9 +126,9 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "tool":
-                    case "t":
                     case "(t)":
+                    case "t":
+                    case "tool":
                     case "tools":
                         if (Game1.toolData.ContainsKey(idOrName))
                             return idOrName;
@@ -138,8 +138,8 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
-                    case "w":
                     case "(w)":
+                    case "w":
                     case "weapon":
                     case "weapons":
                         if (Game1.weaponData.ContainsKey(idOrName))
