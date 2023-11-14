@@ -5,6 +5,8 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace FarmTypeManager
@@ -104,22 +106,6 @@ namespace FarmTypeManager
                     Location.localSound("pickUpItem");
                     DelayedAction.playSoundAfterDelay("coin", 300);
                     Game1.player.animateOnce(279 + Game1.player.FacingDirection); //do the player's "pick up object" animation
-
-                    if (!Item.TypeDefinitionId.Equals("(O)")) //if this item is anything other than a basic StardewValley.Object
-                    {
-                        //prevent displaying the item during the "pick up object" animation
-                        for (int x = 0; x < Game1.player.FarmerSprite.CurrentAnimation.Count; x++) //modify each frame of the player's "pick up object" animation
-                        {
-                            Game1.player.FarmerSprite.CurrentAnimation[x] = new FarmerSprite.AnimationFrame(
-                                Game1.player.FarmerSprite.CurrentAnimation[x].frame,
-                                Game1.player.FarmerSprite.CurrentAnimation[x].milliseconds,
-                                Game1.player.FarmerSprite.CurrentAnimation[x].secondaryArm,
-                                Game1.player.FarmerSprite.CurrentAnimation[x].flip,
-                                null, //null the delegate that normally calls Farmer.showItemIntake (which always uses "springobjects" images)
-                                false);
-                        }
-                    }
-
                     Item = null; //clear this placed item's reference to the item
                     Location.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
                 }
