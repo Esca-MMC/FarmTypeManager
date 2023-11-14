@@ -5,8 +5,6 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Xml.Serialization;
 
 namespace FarmTypeManager
