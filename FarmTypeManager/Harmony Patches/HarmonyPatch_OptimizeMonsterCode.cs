@@ -44,37 +44,6 @@ namespace FarmTypeManager
                 );
             }
 
-            /// <summary>Disables this class's Harmony patches. Does nothing if patches are not currently applied.</summary>
-            /// <param name="harmony">The Harmony instance created for this mod.</param>
-            public static void RemovePatch(Harmony harmony)
-            {
-                if (!IsApplied)
-                    return;
-                IsApplied = false;
-
-                //disable Harmony patch(es)
-                Utility.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefix on SDV method \"GameLocation.isCollidingPosition\".", LogLevel.Trace);
-                harmony.Unpatch(
-                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isCollidingPosition), new[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool) }),
-                    HarmonyPatchType.Prefix,
-                    harmony.Id
-                );
-
-                Utility.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefix on SDV method \"Monster.findPlayer\".", LogLevel.Trace);
-                harmony.Unpatch(
-                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
-                    HarmonyPatchType.Prefix,
-                    harmony.Id
-                );
-
-                Utility.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": postfix on SDV method \"Monster.findPlayer\".", LogLevel.Trace);
-                harmony.Unpatch(
-                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
-                    HarmonyPatchType.Postfix,
-                    harmony.Id
-                );
-            }
-
             /// <summary>Returns false (i.e. "not colliding") for flying monsters immediately, skipping any additional logic.</summary>
             /// <remarks>
             /// It is possible that this could cause errors if collision detection also performs necessary tasks.
