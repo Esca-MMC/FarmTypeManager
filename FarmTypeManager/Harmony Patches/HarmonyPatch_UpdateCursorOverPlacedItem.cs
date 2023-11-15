@@ -51,9 +51,7 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce("A Harmony patch encountered an error. Your cursor might not change when hovering over spawned items. The auto-generated error message is displayed below:\n----------\n" +
-                                            ex.ToString(),
-                                            LogLevel.Warn);
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_UpdateCursorOverPlacedItem)}\" has encountered an error. Your cursor icon might not change when hovering over certain items. Full error message: \n{ex.ToString()}", LogLevel.Error);
                 }
             }
         }

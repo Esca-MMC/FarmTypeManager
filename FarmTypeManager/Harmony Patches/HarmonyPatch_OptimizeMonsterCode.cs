@@ -95,14 +95,12 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(GameLocation_isCollidingPosition_Prefix)}\" has encountered an error and will not be applied:\n{ex.ToString()}", LogLevel.Error);
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(GameLocation_isCollidingPosition_Prefix)}\" has encountered an error. Flying monsters might cause the game to run slower. Full error message: \n{ex.ToString()}", LogLevel.Error);
                     return true; //call the original method
                 }
             }
 
-            /// <summary>
-            /// Causes monsters to skip redundant calculations in single player mode.
-            /// </summary>
+            /// <summary>Causes monsters to skip redundant calculations in single player mode.</summary>
             private static bool Monster_findPlayer_Prefix(ref Farmer __result)
             {
                 try
@@ -117,14 +115,12 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Prefix)}\" has encountered an error and will not be applied:\n{ex.ToString()}", LogLevel.Error);
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Prefix)}\" has encountered an error. Monsters might cause the game to run slower in single-player mode. Full error message: \n{ex.ToString()}", LogLevel.Error);
                     return true; //call the original method
                 }
             }
 
-            /// <summary>
-            /// Attempts to avoid a bug where monsters occasionally crash the game due to a null "Monster.Player" during "Monster.behaviorAtGameTick".
-            /// </summary>
+            /// <summary>Attempts to avoid a bug where monsters occasionally crash the game due to a null "Monster.Player" during "Monster.behaviorAtGameTick".</summary>
             /// <remarks>
             /// I cannot yet naturally reproduce this bug, but it has been reported by several players.
             /// atravita found that the null errors occurred in "!Player.isRafting" and fixed the issue by transpiling a null check into that code. If errors persist, consider that solution.
@@ -151,7 +147,7 @@ namespace FarmTypeManager
                 }
                 catch (Exception ex)
                 {
-                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Postfix)}\" has encountered an error and will not be applied:\n{ex.ToString()}", LogLevel.Error);
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Postfix)}\" has encountered an error. Full error message: \n{ex.ToString()}", LogLevel.Error);
                     return; //call the original method
                 }
             }
