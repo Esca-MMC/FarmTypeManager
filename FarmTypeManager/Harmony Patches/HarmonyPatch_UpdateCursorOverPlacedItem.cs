@@ -38,13 +38,16 @@ namespace FarmTypeManager
                         {
                             //imitate the original "harvestable crops" check, but look for PlacedItem instead
                             Vector2 index = new Vector2(x / 64, y / 64); //get the tile position from the provided pixel position
-                            if (Game1.currentLocation.terrainFeatures.ContainsKey(index) && Game1.currentLocation.terrainFeatures[index] is PlacedItem) //if there's a placed item at the tile
+                            if (Game1.currentLocation.terrainFeatures.ContainsKey(index) && Game1.currentLocation.terrainFeatures[index] is PlacedItem placedItem) //if there's a placed item at the tile
                             {
-                                Game1.mouseCursor = 6; //set the "grab" cursor
-                                if (StardewValley.Utility.withinRadiusOfPlayer(x, y, 1, who)) //if the player is within reach of the tile
-                                    __result = true; //overwrite the result
-                                else //if the player is NOT within reach the tile
-                                    Game1.mouseCursorTransparency = 0.5f; //make the cursor semi-transparent
+                                if (!placedItem.modData.TryGetValue(Utility.ModDataKeys.CanBePickedUp, out var data) || !data.StartsWith("f", StringComparison.OrdinalIgnoreCase)) //if this item does NOT have the "cannot be picked up" flag
+                                {
+                                    Game1.mouseCursor = 6; //set the "grab" cursor
+                                    if (StardewValley.Utility.withinRadiusOfPlayer(x, y, 1, who)) //if the player is within reach of the tile
+                                        __result = true; //overwrite the result
+                                    else //if the player is NOT within reach the tile
+                                        Game1.mouseCursorTransparency = 0.5f; //make the cursor semi-transparent
+                                }
                             }
                         }
                     }

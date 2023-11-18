@@ -18,50 +18,28 @@ namespace FarmTypeManager
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
             public static bool SpawnForage(string index, GameLocation location, Vector2 tile, bool indestructible = false)
             {
-                StardewValley.Object forageObj;
-
-                if (CanBePickedUp(index)) //if this object can be picked up
+                StardewValley.Object forageObj = new StardewValley.Object(index, 1)
                 {
-                    forageObj = new StardewValley.Object(index, 1)
-                    {
-                        Location = location,
-                        TileLocation = tile,
-                        IsSpawnedObject = true //allow "normal" forage behavior if applicable (note: this may be what actually controls pickup permission)
-                    };
-                    
-                    if (indestructible)
-                    {
-                        //disable pickup if applicable
-                        forageObj.Fragility = StardewValley.Object.fragility_Indestructable;
-                        forageObj.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
-                    }
+                    Location = location,
+                    TileLocation = tile
+                };
 
-                    Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
-                }
-                else //if this object CANNOT be picked up
+                if (indestructible) //if this should NOT be picked up or destroyed by players
                 {
-                    forageObj = new StardewValley.Object(index, 1)
-                    {
-                        Location = location,
-                        TileLocation = tile,
-                        CanBeGrabbed = false //note: this field may be obsolete
-                    };
-
-                    if (indestructible)
-                    {
-                        //disable pickup if applicable (note: for non-grabbable items, this should also prevent destruction by tools, etc)
-                        forageObj.Fragility = StardewValley.Object.fragility_Indestructable;
-                        forageObj.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
-                    }
-
-                    int? durability = GetDefaultDurability(index); //try to get this item's default durability
-                    if (durability.HasValue) //if a default exists
-                        forageObj.MinutesUntilReady = durability.Value; //use it
-
-                    Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
-                    return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
+                    forageObj.Fragility = StardewValley.Object.fragility_Indestructable;
+                    forageObj.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
                 }
+                else if (CanBePickedUp(index)) //if this ID is normally allowed to be picked up
+                {
+                    forageObj.IsSpawnedObject = true; //allow "normal" forage behavior if applicable (including allowing players to pick it up)
+                }
+
+                int? durability = GetDefaultDurability(index); //try to get this item's default durability
+                if (durability.HasValue) //if a default exists
+                    forageObj.MinutesUntilReady = durability.Value; //use it
+
+                Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
+                return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
             }
 
             /// <summary>Generates an item from a saved object and places it on the specified map and tile.</summary>
