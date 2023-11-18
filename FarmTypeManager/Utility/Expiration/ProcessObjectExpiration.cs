@@ -340,7 +340,7 @@ namespace FarmTypeManager
                         {
                             if (endOfDay) //if expirations should be processed
                             {
-                                if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
+                                if (saved.DaysUntilExpire == 1) //if this should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: DGA furniture. Name: {saved.Name}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
                                     location.furniture.Remove(realFurniture); //remove this furniture
