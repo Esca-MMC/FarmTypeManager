@@ -92,6 +92,9 @@ namespace FarmTypeManager
             /// </remarks>
             public override bool performUseAction(Vector2 tileLocation)
             {
+                if (modData.TryGetValue(Utility.ModDataKeys.CanBePickedUp, out var data) && data.StartsWith("f", StringComparison.OrdinalIgnoreCase)) //if this is flagged as "cannot be picked up"
+                    return false;
+
                 SetForageQuality(Location); //if this is forage, set its quality
                 if (!Game1.player.canMove || this.isTemporarilyInvisible || !Game1.player.couldInventoryAcceptThisItem(Item)) //if this isn't the local player OR they can't currently pick this up
                     return false; //this placed item was not used

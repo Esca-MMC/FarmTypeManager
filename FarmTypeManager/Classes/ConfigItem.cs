@@ -9,6 +9,10 @@ namespace FarmTypeManager
         /// <summary>A set of "advanced" options for a StardewValley.Item. Designed for readable JSON serialization.</summary>
         public class ConfigItem
         {
+            /// <summary>False if players should be prevented from picking up this item. Not necessarily supported or relevant for all categories.</summary>
+            [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+            public bool? CanBePickedUp { get; set; }
+
             /// <summary>The item's category, e.g. "Weapon" or "Chest".</summary>
             [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
             public string Category { get; set; }

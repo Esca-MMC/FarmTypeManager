@@ -14,8 +14,9 @@ namespace FarmTypeManager
             /// <summary>Generates an object from an index and places it on the specified map and tile.</summary>
             /// <param name="index">The parent sheet index (a.k.a. object ID) of the object type to spawn.</param>
             /// <param name="location">The GameLocation where the forage should be spawned.</param>
+            /// <param name="indestructible">True if this forage should spawn as an "indestructible" item that can't be picked up (regardless of its normal behavior).</param>
             /// <param name="tile">The x/y coordinates of the tile where the ore should be spawned.</param>
-            public static bool SpawnForage(string index, GameLocation location, Vector2 tile)
+            public static bool SpawnForage(string index, GameLocation location, Vector2 tile, bool indestructible = false)
             {
                 StardewValley.Object forageObj;
 
@@ -25,8 +26,16 @@ namespace FarmTypeManager
                     {
                         Location = location,
                         TileLocation = tile,
-                        IsSpawnedObject = true //allow "normal" forage behavior if applicable
+                        IsSpawnedObject = true //allow "normal" forage behavior if applicable (note: this may be what actually controls pickup permission)
                     };
+                    
+                    if (indestructible)
+                    {
+                        //disable pickup if applicable
+                        forageObj.Fragility = StardewValley.Object.fragility_Indestructable;
+                        forageObj.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                    }
+
                     Monitor.VerboseLog($"Spawning forage object. Name: {forageObj.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                     return location.objects.TryAdd(tile, forageObj); //attempt to add the object and return success/failure
                 }
@@ -36,8 +45,15 @@ namespace FarmTypeManager
                     {
                         Location = location,
                         TileLocation = tile,
-                        CanBeGrabbed = false //attempt to prevent pickup
+                        CanBeGrabbed = false //note: this field may be obsolete
                     };
+
+                    if (indestructible)
+                    {
+                        //disable pickup if applicable (note: for non-grabbable items, this should also prevent destruction by tools, etc)
+                        forageObj.Fragility = StardewValley.Object.fragility_Indestructable;
+                        forageObj.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                    }
 
                     int? durability = GetDefaultDurability(index); //try to get this item's default durability
                     if (durability.HasValue) //if a default exists
@@ -56,7 +72,13 @@ namespace FarmTypeManager
             {
                 if (forage.Type == SavedObject.ObjectType.Object) //if this is a basic object
                 {
-                    return SpawnForage(forage.StringID, location, tile); //call the object ID version of this method
+                    bool indestructible;
+                    if (forage.ConfigItem?.CanBePickedUp == false) //if this setting was provided AND is false
+                        indestructible = true; //make this item "indestructible" to forcibly prevent pickup
+                    else
+                        indestructible = false; //use normal behavior
+
+                    return SpawnForage(forage.StringID, location, tile, indestructible); //call the object ID version of this method
                 }
                 else if (forage.Type == SavedObject.ObjectType.Container) //if this is a container
                 {
@@ -92,12 +114,25 @@ namespace FarmTypeManager
 
                     if (forageItem is StardewValley.Object bc && bc.bigCraftable.Value) //if this item is a big craftable
                     {
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable
+                            bc.Fragility = StardewValley.Object.fragility_Indestructable;
+                            bc.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
                         Monitor.VerboseLog($"Spawning big craftable. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.objects.Add(tile, bc);
                         return true;
                     }
                     else if (forageItem is Furniture furniture)
                     {
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable (note: fragility has no effect on furniture, so this relies on a Harmony patch and the flag below)
+                            furniture.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
                         Monitor.VerboseLog($"Spawning furniture. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.furniture.Add(furniture);
                         return true;
@@ -107,8 +142,15 @@ namespace FarmTypeManager
                         if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
                             return false; //fail to spawn
 
-                        Monitor.VerboseLog($"Spawning forage item. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         PlacedItem placed = new PlacedItem(forageItem); //create a terrainfeature containing the item
+
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable (note: apply this to the PlacedItem, not the actual item it contains)
+                            placed.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
+                        Monitor.VerboseLog($"Spawning forage item. Name: {forageItem.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.terrainFeatures.Add(tile, placed); //add the placed item to this location
                         return true;
                     }
@@ -124,9 +166,16 @@ namespace FarmTypeManager
             {
                 try
                 {
-                    object rawDGA = DGAItemAPI.SpawnDGAItem(forage.Name); //try to create this item with DGA's API
-                    if (rawDGA is Furniture furnitureDGA) //if the resulting item is furniture
+                    Item itemDGA = CreateItem(forage, tile);
+
+                    if (itemDGA is Furniture furnitureDGA) //if the resulting item is furniture
                     {
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable (note: fragility has no effect on furniture, so this relies on a Harmony patch and the flag below)
+                            furnitureDGA.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
                         Monitor.VerboseLog($"Spawning DGA forage furniture. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         furnitureDGA.TileLocation = tile;
                         Rectangle originalBoundingBox = furnitureDGA.boundingBox.Value; //get "original" bounding box
@@ -135,35 +184,39 @@ namespace FarmTypeManager
                         location.furniture.Add(furnitureDGA); //add the furniture to this location
                         return true;
                     }
-                    else if (rawDGA is StardewValley.Object objectDGA) //if the resulting item is a SDV object (i.e. can be treated like normal forage)
+                    else if (itemDGA is StardewValley.Object objectDGA) //if the resulting item is a SDV object (i.e. can be treated like normal forage)
                     {
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable
+                            objectDGA.Fragility = StardewValley.Object.fragility_Indestructable;
+                            objectDGA.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
                         Monitor.VerboseLog($"Spawning DGA forage object. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         objectDGA.IsSpawnedObject = true;
-                        return location.dropObject(objectDGA, tile * 64f, Game1.viewport, true, null); //attempt to place the object and return success/failure
+                        return location.Objects.TryAdd(tile, objectDGA); //attempt to place the object and return success/failure
                     }
-                    else if (rawDGA is Item itemDGA) //if the resulting item is any other type of Item (i.e. can be treated as a PlacedItem)
+                    else if (itemDGA != null) //if the resulting item is any other type of Item (i.e. can be treated as a PlacedItem)
                     {
                         if (location.terrainFeatures.ContainsKey(tile)) //if a terrain feature already exists on this tile
                             return false; //fail to spawn
 
-                        Monitor.VerboseLog($"Spawning DGA forage item. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         PlacedItem placed = new PlacedItem(itemDGA); //create a terrainfeature containing the item
+
+                        if (forage.ConfigItem?.CanBePickedUp == false)
+                        {
+                            //disable pickup if applicable (note: apply this to the PlacedItem, not the actual item it contains)
+                            placed.modData[Utility.ModDataKeys.CanBePickedUp] = "false";
+                        }
+
+                        Monitor.VerboseLog($"Spawning DGA forage item. Name: {forage.Name}. Location: {tile.X},{tile.Y} ({location.Name}).");
                         location.terrainFeatures.Add(tile, placed); //add the placed item to this location
                         return true;
                     }
-                    else if (rawDGA != null) //if DGA spawned an item, but it isn't a recognized type
-                    {
-                        Monitor.Log("Dynamic Game Assets (DGA) created an item, but FTM doesn't recognize its type. This may be caused by the item or a problem with FTM's logic.", LogLevel.Warn);
-                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
-                        Monitor.Log($"Item type (C# code): {rawDGA.GetType()?.Name ?? "null"}", LogLevel.Warn);
-                        return false;
-                    }
-                    else //if DGA did not spawn an item
-                    {
-                        Monitor.Log("The SpawnForage method failed to generate a Dynamic Game Assets (DGA) item. This may be caused by a problem with this mod's logic. Please report this to FTM's developer if possible.", LogLevel.Warn);
-                        Monitor.Log($"Item name: {forage.Name}", LogLevel.Warn);
-                        return false;
-                    }
+
+                    //if the item was null or not an Item class
+                    return false; 
                 }
                 catch (Exception ex)
                 {

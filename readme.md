@@ -227,11 +227,12 @@ Name | Required | Valid settings | Description | Notes
 -----|----------|----------------|-------------|------
 Category | Yes | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Weapon" | The category of the spawned item.| "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
 Name | Yes | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
+CanBePickedUp | No | **true**, false | When set to false, players will not be allowed to pick up this item. "True" has no effect. | When set to false, furniture and big craftables should still be useable, but cannot be picked up. Most items with this setting will be automatically removed overnight; respawn them daily or use the "DaysUntilSpawnsExpire" setting. This setting has no effect on containers.
 Contents | No | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
 PercentChanceToSpawn | No | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
 Rotation | No | An integer (minimum/default 0) | The number of times to rotate a furniture item before spawning it. | This setting will be ignored by non-furniture items. The number of possible orientations is determined by each furniture item; 1, 2, and 4 are the most common.
 SpawnWeight | No | An integer (minimum/default 1) | The weighted spawn chance of this forage type. | Increases the odds of spawning this forage type instead of others, similar to adding multiple copies of it to a forage list. Has no effect in "loot" or "contents" lists. Example: If this forage type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
-Stack | No | An integer (minimum 1) | The number of items "stacked" together in this single object. | This setting should affect any categories capable of stacking. Others, such as furniture and clothing, will ignore this value.
+Stack | No | An integer (minimum 1) | The number of items to spawn as a single inventory "stack". | This setting should affect any categories capable of stacking. The maximum stack size varies for each item type; higher values will be reduced to the actual maximum.
 
 Here is an example loot list that uses all three formats. It would cause a defeated monster to drop Wild Horseradish, Joja Cola, and a Galaxy Sword.
 ```
@@ -249,7 +250,6 @@ Here is an example forage list that spawns a chest containing Wild Horseradish, 
 ```
 "SpringItemIndex":
 [
-  {
     "category": "chest",
     "contents":
     [
@@ -319,7 +319,8 @@ MiningLevelRequired (Area) | **null**, *(see Notes)* | The minimum Mining skill 
 StartingSpawnChance (Area) | **null**, *(see Notes)* | Each ore type’s chance of spawning with the minimum required Mining skill *in this area*. | This setting is per-area and will *override* the global StartingSpawnChance setting below. Leave this set to *null* unless you want different chances in a specific area. Fill this in by copying the format of the global version below.
 LevelTenSpawnChance (Area) | **null**, *(see Notes)* | Each ore type’s chance of spawning with level 10 Mining skill *in this area*. | This setting is per-area and will *override* the global LevelTenSpawnChance setting below. Leave this set to *null* unless you want different chances in a specific area. Fill this in by copying the format of the global version below.
 PercentExtraSpawnsPerMiningLevel | An integer (default **0**) | The % of extra ore spawned for each level of Mining skill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% ore per Mining level; if a farmhand has the best Mining skill of level 8, there will be 80% more ore each day.
-MiningLevelRequired (Global) | 0-10 | The minimum Mining skill level needed to spawn each ore type. | An ore type won't start spawning until *any* player (even offline farmhands) has the listed Mining skill. 
+MiningLevelRequired (Global) | 0-10 | The minimum Mining skill level needed 
+  {to spawn each ore type. | An ore type won't start spawning until *any* player (even offline farmhands) has the listed Mining skill. 
 StartingSpawnChance (Global) | 0 or more | Each ore type's chance of spawning with the minimum required Mining skill. | These numbers are weighted chances; they don't need to add up to 100. The defaults are roughly based on the native game's spawn chances with slight increases.
 LevelTenSpawnChance (Global) | 0 or more | Each ore type's chance of spawning with level 10 Mining skill. | Chances will drift gradually from StartingSpawnChance to LevelTenSpawnChance. For example, in the default settings, frozen geodes' chances of spawning from level 5 to 10 are `4, 4, 3, 3, 2, 2`.
 

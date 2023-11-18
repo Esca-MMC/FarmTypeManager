@@ -127,6 +127,7 @@ namespace FarmTypeManager
                             {
                                 Monitor.Log("Failed to create an item. Dynamic Game Assets (DGA) item was null or an unrecognized type.", LogLevel.Debug);
                                 Monitor.Log($"Item name: {save.Name}", LogLevel.Debug);
+                                Monitor.Log($"Item type (C# code): {rawDGA?.GetType()?.Name ?? "null"}", LogLevel.Debug);
                                 return null;
                             }
                         }

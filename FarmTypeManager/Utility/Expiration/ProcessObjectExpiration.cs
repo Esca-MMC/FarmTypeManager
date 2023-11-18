@@ -150,12 +150,22 @@ namespace FarmTypeManager
                                 {
                                     stillExists = true;
 
+                                    if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                    {
+                                        //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
+
+                                        realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
+                                        location.removeObject(saved.Tile, false); //remove the object from the game
+                                    }
+
                                     if (endOfDay) //if expirations should be processed
                                     {
                                         if (saved.DaysUntilExpire == 1) //if the BC should expire tonight
                                         {
                                             Monitor.VerboseLog($"Removing expired object. Type: Big Craftable. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                            realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                            realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                            realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                             location.removeObject(saved.Tile, false); //remove the object from the game
                                             objectsToRemove.Add(saved); //mark object for removal from save
                                         }
@@ -199,6 +209,7 @@ namespace FarmTypeManager
                                 {
                                     stillExists = true;
                                     location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                                    placedItem.Item = null; //clear the reference to the contained item
 
                                     if (endOfDay) //if expirations should be processed
                                     {
@@ -269,7 +280,8 @@ namespace FarmTypeManager
                                     }
                                 }
 
-                                realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                 location.removeObject(saved.Tile, false); //remove this container from the location, regardless of expiration
 
                                 if (endOfDay) //if expirations should be processed
@@ -309,6 +321,7 @@ namespace FarmTypeManager
                         )
                         {
                             location.terrainFeatures.Remove(saved.Tile); //remove this placed item, regardless of expiration
+                            placedItem.Item = null; //clear the reference to the contained item
 
                             if (endOfDay) //if expirations should be processed
                             {
@@ -325,13 +338,12 @@ namespace FarmTypeManager
                         }
                         else if (location.GetFurnitureAt(saved.Tile) is Furniture realFurniture && DGAItemAPI?.GetDGAItemId(realFurniture) == saved.Name) //if matching furniture exists here
                         {
-                            location.furniture.Remove(realFurniture); //remove this furniture, regardless of expiration
-
                             if (endOfDay) //if expirations should be processed
                             {
                                 if (saved.DaysUntilExpire == 1 || saved.DaysUntilExpire == null) //if this should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: DGA furniture. Name: {saved.Name}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
+                                    location.furniture.Remove(realFurniture); //remove this furniture
                                     objectsToRemove.Add(saved); //mark this for removal from save
                                 }
                                 else if (saved.DaysUntilExpire > 1) //if this should expire, but not tonight
@@ -344,12 +356,22 @@ namespace FarmTypeManager
                         {
                             if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
                             {
+                                if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                {
+                                    //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
+
+                                    realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
+                                    location.removeObject(saved.Tile, false); //remove the object from the game
+                                }
+
                                 if (endOfDay) //if expirations should be processed
                                 {
                                     if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                     {
                                         Monitor.VerboseLog($"Removing expired object. Type: DGA object. Name: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                        realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                        realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                         location.removeObject(saved.Tile, false); //remove the object from the game
                                         objectsToRemove.Add(saved); //mark object for removal from save
                                     }
@@ -370,12 +392,22 @@ namespace FarmTypeManager
                     {
                         if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == false && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
+                            if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                            {
+                                //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
+
+                                realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
+                                location.removeObject(saved.Tile, false); //remove the object from the game
+                            }
+
                             if (endOfDay) //if expirations should be processed
                             {
                                 if (saved.DaysUntilExpire == 1) //if the object should expire tonight
                                 {
                                     Monitor.VerboseLog($"Removing expired object. Type: {saved.Type.ToString()}. ID: {saved.ID}. Location: {saved.Tile.X},{saved.Tile.Y} ({saved.MapName}).");
-                                    realObject.CanBeGrabbed = true; //workaround for certain objects being ignored by the removeObject method
+                                    realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
+                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
                                     location.removeObject(saved.Tile, false); //remove the object from the game
                                     objectsToRemove.Add(saved); //mark object for removal from save
                                 }
