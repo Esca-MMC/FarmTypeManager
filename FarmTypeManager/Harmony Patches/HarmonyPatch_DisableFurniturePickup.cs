@@ -1,7 +1,5 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Monsters;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;

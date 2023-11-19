@@ -194,7 +194,7 @@ namespace FarmTypeManager
                     }
 
                     //if the item was null or not an Item class
-                    return false; 
+                    return false;
                 }
                 catch (Exception ex)
                 {
