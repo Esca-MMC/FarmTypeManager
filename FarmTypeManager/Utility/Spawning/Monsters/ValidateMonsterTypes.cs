@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley;
@@ -657,11 +658,19 @@ namespace FarmTypeManager
                         {
                             try
                             {
-                                AnimatedSprite sprite = new AnimatedSprite(spriteText);
+                                if (!Game1.content.DoesAssetExist<Texture2D>(spriteText)) //if this sprite asset does NOT currently exist
+                                {
+                                    Monitor.Log($"The \"Sprite\" setting for monster type \"{validTypes[x].MonsterName}\" was not found. Please make sure the setting is spelled correctly and the sprite is loaded.", LogLevel.Info);
+                                    Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                                    validTypes[x].Settings.Remove("Sprite"); //remove the setting
+                                }
+                                //note: if any uncaught loading errors are reported, consider testing with Game1.content.Load here
+                                //      (and possibly cache the success/failure for each sprite string, to minimize log messages and load time)
                             }
                             catch (Exception)
                             {
-                                Monitor.Log($"The \"Sprite\" setting for monster type \"{validTypes[x].MonsterName}\" failed to load. Please make sure the setting is spelled correctly.", LogLevel.Info);
+                                Monitor.Log($"The \"Sprite\" setting for monster type \"{validTypes[x].MonsterName}\" caused an error while loading the sprite. Please make sure the setting is spelled correctly.", LogLevel.Info);
                                 Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                                 validTypes[x].Settings.Remove("Sprite"); //remove the setting
