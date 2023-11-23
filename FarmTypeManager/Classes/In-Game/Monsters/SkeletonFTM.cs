@@ -136,8 +136,7 @@ namespace FarmTypeManager
                             base.stopGlowing();
                         }
                     }
-                    this.Sprite.Animate(time, 20, 5, 150f);
-                    if (this.Sprite.currentFrame == 24)
+                    if (Sprite.Animate(time, 20, 4, 150f))
                     {
                         this.throwing.Value = false;
                         this.Sprite.currentFrame = 0;
