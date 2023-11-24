@@ -151,13 +151,7 @@ namespace FarmTypeManager
                                     stillExists = true;
 
                                     if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
-                                    {
-                                        //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
-
-                                        realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
-                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
-                                        location.removeObject(saved.Tile, false); //remove the object from the game
-                                    }
+                                        realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
 
                                     if (endOfDay) //if expirations should be processed
                                     {
@@ -357,13 +351,7 @@ namespace FarmTypeManager
                             if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && DGAItemAPI?.GetDGAItemId(realObject) == saved.Name) //if an object exists in the saved location & matches the saved object (according to DGA's API)
                             {
                                 if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
-                                {
-                                    //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
-
-                                    realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
-                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
-                                    location.removeObject(saved.Tile, false); //remove the object from the game
-                                }
+                                    realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
 
                                 if (endOfDay) //if expirations should be processed
                                 {
@@ -393,13 +381,7 @@ namespace FarmTypeManager
                         if (location.Objects.TryGetValue(saved.Tile, out StardewValley.Object realObject) && realObject.bigCraftable.Value == false && realObject.ItemId == saved.StringID) //if an object exists in the saved location & matches the saved object's ID
                         {
                             if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
-                            {
-                                //remove it overnight regardless of expiration (to avoid situations where players have permanent unremoveable items)
-
-                                realObject.CanBeGrabbed = true; //allow removeObject to handle certain objects that would otherwise be ignored
-                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag if applicable
-                                location.removeObject(saved.Tile, false); //remove the object from the game
-                            }
+                                realObject.Fragility = StardewValley.Object.fragility_Removable; //disable "indestructible" flag (in case of mod removal overnight, etc; it should be re-enabled by another method after save)
 
                             if (endOfDay) //if expirations should be processed
                             {

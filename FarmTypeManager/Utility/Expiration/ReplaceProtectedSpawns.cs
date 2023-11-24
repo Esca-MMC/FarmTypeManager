@@ -136,6 +136,9 @@ namespace FarmTypeManager
                                         blocked++; //increment obstruction tracker
                                     }
                                 }
+                                else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                                    realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
+
                                 break;
 
                             case "(f)":
@@ -237,6 +240,8 @@ namespace FarmTypeManager
                                 blocked++; //increment obstruction tracker
                             }
                         }
+                        else if (realObject != null && realFurniture == null && saved.ConfigItem?.CanBePickedUp == false) //if this is a non-furniture object flagged as "cannot be picked up"
+                            realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
                     }
                     else //if this is forage or ore
                     {
@@ -285,6 +290,8 @@ namespace FarmTypeManager
                                 blocked++; //increment obstruction tracker
                             }
                         }
+                        else if (saved.ConfigItem?.CanBePickedUp == false) //if this object was flagged as "cannot be picked up"
+                            realObject.Fragility = StardewValley.Object.fragility_Indestructable; //re-enable "indestructible" flag (should be disabled before save)
                     }
                 }
 
