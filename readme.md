@@ -251,6 +251,7 @@ Here is an example forage list that spawns a chest containing Wild Horseradish, 
 ```
 "SpringItemIndex":
 [
+  {
     "category": "chest",
     "contents":
     [
