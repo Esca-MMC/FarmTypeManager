@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -27,7 +26,7 @@ namespace FarmTypeManager
                 //apply Harmony patches
                 Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": prefixing SDV method \"GameLocation.isCollidingPosition\".", LogLevel.Trace);
                 harmony.Patch(
-                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isCollidingPosition), new[] { typeof(Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool) }),
+                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.isCollidingPosition), new[] { typeof(Microsoft.Xna.Framework.Rectangle), typeof(xTile.Dimensions.Rectangle), typeof(bool), typeof(int), typeof(bool), typeof(Character), typeof(bool), typeof(bool), typeof(bool), typeof(bool) }),
                     prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(GameLocation_isCollidingPosition_Prefix))
                 );
 
@@ -48,7 +47,7 @@ namespace FarmTypeManager
             /// <remarks>
             /// It is possible that this could cause errors if collision detection also performs necessary tasks.
             /// It may also change the original method's result if it would ever return true for flying monsters.
-            /// I haven't encountered any such issues so far, though.
+            /// As of this writing, it has been in place for a few years without any known errors or side effects.
             /// </remarks>
             private static bool GameLocation_isCollidingPosition_Prefix(bool glider, Character character, ref bool __result)
             {
