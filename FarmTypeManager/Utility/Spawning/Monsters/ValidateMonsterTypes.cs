@@ -789,6 +789,17 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("ExtraLoot"); //remove the setting
                         }
                     }
+
+                    //validate gender
+                    if (validTypes[x].Settings.ContainsKey("Gender"))
+                    {
+                        if (validTypes[x].Settings["Gender"] is not string) //if this is NOT a string
+                        {
+                            Monitor.Log($"The \"Gender\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's a string.", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+                            validTypes[x].Settings.Remove("Gender"); //remove the setting
+                        }
+                    }
                 }
 
                 return validTypes;
