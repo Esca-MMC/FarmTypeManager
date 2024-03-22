@@ -23,6 +23,24 @@ namespace FarmTypeManager
                     //for each valid name, add the game's internal ID for that large object (a.k.a. resource clump)
                     switch (name.ToLower())
                     {
+                        //known resource clumps that are NOT giant crops
+                        case "44":
+                        case "giantweed1":
+                        case "giant weed 1":
+                            IDs.Add("44");
+                            break;
+                        case "46":
+                        case "giantweed2":
+                        case "giant weed 2":
+                            IDs.Add("46");
+                            break;
+                        case "148":
+                        case "quarryboulder":
+                        case "quarryboulders":
+                        case "quarry boulder":
+                        case "quarry boulders":
+                            IDs.Add("148");
+                            break;
                         case "600":
                         case "stump":
                         case "stumps":
@@ -33,11 +51,6 @@ namespace FarmTypeManager
                         case "logs":
                             IDs.Add("602");
                             break;
-                        case "672":
-                        case "boulder":
-                        case "boulders":
-                            IDs.Add("672");
-                            break;
                         case "622":
                         case "meteor":
                         case "meteors":
@@ -45,11 +58,17 @@ namespace FarmTypeManager
                         case "meteorites":
                             IDs.Add("622");
                             break;
+                        case "672":
+                        case "boulder":
+                        case "boulders":
+                            IDs.Add("672");
+                            break;
                         case "752":
                         case "minerock1":
                         case "mine rock 1":
                             IDs.Add("752");
                             break;
+                        case "754":
                         case "minerock2":
                         case "mine rock 2":
                             IDs.Add("754");
@@ -64,6 +83,8 @@ namespace FarmTypeManager
                         case "mine rock 4":
                             IDs.Add("758");
                             break;
+
+                        //giant crops that existed prior to Data/GiantCrops
                         case "190":
                         case "cauliflower":
                         case "giantcauliflower":
@@ -84,7 +105,7 @@ namespace FarmTypeManager
                             break;
                         default: //if "name" isn't a known object name or ID
                             var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops");
-                            if (giantCropsData.ContainsKey(name)) //if this is a giant crop ID
+                            if (giantCropsData.ContainsKey(name)) //if this is a giant crop ID (NOTE: this is case-sensitive, unlike the hard-coded clump names above; do not use "name.ToLower()" or similar)
                                 IDs.Add(name);
                             else
                             {

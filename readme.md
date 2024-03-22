@@ -309,10 +309,10 @@ WinterItemIndex (Global) | A list of integers and/or item names, e.g. `[16, "Red
 ### Large Object Spawn Settings
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-ObjectTypes | **"Stump"**, "Log", "Boulder", "Meteorite", "Mine Rock 1", "Mine Rock 2", "Mine Rock 3", "Mine Rock 4", "Giant Cauliflower", "Giant Melon", "Giant Pumpkin" | A list of object types to spawn. | Objects spawned in this area will be chosen randomly from this list. Adding the same object type multiple times will increase its chances. Separate multiple objects with commas: `"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
-FindExistingObjectLocations | **true**, false | Finds any existing objects listed in ObjectTypes and adds them to the IncludeCoordinates list. | This can be used to automatically find existing objects' coordinates and respawn them each day. It will set itself to "false" in your settings file after completion.
+ObjectTypes | "Stump", "Log", "Boulder", "Quarry Boulder", "Meteorite", "Mine Rock 1", "Mine Rock 2", "Mine Rock 3", "Mine Rock 4", "Weed 1", "Weed 2", or a giant crop ID | A list of object types to spawn. | Objects spawned in this area will be chosen randomly from this list. Adding the same object type multiple times will increase its chances. Separate multiple objects with commas: `"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
+FindExistingObjectLocations | true, **false** | Finds any existing objects listed in ObjectTypes and adds them to the IncludeCoordinates list. | This can be used to automatically find existing objects' coordinates and respawn them each day. It will set itself to "false" in your settings file after completion.
 PercentExtraSpawnsPerSkillLevel | Any integer (default **0**) | The % of extra objects spawned for each level of the RelatedSkill. | In multiplayer, this is based on the highest skill level among *all* players (even if they're offline). For example, setting this to 10 will spawn +10% items per skill level; if a farmhand has the best skill of level 8, there will be 80% more objects each day.
-RelatedSkill | "Farming", "Fishing", **"Foraging"**, "Mining", "Combat" | The skill used by PercentExtraSpawnsPerSkillLevel to spawn extra objects.
+RelatedSkill | "Farming", "Fishing", "Foraging", "Mining", "Combat" | The skill used by PercentExtraSpawnsPerSkillLevel to spawn extra objects.
 
 ### Ore Spawn Settings
 Name | Valid settings | Description | Notes

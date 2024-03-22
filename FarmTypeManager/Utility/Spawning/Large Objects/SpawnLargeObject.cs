@@ -20,7 +20,7 @@ namespace FarmTypeManager
 
                 switch (index)
                 {
-                    //if this is a known resource clump ID
+                    //if this is a known, basic resource clump
                     case "600":
                     case "602":
                     case "622":
@@ -30,6 +30,15 @@ namespace FarmTypeManager
                     case "756":
                     case "758":
                         location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile));
+                        return true;
+                    //if this is one of the "green rain" clumps added in SDV 1.6
+                    case "44":
+                    case "46":
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, 4, "TileSheets\\Objects_2")); //spawn with the correct health and spritesheet
+                        return true;
+                    //if this is any other known resource clump that uses "TileSheets/Objects_2"
+                    case "148":
+                        location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, null, "TileSheets\\Objects_2")); //spawn with the correct spritesheet
                         return true;
                     default: //if this is NOT a known clump, assume it's a giant crop
                         location.resourceClumps.Add(new GiantCrop(index.ToString(), tile));
