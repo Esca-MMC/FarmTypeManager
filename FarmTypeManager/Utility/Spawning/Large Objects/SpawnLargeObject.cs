@@ -40,10 +40,25 @@ namespace FarmTypeManager
                     case "148":
                         location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, null, "TileSheets\\Objects_2")); //spawn with the correct spritesheet
                         return true;
-                    default: //if this is NOT a known clump, assume it's a giant crop
-                        location.resourceClumps.Add(new GiantCrop(index.ToString(), tile));
-                        return true;
+
+                    //this is NOT a known basic clump
                 }
+
+                if (Utility.ItemExtensionsAPI != null && Utility.ItemExtensionsAPI.IsClump(index)) //if this is an IE clump
+                {
+                    bool spawned = Utility.ItemExtensionsAPI.TrySpawnClump(index, tile, location, out string error);
+
+                    if (!spawned && error != null) //if an error caused spawning to fail
+                    {
+                        Utility.Monitor.LogOnce($"Item Extensions encounted an error while trying to spawn a clump (a.k.a. large object). Clump ID: \"{index}\". Error message: \"{error}\".", LogLevel.Info);
+                    }
+
+                    return spawned; //true if IE says the clump was spawned successfully
+                }
+
+                //assume this is a giant crop ID
+                location.resourceClumps.Add(new GiantCrop(index.ToString(), tile));
+                return true;
             }
         }
     }

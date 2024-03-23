@@ -61,15 +61,14 @@ namespace FarmTypeManager
                         case ObjectType.LargeObject:
                             if (!LargeObjectSizeCache.ContainsKey(StringID)) //if this large object type's size has not been cached yet
                             {
-                                var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops"); //load SDV's giant crop data
-                                if (giantCropsData.TryGetValue(StringID, out var giantCrop)) //if this is a giant crop ID
+                                if (DataLoader.GiantCrops(Game1.content).TryGetValue(StringID, out var giantCrop)) //if this is a giant crop
                                 {
                                     //cache its size from the data
                                     LargeObjectSizeCache.Add(StringID, giantCrop.TileSize);
                                 }
-                                else //if this is NOT a giant crop ID
+                                else
                                 {
-                                    //assume this is a 2x2 resource clump and cache that size
+                                    //assume this is a basic 2x2 resource clump and cache that size
                                     LargeObjectSizeCache.Add(StringID, new Point(2, 2));
                                 }
                             }

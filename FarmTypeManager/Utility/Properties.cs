@@ -92,6 +92,9 @@ namespace FarmTypeManager
             /// <summary>The API for Dynamic Game Assets (DGA), used to spawn its custom items. Null if unavailable.</summary>
             public static IDynamicGameAssetsApi DGAItemAPI { get; set; } = null;
 
+            /// <summary>The API for Item Extensions, also called Item Extensions Framework. Null if unavailable.</summary>
+            public static ItemExtensions.IApi ItemExtensionsAPI { get; set; } = null;
+
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
             public static ModConfig MConfig { get; set; }
 

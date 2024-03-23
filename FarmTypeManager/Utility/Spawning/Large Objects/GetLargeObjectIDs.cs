@@ -25,16 +25,21 @@ namespace FarmTypeManager
                     {
                         //known resource clumps that are NOT giant crops
                         case "44":
+                        case "weed1":
+                        case "weed 1":
                         case "giantweed1":
                         case "giant weed 1":
                             IDs.Add("44");
                             break;
                         case "46":
+                        case "weed2":
+                        case "weed 2":
                         case "giantweed2":
                         case "giant weed 2":
                             IDs.Add("46");
                             break;
                         case "148":
+                        case "quarry":
                         case "quarryboulder":
                         case "quarryboulders":
                         case "quarry boulder":
@@ -104,8 +109,12 @@ namespace FarmTypeManager
                             IDs.Add("Pumpkin");
                             break;
                         default: //if "name" isn't a known object name or ID
-                            var giantCropsData = Game1.content.Load<Dictionary<string, GiantCropData>>("Data\\GiantCrops");
-                            if (giantCropsData.ContainsKey(name)) //if this is a giant crop ID (NOTE: this is case-sensitive, unlike the hard-coded clump names above; do not use "name.ToLower()" or similar)
+                            //NOTE: checks below may be case-sensitive, unlike the aliases above; do not use "name.ToLower()" or similar
+                            if (Utility.ItemExtensionsAPI != null && Utility.ItemExtensionsAPI.IsClump(name)) //if this is an IE clump
+                            {
+                                IDs.Add(name);
+                            }
+                            else if (DataLoader.GiantCrops(Game1.content).ContainsKey(name)) //if there is a giant crop with this ID
                                 IDs.Add(name);
                             else
                             {
