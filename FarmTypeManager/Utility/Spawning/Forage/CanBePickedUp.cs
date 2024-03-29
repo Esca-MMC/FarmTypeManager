@@ -82,6 +82,13 @@ namespace FarmTypeManager
                     case "922": //supply crate (beach farm)
                     case "923": //
                     case "924": //
+                    case "BasicCoalNode0": //coal node
+                    case "BasicCoalNode1": //
+                    case "VolcanoCoalNode0": //coal node (volcano/challenge)
+                    case "VolcanoCoalNode1": //
+                    case "CalicoEggStone_0": //calico egg stones (desert festival)
+                    case "CalicoEggStone_1": //
+                    case "CalicoEggStone_2": //
                         return false; //this ID cannot be picked up
                     default:
                         return true; //this ID can be picked up

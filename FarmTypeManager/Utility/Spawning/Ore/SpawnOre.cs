@@ -88,6 +88,9 @@ namespace FarmTypeManager
                     case "cindershard":
                         ore = new Object((843 + RNG.Next(2)).ToString(), 1);
                         break;
+                    case "coal":
+                        ore = new Object("BasicCoalNode" + RNG.Next(2).ToString(), 1);
+                        break;
                     default: break;
                 }
 

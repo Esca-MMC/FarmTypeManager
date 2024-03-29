@@ -54,7 +54,8 @@ namespace FarmTypeManager
                         return 6;
                     case "290": //iron
                         return 4;
-                    case "764": //gold
+                    case "764":             //gold
+                    case "VolcanoGoldNode": //
                         return 8;
                     case "765": //iridium
                         return 16;
@@ -84,6 +85,16 @@ namespace FarmTypeManager
                     case "923": //
                     case "924": //
                         return 3;
+                    case "BasicCoalNode0": //coal node
+                    case "BasicCoalNode1": //
+                        return 5;
+                    case "VolcanoCoalNode0": //coal node (volcano/challenge)
+                    case "VolcanoCoalNode1": //
+                        return 10;
+                    case "CalicoEggStone_0": //calico egg stones (desert festival)
+                    case "CalicoEggStone_1": //
+                    case "CalicoEggStone_2": //
+                        return 8;
 
                     default: //no known durability
                         return null;
