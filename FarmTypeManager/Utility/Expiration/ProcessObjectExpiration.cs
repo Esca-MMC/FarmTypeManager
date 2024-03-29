@@ -101,7 +101,15 @@ namespace FarmTypeManager
                                         break;
                                     }
                                 }
-                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT a giant crop and the index matches
+                                else if (Utility.ItemExtensionsAPI?.IsClump(largeObjectStringID) == true) //if IE is installed
+                                {
+                                    if (clump.modData.TryGetValue("mistyspring.ItemExtensions/CustomClumpId", out string itemExtensionsClumpID) && largeObjectStringID == itemExtensionsClumpID) //if this is an IE clump and the ID matches
+                                    {
+                                        existingObject = clump;
+                                        break;
+                                    }
+                                }
+                                else if (largeObjectStringID == (clump.parentSheetIndex.Value.ToString() ?? "")) //if this is NOT any other kind of clump, and the index matches
                                 {
                                     existingObject = clump;
                                     break;
