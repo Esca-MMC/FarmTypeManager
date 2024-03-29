@@ -41,7 +41,7 @@ namespace FarmTypeManager
                         location.resourceClumps.Add(new ResourceClump(int.Parse(index), 2, 2, tile, null, "TileSheets\\Objects_2")); //spawn with the correct spritesheet
                         return true;
 
-                    //this is NOT a known basic clump
+                        //this is NOT a known basic clump
                 }
 
                 if (Utility.ItemExtensionsAPI != null && Utility.ItemExtensionsAPI.IsClump(index)) //if this is an IE clump

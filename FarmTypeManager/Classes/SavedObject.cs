@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData.GiantCrops;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
