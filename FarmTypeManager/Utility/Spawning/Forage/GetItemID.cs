@@ -16,6 +16,9 @@ namespace FarmTypeManager
             /// <returns>The ID of the item. Null if the item was not found.</returns>
             public static string GetItemID(string category, string idOrName)
             {
+                if (category == null || idOrName == null)
+                    return null;
+
                 //depending on the category name, load a specific data asset and compare the item ID/name to its entries
                 switch (category.ToLower())
                 {
@@ -29,7 +32,7 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.bigCraftableData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
@@ -42,8 +45,9 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in bootsData)
                         {
-                            if (entry.Value.Split('/')[0].Equals(idOrName, StringComparison.OrdinalIgnoreCase))
-                                return entry.Key;
+                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
+                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
+                                    return entry.Key;
                         }
                         break;
                     case "(f)":
@@ -54,8 +58,9 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in furnitureData)
                         {
-                            if (entry.Value.Split('/')[0].Equals(idOrName, StringComparison.OrdinalIgnoreCase))
-                                return entry.Key;
+                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
+                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
+                                    return entry.Key;
                         }
                         break;
                     case "(h)":
@@ -67,8 +72,9 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in hatsData)
                         {
-                            if (entry.Value.Split('/')[0].Equals(idOrName, StringComparison.OrdinalIgnoreCase))
-                                return entry.Key;
+                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
+                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
+                                    return entry.Key;
                         }
                         break;
                     case "(o)":
@@ -81,7 +87,7 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.objectData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
@@ -93,18 +99,18 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.pantsData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
                     case "ring":
                     case "rings":
                         //Note: Ring data is stored with basic object data, e.g. in the "Data/Objects" asset. Rings can be identified by the Type value "Ring", the context tag "ring_item", etc.
-                        if (Game1.objectData.TryGetValue(idOrName, out var ringEntry) && ringEntry.Type.Equals("Ring", StringComparison.OrdinalIgnoreCase)) //if this matches a ring's ID
+                        if (Game1.objectData.TryGetValue(idOrName, out var ringEntry) && string.Equals(ringEntry?.Type, "Ring", StringComparison.OrdinalIgnoreCase)) //if this matches a ring's ID
                             return idOrName;
                         foreach (var entry in Game1.objectData)
                         {
-                            if (entry.Value.Type.Equals("Ring", StringComparison.OrdinalIgnoreCase) && entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase)) //if this matches a ring's name
+                            if (string.Equals(entry.Value?.Type, "Ring", StringComparison.OrdinalIgnoreCase) && string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase)) //if this matches a ring's name
                                 return entry.Key;
                         }
                         break;
@@ -116,7 +122,7 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.shirtData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
@@ -128,7 +134,7 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.toolData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
@@ -140,7 +146,7 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in Game1.weaponData)
                         {
-                            if (entry.Value.Name.Equals(idOrName, StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                 return entry.Key;
                         }
                         break;
