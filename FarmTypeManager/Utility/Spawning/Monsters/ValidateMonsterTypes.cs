@@ -800,6 +800,18 @@ namespace FarmTypeManager
                             validTypes[x].Settings.Remove("Gender"); //remove the setting
                         }
                     }
+
+                    //validate instant kill immunity
+                    if (validTypes[x].Settings.ContainsKey("InstantKillImmunity"))
+                    {
+                        if (!(validTypes[x].Settings["InstantKillImmunity"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"InstantKillImmunity\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("InstantKillImmunity"); //remove the setting
+                        }
+                    }
                 }
 
                 return validTypes;
