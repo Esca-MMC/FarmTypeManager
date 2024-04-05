@@ -150,6 +150,8 @@ namespace FarmTypeManager
 
                             case "fence":
                             case "fences":
+                            case "gate":
+                            case "gates":
                                 realObject = location.getObjectAtTile((int)saved.Tile.X, (int)saved.Tile.Y); //get the object at the saved location
 
                                 if (realObject == null) //if the object no longer exists

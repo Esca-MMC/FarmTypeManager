@@ -52,6 +52,8 @@ namespace FarmTypeManager
                         break;
                     case "fence":
                     case "fences":
+                    case "gate":
+                    case "gates":
                         //Note: Fence data is stored with basic object data, e.g. in the "Data/Objects" asset. Fences can be identified by entries in Data/Fences.
                         var fenceData = DataLoader.Fences(Game1.content);
 

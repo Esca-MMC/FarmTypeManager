@@ -180,6 +180,8 @@ namespace FarmTypeManager
                                 break;
                             case "fence":
                             case "fences":
+                            case "gate":
+                            case "gates":
                                 //if a fence exists at the saved tile with a matching ID
                                 if (location.Objects.TryGetValue(saved.Tile, out realObject) && realObject is Fence realFence && realFence.ItemId == saved.StringID)
                                 {
