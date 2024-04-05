@@ -3985,6 +3985,8 @@
 										<option>Facing direction</option>
 										<option>Segments</option>
 										<option>Spawn weight</option>
+										<option>Instant kill immunity</option>
+										<option>Gender</option>
 										
 									</select>
 								</div>
@@ -4219,6 +4221,22 @@
 									<fieldset class="border">
 										<legend>Segments<span class="tooltip">?<span class="tooltiptext">Set the number of extra body parts this monster will have. This currently affects Royal Serpents (number of body segments, minimum 2) and small Slimes (number of "stacked" slimes, minimum 0).</span></span></legend>
 										<input type="number" name="Monster-MonsterTypes-Settings-Segments" id="Monster-MonsterTypes-Settings-Segments" style="width:4em;">
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-InstantKillImmunity-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Instant kill immunity<span class="tooltip">?<span class="tooltiptext">If this is enabled, certain "instant kill" abilities won't affect this monster.<br/><br/>Currently, this prevents the monster being eaten by the Frog Egg trinket.</span></span></legend>
+										<input type="checkbox" class="big" name="Monster-MonsterTypes-Settings-InstantKillImmunity" id="Monster-MonsterTypes-Settings-InstantKillImmunity">
+										<label for="Monster-MonsterTypes-Settings-InstantKillImmunity" class="big-checkbox-label"></label>
+									</fieldset>
+								</div>
+								
+								<div class="setting" id="Monster-MonsterTypes-Settings-Gender-Div" style="display:none">
+									<fieldset class="border">
+										<legend>Gender<span class="tooltip">?<span class="tooltiptext">Spawns a specific gender of monster, if applicable.<br/><br/>Currently, this only affects small slimes. Male slimes ("M") will spawn with an antenna. Female slimes ("F") will not.</span></span></legend>
+										<input type="text" name="Monster-MonsterTypes-Settings-Gender" id="Monster-MonsterTypes-Settings-Gender" style="width:8em;">
+										<label for="Monster-MonsterTypes-Settings-Gender" class="big-checkbox-label"></label>
 									</fieldset>
 								</div>
 								
@@ -5331,123 +5349,126 @@
 		
 		//copy-paste the latest version of FTM's default config file, then remove the "areas" contents
 		var defaultJsonFile ={
-			"ForageSpawnEnabled": false,
-			"LargeObjectSpawnEnabled": false,
-			"OreSpawnEnabled": false,
-			"MonsterSpawnEnabled": false,
-			"Forage_Spawn_Settings": {
+		  "ForageSpawnEnabled": false,
+		  "LargeObjectSpawnEnabled": false,
+		  "OreSpawnEnabled": false,
+		  "MonsterSpawnEnabled": false,
+		  "Forage_Spawn_Settings": {
 			"Areas": [],
 			"PercentExtraSpawnsPerForagingLevel": 0,
 			"SpringItemIndex": [
-				16,
-				20,
-				22,
-				257
+			  16,
+			  20,
+			  22,
+			  257
 			],
 			"SummerItemIndex": [
-				396,
-				398,
-				402,
-				404
+			  396,
+			  398,
+			  402,
+			  404
 			],
 			"FallItemIndex": [
-				281,
-				404,
-				420,
-				422
+			  281,
+			  404,
+			  420,
+			  422
 			],
 			"WinterItemIndex": [],
 			"CustomTileIndex": []
-			},
-			"Large_Object_Spawn_Settings": {
+		  },
+		  "Large_Object_Spawn_Settings": {
 			"Areas": [],
 			"CustomTileIndex": []
-			},
-			"Ore_Spawn_Settings": {
+		  },
+		  "Ore_Spawn_Settings": {
 			"Areas": [],
 			"PercentExtraSpawnsPerMiningLevel": 0,
 			"MiningLevelRequired": {
-				"Stone": 0,
-				"Geode": 0,
-				"FrozenGeode": 5,
-				"MagmaGeode": 8,
-				"OmniGeode": 0,
-				"Gem": 6,
-				"Copper": 0,
-				"Iron": 4,
-				"Gold": 7,
-				"Iridium": 9,
-				"Mystic": 10,
-				"Radioactive": 0,
-				"Diamond": 6,
-				"Ruby": 6,
-				"Jade": 6,
-				"Amethyst": 6,
-				"Topaz": 6,
-				"Emerald": 6,
-				"Aquamarine": 6,
-				"Mussel": 0,
-				"Fossil": 0,
-				"Clay": 0,
-				"CinderShard": 0
+			  "Stone": 0,
+			  "Geode": 0,
+			  "FrozenGeode": 5,
+			  "MagmaGeode": 8,
+			  "OmniGeode": 0,
+			  "Gem": 6,
+			  "Copper": 0,
+			  "Iron": 4,
+			  "Gold": 7,
+			  "Iridium": 9,
+			  "Mystic": 10,
+			  "Radioactive": 0,
+			  "Diamond": 6,
+			  "Ruby": 6,
+			  "Jade": 6,
+			  "Amethyst": 6,
+			  "Topaz": 6,
+			  "Emerald": 6,
+			  "Aquamarine": 6,
+			  "Mussel": 0,
+			  "Fossil": 0,
+			  "Clay": 0,
+			  "CinderShard": 0,
+			  "Coal": 0
 			},
 			"StartingSpawnChance": {
-				"Stone": 66,
-				"Geode": 8,
-				"FrozenGeode": 4,
-				"MagmaGeode": 2,
-				"OmniGeode": 0,
-				"Gem": 5,
-				"Copper": 21,
-				"Iron": 15,
-				"Gold": 10,
-				"Iridium": 1,
-				"Mystic": 1,
-				"Radioactive": 0,
-				"Diamond": 0,
-				"Ruby": 0,
-				"Jade": 0,
-				"Amethyst": 0,
-				"Topaz": 0,
-				"Emerald": 0,
-				"Aquamarine": 0,
-				"Mussel": 0,
-				"Fossil": 0,
-				"Clay": 0,
-				"CinderShard": 0
+			  "Stone": 66,
+			  "Geode": 8,
+			  "FrozenGeode": 4,
+			  "MagmaGeode": 2,
+			  "OmniGeode": 0,
+			  "Gem": 5,
+			  "Copper": 21,
+			  "Iron": 15,
+			  "Gold": 10,
+			  "Iridium": 1,
+			  "Mystic": 1,
+			  "Radioactive": 0,
+			  "Diamond": 0,
+			  "Ruby": 0,
+			  "Jade": 0,
+			  "Amethyst": 0,
+			  "Topaz": 0,
+			  "Emerald": 0,
+			  "Aquamarine": 0,
+			  "Mussel": 0,
+			  "Fossil": 0,
+			  "Clay": 0,
+			  "CinderShard": 0,
+			  "Coal": 0
 			},
 			"LevelTenSpawnChance": {
-				"Stone": 48,
-				"Geode": 2,
-				"FrozenGeode": 2,
-				"MagmaGeode": 2,
-				"OmniGeode": 0,
-				"Gem": 5,
-				"Copper": 16,
-				"Iron": 13,
-				"Gold": 10,
-				"Iridium": 1,
-				"Mystic": 1,
-				"Radioactive": 0,
-				"Diamond": 0,
-				"Ruby": 0,
-				"Jade": 0,
-				"Amethyst": 0,
-				"Topaz": 0,
-				"Emerald": 0,
-				"Aquamarine": 0,
-				"Mussel": 0,
-				"Fossil": 0,
-				"Clay": 0,
-				"CinderShard": 0
+			  "Stone": 48,
+			  "Geode": 2,
+			  "FrozenGeode": 2,
+			  "MagmaGeode": 2,
+			  "OmniGeode": 0,
+			  "Gem": 5,
+			  "Copper": 16,
+			  "Iron": 13,
+			  "Gold": 10,
+			  "Iridium": 1,
+			  "Mystic": 1,
+			  "Radioactive": 0,
+			  "Diamond": 0,
+			  "Ruby": 0,
+			  "Jade": 0,
+			  "Amethyst": 0,
+			  "Topaz": 0,
+			  "Emerald": 0,
+			  "Aquamarine": 0,
+			  "Mussel": 0,
+			  "Fossil": 0,
+			  "Clay": 0,
+			  "CinderShard": 0,
+			  "Coal": 0
 			},
 			"CustomTileIndex": []
-			},
-			"Monster_Spawn_Settings": {
+		  },
+		  "Monster_Spawn_Settings": {
 			"Areas": [],
 			"CustomTileIndex": []
-			},
-			"QuarryTileIndex": [
+		  },
+		  "QuarryTileIndex": [
 			556,
 			558,
 			583,
@@ -5460,13 +5481,13 @@
 			680,
 			681,
 			685
-			],
-			"File_Conditions": {
+		  ],
+		  "File_Conditions": {
 			"FarmTypes": [],
 			"FarmerNames": [],
 			"SaveFileNames": [],
 			"OtherMods": {}
-			}
+		  }
 		};
 		
 		//load a user-selected .json file & pass its contents to the fillAllSettings function
@@ -8945,6 +8966,20 @@
 			if (Number.isNaN(parseInt(curr.value)) == false)
 			{
 				settings["Segments"] = parseInt(curr.value);
+			}
+			curr.value = null;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-InstantKillImmunity");
+			if (curr.checked == true)
+			{
+				settings["InstantKillImmunity"] = true;
+			}
+			curr.checked = false;
+			
+			curr = document.getElementById("Monster-MonsterTypes-Settings-Gender");
+			if (curr.value != null && curr.value != "")
+			{
+				settings["Gender"] = curr.value;
 			}
 			curr.value = null;
 			
