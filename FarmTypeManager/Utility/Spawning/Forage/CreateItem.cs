@@ -188,6 +188,12 @@ namespace FarmTypeManager
                     case "tools":
                         item = ItemRegistry.Create("(T)" + save.StringID);
                         break;
+                    case "(tr)":
+                    case "tr":
+                    case "trinket":
+                    case "trinkets":
+                        item = ItemRegistry.Create("(TR)" + save.StringID);
+                        break;
                     case "(w)":
                     case "w":
                     case "weapon":

@@ -153,6 +153,14 @@ namespace FarmTypeManager
                                 return entry.Key;
                         }
                         break;
+                    case "(tr)":
+                    case "tr":
+                    case "trinket":
+                    case "trinkets":
+                        if (DataLoader.Trinkets(Game1.content).ContainsKey(idOrName))
+                            return idOrName;
+                        //note: trinkets do not have internal names to reference, and their display names are especially inconsistent; only reference by key
+                        break;
                     case "(w)":
                     case "w":
                     case "weapon":
