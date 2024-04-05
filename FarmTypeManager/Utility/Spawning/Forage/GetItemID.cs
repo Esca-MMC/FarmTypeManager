@@ -50,6 +50,19 @@ namespace FarmTypeManager
                                     return entry.Key;
                         }
                         break;
+                    case "fence":
+                    case "fences":
+                        //Note: Fence data is stored with basic object data, e.g. in the "Data/Objects" asset. Fences can be identified by entries in Data/Fences.
+                        var fenceData = DataLoader.Fences(Game1.content);
+
+                        if (Game1.objectData.TryGetValue(idOrName, out var fenceEntry) && fenceData.ContainsKey(idOrName)) //if this matches an object's ID and a fence entry
+                            return idOrName;
+                        foreach (var entry in Game1.objectData)
+                        {
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase) && fenceData.ContainsKey(entry.Key)) //if this matches an object's name and the object's ID has a fence entry
+                                return entry.Key;
+                        }
+                        break;
                     case "(f)":
                     case "f":
                     case "furniture":

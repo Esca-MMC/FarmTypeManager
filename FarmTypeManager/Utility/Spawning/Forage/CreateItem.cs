@@ -139,6 +139,10 @@ namespace FarmTypeManager
                             return null;
                         }
                         break;
+                    case "fence":
+                    case "fences":
+                        item = new Fence(tile, save.StringID, false); //TODO: check configitem setting for isGate
+                        break;
                     case "(f)":
                     case "f":
                     case "furniture":
