@@ -5,7 +5,7 @@
 		<meta name="author" content="Esca-MMC">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<title>Farm Type Manager Config Editor v1.17.0</title>
+		<title>Farm Type Manager Config Editor v1.19.0</title>
 		
 		<style>		
 			/* title box */
@@ -618,7 +618,7 @@
 	<body class="preload">
 		<header>
 			<div class="titlebox">
-				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.17.0</sub></h1>
+				<h1>Farm Type Manager<br/>Config Editor<br/><sub>v1.19.0</sub></h1>
 				
 				<nav>
 					<button class="titlebox-button" id="load" onclick="document.getElementById('load-input').click();">Load</button>
@@ -1685,66 +1685,33 @@
 						<div class="accordion-content">
 							<div class="setting">
 								<fieldset class="border">
-								<legend>Object types<span class="tooltip">?<span class="tooltiptext">Select which object types can spawn in this area.<br/><br/>Each spawned object will be chosen randomly from this list.</span></span></legend>
-									<table class="checkboxes">
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-Stump" value="Stump">
-												<label for="LargeObject-ObjectTypes-Stump" class="small-checkbox-label">Stump</label>
-											</td>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-Log" value="Log">
-												<label for="LargeObject-ObjectTypes-Log" class="small-checkbox-label">Log</label>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-Boulder" value="Boulder">
-												<label for="LargeObject-ObjectTypes-Boulder" class="small-checkbox-label">Boulder</label>
-											</td>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-Meteorite" value="Meteorite">
-												<label for="LargeObject-ObjectTypes-Meteorite" class="small-checkbox-label">Meteorite</label>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock1" value="Mine Rock 1">
-												<label for="LargeObject-ObjectTypes-MineRock1" class="small-checkbox-label">Mine&nbspRock&nbsp1</label>
-											</td>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock2" value="Mine Rock 2">
-												<label for="LargeObject-ObjectTypes-MineRock2" class="small-checkbox-label">Mine&nbspRock&nbsp2</label>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock3" value="Mine Rock 3">
-												<label for="LargeObject-ObjectTypes-MineRock3" class="small-checkbox-label">Mine&nbspRock&nbsp3</label>
-											</td>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-MineRock4" value="Mine Rock 4">
-												<label for="LargeObject-ObjectTypes-MineRock4" class="small-checkbox-label">Mine&nbspRock&nbsp4</label>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantCauliflower" value="Giant Cauliflower">
-												<label for="LargeObject-ObjectTypes-GiantCauliflower" class="small-checkbox-label">Giant&nbspCauliflower</label>
-											</td>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantMelon" value="Giant Melon">
-												<label for="LargeObject-ObjectTypes-GiantMelon" class="small-checkbox-label">Giant&nbspMelon</label>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<input type="checkbox" class="small" name="LargeObject-ObjectTypes" id="LargeObject-ObjectTypes-GiantPumpkin" value="Giant Pumpkin">
-												<label for="LargeObject-ObjectTypes-GiantPumpkin" class="small-checkbox-label">Giant&nbspPumpkin</label>
-											</td>
-										</tr>
-									</table>
-								</fieldset>
+								<legend>Object types<span class="tooltip">?<span class="tooltiptext">Enter the names of object types that can spawn in this area.<br/><br/>Each spawned object will be chosen randomly from this list.<br/><br/>See the <a href="https://github.com/Esca-MMC/FarmTypeManager#large-object-spawn-settings" target="_blank">FTM readme</a> for a list of valid large object names.</span></span></legend>
+								<table class="list-left">
+									<tr>
+										<td>
+											<select size="6" id="LargeObject-ObjectTypes" style="width:12em">
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<button class="basic" id="LargeObject-ObjectTypes-DelButton" onclick="buttonDeleteFromList(this)">Delete Selected</button>
+										</td>
+									</tr>
+								</table>
+								<table class="list-right">
+									<tr>
+										<td>
+											<label for="LargeObject-ObjectTypes-Add"></label>
+											<input type="text" name="LargeObject-ObjectTypes-Add" id="LargeObject-ObjectTypes-Add" style="width:12em;">
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<button class="basic" id="LargeObject-ObjectTypes-AddButton" onclick="buttonAddDirect(this)">Add Entry</button>
+										</td>
+									</tr>
+								</table>
+							</fieldset>
 							</div>
 						</div>
 						
@@ -5381,7 +5348,7 @@
 		
 		var json; //global storage for a json object containing all of this page's settings (shared by the load/save functions)
 		
-		//copy-paste the latest version of FTM's default config file, then remove the "areas" contents
+		//TO UPDATE: copy-paste the latest version of FTM's default config file, then remove the "areas" contents
 		var defaultJsonFile ={
 		  "ForageSpawnEnabled": false,
 		  "LargeObjectSpawnEnabled": false,
@@ -6257,7 +6224,7 @@
 				var area;
 				if (selector.id.includes("Forage")) //if forage area
 				{
-					//TO UPDATE: copy-paste default settings for a forage area
+					//TO UPDATE: copy a default forage area, then adjust the settings (e.g. set spawns to 0)
 					area =
 					{
 						"SpringItemIndex": null,
@@ -6301,94 +6268,90 @@
 				}
 				else if (selector.id.includes("LargeObject")) //if large object area
 				{
-					//TO UPDATE: copy-paste default settings for a large object area
+					//TO UPDATE: copy a default large object area, then adjust the settings (e.g. set spawns to 0)
 					area = {
-						"ObjectTypes": [
-						  "Stump"
-						],
-						"FindExistingObjectLocations": false,
-						"PercentExtraSpawnsPerSkillLevel": 0,
-						"RelatedSkill": "Foraging",
-						"UniqueAreaID": "Farm large object area 1",
-						"MapName": "Farm",
-						"MinimumSpawnsPerDay": 0,
-						"MaximumSpawnsPerDay": 0,
-						"IncludeTerrainTypes": [],
-						"ExcludeTerrainTypes": [],
-						"IncludeCoordinates": [],
-						"ExcludeCoordinates": [],
-						"StrictTileChecking": "Maximum",
-						"SpawnTiming": {
-						  "StartTime": 600,
-						  "EndTime": 600,
-						  "MinimumTimeBetweenSpawns": 10,
-						  "MaximumSimultaneousSpawns": null,
-						  "OnlySpawnIfAPlayerIsPresent": false,
-						  "SpawnSound": ""
-						},
-						"ExtraConditions": {
-						  "Years": [],
-						  "Seasons": [],
-						  "Days": [],
-						  "WeatherYesterday": [],
-						  "WeatherToday": [],
-						  "WeatherTomorrow": [],
-						  "GameStateQueries": [],
-						  "CPConditions": {},
-						  "EPUPreconditions": [],
-						  "LimitedNumberOfSpawns": null
-						},
-						"DaysUntilSpawnsExpire": null
-					};
+									"ObjectTypes": [],
+									"FindExistingObjectLocations": false,
+									"PercentExtraSpawnsPerSkillLevel": 0,
+									"RelatedSkill": "Foraging",
+									"UniqueAreaID": "Farm large object area 1",
+									"MapName": "Farm",
+									"MinimumSpawnsPerDay": 0,
+									"MaximumSpawnsPerDay": 0,
+									"IncludeTerrainTypes": [],
+									"ExcludeTerrainTypes": [],
+									"IncludeCoordinates": [],
+									"ExcludeCoordinates": [],
+									"StrictTileChecking": "Maximum",
+									"SpawnTiming": {
+									  "StartTime": 600,
+									  "EndTime": 600,
+									  "MinimumTimeBetweenSpawns": 10,
+									  "MaximumSimultaneousSpawns": null,
+									  "OnlySpawnIfAPlayerIsPresent": false,
+									  "SpawnSound": ""
+									},
+									"ExtraConditions": {
+									  "Years": [],
+									  "Seasons": [],
+									  "Days": [],
+									  "WeatherYesterday": [],
+									  "WeatherToday": [],
+									  "WeatherTomorrow": [],
+									  "GameStateQueries": [],
+									  "CPConditions": {},
+									  "EPUPreconditions": [],
+									  "LimitedNumberOfSpawns": null
+									},
+									"DaysUntilSpawnsExpire": null
+								};
 
 					area.UniqueAreaID = ID; //adjust the ID
 					json.Large_Object_Spawn_Settings.Areas.push(area); //add the new area
 				}
 				else if (selector.id.includes("Ore")) //if ore area
 				{
-					//TO UPDATE: copy-paste default settings for an ore area
+					//TO UPDATE: copy a default ore area, then adjust the settings (e.g. set spawns to 0)
 					area = {
-						"MiningLevelRequired": null,
-						"StartingSpawnChance": null,
-						"LevelTenSpawnChance": null,
-						"UniqueAreaID": "Farm ore area 1",
-						"MapName": "Farm",
-						"MinimumSpawnsPerDay": 0,
-						"MaximumSpawnsPerDay": 0,
-						"IncludeTerrainTypes": [],
-						"ExcludeTerrainTypes": [],
-						"IncludeCoordinates": [],
-						"ExcludeCoordinates": [],
-						"StrictTileChecking": "Maximum",
-						"SpawnTiming": {
-						  "StartTime": 600,
-						  "EndTime": 600,
-						  "MinimumTimeBetweenSpawns": 10,
-						  "MaximumSimultaneousSpawns": null,
-						  "OnlySpawnIfAPlayerIsPresent": false,
-						  "SpawnSound": ""
-						},
-						"ExtraConditions": {
-						  "Years": [],
-						  "Seasons": [],
-						  "Days": [],
-						  "WeatherYesterday": [],
-						  "WeatherToday": [],
-						  "WeatherTomorrow": [],
-						  "GameStateQueries": [],
-						  "CPConditions": {},
-						  "EPUPreconditions": [],
-						  "LimitedNumberOfSpawns": null
-						},
-						"DaysUntilSpawnsExpire": null
-					};
+									"MonsterTypes": [],
+									"UniqueAreaID": "Farm monster area 1",
+									"MapName": "Farm",
+									"MinimumSpawnsPerDay": 0,
+									"MaximumSpawnsPerDay": 0,
+									"IncludeTerrainTypes": [],
+									"ExcludeTerrainTypes": [],
+									"IncludeCoordinates": [],
+									"ExcludeCoordinates": [],
+									"StrictTileChecking": "Maximum",
+									"SpawnTiming": {
+									  "StartTime": 600,
+									  "EndTime": 600,
+									  "MinimumTimeBetweenSpawns": 10,
+									  "MaximumSimultaneousSpawns": null,
+									  "OnlySpawnIfAPlayerIsPresent": false,
+									  "SpawnSound": ""
+									},
+									"ExtraConditions": {
+									  "Years": [],
+									  "Seasons": [],
+									  "Days": [],
+									  "WeatherYesterday": [],
+									  "WeatherToday": [],
+									  "WeatherTomorrow": [],
+									  "GameStateQueries": [],
+									  "CPConditions": {},
+									  "EPUPreconditions": [],
+									  "LimitedNumberOfSpawns": null
+									},
+									"DaysUntilSpawnsExpire": null
+								  };
 					
 					area.UniqueAreaID = ID; //adjust the ID
 					json.Ore_Spawn_Settings.Areas.push(area); //add the new area
 				}
 				else //if monster area
 				{
-					//TO UPDATE: copy-paste default settings for a monster area
+					//TO UPDATE: copy a default monster area, then adjust the settings (e.g. set spawns to 0)
 					area = {
 						"MonsterTypes": [],
 						"UniqueAreaID": "Farm monster area 1",
@@ -7207,14 +7170,10 @@
 					prev.RelatedSkill = document.getElementById("LargeObject-RelatedSkill").options[document.getElementById("LargeObject-RelatedSkill").selectedIndex].text;
 					
 					
-					prev.ObjectTypes = []; //empty the array
-					var types = document.getElementsByName("LargeObject-ObjectTypes"); //get object type checkboxes
-					for (var x = 0; x < types.length; x++) //for each object type checkbox
+					prev.ObjectTypes = []; //empty the array					
+					for (var x = 0; x < document.getElementById("LargeObject-ObjectTypes").options.length; x++) //for each large object type
 					{
-						if (types[x].checked)
-						{
-							prev.ObjectTypes.push(types[x].value); //add the checkbox's value to the array
-						}
+						prev.ObjectTypes.push(document.getElementById("LargeObject-ObjectTypes").options[x].text); //add the type to the array
 					}
 					
 					prev.FindExistingObjectLocations = document.getElementById("LargeObject-FindExistingObjectLocations").checked;
@@ -7409,18 +7368,12 @@
 					document.getElementById("LargeObject-PercentExtraSpawnsPerSkillLevel").value = curr.PercentExtraSpawnsPerSkillLevel;
 					document.getElementById("LargeObject-RelatedSkill").value = curr.RelatedSkill;
 					
-					var types = document.getElementsByName("LargeObject-ObjectTypes");
-					for (var x = 0; x < types.length; x++) //for each object type checkbox
+					document.getElementById("LargeObject-ObjectTypes").options.length = 0;
+					for (var x = 0; x < curr.ObjectTypes.length; x++) //for each large object type
 					{
-						types[x].checked = false; //uncheck by default
-						for (var y = 0; y < curr.ObjectTypes.length; y++) //for each stored string
-						{
-							if (types[x].value.toUpperCase() == curr.ObjectTypes[y].toUpperCase()) //if checkbox matches stored string
-							{
-								types[x].checked = true;
-								break; //skip the rest of the "y" loop
-							}
-						}
+						var option = document.createElement("option");
+						option.text = curr.ObjectTypes[x];
+						document.getElementById("LargeObject-ObjectTypes").options.add(option);
 					}
 					
 					document.getElementById("LargeObject-FindExistingObjectLocations").checked = curr.FindExistingObjectLocations;
