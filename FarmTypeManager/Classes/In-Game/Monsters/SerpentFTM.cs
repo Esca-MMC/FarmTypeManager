@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
 using StardewValley.Monsters;
 
 namespace FarmTypeManager.Monsters
@@ -40,6 +41,26 @@ namespace FarmTypeManager.Monsters
             base.drawAboveAllLayers(b); //call the extra draw method used by flying monsters
             b.End();
             b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+        }
+
+        //this override 
+        public override void reloadSprite(bool onlyAppearance = false)
+        {
+            if (this.IsRoyalSerpent())
+            {
+                if (Sprite == null) //skip updating the sprite if it already exists
+                    this.Sprite = new AnimatedSprite("Characters\\Monsters\\Royal Serpent");
+                base.Scale = 1f;
+            }
+            else
+            {
+                if (Sprite == null) //skip updating the sprite if it already exists
+                    this.Sprite = new AnimatedSprite("Characters\\Monsters\\Serpent");
+                base.Scale = 0.75f;
+            }
+            this.Sprite.SpriteWidth = 32;
+            this.Sprite.SpriteHeight = 32;
+            base.HideShadow = true;
         }
     }
 }
