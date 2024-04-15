@@ -28,14 +28,18 @@ namespace FarmTypeManager.Monsters
         public SerpentFTM(Vector2 position, string name)
             : base(position, name)
         {
-
+            
         }
 
         //this override forces any instance of GameLocation to call drawAboveAllLayers, fixing a bug where flying monsters are invisible on some maps
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {
             base.drawAboveAlwaysFrontLayer(b); //call the base version of this, if one exists
+            b.End();
+            b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
             base.drawAboveAllLayers(b); //call the extra draw method used by flying monsters
+            b.End();
+            b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         }
     }
 }
