@@ -43,7 +43,7 @@ namespace FarmTypeManager.Monsters
             b.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
         }
 
-        //this override 
+        //this override prevents serpents overwriting their own sprite if it's already loaded, which allows this mod's custom "Sprite" setting to work
         public override void reloadSprite(bool onlyAppearance = false)
         {
             if (this.IsRoyalSerpent())
