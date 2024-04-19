@@ -144,16 +144,18 @@ namespace FarmTypeManager
                         case "iridium crab":
                         case "falsemagmacap":
                         case "false magma cap":
-                        case "stickbug":
-                        case "stick bug":
                         case "magmacap":
                         case "magma cap":
+                        case "stickbug":
+                        case "stick bug":
                         case "rockgolem":
                         case "rock golem":
                         case "stonegolem":
                         case "stone golem":
                         case "wildernessgolem":
                         case "wilderness golem":
+                        case "iridiumgolem":
+                        case "iridium golem":
                         case "serpent":
                         case "royalserpent":
                         case "royal serpent":

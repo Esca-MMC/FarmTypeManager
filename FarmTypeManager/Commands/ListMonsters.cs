@@ -119,6 +119,7 @@ namespace FarmTypeManager
                     "rock golem",
                     "stone golem",
                     "wilderness golem",
+                    "iridium golem",
                     "serpent",
                     "royal serpent",
                     "shadow brute",
