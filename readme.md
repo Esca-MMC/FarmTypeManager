@@ -59,6 +59,7 @@ Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
 Dutch | [nl.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/nl.json) | [UnrealThingTriesCode](https://github.com/UnrealThingTriesCode)
+French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/fr.json) | [Fsecho7](https://forums.nexusmods.com/profile/193939919-fsecho7/)
 Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
 Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
 
