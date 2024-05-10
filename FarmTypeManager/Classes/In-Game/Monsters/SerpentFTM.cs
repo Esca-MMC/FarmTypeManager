@@ -29,7 +29,7 @@ namespace FarmTypeManager.Monsters
         public SerpentFTM(Vector2 position, string name)
             : base(position, name)
         {
-            
+
         }
 
         //this override forces any instance of GameLocation to call drawAboveAllLayers, fixing a bug where flying monsters are invisible on some maps
