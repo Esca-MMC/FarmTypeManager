@@ -7,19 +7,19 @@
    "EntryDll": "FarmTypeManager.dll",
    "MinimumApiVersion": "4.0.0",
    "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ],
-   "Dependencies": [
-	   {
-		  "UniqueID": "spacechase0.GenericModConfigMenu",
-		  "IsRequired": false
-	   },
-	   {
-		  "UniqueID": "Cherry.ExpandedPreconditionsUtility",
-		  "IsRequired": false
-	   },
-	   {
-		  "UniqueID": "Pathoschild.ContentPatcher",
-		  "MinimumVersion": "2.0.0",
-		  "IsRequired": true
-	   }
-   ]
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "2.0.0",
+      "IsRequired": true
+    },
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility",
+      "IsRequired": false
+    }
+  ]
 }
