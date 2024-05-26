@@ -59,6 +59,7 @@ See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.c
 Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+Brazilian Portuguese | [pt-BR.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/pt-BR.json) | [roanrobersson](https://github.com/roanrobersson)
 Dutch | [nl.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/nl.json) | [UnrealThingTriesCode](https://github.com/UnrealThingTriesCode)
 French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/fr.json) | [Fsecho7](https://next.nexusmods.com/profile/Fsecho7)
 German | [de.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/de.json) | [777PamPam777](https://next.nexusmods.com/profile/777PamPam777)
