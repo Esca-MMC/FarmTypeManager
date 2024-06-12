@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace FarmTypeManager
 {
@@ -184,12 +185,6 @@ namespace FarmTypeManager
                                     DaysUntilExpire = area.DaysUntilSpawnsExpire,
                                     ConfigItem = Utility.Clone(randomForage.ConfigItem) //use a separate copy of this
                                 };
-
-                                if (forage.DaysUntilExpire == null) //if this has no expiration setting
-                                {
-                                    if (forage.Type != SavedObject.ObjectType.Object || forage.ConfigItem?.CanBePickedUp == false) //if this is a non-basic object OR it cannot be removed by players
-                                        forage.DaysUntilExpire = 1; //default to overnight expiration
-                                }
 
                                 //if this object has contents with spawn chances, process them
                                 if (forage.ConfigItem?.Contents != null) //if this forage item has contents
