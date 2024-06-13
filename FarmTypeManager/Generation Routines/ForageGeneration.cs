@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace FarmTypeManager
 {
