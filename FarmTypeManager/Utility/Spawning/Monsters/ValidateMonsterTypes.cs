@@ -134,7 +134,6 @@ namespace FarmTypeManager
                         case "hot head":
                         case "lavalurk":
                         case "lava lurk":
-                        case "leaper":
                         case "mummy":
                         case "rockcrab":
                         case "rock crab":
@@ -173,6 +172,8 @@ namespace FarmTypeManager
                         case "skeleton":
                         case "skeletonmage":
                         case "skeleton mage":
+                        case "spider":
+                        case "leaper":
                         case "spiker":
                         case "squidkid":
                         case "squid kid":

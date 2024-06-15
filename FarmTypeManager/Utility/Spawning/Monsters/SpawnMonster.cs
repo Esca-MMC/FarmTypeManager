@@ -398,9 +398,6 @@ namespace FarmTypeManager
                     case "lava lurk":
                         monster = new LavaLurkFTM(tile, rangedAttacks);
                         break;
-                    case "leaper":
-                        monster = new Leaper(tile);
-                        break;
                     case "mummy":
                         monster = new MummyFTM(tile);
                         break;
@@ -504,6 +501,10 @@ namespace FarmTypeManager
                             Helper.Reflection.GetField<bool>(monster, "spottedPlayer", false)?.SetValue(true); //set "spotted player" field to true
                             monster.IsWalkingTowardPlayer = true;
                         }
+                        break;
+                    case "spider":
+                    case "leaper":
+                        monster = new Leaper(tile);
                         break;
                     case "spiker":
                         monster = new Spiker(tile, facingDirection);
