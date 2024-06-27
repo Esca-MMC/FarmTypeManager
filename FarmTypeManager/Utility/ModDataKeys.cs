@@ -9,7 +9,6 @@ namespace FarmTypeManager
         private static partial class Utility
         {
             /// <summary>A collection of keys for this mod's <see cref="IHaveModData.modData"/> entries.</summary>
-            /// <remarks>This class uses caching to allow faster comparison of non-constant keys.</remarks>
             public static class ModDataKeys
             {
                 private static string canBePickedUp = null;
@@ -37,7 +36,7 @@ namespace FarmTypeManager
                 }
 
                 private static string instantKillImmunity = null;
-
+                /// <summary>The unique key used with the "InstantKillImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
                 public static string InstantKillImmunity
                 {
                     get
@@ -45,6 +44,18 @@ namespace FarmTypeManager
                         if (instantKillImmunity == null)
                             instantKillImmunity = Utility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
                         return instantKillImmunity;
+                    }
+                }
+
+                private static string stunImmunity = null;
+                /// <summary>The unique key used with the "StunImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
+                public static string StunImmunity
+                {
+                    get
+                    {
+                        if (stunImmunity == null)
+                            stunImmunity = Utility.Helper.ModRegistry.ModID + "/StunImmunity";
+                        return stunImmunity;
                     }
                 }
             }
