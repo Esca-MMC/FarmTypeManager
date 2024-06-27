@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Companions;
 using StardewValley.Monsters;
 using StardewValley.Projectiles;
 using System;
@@ -48,9 +47,9 @@ namespace FarmTypeManager
                     {
                         return false; //skip the original method (do nothing when an ice rod projectile touches this monster, as if the monster weren't there)
                     }
-                    
+
                     return true; //do nothing
-                    
+
                 }
                 catch (Exception ex)
                 {
