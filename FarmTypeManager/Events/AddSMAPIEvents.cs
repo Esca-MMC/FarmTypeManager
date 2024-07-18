@@ -27,6 +27,7 @@ namespace FarmTypeManager
             helper.Events.GameLoop.GameLaunched += EnableContentPatcher;
             helper.Events.GameLoop.GameLaunched += EnableMTF;
             helper.Events.GameLoop.GameLaunched += EnableItemExtensions;
+            helper.Events.GameLoop.GameLaunched += EnableQuickSave;
         }
     }
 }
