@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
-using System.Collections.Generic;
 
 // Public API interface from Item Extensions' source code: https://github.com/misty-spring/StardewMods/blob/main/ItemExtensions/Api.cs
 
