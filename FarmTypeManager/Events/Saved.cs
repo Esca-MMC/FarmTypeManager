@@ -11,7 +11,7 @@ namespace FarmTypeManager
             Utility.GameIsSaving = false;
 
             if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
-            if (Utility.DayIsEnding || SaveAnywhereIsSaving) { return; } //if a specialized save process is already handling this, don't do anything
+            if (Utility.DayIsEnding || SaveAnywhereIsSaving || QuickSaveIsSaving) { return; } //if a specialized save process is already handling this, don't do anything
 
             AfterMidDaySave();
         }
