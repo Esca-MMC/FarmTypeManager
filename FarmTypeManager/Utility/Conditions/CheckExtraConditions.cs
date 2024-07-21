@@ -409,33 +409,6 @@ namespace FarmTypeManager
                     }
                 }
 
-                //check game state queries (GSQs)
-                if (area.ExtraConditions.GameStateQueries != null && area.ExtraConditions.GameStateQueries.Length > 0)
-                {
-                    Monitor.Log("GSQ conditions found. Checking...", LogLevel.Trace);
-
-                    bool validGSQ = false;
-
-                    foreach (string gsq in area.ExtraConditions.GameStateQueries)
-                    {
-                        if (GameStateQuery.CheckConditions(gsq)) //if this query is currently true (at the start of the day with default context info)
-                        {
-                            validGSQ = true;
-                            break; //skip the rest of this check
-                        }
-                    }
-
-                    if (validGSQ)
-                    {
-                        Monitor.Log("At least one game state query (GSQ) string was valid. Spawn allowed.", LogLevel.Trace);
-                    }
-                    else
-                    {
-                        Monitor.Log("All game state query (GSQ) strings were invalid. Spawn disabled.", LogLevel.Trace);
-                        return false; //prevent spawning
-                    }
-                }
-
                 //check CP conditions
                 if (area.ExtraConditions.CPConditions != null && area.ExtraConditions.CPConditions.Count > 0)
                 {
@@ -512,6 +485,33 @@ namespace FarmTypeManager
                             Monitor.Log($"EPU preconditions could not be checked. Spawn disabled.", LogLevel.Trace);
                             return false;
                         }
+                    }
+                }
+
+                //check game state queries (GSQs)
+                if (area.ExtraConditions.GameStateQueries != null && area.ExtraConditions.GameStateQueries.Length > 0)
+                {
+                    Monitor.Log("GSQ conditions found. Checking...", LogLevel.Trace);
+
+                    bool validGSQ = false;
+
+                    foreach (string gsq in area.ExtraConditions.GameStateQueries)
+                    {
+                        if (GameStateQuery.CheckConditions(gsq)) //if this query is currently true (at the start of the day with default context info)
+                        {
+                            validGSQ = true;
+                            break; //skip the rest of this check
+                        }
+                    }
+
+                    if (validGSQ)
+                    {
+                        Monitor.Log("At least one game state query (GSQ) string was valid. Spawn allowed.", LogLevel.Trace);
+                    }
+                    else
+                    {
+                        Monitor.Log("All game state query (GSQ) strings were invalid. Spawn disabled.", LogLevel.Trace);
+                        return false; //prevent spawning
                     }
                 }
 
