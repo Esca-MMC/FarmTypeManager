@@ -26,29 +26,12 @@ namespace FarmTypeManager
                 int mapX = location.Map.DisplayWidth / Game1.tileSize;
                 int mapY = location.Map.DisplayHeight / Game1.tileSize;
 
-                //if this type includes a specific tile property and value, store them here
-                string[] nameAndValue;
-
-                if (type.Contains(':', StringComparison.Ordinal)) //if the tile contains a colon
-                    nameAndValue = type.Split(':', 2, StringSplitOptions.TrimEntries); //split the type into a property name and value, then trim whitespace (e.g. "PropertyName: PropertyValue" becomes "PropertyName" and "PropertyValue")
-                else
-                    nameAndValue = null;
-
                 //the following loops should populate a list of tiles for spawning
                 for (int y = 0; y < mapY; y++)
                 {
                     for (int x = 0; x < mapX; x++) //loops for each tile on the map, from the top left (x,y == 0,0) to bottom right, moving horizontally first
                     {
-                        if (nameAndValue != null) //if this type uses the "name and value" format (see above)
-                        {
-                            string currentValue = location.doesTileHavePropertyNoNull(x, y, nameAndValue[0], "Back"); //get the property's value on this tile ("" if null)
-
-                            if (currentValue.Equals(nameAndValue[1], StringComparison.OrdinalIgnoreCase)) //if the tile's value matches the given value (case-insensitive)
-                            {
-                                tiles.Add(new Vector2(x, y));
-                            }
-                        }
-                        else if (type.Equals("diggable", StringComparison.OrdinalIgnoreCase))
+                        if (type.Equals("diggable", StringComparison.OrdinalIgnoreCase))
                         {
                             if (location.doesTileHaveProperty(x, y, "Diggable", "Back") != null) //if this tile has the "Diggable" property with any value (note: SDV almost never cares about the text of this property)
                             {
