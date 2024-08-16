@@ -158,6 +158,7 @@ These commands require the Console Commands mod, which is installed automaticall
 ### whereami
 
 Enter `whereami` in SMAPI's console to display information about the current map, including: 
+
 * The map's name (e.g. "Farm" or "BusStop")
 * Your current tile's X/Y coordinates
 * The tile's terrain type (e.g. "Dirt" or "Stone")
@@ -171,6 +172,19 @@ Enter `list_monsters` in SMAPI's console to display a list of available monster 
 The command will list the primary name of each monster from Stardew Valley itself, and then scan other mods for custom monster classes.
 
 The full provided name should be used in the MonsterName setting. Example: `"MyModName.CustomMonster"`
+
+### remove_items
+
+Enter `remove_items` in SMAPI's console to delete items or objects from the game world. This may be useful for certain objects that players can't remove normally.
+
+The command supports these formats:
+
+Format | Description
+-------|------------
+`remove_items` | Removes an item directly in front of the player.
+`remove_items <x> <y>` | Removes an item from the specified tile of the player's current location (a.k.a. map). Example: `remove_items 10 20`
+`remove_items permanent` | Removes **all** items spawned by FTM with "CanBePickedUp" set to false, at the player's current location (a.k.a. map). Designed to clean up after FTM content pack bugs.
+
 
 ## Mod Settings
 These settings are in the **config.json** file, which is in the mod's main folder: `Stardew Valley\Mods\FarmTypeManager`. They change the behavior of the mod itself, rather than a specific farm or content pack.
@@ -233,7 +247,7 @@ Name | Required | Valid settings | Description | Notes
 -----|----------|----------------|-------------|------
 Category | Yes | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Weapon" | The category of the spawned item.| "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
 Name | Yes | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
-CanBePickedUp | No | **true**, false | When set to false, players will not be allowed to pick up this item. "True" has no effect. | Furniture and big craftables set to false can be used, but not picked up. Items with this setting will be removed overnight by default; use the "DaysUntilSpawnsExpire" setting or respawn the items each day. This setting has no effect on containers or monster loot.
+CanBePickedUp | No | **true**, false | When set to false, players will not be allowed to pick up this item. "True" has no effect. | Furniture and craftables set to false can be used, but not picked up. This setting has no effect on containers or monster loot. **Please use caution** with this setting. If necessary, players can use the `remove_items` command to override this.
 Contents | No | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.
 PercentChanceToSpawn | No | An integer or decimal (minimum 0), e.g. `50` for a 50% chance | The percent chance of spawning this object. If the random chance fails, this item will not spawn. | This setting can be used for forage, loot, and the contents of containers.
 Rotation | No | An integer (minimum/default 0) | The number of times to rotate a furniture item before spawning it. | This setting will be ignored by non-furniture items. The number of possible orientations is determined by each furniture item; 1, 2, and 4 are the most common.
