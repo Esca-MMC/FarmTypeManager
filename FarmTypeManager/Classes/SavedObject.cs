@@ -36,55 +36,51 @@ namespace FarmTypeManager
                 {
                     if (daysUntilExpire == null) //if null, determine default expiration behavior based on type and config settings
                     {
-                        if (ConfigItem?.CanBePickedUp == false) //if this can't be picked up
-                            daysUntilExpire = 1; //expire overnight
-                        else
+                        switch (Type)
                         {
-                            switch (Type)
-                            {
-                                case ObjectType.Monster:
-                                case ObjectType.DGA: //certain DGA item types spawn as a PlacedItem
-                                    daysUntilExpire = 1; //expire overnight
-                                    break;
-                                case ObjectType.Item:
-                                    switch (ConfigItem.Category.ToLower())
-                                    {
-                                        //include all Item-type categories that CAN be serialized, which means they do NOT require a default expiration
-                                        //refer to CreateItem.cs for supported names
-                                        case "(bc)":
-                                        case "bc":
-                                        case "bigcraftable":
-                                        case "bigcraftables":
-                                        case "big craftable":
-                                        case "big craftables":
-                                        case "fence":
-                                        case "fences":
-                                        case "gate":
-                                        case "gates":
-                                        case "(f)":
-                                        case "f":
-                                        case "furniture":
-                                            break;
-                                        default: //categories spawned as PlacedItem, etc
-                                            daysUntilExpire = 1; //expire overnight
-                                            break;
-                                    }
-                                    break;
-                                case ObjectType.Container:
-                                    switch (ConfigItem.Category.ToLower())
-                                    {
-                                        //include all Container-type categories that CAN be serialized, which means they do NOT require a default expiration
-                                        //refer to CreateItem.cs for supported names
-                                        case "chest":
-                                        case "chests":
-                                            break;
-                                        default: //categories spawned as BreakableContainerFTM, etc
-                                            daysUntilExpire = 1; //expire overnight
-                                            break;
-                                    }
-                                    break;
-                            }
+                            case ObjectType.Monster:
+                            case ObjectType.DGA: //certain DGA item types spawn as a PlacedItem
+                                daysUntilExpire = 1; //expire overnight
+                                break;
+                            case ObjectType.Item:
+                                switch (ConfigItem.Category.ToLower())
+                                {
+                                    //include all Item-type categories that CAN be serialized, which means they do NOT require a default expiration
+                                    //refer to CreateItem.cs for supported names
+                                    case "(bc)":
+                                    case "bc":
+                                    case "bigcraftable":
+                                    case "bigcraftables":
+                                    case "big craftable":
+                                    case "big craftables":
+                                    case "fence":
+                                    case "fences":
+                                    case "gate":
+                                    case "gates":
+                                    case "(f)":
+                                    case "f":
+                                    case "furniture":
+                                        break;
+                                    default: //categories spawned as PlacedItem, etc
+                                        daysUntilExpire = 1; //expire overnight
+                                        break;
+                                }
+                                break;
+                            case ObjectType.Container:
+                                switch (ConfigItem.Category.ToLower())
+                                {
+                                    //include all Container-type categories that CAN be serialized, which means they do NOT require a default expiration
+                                    //refer to CreateItem.cs for supported names
+                                    case "chest":
+                                    case "chests":
+                                        break;
+                                    default: //categories spawned as BreakableContainerFTM, etc
+                                        daysUntilExpire = 1; //expire overnight
+                                        break;
+                                }
+                                break;
                         }
+                        
                     }
 
                     return daysUntilExpire;
