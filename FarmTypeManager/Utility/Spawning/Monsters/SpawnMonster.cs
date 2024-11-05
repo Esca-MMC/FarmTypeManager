@@ -546,6 +546,9 @@ namespace FarmTypeManager
 
                 monster.MaxHealth = monster.Health; //some monster types set Health on creation and expect MaxHealth to be updated like this
 
+                if (monster is GreenSlime slime)
+                    slime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
+
                 ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
 
                 //spawn the completed monster at the target location
