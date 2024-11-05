@@ -79,7 +79,7 @@ namespace FarmTypeManager
                             parsedObjects.AddRange(Utility.ParseSavedObjectsFromItemList(area.SummerItemIndex, area.UniqueAreaID));
                         if (area.FallItemIndex?.Length > 0)
                             parsedObjects.AddRange(Utility.ParseSavedObjectsFromItemList(area.FallItemIndex, area.UniqueAreaID));
-                        if (area.FallItemIndex?.Length > 0)
+                        if (area.WinterItemIndex?.Length > 0)
                             parsedObjects.AddRange(Utility.ParseSavedObjectsFromItemList(area.WinterItemIndex, area.UniqueAreaID));
                     }
 
