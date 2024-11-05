@@ -24,36 +24,6 @@ namespace FarmTypeManager
 
             /*** Reflected fields ***/
 
-            private IReflectedField<bool> _spottedPlayer = null;
-            /// <summary>A reflection wrapper for a non-public field in this monster's base class.</summary>
-            public bool spottedPlayer
-            {
-                get
-                {
-                    if (_spottedPlayer == null)
-                        _spottedPlayer = Utility.Helper.Reflection.GetField<bool>(this, "spottedPlayer", true);
-                    return _spottedPlayer.GetValue();
-                }
-                set
-                {
-                    if (_spottedPlayer == null)
-                        _spottedPlayer = Utility.Helper.Reflection.GetField<bool>(this, "spottedPlayer", true);
-                    _spottedPlayer.SetValue(value);
-                }
-            }
-
-            private IReflectedField<NetBool> _throwing = null;
-            /// <summary>A reflection wrapper for a non-public field in this monster's base class.</summary>
-            public NetBool throwing
-            {
-                get
-                {
-                    if (_throwing == null)
-                        _throwing = Utility.Helper.Reflection.GetField<NetBool>(this, "throwing", true);
-                    return _throwing.GetValue();
-                }
-            }
-
             private IReflectedField<int> _controllerAttemptTimer = null;
             /// <summary>A reflection wrapper for a non-public field in this monster's base class.</summary>
             public int controllerAttemptTimer
