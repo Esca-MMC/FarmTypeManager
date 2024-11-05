@@ -80,7 +80,7 @@ namespace FarmTypeManager
                                 }
                                 break;
                         }
-                        
+
                     }
 
                     return daysUntilExpire;

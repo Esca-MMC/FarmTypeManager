@@ -89,7 +89,7 @@ namespace FarmTypeManager
                             {
                                 GreenSlime spawnSlime = new GreenSlime(this.Position, MineLevelOfDeathSpawns); //use MineLevelOfDeathSpawns instead of checking the game state
                                 spawnSlime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
-                                this.currentLocation.characters.Add(spawnSlime); 
+                                this.currentLocation.characters.Add(spawnSlime);
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].willDestroyObjectsUnderfoot = false;
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].moveTowardPlayer(4);
