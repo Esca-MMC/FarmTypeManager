@@ -24,8 +24,20 @@ namespace FarmTypeManager
                     case "12":  //emerald ore
                     case "14":  //aquamarine ore
                     case "25":  //mussel ore
+                    case "32":  //stone
+                    case "34":  //
+                    case "36":  //
+                    case "38":  //
+                    case "40":  //
+                    case "42":  //
                     case "44":  //gem ore
                     case "46":  //mystic ore
+                    case "48":  //stone
+                    case "50":  //
+                    case "52":  //
+                    case "54":  //
+                    case "56":  //
+                    case "58":  //
                     case "75":  //geode ore
                     case "76":  //frozen geode ore
                     case "77":  //magma geode ore
@@ -82,14 +94,25 @@ namespace FarmTypeManager
                     case "922": //supply crate (beach farm)
                     case "923": //
                     case "924": //
-                    case "BasicCoalNode0": //coal node
-                    case "BasicCoalNode1": //
-                    case "VolcanoCoalNode0": //coal node (volcano/challenge)
-                    case "VolcanoCoalNode1": //
-                    case "CalicoEggStone_0": //calico egg stones (desert festival)
-                    case "CalicoEggStone_1": //
-                    case "CalicoEggStone_2": //
+                    case "BasicCoalNode0":      //coal node
+                    case "BasicCoalNode1":      //
+                    case "CalicoEggStone_0":    //calico egg stone (desert festival)
+                    case "CalicoEggStone_1":    //
+                    case "CalicoEggStone_2":    //
+                    case "GreenRainWeeds0":     //green rain weeds
+                    case "GreenRainWeeds1":     //
+                    case "GreenRainWeeds2":     //
+                    case "GreenRainWeeds3":     //
+                    case "GreenRainWeeds4":     //
+                    case "GreenRainWeeds5":     //
+                    case "GreenRainWeeds6":     //
+                    case "GreenRainWeeds7":     //
+                    case "VolcanoCoalNode0":    //coal node (volcano/challenge)
+                    case "VolcanoCoalNode1":    //
+                    case "VolcanoGoldNode":     //gold node (volcano/challenge)
+
                         return false; //this ID cannot be picked up
+
                     default:
                         return true; //this ID can be picked up
                 }
