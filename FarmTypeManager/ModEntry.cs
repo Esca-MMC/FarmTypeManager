@@ -22,8 +22,9 @@ namespace FarmTypeManager
                 helper.ConsoleCommands.Add("remove_items", "Removes an item or object in front of the player.\nUse \"remove_items X Y\" to remove an item from a specific tile.\nUse \"remove_items permanent\" to remove any FTM items from your location that cannot be removed normally (due to the \"CanBePickedUp\" setting).", RemoveItems);
             }
 
-            AddSMAPIEvents(helper); //pass any necessary event methods to SMAPI
-            ApplyHarmonyPatches(); //pass any necessary patches to Harmony
+            AddSMAPIEvents(helper);
+            ApplyHarmonyPatches();
+            EnableExternalFeatures(helper);
         }
     }
 }
