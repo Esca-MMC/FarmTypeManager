@@ -1,7 +1,7 @@
-﻿using StardewModdingAPI;
-using FarmTypeManager.ExternalFeatures.ContentPatcherTokens;
-using System;
+﻿using FarmTypeManager.ExternalFeatures.ContentPatcherTokens;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using System;
 
 namespace FarmTypeManager
 {
@@ -19,7 +19,7 @@ namespace FarmTypeManager
         {
             try
             {
-                Utility.ContentPatcherAPI.RegisterToken(Utility.Manifest, "NumberOfMonsters", new NumberOfMonstersToken());
+                Utility.ContentPatcherAPI.RegisterToken(Utility.Manifest, "NumberOfMonsters", new Token_NumberOfMonsters());
             }
             catch (Exception ex)
             {

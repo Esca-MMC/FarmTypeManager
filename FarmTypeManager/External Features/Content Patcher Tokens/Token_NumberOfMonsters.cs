@@ -1,16 +1,14 @@
-﻿using Microsoft.VisualBasic;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager.ExternalFeatures.ContentPatcherTokens
 {
     /// <summary>A Content Patcher token that indicates how many monsters are in a named location.</summary>
-    public class NumberOfMonstersToken
+    public class Token_NumberOfMonsters
     {
         /* Private fields */
 
