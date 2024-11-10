@@ -56,12 +56,12 @@ namespace FarmTypeManager
                         //attempt to load the save data for this pack and specific farm
                         try
                         {
-                            save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
+                            save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
                         }
                         catch (Exception ex)
                         {
                             Monitor.Log($"Warning: Your farm's save data for this content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
-                            Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}_SaveData.save", LogLevel.Warn);
+                            Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save", LogLevel.Warn);
                             Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
                             Monitor.Log($"----------", LogLevel.Warn);
                             Monitor.Log($"{ex.Message}", LogLevel.Warn);
@@ -76,7 +76,7 @@ namespace FarmTypeManager
                         ValidateFarmData(config, pack); //validate certain data in the current file before using it
 
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
-                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update the content pack's save file for the current farm
+                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"), save); //create or update the content pack's save file for the current farm
 
                         list.Add(new FarmData(config, save, pack)); //add the config, save, and content pack to the farm data list
                         Monitor.Log("Content pack loaded successfully.", LogLevel.Trace);
