@@ -36,19 +36,21 @@ namespace FarmTypeManager
                             SavedObjects.Add(saved);
 
                     }
-                    else if (raw is JObject rawObj) //if this is a ConfigItem
+                    else if (raw is JObject rawObj) //if this is a ConfigItem or SavedObject
                     {
                         SavedObject saved = null;
                         ConfigItem item = null;
                         try
                         {
-                            if(rawObj.ContainsKey("ConfigItem")) { //rawObj should already be a SavedObject
-                                saved = rawObj.ToObject<SavedObject>();
-                            } else {
-                                item = rawObj.ToObject<ConfigItem>(); //attempt to parse this into a ConfigItem
-                                saved = CreateSavedObject(item, areaID); //use the item to create a saved object
+                            if (rawObj.ContainsKey("ConfigItem")) //if this contains the "ConfigItem" key, it should already be a SavedObject
+                            {
+                                saved = rawObj.ToObject<SavedObject>(); //parse this as a SavedObject
                             }
-
+                            else
+                            {
+                                item = rawObj.ToObject<ConfigItem>(); //parse this as a ConfigItem
+                                saved = CreateSavedObject(item, areaID); //use it to create a saved object
+                            }
                         }
                         catch
                         {
