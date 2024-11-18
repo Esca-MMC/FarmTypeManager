@@ -35,18 +35,18 @@ namespace FarmTypeManager
                 }
                 else //this data is from this mod's own folders
                 {
-                    Utility.Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Processing save data for FarmTypeManager/data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save");
                 }
 
                 Utility.ProcessObjectExpiration(save: data.Save, endOfDay: false); //remove custom object classes, but do not process expiration settings
 
                 if (data.Pack != null) //if this data is from a content pack
                 {
-                    data.Pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file for that content pack
+                    data.Pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"), data.Save); //update the save file for that content pack
                 }
                 else //this data is from this mod's own folders
                 {
-                    Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), data.Save); //update the save file in this mod's own folders
+                    Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"), data.Save); //update the save file in this mod's own folders
                 }
             }
         }

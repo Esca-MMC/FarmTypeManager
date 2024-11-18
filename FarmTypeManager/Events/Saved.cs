@@ -33,7 +33,7 @@ namespace FarmTypeManager
                 }
                 else //this data is from this mod's own folders
                 {
-                    Utility.Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save");
+                    Utility.Monitor.VerboseLog($"Checking objects from FarmTypeManager/data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save");
                 }
 
                 Utility.ReplaceProtectedSpawns(data.Save); //protect unexpired spawns listed in the save data

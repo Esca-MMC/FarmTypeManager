@@ -41,43 +41,40 @@ namespace FarmTypeManager
 
     public partial class ModEntry : Mod
     {
-        /// <summary>True if QuickSave's save process is currently being handled by this mod. Used to avoid redundant save data handling.</summary>
-        public static bool QuickSaveIsSaving { get; set; } = false;
+        public static bool QuickSaveIsSaving => QuickSaveAPI?.IsSaving ?? false;
+        public static bool QuickSaveIsLoading => QuickSaveAPI?.IsLoading ?? false;
+        /// <summary> A suffix that will be appended to FTMs savefiles whenever QS is saving or loading to store data separately for QuickSaves. </summary>
+        public static string QSSaveFileSuffix => QuickSaveIsLoading || QuickSaveIsSaving ? "_QuickSave" : "";
+
+        private static IQuickSaveAPI QuickSaveAPI = null;
 
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves).</summary>
         public void EnableQuickSave(object sender, GameLaunchedEventArgs e)
         {
-            //Save Anywhere: pass compatibility events for handling this mod's custom classes
-            var quickSave = Utility.Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
-            if (quickSave != null) //if the API was accessed successfully
-            {
-                Utility.Monitor.Log("QuickSave API loaded. Sending compatibility events.", LogLevel.Trace);
-                quickSave.SavingEvent += QuickSave_SavingEvent;
-                quickSave.SavedEvent += QuickSave_SavedEvent;
-            }
+            QuickSaveAPI = Utility.Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
+            if (QuickSaveAPI is null) { return; }
+
+            Utility.Monitor.Log("QuickSave API loaded. Sending compatibility events.", LogLevel.Trace);
+            QuickSaveAPI.SavingEvent += QuickSave_SavingEvent;
+            QuickSaveAPI.SavedEvent += QuickSave_SavedEvent;
         }
 
         private void QuickSave_SavingEvent(object sender, ISavingEventArgs e)
         {
+            if (!Context.IsMainPlayer) { return; }
+
             Utility.GameIsSaving = true;
-
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, do nothing
-
-            QuickSaveIsSaving = true;
-            SkipDayStartedEvents = true;
 
             BeforeMidDaySave();
         }
 
         private void QuickSave_SavedEvent(object sender, ISavedEventArgs e)
         {
+            if (!Context.IsMainPlayer) { return; }
+
             Utility.GameIsSaving = false;
 
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, do nothing
-
             AfterMidDaySave();
-
-            QuickSaveIsSaving = false;
         }
     }
 }

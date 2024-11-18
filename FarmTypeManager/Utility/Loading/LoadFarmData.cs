@@ -56,12 +56,12 @@ namespace FarmTypeManager
                         //attempt to load the save data for this pack and specific farm
                         try
                         {
-                            save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
+                            save = pack.ReadJsonFile<InternalSaveData>($"data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"); //load the content pack's save data for this farm (null if it doesn't exist)
                         }
                         catch (Exception ex)
                         {
                             Monitor.Log($"Warning: Your farm's save data for this content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
-                            Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}_SaveData.save", LogLevel.Warn);
+                            Monitor.Log($"This file will need to be edited or deleted: data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save", LogLevel.Warn);
                             Monitor.Log($"The content pack will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
                             Monitor.Log($"----------", LogLevel.Warn);
                             Monitor.Log($"{ex.Message}", LogLevel.Warn);
@@ -76,7 +76,7 @@ namespace FarmTypeManager
                         ValidateFarmData(config, pack); //validate certain data in the current file before using it
 
                         pack.WriteJsonFile($"content.json", config); //update the content pack's config file
-                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update the content pack's save file for the current farm
+                        pack.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"), save); //create or update the content pack's save file for the current farm
 
                         if (CheckFileConditions(config, pack)) //check file conditions; only use the current data if this returns true
                         {
@@ -144,11 +144,11 @@ namespace FarmTypeManager
                 //attempt to load the save data for this farm
                 try
                 {
-                    save = Helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
+                    save = Helper.Data.ReadJsonFile<InternalSaveData>(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save")); //load the mod's save data for this farm (null if it doesn't exist)
                 }
                 catch (Exception ex)
                 {
-                    Monitor.Log($"Warning: This file could not be parsed correctly: FarmTypeManager/data/{Constants.SaveFolderName}_SaveData.save", LogLevel.Warn);
+                    Monitor.Log($"Warning: This file could not be parsed correctly: FarmTypeManager/data/{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save", LogLevel.Warn);
                     Monitor.Log($"Please edit the file, or delete it and reload your farm to generate a new savedata file.", LogLevel.Warn);
                     Monitor.Log($"Your config file will be skipped until this issue is fixed. The auto-generated error message is displayed below:", LogLevel.Warn);
                     Monitor.Log($"----------", LogLevel.Warn);
@@ -164,7 +164,7 @@ namespace FarmTypeManager
                 ValidateFarmData(config, null); //validate certain data in the current file before using it
 
                 Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}.json"), config); //create or update the config file for the current farm
-                Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}_SaveData.save"), save); //create or update this config's save file for the current farm
+                Helper.Data.WriteJsonFile(Path.Combine("data", $"{Constants.SaveFolderName}{QSSaveFileSuffix}_SaveData.save"), save); //create or update this config's save file for the current farm
 
                 if (CheckFileConditions(config, null)) //check file conditions; only use the current data if this returns true
                 {

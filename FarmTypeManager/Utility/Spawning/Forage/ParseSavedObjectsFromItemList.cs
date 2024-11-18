@@ -42,8 +42,13 @@ namespace FarmTypeManager
                         ConfigItem item = null;
                         try
                         {
-                            item = rawObj.ToObject<ConfigItem>(); //attempt to parse this into a ConfigItem
-                            saved = CreateSavedObject(item, areaID); //use the item to create a saved object
+                            if(rawObj.ContainsKey("ConfigItem")) { //rawObj should already be a SavedObject
+                                saved = rawObj.ToObject<SavedObject>();
+                            } else {
+                                item = rawObj.ToObject<ConfigItem>(); //attempt to parse this into a ConfigItem
+                                saved = CreateSavedObject(item, areaID); //use the item to create a saved object
+                            }
+
                         }
                         catch
                         {
@@ -82,7 +87,8 @@ namespace FarmTypeManager
                     {
                         Type = SavedObject.ObjectType.Object,
                         Name = objectName,
-                        StringID = objectID
+                        StringID = objectID,
+                        ConfigItem = new ConfigItem() { Category = "object" }
                     };
                     Monitor.VerboseLog($"Parsed \"{objectName}\" into object ID: {objectID}");
                     return saved;
