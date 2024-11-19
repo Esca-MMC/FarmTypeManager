@@ -1,4 +1,5 @@
 ﻿using FarmTypeManager.ExternalFeatures.ContentPatcherTokens;
+using FarmTypeManager.ExternalFeatures.GameStateQueries;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
@@ -12,6 +13,11 @@ namespace FarmTypeManager
         {
             //enable Content Patcher tokens
             helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched_EnableContentPatcherTokens;
+
+            //enable game state queries (GSQs)
+            GSQ_LocationExists.Enable(helper);
+            GSQ_LocationIsActive.Enable(helper);
+            GSQ_NumberOfMonsters.Enable(helper);
         }
 
         [EventPriority(EventPriority.Low)] //CP's API is initialized at GameLaunched, so delay this until afterward
