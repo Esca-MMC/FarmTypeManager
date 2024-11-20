@@ -1,9 +1,8 @@
-# Farm Type Manager
-This mod allows players and modders to customize features from Stardew Valley's different farm maps. It can spawn forageable plants, large objects (e.g. stumps and boulders), ore, and monsters at any location in the game. Users can configure the number of objects spawned per day, which areas or terrain types they can spawn on, the chances of spawning each object type, and more.
+# Farm Type Manager (FTM)
+Despite the name, Farm Type Manager (FTM) is a framework that allows other mods to spawn objects and monsters anywhere in the game. It can also customize objects and monsters in unique ways. Modders can configure or randomize the number of objects spawned per day, where and when they spawn, and more.
 
 ## Contents
 * [Installation](#installation)
-* [Setup](#setup)
 * [Translation](#translation)
 	* [Available Languages](#available-languages)
 * [Examples](#examples)
@@ -32,24 +31,13 @@ This mod allows players and modders to customize features from Stardew Valley's 
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
-2. **Download FarmTypeManager** from [the Releases page on GitHub](https://github.com/Esca-MMC/FarmTypeManager/releases) or from [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3231/).
+2. **Download FarmTypeManager** from [the Releases page on GitHub](https://github.com/Esca-MMC/FarmTypeManager/releases), [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3231/), or [ModDrop](https://www.moddrop.com/stardew-valley/mods/598755-farm-type-manager-ftm).
 3. **Unzip FarmTypeManager** into your `Stardew Valley\Mods` folder.
 
-If you use other mods that require Farm Type Manager, then you’re all set here!
-
-If you want to customize Farm Type Manager’s settings yourself, follow these instructions:
-
-## Setup
-1. **Run the game** using SMAPI.
-2. **Load the farm** you want to customize, or create a new character and progress past the game's intro. This will create a .json configuration file for your character in the `Stardew Valley\Mods\FarmTypeManager\data` folder.
-3. **Find the .json file** with your character's name on it. Load it with the **ConfigEditor.html** file in the `FarmTypeManager` folder, or edit manually with any text editor.
-4. **Customize the file's settings** (see [Examples](#examples) or [Settings](#settings)) and save your changes.
-5. **Exit your farm and reload it**, or progress to the next in-game day. The mod's settings should now be active.
- 
-Note: This mod will be disabled in multiplayer when you play as a farmhand (i.e. join a game hosted by someone else). Its console commands will still function, though.
+If you use other mods that require FTM, then you’re all set!
 
 ## Translation
-Farm Type Manager supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+FTM supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
 
 The mod will load a file from the `FarmTypeManager/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json).
 
@@ -67,7 +55,7 @@ Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/Farm
 Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
 
 ## Examples
-Below are a few examples of changes you can make to your character's configuration file, spawning various things on your farm or the other in-game maps.
+Below are a few general examples of changes modders can make, spawning various objects on the farm or the other in-game maps.
 
 ### Spawn forage and respawn existing stumps on the farm
 ```
@@ -153,7 +141,7 @@ Below are a few examples of changes you can make to your character's configurati
 ## Commands
 This mod adds the following commands to SMAPI's console.
 
-These commands require the Console Commands mod, which is installed automatically by SMAPI. They can also be disabled in Farm Type Manager's **config.json** file if desired. See [Mod Settings](#mod-settings).
+These commands require the Console Commands mod, which is installed automatically by SMAPI. They can also be disabled in FTM's **config.json** file if desired. See [Mod Settings](#mod-settings).
 
 ### whereami
 
@@ -192,19 +180,19 @@ These settings are in the **config.json** file, which is in the mod's main folde
 Name | Valid settings | Description
 -----|----------------|------------
 EnableConsoleCommands | **true**, false | Enables or disables this mod's commands in the SMAPI console. This may be helpful if other mods use similar command names.
-EnableContentPacks | **true**, false | Enables or disables any installed content packs for Farm Type Manager. If disabled, only "personal" config files in the `FarmTypeManager/data` folder will be used.
+EnableContentPacks | **true**, false | Enables or disables any installed content packs for FTM. If disabled, only "personal" content files in the `FarmTypeManager/data` folder will be used.
 EnableTraceLogMessages | **true**, false | Enables or disables `[TRACE]`-level messages in the SMAPI error log.
 EnableEPUDebugMessages | true, **false** | Enables or disables debug messages when Expanded Preconditions Utility (EPU) is used to check [preconditions](#extra-conditions).
 MonsterLimitPerLocation | An integer (minimum 0), or **null** | If a single map already contains this number of monsters, the mod will skip spawning any additional monsters there. Use this setting if your content packs are spawning too many monsters, causing Stardew to run slowly.
 
 ## Spawn Settings
-The settings below control how Farm Type Manager spawns objects and monsters. The settings are found in each content pack's `content.json` file. Creating/loading a farm will also generate a "personal" config file for that farm in the `FarmTypeManager\data` folder. Personal config files are named after the farm's save data folder, such as **FarmerName_12345.json**.
+The settings below control how FTM spawns objects and monsters. The settings are found in each content pack's `content.json` file. Creating/loading a farm will also generate a "personal" content file for that farm in the `FarmTypeManager\data` folder. Personal content files are named after the farm's save data folder, such as **FarmerName_12345.json**.
 
-Any text editor should be able to open these config files. However, you can also use the `ConfigEditor.html` file in the `FarmTypeManager` folder to edit these config files. The Config Editor is an editor that should work in any web browser and make it easier to understand each setting.
+Any text editor should be able to open these content files. However, you can also use the `ConfigEditor.html` file in the `FarmTypeManager` folder to edit these content files. The Config Editor is an editor that should work in any web browser and make it easier to understand each setting.
 
-The mod will also generate a `default.json` file in the `FarmTypeManager\data` folder. Any newly generated config files will copy those settings. This can be useful if you create new farms frequently, or to customize settings for several farms at once.
+The mod will also generate a `default.json` file in the `FarmTypeManager\data` folder. Any newly generated files will copy its settings. This can be useful if you want to customize your own settings and create new farms frequently.
 
-Deleting any config file in the `FarmTypeManager\data` folder will allow it to be regenerated with default settings.
+Deleting any file in the `FarmTypeManager\data` folder will allow it to be regenerated with default settings.
 
 ### Basic Settings
 This section covers the simple on/off switches you can use to enable default configurations, which work similarly to "vanilla" Stardew Valley farm types.
@@ -394,16 +382,16 @@ QuarryTileIndex | Integer(s) | A list of index numbers for "quarry" tiles in the
 ### File Conditions
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
-File_Conditions | *(see below)* | A list of conditions required to use this config file with a specific farm. | These settings are primarily useful for content packs.
-FarmTypes | A list of: "Standard", "Riverland", "Forest", "Hilltop", "Wilderness", "FourCorners", "Beach", and/or custom farm type IDs | A list of farm types for which this config file will be used. | This is mainly for content packs that are combined with custom farm maps. For example, if a custom farm replaces your Standard farm type, set this to `["Standard"]`. For custom farms added in Stardew v1.5.5+, use the farm type's full "ID" (e.g. `["MyName.MyMod/MyFarmType"]`). For MTN farm types, use the "ID" from its farmTypes.json file (e.g. `[177]`).
-FarmerNames | A list of farmer names, e.g. `["Esca"]` | If one of this list's names matches the farmer's name, this config file will be used. | This setting only checks the main farmer's name; it won't be affected by multiplayer farmhands.
-SaveFileNames | A list of save file names, e.g. `["Esca_1234567"]` | If one of these names matches the current farm's save file name, this config file will be used. | A niche setting for when other conditions aren't effective at choosing a farm. Note that this technically checks the save *folder* name, not the save file itself.
-OtherMods | A list of mods' UniqueIDs and `true` or `false` (see Notes) | If all of the player's loaded mods match this list, this config file will be used. | This can be used to make a content pack or config file only activate with certain mod requirements. `true` means a mod *must* be installed, while `false` means it *can't* be installed. Example: `OtherMods: { "Esca.FarmTypeManager" : true, "FakeModID" : false }`
+File_Conditions | *(see below)* | A list of conditions required to use this content file with a specific farm. | These settings are primarily useful for content packs.
+FarmTypes | A list of: "Standard", "Riverland", "Forest", "Hilltop", "Wilderness", "FourCorners", "Beach", and/or custom farm type IDs | A list of farm types for which this content file will be used. | This is mainly for content packs that are combined with custom farm maps. For example, if a custom farm replaces your Standard farm type, set this to `["Standard"]`. For custom farms added in Stardew v1.5.5+, use the farm type's full "ID" (e.g. `["MyName.MyMod/MyFarmType"]`). For MTN farm types, use the "ID" from its farmTypes.json file (e.g. `[177]`).
+FarmerNames | A list of farmer names, e.g. `["Esca"]` | If one of this list's names matches the farmer's name, this content file will be used. | This setting only checks the main farmer's name; it won't be affected by multiplayer farmhands.
+SaveFileNames | A list of save file names, e.g. `["Esca_1234567"]` | If one of these names matches the current farm's save file name, this content file will be used. | A niche setting for when other conditions aren't effective at choosing a farm. Note that this technically checks the save *folder* name, not the save file itself.
+OtherMods | A list of mods' UniqueIDs and `true` or `false` (see Notes) | If all of the player's loaded mods match this list, this content file will be used. | This can be used to make a content pack or content file only activate with certain mod requirements. `true` means a mod *must* be installed, while `false` means it *can't* be installed. Example: `OtherMods: { "Esca.FarmTypeManager" : true, "FakeModID" : false }`
 
 ## Content Packs
-In version 1.4 and later, Farm Type Manager can use configuration files from content packs. They will be used *in addition* to the farm-specific files in the `FarmTypeManager\data` folder; they will not replace or override each other.
+Modders can use FTM by creating content packs. Note that these packs will be used *in addition* to any farm-specific files in the `FarmTypeManager\data` folder; they will not replace or override each other.
 
-To create a content pack for Farm Type Manager:
+To create a content pack for FTM:
 
 1. Create a new folder in the `Stardew Valley\Mods` folder. Its name should follow this format: `[FTM] Your Pack Name`
 2. Create a text file in the new folder called **manifest.json**. (See the [Manifest](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Manifest) wiki article for more info.) Copy the format below and fill in the settings appropriately:
@@ -414,22 +402,22 @@ To create a content pack for Farm Type Manager:
   "Version": "1.0.0",
   "Description": "Your description here. Briefly explain what the content pack does.",
   "UniqueID": "YourName.YourPackName",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [],
   "ContentPackFor": {
     "UniqueID": "Esca.FarmTypeManager",
-    "MinimumVersion": "1.10.1"
+    "MinimumVersion": "1.23.0"
   }
 }
 ```
-3. Create or copy a Farm Type Manager configuration file into the `[FTM] Your Pack Name` folder and name it **content.json**. The format is exactly the same as a farm configuration file from the `FarmTypeManager\data` folder.
-4. If you want to combine this content pack with a custom farm map or similar mod, consider editing the **FarmTypes** and/or **OtherMods** settings under **File_Conditions** at the bottom of the configuration file. (See the [File Conditions](#file-conditions) section.)
+3. Create or copy a FTM configuration file into the `[FTM] Your Pack Name` folder and name it **content.json**. The format is exactly the same as a farm content file from the `FarmTypeManager\data` folder.
+4. If you want to combine this content pack with a custom farm map or similar mod, consider editing the **FarmTypes** and/or **OtherMods** settings under **File_Conditions** at the bottom of the content file. (See the [File Conditions](#file-conditions) section.)
 
 ## SMAPI Mod Support
 
 ### API Features
 
-Farm Type Manager provides an API for other SMAPI mods. To access it in your C# mod:
+FTM provides a small API for other SMAPI mods. To access it in your C# mod:
 
 1. Copy the [IFtmApi.cs](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/API/IFtmApi.cs) file into your mod.
 2. After all mods are loaded, e.g. during a GameLaunched event, use SMAPI's Helper to get an API instance: `var api = Helper.ModRegistry.GetApi<FarmTypeManager.IFtmApi>("Esca.FarmTypeManager");`
@@ -438,14 +426,14 @@ Feel free to request additional features, but note that there are currently no p
 
 ### Adding Custom Monster Classes
 
-The MonsterName setting in Farm Type Manager's monster spawn settings can use custom monster classes created by other mods. This process requires some knowledge of C# and SMAPI; you may also need to decompile and explore Stardew Valley's monster code.
+The MonsterName setting in FTM's monster spawn settings can use custom monster classes created by other mods. This process requires some knowledge of C# and SMAPI; you may also need to decompile and explore Stardew Valley's monster code.
 
 Creating a custom class works as follows:
 
 1. Create a basic SMAPI mod. See the wiki's [Modder Guide](https://stardewvalleywiki.com/Modding:Modder_Guide) for more information. The mod doesn't need to perform any specific actions; it just needs to exist and be loaded by SMAPI.
 2. Within that mod (in any namespace or class), create a subclass of the StardewValley.Monster class or one of its existing subclasses (e.g. Ghost).
-3. Create a default constructor (no parameters) and a constructor with only a Vector2 parameter. The default is required for some of Stardew's internal behavior, while the Vector2 constructor is used by Farm Type Manager.
+3. Create a default constructor (no parameters) and a constructor with only a Vector2 parameter. The default is required for some of Stardew's internal behavior, while the Vector2 constructor is used by FTM.
 4. Customize the monster as needed. Override virtual methods to change the monster's "base" behavior, and if the monster needs any new properties, remember to add them to the `NetFields` list and use ISerializable types.
-5. Once the mod is complete, you should be able to use the [list_monsters](#list_monsters) command to find your custom monster's full name. Use that name with Farm Type Manager's MonsterName setting to spawn your monster.
+5. Once the mod is complete, you should be able to use the [list_monsters](#list_monsters) command to find your custom monster's full name. Use that name with FTM's MonsterName setting to spawn your monster.
 
-An example project will likely be added in a future update. For now, please see Farm Type Manager's [custom monster classes](https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters) for examples of formatting and a few necessary bugfixes.
+An example project will likely be added in a future update. For now, please see FTM's [custom monster classes](https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters) for examples of formatting, and possibly a few bugfixes for certain classes.
