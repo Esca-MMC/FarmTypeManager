@@ -23,11 +23,14 @@ Despite the name, Farm Type Manager (FTM) is a framework that allows other mods 
 		* [Monster Type Settings](#monster-type-settings)
     * [Other Settings](#other-settings)
     * [File Conditions](#file-conditions)
-    
 * [Content Packs](#content-packs)
-* [SMAPI Mod Support](#smapi-mod-support)
-    * [API Feature](#api-features)
-    * [Adding Custom Monster Classes](#adding-custom-monster-classes)
+* [Additional Modding Features](#additional-modding-features)
+    * [For SMAPI Mods](#for-smapi-mods)
+		* [FTM API](#ftm-api)
+		* [Custom Monster Classes](#custom-monster-classes)
+    * [For Content Packs](#for-content-packs)
+		* [Content Patcher Tokens](#content-patcher-tokens)
+		* [Game State Queries](#game-state-queries)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -413,9 +416,11 @@ To create a content pack for FTM:
 3. Create or copy a FTM configuration file into the `[FTM] Your Pack Name` folder and name it **content.json**. The format is exactly the same as a farm content file from the `FarmTypeManager\data` folder.
 4. If you want to combine this content pack with a custom farm map or similar mod, consider editing the **FarmTypes** and/or **OtherMods** settings under **File_Conditions** at the bottom of the content file. (See the [File Conditions](#file-conditions) section.)
 
-## SMAPI Mod Support
+## Additional Modding Features
 
-### API Features
+### For SMAPI Mods
+
+#### FTM API
 
 FTM provides a small API for other SMAPI mods. To access it in your C# mod:
 
@@ -424,7 +429,7 @@ FTM provides a small API for other SMAPI mods. To access it in your C# mod:
 
 Feel free to request additional features, but note that there are currently no plans for on-demand spawning through the API.
 
-### Adding Custom Monster Classes
+#### Custom Monster Classes
 
 The MonsterName setting in FTM's monster spawn settings can use custom monster classes created by other mods. This process requires some knowledge of C# and SMAPI; you may also need to decompile and explore Stardew Valley's monster code.
 
@@ -437,3 +442,31 @@ Creating a custom class works as follows:
 5. Once the mod is complete, you should be able to use the [list_monsters](#list_monsters) command to find your custom monster's full name. Use that name with FTM's MonsterName setting to spawn your monster.
 
 An example project will likely be added in a future update. For now, please see FTM's [custom monster classes](https://github.com/Esca-MMC/FarmTypeManager/tree/master/FarmTypeManager/Classes/In-Game/Monsters) for examples of formatting, and possibly a few bugfixes for certain classes.
+
+### For Content Packs
+
+#### Content Patcher Tokens
+
+FTM adds the following custom tokens to Content Patcher, which can be used by content packs for that mod.
+
+To enable them in Content Patcher packs, you must do at least one of the following:
+
+A) Add FTM as a dependency in your pack's "manifest.json" file: `"Dependencies": [{"UniqueID": "Esca.FarmTypeManager"}]`
+
+B) Whenever you use a token from FTM, add this "When" condition: `"HasMod": "Esca.FarmTypeManager"`
+
+Name  | Format | Example | Description
+------|--------|---------|------------
+Number of monsters | Esca.FarmTypeManager/NumberOfMonsters [location] | `{{Esca.FarmTypeManager/NumberOfMonsters BusStop}}` | This token outputs the current number of monsters at a location. If no location name is provided, it will use the local player's current location. Use the `whereami` console command to see your current location's name.<br/><br/>If a location does not exist, is not loaded, or currently isn't being shared with the local player in multiplayer, this token will output `-1` instead.<br/><br/>Note: This token should NOT be used in FTM's CPConditions field; it cannot detect FTM monsters at the start of the day, which is when that field is used. Future versions of FTM are planned to add more support for this.
+
+#### Game State Queries
+
+FTM adds the following [game state queries](https://stardewvalleywiki.com/Modding:Game_state_queries) (GSQs) to the GSQ system.
+
+They can be used in FTM's GameStateQueries field, in the "Condition" fields of various Stardew data assets, or by other mods.
+
+Name  | Format | Example | Description
+------|--------|---------|------------
+Location exists | Esca.FarmTypeManager_LOCATION_EXISTS <location> | `Esca.FarmTypeManager_LOCATION_EXISTS UndergroundMine3` | This query is true if the named location is currently loaded. This should include custom locations, all mine levels visited by any player today, etc.
+Location is active | Esca.FarmTypeManager_LOCATION_IS_ACTIVE <location> | `Esca.FarmTypeManager_LOCATION_IS_ACTIVE UndergroundMine3` | This query is true if the named location is currently loaded and being shared with the local player. For the host player, this include all loaded locations; for multiplayer farmhands, this only includes the local player's current location and a few that are always active.
+Number of monsters | Esca.FarmTypeManager_NUMBER_OF_MONSTERS <location> <minimum> [maximum] | `Esca.FarmTypeManager_NUMBER_OF_MONSTERS UndergroundMine3 1 5` | This query is true if the named location currently has the specified number of monsters (from the minimum to the optional maximum, inclusive).<br/><br/>Note that this will throw an error if the location is not loaded, or indicate "-1" monsters if the location is not active. It's strongly recommended to use the "location is active" query before this one.
