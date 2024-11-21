@@ -455,9 +455,9 @@ A) Add FTM as a dependency in your pack's "manifest.json" file: `"Dependencies":
 
 B) Whenever you use a token from FTM, add this "When" condition: `"HasMod": "Esca.FarmTypeManager"`
 
-Name  | Format | Example | Description
-------|--------|---------|------------
-Number of monsters | Esca.FarmTypeManager/NumberOfMonsters [location] | `{{Esca.FarmTypeManager/NumberOfMonsters BusStop}}` | This token outputs the current number of monsters at a location. If no location name is provided, it will use the local player's current location. Use the `whereami` console command to see your current location's name.<br/><br/>If a location does not exist, is not loaded, or currently isn't being shared with the local player in multiplayer, this token will output `-1` instead.<br/><br/>Note: This token should NOT be used in FTM's CPConditions field; it cannot detect FTM monsters at the start of the day, which is when that field is used. Future versions of FTM are planned to add more support for this.
+Format | Description
+-------|------------
+Esca.FarmTypeManager/NumberOfMonsters [location] | This token outputs the current number of monsters at a location. If no location name is provided, it will use the local player's current location. Use the `whereami` console command to see your current location's name.<br/><br/>If a location does not exist, is not loaded, or currently isn't being shared with the local player in multiplayer, this token will output `-1` instead.<br/><br/>Note: This token should NOT be used in FTM's CPConditions field; it cannot detect FTM monsters at the start of the day, which is when that field is used. Future versions of FTM are planned to add more support for this.
 
 #### Game State Queries
 
@@ -465,8 +465,8 @@ FTM adds the following [game state queries](https://stardewvalleywiki.com/Moddin
 
 They can be used in FTM's GameStateQueries field, in the "Condition" fields of various Stardew data assets, or by other mods.
 
-Name  | Format | Example | Description
-------|--------|---------|------------
-Location exists | Esca.FarmTypeManager_LOCATION_EXISTS <location> | `Esca.FarmTypeManager_LOCATION_EXISTS UndergroundMine3` | This query is true if the named location is currently loaded. This should include custom locations, all mine levels visited by any player today, etc.
-Location is active | Esca.FarmTypeManager_LOCATION_IS_ACTIVE <location> | `Esca.FarmTypeManager_LOCATION_IS_ACTIVE UndergroundMine3` | This query is true if the named location is currently loaded and being shared with the local player. For the host player, this include all loaded locations; for multiplayer farmhands, this only includes the local player's current location and a few that are always active.
-Number of monsters | Esca.FarmTypeManager_NUMBER_OF_MONSTERS <location> <minimum> [maximum] | `Esca.FarmTypeManager_NUMBER_OF_MONSTERS UndergroundMine3 1 5` | This query is true if the named location currently has the specified number of monsters (from the minimum to the optional maximum, inclusive).<br/><br/>Note that this will throw an error if the location is not loaded, or indicate "-1" monsters if the location is not active. It's strongly recommended to use the "location is active" query before this one.
+Format | Description
+-------|------------
+Esca.FarmTypeManager_LOCATION_EXISTS <location> | This query is true if the named location is currently loaded. This should include custom locations, all mine levels visited by any player today, etc.
+Esca.FarmTypeManager_LOCATION_IS_ACTIVE <location> | This query is true if the named location is currently loaded and being shared with the local player. For the host player, this include all loaded locations; for multiplayer farmhands, this only includes the local player's current location and a few that are always active.
+Esca.FarmTypeManager_NUMBER_OF_MONSTERS <location> <minimum> [maximum] | This query is true if the named location currently has the specified number of monsters (from the minimum to the optional maximum, inclusive).<br/><br/>Note that this will throw an error if the location is not loaded, or indicate "-1" monsters if the location is not active. It's strongly recommended to use the "location is active" query before this one.
