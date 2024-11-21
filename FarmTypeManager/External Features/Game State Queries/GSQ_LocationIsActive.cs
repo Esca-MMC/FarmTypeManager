@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.Monsters;
 
 namespace FarmTypeManager.ExternalFeatures.GameStateQueries
 {
