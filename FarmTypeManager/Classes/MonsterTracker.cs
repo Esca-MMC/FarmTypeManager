@@ -37,27 +37,22 @@ namespace FarmTypeManager
                 public static int? AddMonster(Monster monster)
                 {
                     if (nextID == int.MinValue) //if there are no more valid IDs left
-                    {
                         return null;
-                    }
 
                     MonsterLoot.Add(monster, new List<SavedObject>(0)); //add the monster with a blank set of loot
 
                     return nextID--; //return the ID used, then decrement the static field
                 }
 
-                /// <summary>Removes the provided monster ID from the tracker.</summary>
+                /// <summary>Removes the provided monster from the tracker.</summary>
                 /// <param name="Monster">The monster instance.</param>
-                public static void RemoveMonster(Monster monster)
+                /// <returns>True if the monster was tracked and has been removed. False if it was not found.</returns>
+                public static bool RemoveMonster(Monster monster)
                 {
-                    if (MonsterLoot.ContainsKey(monster)) //if the monster exists
-                    {
-                        MonsterLoot.Remove(monster);
-                    }
-                    else //if the monster doesn't exist
-                    {
-                        Monitor.Log($"MonsterTracker error: Attempted to remove unrecognized monster from tracker. ID: {monster?.id}", LogLevel.Debug);
-                    }
+                    if (monster == null)
+                        return false;
+                    else
+                        return MonsterLoot.Remove(monster);
                 }
 
                 /// <summary>Assigns a custom loot set to a monster.</summary>
@@ -65,14 +60,10 @@ namespace FarmTypeManager
                 /// <param name="loot">A set of saved objects representing items this monster should drop when defeated.</param>
                 public static void SetLoot(Monster monster, IEnumerable<SavedObject> loot)
                 {
-                    if (MonsterLoot.ContainsKey(monster)) //if the ID exists
-                    {
+                    if (MonsterLoot.ContainsKey(monster)) //if the monster exists in the tracker
                         MonsterLoot[monster] = loot;
-                    }
-                    else //if the ID doesn't exist
-                    {
+                    else
                         Monitor.Log($"MonsterTracker error: Attempted to set loot for a monster with an unrecognized ID: {monster?.id}", LogLevel.Debug);
-                    }
                 }
 
                 /// <summary>Get the set of loot assigned to a monster.</summary>
@@ -80,14 +71,10 @@ namespace FarmTypeManager
                 /// <returns>A set of saved objects representing items this monster should drop when defeated. Null if no matching monster exists.</returns>
                 public static IEnumerable<SavedObject> GetLoot(Monster monster)
                 {
-                    if (MonsterLoot.ContainsKey(monster)) //if the ID exists
-                    {
+                    if (MonsterLoot.ContainsKey(monster)) //if the monster exists in the tracker
                         return MonsterLoot[monster];
-                    }
-                    else //if the ID doesn't exist
-                    {
+                    else
                         return null;
-                    }
                 }
             }
         }

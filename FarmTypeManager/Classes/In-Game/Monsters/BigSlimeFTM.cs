@@ -89,6 +89,10 @@ namespace FarmTypeManager
                             {
                                 GreenSlime spawnSlime = new GreenSlime(this.Position, MineLevelOfDeathSpawns); //use MineLevelOfDeathSpawns instead of checking the game state
                                 spawnSlime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
+
+                                int ID = Utility.MonsterTracker.AddMonster(spawnSlime) ?? Utility.RNG.Next(int.MinValue, -1); //add the new slime to the tracker and get an ID for it (or randomly generate one if this fails)
+                                spawnSlime.id = ID; //assign the ID to this slime
+
                                 this.currentLocation.characters.Add(spawnSlime);
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].willDestroyObjectsUnderfoot = false;
@@ -96,8 +100,6 @@ namespace FarmTypeManager
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].Scale = (float)(0.75 + (double)Game1.random.Next(-5, 10) / 100.0);
                                 this.currentLocation.characters[this.currentLocation.characters.Count - 1].currentLocation = this.currentLocation;
 
-                                int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
-                                this.currentLocation.characters[currentLocation.characters.Count - 1].id = ID; //assign the ID to this slime
                                 SavedObject save = new SavedObject() //create save data for this slime (set to expire overnight) 
                                 {
                                     MapName = currentLocation.Name,
