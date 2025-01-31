@@ -96,7 +96,19 @@ namespace FarmTypeManager
             public static ItemExtensions.IApi ItemExtensionsAPI { get; set; } = null;
 
             /// <summary>The global settings for this mod. Should be set during mod startup.</summary>
-            public static ModConfig MConfig { get; set; }
+            /// <remarks>Redirects to <see cref="FTMUtility"/> as part of a gradual replacement process.</remarks>
+            public static ModConfig MConfig
+            {
+                get
+                {
+                    return FTMUtility.MConfig;
+                }
+
+                set
+                {
+                    FTMUtility.MConfig = value;
+                }
+            }
 
             /// <summary>Random number generator shared throughout the mod. Initialized automatically.</summary>
             public static Random RNG { get; } = new Random();
