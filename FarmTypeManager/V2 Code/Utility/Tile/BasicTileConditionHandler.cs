@@ -31,6 +31,15 @@ namespace FarmTypeManager
             { "!PROPERTY", ITileConditionHandler.EvalPriority_Normal },
             { "INDEX", ITileConditionHandler.EvalPriority_Normal },
             { "!INDEX", ITileConditionHandler.EvalPriority_Normal },
+
+            { "PASSABLE", ITileConditionHandler.EvalPriority_Normal },
+            { "!PASSABLE", ITileConditionHandler.EvalPriority_Normal },
+            { "ALLOWS_OBJECTS", ITileConditionHandler.EvalPriority_Normal },
+            { "!ALLOWS_OBJECTS", ITileConditionHandler.EvalPriority_Normal },
+            { "OCCUPIED", ITileConditionHandler.EvalPriority_Normal },
+            { "!OCCUPIED", ITileConditionHandler.EvalPriority_Normal },
+            { "CAN_PLACE_ITEM", ITileConditionHandler.EvalPriority_Normal },
+            { "!CAN_PLACE_ITEM", ITileConditionHandler.EvalPriority_Normal },
         };
 
         /******************/
@@ -80,6 +89,31 @@ namespace FarmTypeManager
                     break;
                 case "!INDEX":
                     filter = Impl_NOT_INDEX(args, location, tiles);
+                    break;
+
+                case "PASSABLE":
+                    filter = Impl_PASSABLE(args, location, tiles);
+                    break;
+                case "!PASSABLE":
+                    filter = Impl_NOT_PASSABLE(args, location, tiles);
+                    break;
+                case "ALLOWS_OBJECTS":
+                    filter = Impl_ALLOWS_OBJECTS(args, location, tiles);
+                    break;
+                case "!ALLOWS_OBJECTS":
+                    filter = Impl_NOT_ALLOWS_OBJECTS(args, location, tiles);
+                    break;
+                case "OCCUPIED":
+                    filter = Impl_OCCUPIED(args, location, tiles);
+                    break;
+                case "!OCCUPIED":
+                    filter = Impl_NOT_OCCUPIED(args, location, tiles);
+                    break;
+                case "CAN_PLACE_ITEM":
+                    filter = Impl_CAN_PLACE_ITEM(args, location, tiles);
+                    break;
+                case "!CAN_PLACE_ITEM":
+                    filter = Impl_NOT_CAN_PLACE_ITEM(args, location, tiles);
                     break;
 
                 default:
@@ -285,7 +319,7 @@ namespace FarmTypeManager
             }
         }
 
-        //// <summary>Returns tiles that do NOT match the specified tilesheet indices. If none are provided, returns tiles that do NOT have an index.</summary>
+        /// <summary>Returns tiles that do NOT match the specified tilesheet indices. If none are provided, returns tiles that do NOT have an index.</summary>
         private static IEnumerable<Vector2> Impl_NOT_INDEX(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
         {
             if (!ArgUtility.TryGet(args, 1, out string layerName, out string error, false, "Map Layer Name"))
@@ -320,6 +354,106 @@ namespace FarmTypeManager
                             yield return tile;
                     }
                 }
+            }
+        }
+
+        /// <summary>Returns tiles that are passable, i.e. they generally allow players and NPCs to move. This only checks map tiles and their properties, not other obstructions.</summary>
+        private static IEnumerable<Vector2> Impl_PASSABLE(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            foreach (Vector2 tile in tiles)
+            {
+                if (location.isTilePassable(tile))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles that are NOT passable, i.e. they generally don't allow players and NPCs to move. This only checks map tiles and their properties, not other obstructions.</summary>
+        private static IEnumerable<Vector2> Impl_NOT_PASSABLE(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            foreach (Vector2 tile in tiles)
+            {
+                if (!location.isTilePassable(tile))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles where objects are allowed to be placed. This does NOT check whether there are currently objects on the tile.</summary>
+        private static IEnumerable<Vector2> Impl_ALLOWS_OBJECTS(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            if (!ArgUtility.TryGetOptionalBool(args, 1, out bool passable, out string error, false, "Item Is Passable"))
+            {
+                FTMUtility.Monitor.LogOnce($"Invalid tile condition: \"{string.Join(' ', args)}\". Reason: \"{error}\".", LogLevel.Warn);
+                yield break;
+            }
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (location.isTilePlaceable(tile, passable))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles where objects are NOT allowed to be placed. This does NOT check whether there are currently objects on the tile.</summary>
+        private static IEnumerable<Vector2> Impl_NOT_ALLOWS_OBJECTS(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            if (!ArgUtility.TryGetOptionalBool(args, 1, out bool passable, out string error, false, "Item Is Passable"))
+            {
+                FTMUtility.Monitor.LogOnce($"Invalid tile condition: \"{string.Join(' ', args)}\". Reason: \"{error}\".", LogLevel.Warn);
+                yield break;
+            }
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (!location.isTilePlaceable(tile, passable))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles occupied by in-game objects or characters.</summary>
+        private static IEnumerable<Vector2> Impl_OCCUPIED(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            //TODO: args for for collision masks and/or passables to ignore
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (location.IsTileOccupiedBy(tile))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles that are NOT occupied by in-game objects or characters.</summary>
+        private static IEnumerable<Vector2> Impl_NOT_OCCUPIED(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            //TODO: args for for collision masks and/or passables to ignore
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (!location.IsTileOccupiedBy(tile))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles that are clear for item placement.</summary>
+        private static IEnumerable<Vector2> Impl_CAN_PLACE_ITEM(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            //TODO: args for for collision masks and/or passables to ignore
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (location.CanItemBePlacedHere(tile))
+                    yield return tile;
+            }
+        }
+
+        /// <summary>Returns tiles that are NOT clear for item placement.</summary>
+        private static IEnumerable<Vector2> Impl_NOT_CAN_PLACE_ITEM(string[] args, GameLocation location, IEnumerable<Vector2> tiles)
+        {
+            //TODO: args for for collision masks and/or passables to ignore
+
+            foreach (Vector2 tile in tiles)
+            {
+                if (!location.CanItemBePlacedHere(tile))
+                    yield return tile;
             }
         }
     }
