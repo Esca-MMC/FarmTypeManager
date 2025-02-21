@@ -22,22 +22,29 @@ namespace FarmTypeManager
                     return null; //return null without checking TMX's data
                 }
 
-                if (Type.GetType("TMXLoader.TMXLoaderMod, TMXLoader") is Type tmx) //if TMXLoader can be accessed
+                try
                 {
-                    if (tmx.GetField("buildablesBuild", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) is IList tmxSaveBuildables) //if tmx's SaveBuildables list can be accessed
+                    if (GetTypeFromName("TMXLoader.TMXLoaderMod") is Type tmx) //if TMXLoader can be accessed
                     {
-                        foreach (object sb in tmxSaveBuildables) //for each saved buildable in TMXLoader
+                        if (tmx.GetField("buildablesBuild", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null) is IList tmxSaveBuildables) //if tmx's SaveBuildables list can be accessed
                         {
-                            if (sb.GetType() is Type sbType && sbType.GetProperty("UniqueId").GetValue(sb) is string UniqueId && sbType.GetProperty("Id").GetValue(sb) is string Id) //if this buildable's UniqueID and ID can be accessed
+                            foreach (object sb in tmxSaveBuildables) //for each saved buildable in TMXLoader
                             {
-                                string locationUniqueId = locationName.Substring(tmxPrefix.Length); //get the location's unique ID by removing the TMX prefix
-                                if (locationUniqueId == UniqueId) //if the location's unique ID matches this saved buildable
+                                if (sb.GetType() is Type sbType && sbType.GetProperty("UniqueId").GetValue(sb) is string UniqueId && sbType.GetProperty("Id").GetValue(sb) is string Id) //if this buildable's UniqueID and ID can be accessed
                                 {
-                                    return Id; //return this saved buildable's non-unique ID
+                                    string locationUniqueId = locationName.Substring(tmxPrefix.Length); //get the location's unique ID by removing the TMX prefix
+                                    if (locationUniqueId == UniqueId) //if the location's unique ID matches this saved buildable
+                                    {
+                                        return Id; //return this saved buildable's non-unique ID
+                                    }
                                 }
                             }
                         }
                     }
+                }
+                catch (Exception)
+                {
+                    Utility.Monitor.LogOnce("Error trying to access TMXLoaderMod class. Skipping building check.", LogLevel.Trace);
                 }
 
                 return null; //no matching name was detected, so return null
