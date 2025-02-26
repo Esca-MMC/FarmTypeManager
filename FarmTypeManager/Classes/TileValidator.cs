@@ -12,7 +12,7 @@ namespace FarmTypeManager
         {
             /// <summary>The GameLocation containing the listed tiles.</summary>
             private GameLocation Location;
-            /// <summary>A list of possible spawn tiles to validate. This should always match TileSet.</summary>
+            /// <summary>A list of possible spawn tiles to validate.</summary>
             private List<Vector2> TileList;
             /// <summary>The strictness level to use when checking tiles.</summary>
             private string StrictTileChecking;
