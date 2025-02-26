@@ -30,6 +30,9 @@ namespace FarmTypeManager
         /// <returns>The named location instance, or null if it's inactive.</returns>
         public static GameLocation GetLocationIfActive(string locationName)
         {
+            if (string.IsNullOrWhiteSpace(locationName))
+                return null; //don't bother checking blank names
+
             GameLocation matchingLocation = null;
 
             //loop through each location and search for one with a matching name
