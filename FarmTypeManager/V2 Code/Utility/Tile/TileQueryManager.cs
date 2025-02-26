@@ -42,11 +42,15 @@ namespace FarmTypeManager
 
         /// <summary>Gets all tiles in this location that match this tile query.</summary>
         /// <param name="tileQuery">A tile query, i.e. a set of conditions and arguments, with each condition separated by commas.</param>
-        /// <param name="location">The in-game location that the tile query should check.</param>
-        /// <param name="tiles">A set of tiles to check. All values must be within the location's boundaries. If null, all map tiles will be used in random order.</param>
+        /// <param name="location">The in-game location that the tile query should check. If null, no tiles will be returned.</param>
+        /// <param name="tiles">A set of tiles to check. All values must be within the location's boundaries. If null, all map tiles will be returned in random order.</param>
         /// <returns>All tiles in the location that match the tile query, in random order.</returns>
+        /// <remarks>This method validates and yields tiles one at a time. The results can only be iterated over once (e.g. in one foreach loop). Avoid converting them to an array or list, unless all valid tiles are needed.</remarks>
         public static IEnumerable<Vector2> GetTilesFromQuery(string tileQuery, GameLocation location, IEnumerable<Vector2> tiles = null)
         {
+            if (location == null)
+                yield break;
+
             if (tiles == null)
             {
                 //get the maximum X and Y for tiles in this location
@@ -61,7 +65,7 @@ namespace FarmTypeManager
             if (conditions == null) //if parsing failed
                 yield break; //treat all tiles as non-matching
 
-            conditions.Sort(); //sort conditions by their handlers' priority
+            conditions.Sort(); //sort conditions by priority
 
             foreach (var condition in conditions)
                 tiles = condition.Handler.FilterTiles(condition.Args, location, tiles); //filter the tiles enumerator through this condition
@@ -111,6 +115,9 @@ namespace FarmTypeManager
         /// <returns>A list of parsed conditions, or null if parsing failed.</returns>
         public static List<ParsedTileCondition> Parse(string tileQuery)
         {
+            if (string.IsNullOrWhiteSpace(tileQuery))
+                tileQuery = "TRUE"; //treat all tiles as valid
+
             if (CachedQueryConditions.TryGetValue(tileQuery, out var cached)) //if this query has already been parsed
                 return cached;
 
