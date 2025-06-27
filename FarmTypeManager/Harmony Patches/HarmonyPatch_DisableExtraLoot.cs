@@ -2,9 +2,11 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
+using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using static HarmonyLib.Code;
 
 namespace FarmTypeManager
 {
@@ -72,7 +74,7 @@ namespace FarmTypeManager
                         )
                         {
                             patched.InsertRange(x + 2,
-                                [
+                                [ 
                                     new CodeInstruction(OpCodes.Ldarg_1), //add the "monster" arg to the stack
                                     new CodeInstruction(OpCodes.Call, ringCheckMethodInfo) //call this method to conditionally replace the result of "isWearingRing"
                                 ]);
