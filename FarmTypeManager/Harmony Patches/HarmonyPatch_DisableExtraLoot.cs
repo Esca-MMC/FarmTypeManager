@@ -2,11 +2,9 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using static HarmonyLib.Code;
 
 namespace FarmTypeManager
 {
@@ -70,11 +68,11 @@ namespace FarmTypeManager
                         if
                         (
                             patched[x].opcode == OpCodes.Ldstr && patched[x].operand?.ToString().Equals("526", StringComparison.Ordinal) == true //if this loads the string "526" (unqualified item ID of Burglar's Ring)
-                            && (patched[x+1].opcode == OpCodes.Call || patched[x + 1].opcode == OpCodes.Callvirt) && patched[x + 1].operand?.ToString().Contains("isWearingRing", StringComparison.OrdinalIgnoreCase) == true //and if this calls the "isWearingRing" method
+                            && (patched[x + 1].opcode == OpCodes.Call || patched[x + 1].opcode == OpCodes.Callvirt) && patched[x + 1].operand?.ToString().Contains("isWearingRing", StringComparison.OrdinalIgnoreCase) == true //and if this calls the "isWearingRing" method
                         )
                         {
-                            patched.InsertRange(x+2,
-                                [ 
+                            patched.InsertRange(x + 2,
+                                [
                                     new CodeInstruction(OpCodes.Ldarg_1), //add the "monster" arg to the stack
                                     new CodeInstruction(OpCodes.Call, ringCheckMethodInfo) //call this method to conditionally replace the result of "isWearingRing"
                                 ]);
