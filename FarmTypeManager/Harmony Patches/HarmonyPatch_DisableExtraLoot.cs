@@ -2,11 +2,9 @@
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
-using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using static HarmonyLib.Code;
 
 namespace FarmTypeManager
 {
