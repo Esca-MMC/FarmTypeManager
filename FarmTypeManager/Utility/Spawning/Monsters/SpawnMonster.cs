@@ -549,12 +549,12 @@ namespace FarmTypeManager
                 if (monster is GreenSlime slime)
                     slime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
 
-                ApplyMonsterSettings(monster, monsterType.Settings, areaID); //adjust the monster based on any other provided optional settings
-
                 //spawn the completed monster at the target location
                 Monitor.VerboseLog($"Spawning monster. Type: {monsterType.MonsterName}. Location: {tile.X},{tile.Y} ({location.Name}).");
                 monster.currentLocation = location;
                 monster.setTileLocation(tile);
+                monster.InitializeForLocation(location);
+                ApplyMonsterSettings(monster, monsterType.Settings, areaID); //NOTE: as of SDV v1.6.16+, monster loot and other settings may be reset during initialization; call this method later to dodge this
                 location.addCharacter(monster);
                 return monster.id;
             }
