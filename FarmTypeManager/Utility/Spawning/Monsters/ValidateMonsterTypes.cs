@@ -785,6 +785,18 @@ namespace FarmTypeManager
                         }
                     }
 
+                    //validate extra loot
+                    if (validTypes[x].Settings.ContainsKey("ExtraLoot"))
+                    {
+                        if (!(validTypes[x].Settings["ExtraLoot"] is bool)) //if this is NOT a readable boolean
+                        {
+                            Monitor.Log($"The \"ExtraLoot\" setting for monster type \"{validTypes[x].MonsterName}\" couldn't be parsed. Please make sure it's true or false (without quotation marks).", LogLevel.Info);
+                            Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                            validTypes[x].Settings.Remove("ExtraLoot"); //remove the setting
+                        }
+                    }
+
                     //validate gender
                     if (validTypes[x].Settings.ContainsKey("Gender"))
                     {
