@@ -263,14 +263,7 @@ namespace FarmTypeManager
                     monster.moveTowardPlayer(Convert.ToInt32(settings["SightRange"])); //set "moveTowardPlayerThreshold" value and "isWalkingTowardPlayer" flag
                 }
 
-                //set extra loot
-                if (settings.ContainsKey("ExtraLoot"))
-                {
-                    if (settings["ExtraLoot"] is bool extraLoot && extraLoot == false) //if this setting is false
-                        monster.modData[Utility.ModDataKeys.ExtraLoot] = "false"; //flag this in the monster's mod data
-                }
-
-                //set gender
+                //validate gender
                 if (settings.ContainsKey("Gender"))
                 {
                     if (monster is GreenSlime slime)
