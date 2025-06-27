@@ -159,9 +159,31 @@ namespace FarmTypeManager
                 //set loot (i.e. items dropped on death by the monster)
                 if (settings.ContainsKey("Loot"))
                 {
-                    List<SavedObject> loot = ((JArray)settings["Loot"]).ToObject<List<SavedObject>>(); //cast this list of saved objects (already validated and parsed elsewhere)
-                    MonsterTracker.SetLoot(monster, loot); //set the monster's loot in the monster tracker
-                    monster.objectsToDrop.Clear(); //clear any "default" loot the monster might've had
+                    monster.drops.Clear(); //clear any "default" loot the monster might've had
+
+                    List<SavedObject> lootList = ((JArray)settings["Loot"]).ToObject<List<SavedObject>>(); //cast this list of saved objects (already validated and parsed elsewhere)
+
+                    foreach (SavedObject loot in lootList)
+                    {
+                        double? spawnChance = loot.ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                        if (spawnChance.HasValue && spawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                            continue; //skip to the next item
+
+                        if (loot.ConfigItem?.Contents != null) //if this loot has contents
+                        {
+                            for (int content = loot.ConfigItem.Contents.Count - 1; content >= 0; content--) //for each of the contents
+                            {
+                                List<SavedObject> contentSave = Utility.ParseSavedObjectsFromItemList(new object[] { loot.ConfigItem.Contents[content] }, $"[unknown: monster loot dropped at {monster.currentLocation.Name}]"); //parse this into a saved object
+
+                                double? contentSpawnChance = contentSave[0].ConfigItem?.PercentChanceToSpawn; //get this item's spawn chance, if provided
+                                if (contentSpawnChance.HasValue && contentSpawnChance.Value < Utility.RNG.Next(100)) //if this item "fails" its chance to spawn
+                                    loot.ConfigItem.Contents.RemoveAt(content); //remove this content from the loot
+                            }
+                        }
+
+                        if (Utility.CreateItem(loot) is Item lootItem)
+                            monster.drops.Add(lootItem);
+                    }
                 }
 
                 //set current HP
@@ -239,13 +261,6 @@ namespace FarmTypeManager
                 if (settings.ContainsKey("SightRange"))
                 {
                     monster.moveTowardPlayer(Convert.ToInt32(settings["SightRange"])); //set "moveTowardPlayerThreshold" value and "isWalkingTowardPlayer" flag
-                }
-
-                //set extra loot
-                if (settings.ContainsKey("ExtraLoot"))
-                {
-                    if (settings["ExtraLoot"] is bool extraLoot && extraLoot == false) //if this setting is false
-                        monster.modData[Utility.ModDataKeys.ExtraLoot] = "false"; //flag this in the monster's mod data
                 }
 
                 //validate gender

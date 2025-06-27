@@ -25,6 +25,7 @@ namespace FarmTypeManager
 
                 private static string extraLoot = null;
                 /// <summary>The unique key used with the "ExtraLoot" setting in <see cref="MonsterType.Settings"/>.</summary>
+                /// <remarks>In Stardew Valley v1.6.16-alpha and later, this setting will likely become obsolete. Monsters' loot/drops are handled differently.</remarks>
                 public static string ExtraLoot
                 {
                     get

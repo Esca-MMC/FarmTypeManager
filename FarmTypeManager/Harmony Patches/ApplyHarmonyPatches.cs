@@ -18,7 +18,6 @@ namespace FarmTypeManager
             HarmonyPatch_InstantKillImmunity.ApplyPatch(harmony);
             HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
             HarmonyPatch_StunImmunity.ApplyPatch(harmony);
-            HarmonyPatch_ToggleExtraLoot.ApplyPatch(harmony);
             HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
         }
     }

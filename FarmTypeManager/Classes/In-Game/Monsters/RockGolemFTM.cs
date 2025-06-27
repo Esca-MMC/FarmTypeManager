@@ -48,48 +48,21 @@ namespace FarmTypeManager.Monsters
                 base.IsWalkingTowardPlayer = false;
                 base.Slipperiness = 3;
                 base.HideShadow = true;
-                base.jitteriness.Value = 0.0;
+                jitteriness.Value = 0.0;
                 base.DamageToFarmer += difficultyMod;
                 base.Health += (int)((float)(difficultyMod * difficultyMod) * 2f);
                 base.ExperienceGained += difficultyMod;
-                if (difficultyMod >= 5 && Game1.random.NextDouble() < 0.05)
+                if (difficultyMod >= 5)
                 {
-                    base.objectsToDrop.Add("749");
+                    Tags.Add("golem_difficulty_min_5");
                 }
-                if (difficultyMod >= 5 && Game1.random.NextDouble() < 0.2)
+                if (difficultyMod >= 10)
                 {
-                    base.objectsToDrop.Add("770");
+                    Tags.Add("golem_difficulty_min_10");
                 }
-                if (difficultyMod >= 10 && Game1.random.NextDouble() < 0.01)
-                {
-                    base.objectsToDrop.Add("386");
-                }
-                if (difficultyMod >= 10 && Game1.random.NextDouble() < 0.01)
-                {
-                    base.objectsToDrop.Add("386");
-                }
-                if (difficultyMod >= 10 && Game1.random.NextDouble() < 0.001)
-                {
-                    base.objectsToDrop.Add("74");
-                }
-                //if ((string)base.name == "Iridium Golem")
-                //{
-                base.Speed *= 2;
-                base.Health += 400;
-                base.DamageToFarmer += 10;
-                base.ExperienceGained += 10;
-                if (Game1.random.NextDouble() < 0.03)
-                {
-                    base.objectsToDrop.Add("337");
-                }
-                if (Game1.random.NextDouble() < 0.03)
-                {
-                    base.objectsToDrop.Add("337");
-                }
-                //}
-                this.Sprite.currentFrame = 16;
-                this.Sprite.loop = false;
-                this.Sprite.UpdateSourceRect();
+                Sprite.currentFrame = 16;
+                Sprite.loop = false;
+                Sprite.UpdateSourceRect();
             }
         }
     }
