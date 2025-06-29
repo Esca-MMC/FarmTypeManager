@@ -7,6 +7,10 @@ namespace FarmTypeManager
         /// <summary>Add this mod's event methods to SMAPI's event handlers. This should be performed once during mod entry.</summary>
         private void AddSMAPIEvents(IModHelper helper)
         {
+            //FTM 2.0 events (TODO: categorize these better)
+            AssetHelper.Initialize(helper);
+            CustomActions.CustomActionsAssetManager.Initialize(helper);
+
             //spawn-related events
             helper.Events.GameLoop.DayEnding += DayEnding;
             helper.Events.GameLoop.DayStarted += DayStarted;
