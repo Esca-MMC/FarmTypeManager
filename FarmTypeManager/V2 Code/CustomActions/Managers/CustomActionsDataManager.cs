@@ -2,7 +2,6 @@
 using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -28,7 +27,7 @@ namespace FarmTypeManager.CustomActions
         public static void Initialize(IModHelper helper)
         {
             RegistryAssetName = $"Mods/{helper.ModRegistry.ModID}/Registry";
-            
+
             AssetHelper.SetDefault(RegistryAssetName, () => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)); //handle loading for the registry
             AssetHelper.AddActionOnInvalidate(RegistryAssetName, ReloadAssetNames); //reload asset names whenever the registry asset is invalidated
 
@@ -42,7 +41,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Gets all available custom actions data.</summary>
         /// <returns>All available custom actions data, each paired with a descriptive ID, e.g. its asset name.</returns>
         /// <remarks>This currently only includes data loaded from assets specified in the asset registry. If a future update adds support for data from other sources (e.g. content packs), this method will include those as well.</remarks>
-        public static IEnumerable<(string, Dictionary<string,CustomActionsAsset>)> GetAllData()
+        public static IEnumerable<(string, Dictionary<string, CustomActionsAsset>)> GetAllData()
         {
             foreach (string assetName in AssetNames)
             {
@@ -65,7 +64,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Gets custom actions data from a specific asset in the content system, if available.</summary>
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive (capitalization is ignored).</param>
         /// <returns>The asset and its name, or null if it could not be loaded.</returns>
-        public static Dictionary<string,CustomActionsAsset> GetDataFromAsset(string assetName)
+        public static Dictionary<string, CustomActionsAsset> GetDataFromAsset(string assetName)
         {
             Dictionary<string, CustomActionsAsset> asset;
             try

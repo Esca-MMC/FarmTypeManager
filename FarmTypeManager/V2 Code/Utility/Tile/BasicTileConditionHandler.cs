@@ -3,7 +3,6 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -15,7 +14,7 @@ namespace FarmTypeManager
         /**************/
 
         /// <summary>A case-insensitive set of handled condition keys and their <see cref="EvalPriority"/> levels.</summary>
-        public IDictionary<string, int> ConditionPriorities { get; } = new Dictionary<string,int>(StringComparer.OrdinalIgnoreCase)
+        public IDictionary<string, int> ConditionPriorities { get; } = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
         {
             { "TRUE", ITileConditionHandler.EvalPriority_High },
             { "!TRUE", ITileConditionHandler.EvalPriority_High },
