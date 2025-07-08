@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using HarmonyLib;
+using StardewModdingAPI;
 
 namespace FarmTypeManager
 {
@@ -28,8 +29,17 @@ namespace FarmTypeManager
             }
 
             AddSMAPIEvents(helper);
-            ApplyHarmonyPatches();
             EnableExternalFeatures(helper);
+
+            //apply all Harmony patches
+            var harmony = new Harmony(ModManifest.UniqueID); //create this mod's Harmony instance
+            HarmonyPatch_DisableFurniturePickup.ApplyPatch(harmony);
+            HarmonyPatch_InstantKillImmunity.ApplyPatch(harmony);
+            HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
+            HarmonyPatch_StunImmunity.ApplyPatch(harmony);
+            HarmonyPatch_ToggleExtraLoot.ApplyPatch(harmony);
+            HarmonyPatch_TriggerCustomActions.ApplyPatch(harmony);
+            HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
         }
     }
 }
