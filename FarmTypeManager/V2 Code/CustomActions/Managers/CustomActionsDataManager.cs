@@ -2,7 +2,6 @@
 using StardewModdingAPI.Events;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -28,7 +27,7 @@ namespace FarmTypeManager.CustomActions
         public static void Initialize(IModHelper helper)
         {
             RegistryAssetName = $"Mods/{helper.ModRegistry.ModID}/Registry";
-            
+
             AssetHelper.SetDefault(RegistryAssetName, () => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)); //handle loading for the registry
             AssetHelper.AddActionOnInvalidate(RegistryAssetName, ReloadAssetNames); //reload asset names whenever the registry asset is invalidated
 
