@@ -83,7 +83,7 @@ namespace FarmTypeManager
         {
             if (randomOrder)
             {
-                var tileList = new List<Vector2>((maximumX+1) * (maximumY+1));
+                var tileList = new List<Vector2>((maximumX + 1) * (maximumY + 1));
 
                 for (int x = 0; x <= maximumX; x++)
                 {
@@ -153,7 +153,7 @@ namespace FarmTypeManager
             for (int current = tileList.Count - 1; current > 0; current--) //for each tile's index (counting backward and excluding 0)
             {
                 int random = FTMUtility.Random.Next(current + 1); //get a random index between 0 and this tile's index
-                
+
                 //swap the current tile with the tile at the random index
                 Vector2 temp = tileList[random];
                 tileList[random] = tileList[current];
