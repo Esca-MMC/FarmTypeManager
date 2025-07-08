@@ -50,15 +50,15 @@ namespace FarmTypeManager
             Initialized = true;
         }
 
-        /// <summary>Checks whether this asset name has a default instance to load.</summary>
+        /// <summary>Checks whether this asset name has a default instance constructor.</summary>
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive (capitalization is ignored).</param>
-        /// <returns>True if a default instance generator exists for this asset. False otherwise.</returns>
+        /// <returns>True if a default instance constructor exists for this asset. False otherwise.</returns>
         public static bool HasDefault(string assetName)
         {
             return Defaults.ContainsKey(assetName);
         }
 
-        /// <summary>Sets a default instance generation method for the named asset, which allows it to be loaded by this class.</summary>
+        /// <summary>Sets a default instance construction method for the named asset, which allows it to be loaded by this class.</summary>
         /// <param name="assetName">The asset name, e.g. "Characters/Abigail". Case-insensitive (capitalization is ignored).</param>
         /// <param name="getNewDefaultAsset">A method that returns a new default instance for this asset, e.g. a blank dictionary with the appropriate key/value types.</param>
         public static void SetDefault(string assetName, Func<object> getNewDefaultAsset)
@@ -70,7 +70,7 @@ namespace FarmTypeManager
         /// <typeparam name="T">The asset's type.</typeparam>
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive (capitalization is ignored).</param>
         /// <param name="defaultAsset">A default instance of the asset.</param>
-        /// <returns>True if a default instance exists for this asset. False otherwise.</returns>
+        /// <returns>True if a default instance constructor exists for this asset. False otherwise.</returns>
         public static bool TryGetDefault<T>(string assetName, out T defaultAsset)
         {
             if (Defaults.TryGetValue(assetName, out Func<object> getNewDefaultAsset)) //if this asset has a default to load
