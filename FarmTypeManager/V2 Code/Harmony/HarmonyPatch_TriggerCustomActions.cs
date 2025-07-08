@@ -21,7 +21,7 @@ namespace FarmTypeManager
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_TriggerCustomActions), nameof(Raise_Postfix))
             );
         }
-            
+
         /// <summary>Passes any raised triggers and contextual data to <see cref="CustomActions.CustomActionManager"/> for use with custom actions.</summary>
         /// <inheritdoc cref="TriggerActionManager.Raise"/>
         public static void Raise_Postfix(string trigger, object[] triggerArgs, GameLocation location, Farmer player, Item targetItem, Item inputItem)

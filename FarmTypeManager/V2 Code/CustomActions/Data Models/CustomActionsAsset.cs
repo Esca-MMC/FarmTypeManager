@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using StardewValley;
 using System.Collections.Generic;
-using StardewValley;
-using System;
 
 namespace FarmTypeManager.CustomActions
 {

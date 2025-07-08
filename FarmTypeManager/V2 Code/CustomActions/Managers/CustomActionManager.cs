@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.Triggers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,7 +163,7 @@ namespace FarmTypeManager.CustomActions
                 default:
                     FTMUtility.Monitor.LogOnce($"Couldn't get custom actions from the asset \"{assetId}\", entry key \"{entryId}\". ActionMode is \"{data.ActionMode}\", which is not valid. Valid options: \"All\", \"Random\".", LogLevel.Warn);
                     yield break;
-             }
+            }
         }
 
         /// <summary>Tries to perform a custom action with the given data.</summary>

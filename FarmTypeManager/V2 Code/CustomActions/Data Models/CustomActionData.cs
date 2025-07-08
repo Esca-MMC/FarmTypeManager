@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
