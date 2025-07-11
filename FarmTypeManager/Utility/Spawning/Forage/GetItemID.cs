@@ -68,14 +68,13 @@ namespace FarmTypeManager
                     case "(f)":
                     case "f":
                     case "furniture":
-                        var furnitureData = Game1.content.Load<Dictionary<string, string>>("Data\\Furniture");
+                        var furnitureData = DataLoader.Furniture(Game1.content);
                         if (furnitureData.ContainsKey(idOrName))
                             return idOrName;
                         foreach (var entry in furnitureData)
                         {
-                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
-                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
-                                    return entry.Key;
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
+                                return entry.Key;
                         }
                         break;
                     case "(h)":
