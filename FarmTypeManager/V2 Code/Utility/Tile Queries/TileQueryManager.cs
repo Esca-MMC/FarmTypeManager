@@ -4,7 +4,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.TileQueries
 {
     /// <summary>A utility that provides a set of map tiles matching a set of conditions.</summary>
     public static class TileQueryManager
