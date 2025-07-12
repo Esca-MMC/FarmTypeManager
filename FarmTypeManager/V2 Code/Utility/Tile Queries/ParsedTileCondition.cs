@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.TileQueries
 {
     /// <summary>A set of parsed information about a single condition inside a tile query.</summary>
     /// <param name="args">The tile condition's key and any arguments provided.</param>

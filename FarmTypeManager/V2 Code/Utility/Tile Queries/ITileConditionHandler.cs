@@ -2,7 +2,7 @@
 using StardewValley;
 using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.TileQueries
 {
     /// <summary>Handles a set of tile conditions for the tile query system.</summary>
     public interface ITileConditionHandler

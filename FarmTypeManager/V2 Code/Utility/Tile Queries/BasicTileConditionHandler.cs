@@ -4,7 +4,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.TileQueries
 {
     /// <summary>Handles this mod's built-in tile conditions for the tile query system.</summary>
     public class BasicTileConditionHandler : ITileConditionHandler
