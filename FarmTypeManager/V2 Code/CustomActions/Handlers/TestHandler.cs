@@ -1,5 +1,6 @@
 ﻿using FarmTypeManager.CustomActions;
 using System;
+using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -8,11 +9,11 @@ namespace FarmTypeManager
     {
         public string ModId => FTMUtility.Manifest?.UniqueID;
 
-        public Type SettingsType => typeof(SpecificTestSettings);
+        public Type SettingsType => typeof(TestSettings);
 
         public bool TryPerform(string actionId, object rawSettings, out string error)
         {
-            var settings = rawSettings as SpecificTestSettings;
+            var settings = rawSettings as TestSettings;
 
             if (rawSettings == null)
             {
