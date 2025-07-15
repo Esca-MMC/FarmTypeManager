@@ -18,7 +18,7 @@ namespace FarmTypeManager
             int index = loc.getTileIndexAt(tile.X, tile.Y, "Back");
             string type = loc.doesTileHaveProperty(tile.X, tile.Y, "Type", "Back") ?? "[none]";
             string diggable = loc.doesTileHaveProperty(tile.X, tile.Y, "Diggable", "Back");
-            if (diggable != null) { diggable = "Yes"; } else { diggable = "No"; };
+            if (diggable != null) { diggable = "Yes"; } else { diggable = "No"; }
 
             if (tmxName == null) //if this is a typical map
             {
