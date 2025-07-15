@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Buildings;
+using StardewValley.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,36 +14,99 @@ namespace FarmTypeManager
         /// <summary>Methods used repeatedly by other sections of this mod, e.g. to locate tiles.</summary>
         private static partial class Utility
         {
-            /// <summary>Creates a list of all game location names, including building interiors, matching the provided name.</summary>
-            /// <param name="name">The name of the location(s) to be listed. Case-insensitive.</param>
-            /// <returns>A list of all locations with a <see cref="GameLocation.NameOrUniqueName"/> matching the provided name.</returns>
-            public static List<string> GetAllLocationsFromName(string name)
+            /// <summary>Creates a list of all known game location names matching the provided string.</summary>
+            /// <param name="locationNames">The name(s) of the location(s) to be listed. Multiple names may be separated by commas. Case-insensitive.</param>
+            /// <param name="removeDuplicates">If true, any duplicate names that match exactly will be removed from the final list.</param>
+            /// <returns>A list of <see cref="GameLocation.NameOrUniqueName"/>s for all locations matching the provided string.</returns>
+            /// <remarks>
+            /// <para>Each name in <paramref name="locationNames"/> may start with one of the prefixes below. Currently, prefixes do not include building interior locations.</para>
+            /// <list type="bullet">
+            ///     <item>
+            ///         <term>"Contains:"</term>
+            ///         <description>Any non-instanced locations whose names contain the remaining text will be returned. For example, "Contains:arm" will return Farm, Farmhouse, FarmCave, IslandFarmhouse, etc.</description>
+            ///     </item>
+            ///     <item>
+            ///         <term>"Prefix:"</term>
+            ///         <description>Any non-instanced locations whose names start with the remaining text will be returned. For example, "Prefix:Farm" will return Farm, Farmhouse, and FarmCave.</description>
+            ///     </item>
+            ///     <item>
+            ///         <term>"Suffix:"</term>
+            ///         <description>Any non-instanced locations whose names end with the remaining text will be returned. For example, "Suffix:House" will return Farmhouse, Greenhouse, ScienceHouse, HaleyHouse, etc.</description>
+            ///     </item>
+            /// </list>
+            /// <para>Non-prefixed names will search for exact matches first, then building interiors (matched by building name), then any mod-specific location types.</para>
+            /// </remarks>
+            public static List<string> GetAllLocationsFromName(string locationNames, bool removeDuplicates = false)
             {
-                //NOTE: Do not "preload" mine levels; they will instantiate and spawn things, advance elevator progress, etc. This might also apply to volcano levels.
+                List<string> locations = [];
+                if (locationNames == null) return locations;
 
-                if (name.StartsWith("UndergroundMine", StringComparison.OrdinalIgnoreCase) //if the name is a mine level
-                    || name.StartsWith("VolcanoDungeon", StringComparison.OrdinalIgnoreCase) //if the name is a volcano level
-                    || (Game1.getLocationFromName(name) != null)) //OR if the name is a typical, easily retrieved location 
+                foreach (string name in locationNames.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) //split names into separate strings around commas, then check each one
                 {
-                    return new List<string>() { name }; //return a list containing the name
-                }
+                    string[] prefixSplit = name.Split(':', 2); //split this name into prefix and suffix strings, if applicable
 
-                List<string> locations = new List<string>(); //create a blank list
-
-                foreach (GameLocation buildable in Game1.locations) //for each buildable location in the game
-                {
-                    foreach (Building building in buildable.buildings.Where(building => building.indoors.Value != null)) //for each building with an interior location ("indoors")
+                    if (prefixSplit.Length == 2) //if this name has a prefix and suffix
                     {
-                        if (building.indoors.Value.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) //if the location's name matches the provided name
+                        //handle known prefixes, and skip to the next name afterward
+                        switch (prefixSplit[0].ToLower())
                         {
-                            locations.Add(building.indoors.Value.NameOrUniqueName); //add the location to the list
+                            case "contains":
+                                StardewValley.Utility.ForEachLocation((location) =>
+                                {
+                                    if (location.Name?.ContainsIgnoreCase(prefixSplit[1]) == true)
+                                        locations.Add(location.Name);
+                                    return true;
+                                }, false, false);
+                                continue;
+
+                            case "prefix":
+                                StardewValley.Utility.ForEachLocation((location) =>
+                                {
+                                    if (location.Name?.StartsWithIgnoreCase(prefixSplit[1]) == true)
+                                        locations.Add(location.Name);
+                                    return true;
+                                }, false, false);
+                                continue;
+
+                            case "suffix":
+                                StardewValley.Utility.ForEachLocation((location) =>
+                                {
+                                    if (location.Name?.EndsWithIgnoreCase(prefixSplit[1]) == true)
+                                        locations.Add(location.Name);
+                                    return true;
+                                }, false, false);
+                                continue;
                         }
                     }
-                }
 
-                if (locations.Count == 0) //if locations is still empty
-                {
-                    //check for TMXLoader buildable locations
+                    //if this name did not have a prefix OR its prefix was unrecognized, treat it as a normal location name
+                    if
+                    (
+                        name.StartsWithIgnoreCase("UndergroundMine") //if the name is a mine level (avoid preloading these due to possible errors)
+                        || name.StartsWithIgnoreCase("VolcanoDungeon") //or if the name is a volcano level (avoid preloading these due to possible errors)
+                        || (Game1.getLocationFromName(name) != null) //or if the name is a basic, specific location that exists
+                    )
+                    {
+                        locations.Add(name);
+                        continue;
+                    }
+
+                    //if no exact matches were found, try to add any buildings with a matching indoor location
+                    int buildingsFound = 0;
+                    StardewValley.Utility.ForEachBuilding((building) =>
+                    {
+                        if (string.Equals(name, building.indoors.Value?.Name, StringComparison.OrdinalIgnoreCase)) //if the indoor Name matches
+                        {
+                            locations.Add(building.indoors.Value.NameOrUniqueName); //use its unique name
+                            buildingsFound++;
+                        }
+                        return true;
+                    }, true);
+
+                    if (buildingsFound > 0)
+                        continue;
+
+                    //if all else fails, try to add TMXLoader buildable locations
                     try
                     {
                         if (GetTypeFromName("TMXLoader.TMXLoaderMod") is Type tmx) //if TMXLoader can be accessed
@@ -69,6 +132,9 @@ namespace FarmTypeManager
                         Utility.Monitor.LogOnce("Error trying to access TMXLoaderMod class. Skipping building check.", LogLevel.Trace);
                     }
                 }
+
+                if (removeDuplicates)
+                    locations = locations.Distinct().ToList();
 
                 return locations;
             }
