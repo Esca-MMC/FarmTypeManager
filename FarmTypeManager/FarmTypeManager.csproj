@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<Version>1.25.0-alpha.20250715</Version>
+	<Version>1.25.1-alpha.20250715</Version>
     <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
     <LangVersion>latest</LangVersion>
