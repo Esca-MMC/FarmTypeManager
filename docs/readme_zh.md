@@ -191,10 +191,10 @@ MonsterName 设置中应使用完整的名称。例如：`"MyModName.CustomMonst
 
 名称  | 有效值 | 描述
 -----|----------------|------------
-启用控制台命令 | **true**、false | 是否在 SMAPI 控制台中启用由此模组添加的命令。若其他模组使用相同的命令时，这或许会有所帮助。
-启用数据包加载 | **true**、false | 是否加载其它依赖 FTM 的模组。若禁用该项，那么模组将仅使用 FarmTypeManager/data 文件下的缓存数据。
-启用日志跟踪信息 | **true**、false | 是否启用 SMAPI 错误日志中的 `[TRACE]` 级别消息。
-启用 EPU 调试信息| true、**false** | 是否显示扩展前置条件工具（EPU）检查[额外条件](#额外条件)时生成的调试消息。
+启用控制台命令 | **true**, false | 是否在 SMAPI 控制台中启用由此模组添加的命令。若其他模组使用相同的命令时，这或许会有所帮助。
+启用数据包加载 | **true**, false | 是否加载其它依赖 FTM 的模组。若禁用该项，那么模组将仅使用 FarmTypeManager/data 文件下的缓存数据。
+启用日志跟踪信息 | **true**, false | 是否启用 SMAPI 错误日志中的 `[TRACE]` 级别消息。
+启用 EPU 调试信息| true, **false** | 是否显示扩展前置条件工具（EPU）检查[额外条件](#额外条件)时生成的调试消息。
 地区怪物生成上限 | 一个整数（最小值为 0）或 **null** | 若某张地图上的怪物数量达到了特定值后，本模组将停止在该地图上生成怪物。当您的数据包生成了过多怪物，导致游戏卡顿、运行缓慢时，请使用此设置。
 
 ## 生成设置
@@ -219,21 +219,20 @@ MonsterSpawnEnabled | true, **false** | 是否启用怪物生成。 | 当设置�
 下文将介绍每种生成规则的高级配置。当启用上述基本功能时，本模组将使用这些生成设置来确定生成**哪些**对象、每天生成**多少**以及对象生成在**哪里**。
 
 ### 通用生成设置
-This section covers the general settings that appear in every spawner section.
 本章节涵盖了每个生成器的通用配置。
 
 名称 | 有效值 | 描述 | 备注
 ----|-------|------|---- 
 Areas |（参见备注） | 包含若干“spawn areas”的列表，列表内的每个项都代表着某地图上某个“区域”内的详细生成配置。 | 每个“spawn areas”描述了一组要生成的对象及其生成配置，包括在地图上生成的确切位置，以及各种可选的生成规则。若要为多个地图（或同一地图的多个“区域”）配置生成规则，请使用花括号包裹每个区域的生成配置，并用逗号分隔它们：`"Areas": [ { spawn areas 1 设置 }, { spawn areas 2 设置 }, { spawn areas 3 设置 } ]`
 UniqueAreaID | 任意唯一的标识名称，例如 "Spawn area 1" | 此区域的唯一标识名称。 | 用于保存系统记录每个区域的某些信息，并出现在 SMAPI 的错误日志中。该名称用于在存档系统中记录每个区域的某些信息，并且会出现在 SMAPI 的错误日志中。如果多个区域使用相同的 ID，则重复项将被自动重命名。后期更改此设置可能会导致现有存档数据出现小问题，例如可能会重置 LimitedNumberOfSpawns。
-MapName | 一个或多个地点名，例如 "Farm" | 在游戏中生成对象的地点名称。 | 前往游戏中的某个地点并在 SMAPI 控制台中使用 `whereami` 命令即可查看该地点名称（参见[指令](#指令)）。多个地点名可以用逗号分隔，例如 `"Farm, BusStop"`，且每个地点都会出生成完整的生成集。使用建筑物名称（例如 "Deluxe Barn"）将会针对该建筑物的每个副本进行设置。以 "prefix:"、"suffix:" 或 "contains:" 开头的值可以根据文本匹配多个地点名称；例如，"prefix:Farm" 将匹配所有使用 Farm 作为前缀的地点名，如 Farm、Farmhouse、FarmCave 等。
+MapName | 一个或多个地点名，例如 "Farm" | 在游戏中生成对象的地点名称。 | 前往游戏中的某个地点并在 SMAPI 控制台中使用 `whereami` 命令即可查看该地点名称（参见[指令](#指令)）。多个地点名可以用逗号分隔，例如 `"Farm, BusStop"`，且每个地点都会出生成完整的生成集。使用建筑物名称（例如 "Deluxe Barn"）将会针对该建筑物的每个副本进行设置。以 "prefix:", "suffix:" 或 "contains:" 开头的值可以根据文本匹配多个地点名称；例如，"prefix:Farm" 将匹配所有使用 Farm 作为前缀的地点名，如 Farm、Farmhouse、FarmCave 等。
 MinimumSpawnsPerDay | 一个整数（应小于或等于 MaximumSpawnsPerDay） | 每日生成数量下限。 | 若设置为一个非常大的值（例如 9999），则会不断生成对象，直至没有有效空间为止。小于或等于 0 的数字也是合法的数值，且当设置为负数时，会增加当天不生成任何对象的几率。
 MaximumSpawnsPerDay | 一个整数（应大于或等于 MinimumSpawnsPerDay） | 每日生成数量上限。 | 若设置为一个非常大的值（例如 9999），则会不断生成对象，直至没有有效空间为止。此上限**可以**被其他设置影响，例如“每个技能等级额外生成百分比”或“最大同时生成数量”。
-IncludeTerrainTypes | **"Diggable"、"Grass"**、"Dirt"、"Stone"、"Wood"、"All"、"Quarry"、"Custom" | 一组地形类型，表示对象可以在哪些地形上生成。 | 设置为“All”将允许对象在任何有效地块上生成。可以通过逗号分隔来包含多个地形类型，例如：`"IncludeTerrainTypes": ["Grass", "Diggable"]`。注意：如果您想要在“采石场”地形上生成对象，请使用“Quarry”选项。
-ExcludeTerrainTypes | **"Diggable"、"Grass"**、"Dirt"、"Stone"、"Wood"、"All"、"Quarry"、"Custom" | 一组地形类型，表示对象**不能**在哪些地形上生成。 | 参见 IncludeTerrainTypes 的说明以选择类型。被 ExcludeTerrainTypes 覆盖的任何类型都**不会**用于生成对象，并且会**覆盖** IncludeTerrainTypes 和 IncludeCoordinates 配置。
+IncludeTerrainTypes | **"Diggable", "Grass"**, "Dirt", "Stone", "Wood", "All", "Quarry", "Custom" | 一组地形类型，表示对象可以在哪些地形上生成。 | 设置为“All”将允许对象在任何有效地块上生成。可以通过逗号分隔来包含多个地形类型，例如：`"IncludeTerrainTypes": ["Grass", "Diggable"]`。注意：如果您想要在“采石场”地形上生成对象，请使用“Quarry”选项。
+ExcludeTerrainTypes | **"Diggable", "Grass"**, "Dirt", "Stone", "Wood", "All", "Quarry", "Custom" | 一组地形类型，表示对象**不能**在哪些地形上生成。 | 参见 IncludeTerrainTypes 的说明以选择类型。被 ExcludeTerrainTypes 覆盖的任何类型都**不会**用于生成对象，并且会**覆盖** IncludeTerrainTypes 和 IncludeCoordinates 配置。
 IncludeCoordinates | 形如 `"x1,y1/x2,y2"` 格式的坐标 | 一组坐标，表示对象可以在哪些坐标范围内生成。 | 使用 `whereami` 命令（参见[指令](#指令)）可获取地块的坐标。对象可以生成在这两个坐标之间的任何有效位置内。多个区域可以用逗号分隔，例如：`"IncludeCoordinates": ["0,0/100,100", "125,125/125,125"]`
 ExcludeCoordinates | 形如 `"x1,y1/x2,y2"` 格式的坐标 | 一组坐标，表示对象**不能**在哪些坐标范围内生成。 | 参见 IncludeCoordinates 的说明以选择坐标。被 ExcludeCoordinates 覆盖的任何区域都**不会**用于生成对象，并且会**覆盖** IncludeTerrainTypes 和 IncludeCoordinates 配置。
-StrictTileChecking | **"Maximum"**、"High"、"Medium"、"Low"、"None" | 本模组验证有效地块的严格程度。 | 根据地图的内部设置（尤其是自定义农场），游戏本体可能会将某些地块视为“无效的物品生成地块”。如果您觉得您的的其他设置是正确的，但没有任何物品生成，请尝试调整此设置。请注意，设置为“Low”和“None”可能会导致物品不生成：如果某个地块确实**不能**放置物品，模组仍然可能认为它是一个有效生成地块，这有可能导致对象在水面、悬崖或建筑物上生成。
+StrictTileChecking | **"Maximum"**, "High", "Medium", "Low", "None" | 本模组验证有效地块的严格程度。 | 根据地图的内部设置（尤其是自定义农场），游戏本体可能会将某些地块视为“无效的物品生成地块”。如果您觉得您的的其他设置是正确的，但没有任何物品生成，请尝试调整此设置。请注意，设置为“Low”和“None”可能会导致物品不生成：如果某个地块确实**不能**放置物品，模组仍然可能认为它是一个有效生成地块，这有可能导致对象在水面、悬崖或建筑物上生成。
 DaysUntilSpawnsExpire | **null** 或一个整数 | 生成的对象在消失前留存的天数。 | 如果设置为 null，则生成的对象将会遵循原版游戏内的消失规则。如果设置为正整数，则任何未被玩家采集或击杀的对象将在指定天数后消失。如果设置为 0，则生成的对象将永远不会自动消失。使用此设置将避免采集品在每周六或季节结束时被游戏自动清理。
 CustomTileIndex | 一个整数列表 | 图块集中的索引列表，用于 IncludeTerrainTypes 的“Custom”设置。 | 如果上面的 IncludeTerrainTypes 设置包含了“Custom”选项，则任何在地图文件的“Back”图层上具有这些索引编号的地块都将是有效的生成位置。您可以通过站在某个地块上使用 `whereami` 命令来查找该地块的索引编号，或者使用地图/精灵图修改工具。
 
@@ -246,7 +245,7 @@ CustomTileIndex | 一个整数列表 | 图块集中的索引列表，用于 Incl
 
 名称 | 必需项 | 有效值 | 描述 | 备注
 ----|-------|-------|------|---- 
-Category | 是 | "Barrel"、"Big Craftable"、"Boots"、"Breakable"、"Buried"、"Chest"、"Crate"、"DGA"、"Fence"、"Gate"、"Furniture"、"Hat"、"Object"、"Pants"、"Ring"、"Shirt"、"Tool"、"Weapon" | 生成物品的类别。| “Breakable”将随机生成一个木桶或箱子（如矿井内可破坏的木桶和箱子那样）。“Buried”将创建一个包含自定义内容物的远古斑点（参见“Contents”字段）。
+Category | 是 | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Weapon" | 生成物品的类别。| “Breakable”将随机生成一个木桶或箱子（如矿井内可破坏的木桶和箱子那样）。“Buried”将创建一个包含自定义内容物的远古斑点（参见“Contents”字段）。
 Name | 是 | 物品名称或 ID，例如 `"Red Mushroom"` | 生成物品的名称或 ID。| 除非 Category 为容器（例如“chest”或“breakable”），否则此设置是必需的。
 CanBePickedUp | 否 | **true**, false | 设置为 false 时，玩家将无法拾取此物品。设置为 true 则无影响。| 当家具和可制作物品设置为 false 时可以使用，但不能被拾取。此设置对容器或怪物掉落物不生效。**请务必谨慎使用此设置**。必要时，玩家可以使用 `remove_items` 命令来覆盖此设置。
 Contents | 否 | 一个物品列表，例如 `[16, "joja cola"]` | 容器内的物品列表。| 若当前物品不是容器，则此项将被忽略。使用与其他物品列表相同的格式，因此也可以使用复杂的物品定义。
@@ -302,11 +301,11 @@ SpawnSound | 已加载的声音名称或空字符串：**""** | 生成对象时�
 ----|-------|------|---- 
 ExtraConditions |（参见备注） | 一组可选的额外条件，用于为某个区域内生成对象设置额外的生成条件。 | 这些设置可以用于限制生成的时间或天气条件。如果设置为默认值（即 `[]` 或 `null`），则该设置将被忽略。
 Years | 一组整数、范围或 "Any"/"All" | 对象生成的年份限制。 | 年份应放在方括号内，并用引号括起来，如果有多个年份，则用逗号分隔。支持单个年份、年份范围或使用 **+** 来表示后续的年份。例如：`["1"]` `["2-4"]` `["1", "3+"]`
-Seasons | 一组季节名称列表，列表内元素可以是："Spring"、"Summer"、"Fall"、"Winter" 或 "Any"/"All" | 对象生成的季节限制。 | 季节应放在方括号内，并用引号括起来，如果有多个季节，则用逗号分隔。示例：`["Spring"]`、`["Summer", "Winter"]`
+Seasons | 一组季节名称列表，列表内元素可以是："Spring", "Summer", "Fall", "Winter" 或 "Any"/"All" | 对象生成的季节限制。 | 季节应放在方括号内，并用引号括起来，如果有多个季节，则用逗号分隔。示例：`["Spring"]` `["Summer", "Winter"]`
 Days | 一组整数、范围或 "Any"/"All" | 对象生成的日期限制。 | 日期应放在方括号内，并用引号包裹，如果有多个日期，则用逗号分隔。支持单个日期、日期范围或使用 **+** 来表示后续的日期。例如：`["1"]` `["2-14"]` `["1", "8+"]`
-WeatherYesterday | 一组天气名称列表，列表内元素可以是："Sun"、"Wind"、"Rain"、"Storm"、"Snow" 或 "Any"/"All" | 对象生成前一天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]`、`["Sun", "Wind"]`、`["Rain", "Storm", "Snow"]`
-WeatherToday | 一组天气名称列表，列表内元素可以是："Sun"、"Wind"、"Rain"、"Storm"、"Snow" 或 "Any"/"All" | 对象生成当天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]`、`["Sun", "Wind"]`、`["Rain", "Storm", "Snow"]`
-WeatherTomorrow | 一组天气名称列表，列表内元素可以是："Sun"、"Wind"、"Rain"、"Storm"、"Snow" 或 "Any"/"All" | 对象生成后一天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]`、`["Sun", "Wind"]`、`["Rain", "Storm", "Snow"]`
+WeatherYesterday | 一组天气名称列表，列表内元素可以是："Sun", "Wind", "Rain", "Storm", "Snow" 或 "Any"/"All" | 对象生成前一天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]` `["Sun", "Wind"]` `["Rain", "Storm", "Snow"]`
+WeatherToday | 一组天气名称列表，列表内元素可以是："Sun", "Wind", "Rain", "Storm", "Snow" 或 "Any"/"All" | 对象生成当天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]` `["Sun", "Wind"]` `["Rain", "Storm", "Snow"]`
+WeatherTomorrow | 一组天气名称列表，列表内元素可以是："Sun", "Wind", "Rain", "Storm", "Snow" 或 "Any"/"All" | 对象生成后一天的天气限制。 | 天气名称应放在方括号内，并用引号括起来，如果有多个天气，则用逗号分隔。注意，大风天气**不算作晴天**，雷暴**不算作雨天**，如果需要，应当同时包含二者。示例：`["Snow"]` `["Sun", "Wind"]` `["Rain", "Storm", "Snow"]`
 GameStateQueries | 一组 [游戏状态查询](https://wiki.biligame.com/stardewvalley/%E6%A8%A1%E7%BB%84:%E6%B8%B8%E6%88%8F%E7%8A%B6%E6%80%81%E6%9F%A5%E8%AF%A2) (GSQs) | 对象生成当天，若列表内有任意一个条件判断为真，则能够生成对象。 | 请参阅 Wiki 上的 [游戏状态查询](https://wiki.biligame.com/stardewvalley/%E6%A8%A1%E7%BB%84:%E6%B8%B8%E6%88%8F%E7%8A%B6%E6%80%81%E6%9F%A5%E8%AF%A2) 以获取用法信息。格式示例：`"GameStateQueries": ["PLAYER_HAS_FLAG Any 1234", "PLAYER_HAS_FLAG Any 5678"]`
 CPConditions | 一组 [Content Patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/README.md#for-mod-authors) 的 “When” 条件 | 对象生成当天，若列表内的所有条件判断为真，则能够生成对象。 | 请参阅 [Content Patcher 的模组作者指南](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/README.md#for-mod-authors) 以获取用法信息。格式示例：`"CPConditions": {"HasFlag": "beenToWoods", "FarmCave": "Mushrooms"}`
 EPUPreconditions | 一组 [EPU preconditions](https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility) | 对象生成当天，若列表内有任意一个条件判断为真，则能够生成对象。 | 此功能需要 [Expanded Preconditions Utility](https://www.nexusmods.com/stardewvalley/mods/6529) 模组。请参阅 [EPU's README](https://github.com/ChroniclerCherry/stardew-valley-mods/tree/master/ExpandedPreconditionsUtility) 以获取用法信息。在多人游戏中，仅会检查主机的信息。条件 `t <mintime> <maxtime>` 和 `x <letter ID>` **不应使用**，且不受支持。
@@ -328,10 +327,10 @@ WinterItemIndex (Global) | 一个整数列表或物品名称列表，例如 `[16
 ### 大型地物生成设置
 名称 | 有效值 | 描述 | 备注
 ----|-------|------|---- 
-ObjectTypes | "Stump"、"Log"、"Boulder"、"Quarry Boulder"、"Meteorite"、"Mine Rock 1"、"Mine Rock 2"、"Mine Rock 3"、"Mine Rock 4"、"Weed 1"、"Weed 2"、巨型作物 ID 或 Item Extensions clump ID | 要生成的大型地物类型列表。 | 在此区域生成的对象将从此列表中随机选择。多次添加同一对象类型将增加其生成几率。多个对象用逗号分隔。示例：`"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
+ObjectTypes | "Stump", "Log", "Boulder", "Quarry Boulder", "Meteorite", "Mine Rock 1", "Mine Rock 2", "Mine Rock 3", "Mine Rock 4", "Weed 1", "Weed 2"、巨型作物 ID 或 Item Extensions clump ID | 要生成的大型地物类型列表。 | 在此区域生成的对象将从此列表中随机选择。多次添加同一对象类型将增加其生成几率。多个对象用逗号分隔。示例：`"ObjectTypes: [ "Stump", "Log", "Meteorite" ]`
 FindExistingObjectLocations | true, **false** | 查找当前地图上包含在 ObjectTypes 列表中的大型地物，并将其添加到 IncludeCoordinates 列表中。 | 该配置项用于自动查找现有大型地物的坐标，并每天重新生成它们。完成一次查找后，它会将自身设置为“false”。
 PercentExtraSpawnsPerSkillLevel | 一个整数（默认值为 **0**） | 每级相关技能等级提供的额外对象生成百分比。 | 在多人游戏中，此设置基于所有玩家（即使是离线的玩家）中最高的技能等级。例如，将此设置为 10，则每拥有 1 级技能将额外生成 10% 的对象，这意味着若某个玩家的技能等级为 8，则每天将会额外生成 80% 的对象。
-RelatedSkill | "Farming"、"Fishing"、"Foraging"、"Mining"、"Combat" | 由 PercentExtraSpawnsPerSkillLevel 设置使用的相关技能。| 该设置用于确定每个技能等级额外生成的对象数量。
+RelatedSkill | "Farming", "Fishing", "Foraging", "Mining", "Combat" | 由 PercentExtraSpawnsPerSkillLevel 设置使用的相关技能。| 该设置用于确定每个技能等级额外生成的对象数量。
 
 ### 采矿点生成设置
 名称 | 有效值 | 描述 | 备注
@@ -371,14 +370,14 @@ SeesPlayersAtSpawn | true, **false** | 如果设置为 true，则怪物将始终
 RangedAttacks | **true**, false | 如果设置为 false，则怪物将不会使用任何远程攻击。| 此设置可能不会影响其他由模组添加的新怪物类型。
 InstantKillImmunity | true, **false** | 如果设置为 true，则怪物将免疫某些“秒杀”怪物的效果。| 目前，该选项用于防止怪物被青蛙蛋饰品直接吃掉。
 StunImmunity | true, **false** | 如果设置为 true，则怪物将免疫某些“眩晕”效果。| 目前，该选项用于防止怪物被冰霜法杖饰品冻住。
-FacingDirection | "up"、"down"、"left"、"right" | 怪物生成时面朝着的方向。| Spikers 将会朝该方向进行攻击。如果未使用此设置，则将随机选择一个方向攻击。
+FacingDirection | "up", "down", "left", "right" | 怪物生成时面朝着的方向。| Spikers 将会朝该方向进行攻击。如果未使用此设置，则将随机选择一个方向攻击。
 Segments | 一个整数（最小值为 0） | 怪物的额外“体节”数量（如果适用）。| 史莱姆将会在其上方堆叠此数量的额外史莱姆。皇家蛇将会有此数量的尾巴段。
 Sprite | 一个已加载素材的“地址” | 用于替换此怪物默认精灵图的已加载精灵图。| 这些可以是游戏中的默认资源，也可以是由 Content Patcher 等模组加载的资源。例如：`"Characters/Monsters/Skeleton"` 或 `"Animals/horse"`
 Color | 一个 RGB 或 RGBA 值的字符串，例如 `"255 0 0"` | 怪物的颜色和透明度级别。| 此设置将覆盖 MinColor 和 MaxColor。目前仅适用于史莱姆、巨型史莱姆和金属大头。值范围从 0 到 255，并且可以选择包含 Alpha 通道的透明度，例如：`"0 0 0"` 或 `"0 0 0 127"`
 MinColor | 一个 RGB 或 RGBA 值的字符串，例如 `"0 0 0"` | 应用于此怪物的最小颜色和透明度。| 除非同时提供了 MaxColor，否则此设置将被忽略。相关格式请参见上面的 `Color` 设置。
 MaxColor | 一个 RGB 或 RGBA 值的字符串，例如 `"255 255 255"` | 应用于此怪物的最大颜色和透明度。| 除非同时提供了 MinColor，否则此设置将被忽略。相关格式请参见上面的 `Color` 设置。
 Gender | 一个字符串，例如 "M" 或 "F"（默认随机） | 怪物的性别。| 仅影响小型史莱姆。雄性史莱姆（"M"）将会生成天线，雌性史莱姆（"F"）则不会。
-RelatedSkill | "Farming"、"Fishing"、"Foraging"、"Mining"、"Combat" | 由以下 `"Min/MaximumSkillLevel"` 设置所使用的相关技能。| 如果未提供此设置，则下面关于“技能等级”设置将被忽略。在多人游戏中，此设置基于所有玩家（即使是离线的玩家）中最高的技能等级。
+RelatedSkill | "Farming", "Fishing", "Foraging", "Mining", "Combat" | 由以下 `"Min/MaximumSkillLevel"` 设置所使用的相关技能。| 如果未提供此设置，则下面关于“技能等级”设置将被忽略。在多人游戏中，此设置基于所有玩家（即使是离线的玩家）中最高的技能等级。
 MinimumSkillLevel | 一个整数（最小值为 0） | 生成此怪物类型所需的最低技能等级。| 相关技能基于 RelatedSkill 设置。
 MaximumSkillLevel | 一个整数（最小值为 0） | 生成此怪物类型所允许的最高技能等级。| 相关技能基于 RelatedSkill 设置。
 PercentExtraHPPerSkillLevel | 一个整数 | 怪物的生命值会根据每个技能等级增加此**百分比**。| 相关技能基于 RelatedSkill 设置。接受负值，且负值将减少生命值。
@@ -396,7 +395,7 @@ QuarryTileIndex | 整数列表 | 游戏图块集中“采石场”图块的图�
 Name | Valid settings | Description | Notes
 -----|----------------|-------------|------
 File_Conditions | （参见下文） | 一组条件，用于判断是否启用某数据包。 | 这些设置主要用于数据包。
-FarmTypes | 一组农场类型列表，列表内元素可以是："Standard"、"Riverland"、"Forest"、"Hilltop"、"Wilderness"、"FourCorners"、"Beach"，或自定义农场类型的 ID | 此数据包将应用于哪些农场类型。 | 这主要用于与自定义农场地图结合的数据包。例如，如果您的自定义农场替换了标准农场，那么请将其设置为 `["Standard"]`。对于添加到 `Data/AdditionalFarms` 的自定义农场类型，请使用该农场类型的 ID，例如 `["MeadowlandsFarm"]`。
+FarmTypes | 一组农场类型列表，列表内元素可以是："Standard", "Riverland", "Forest", "Hilltop", "Wilderness", "FourCorners", "Beach"，或自定义农场类型的 ID | 此数据包将应用于哪些农场类型。 | 这主要用于与自定义农场地图结合的数据包。例如，如果您的自定义农场替换了标准农场，那么请将其设置为 `["Standard"]`。对于添加到 `Data/AdditionalFarms` 的自定义农场类型，请使用该农场类型的 ID，例如 `["MeadowlandsFarm"]`。
 FarmerNames | 一组玩家名称列表，例如 `["Esca"]` | 如果当前玩家的名称存在于该列表内，则使用此数据包。 | 多人游戏中此设置仅检查房主的名称，不会受到房客的影响。
 SaveFileNames | 一组存档文件名称列表，例如 `["Esca_1234567"]` | 如果当前农场的存档文件名称存在于该列表中，则使用此数据包。 | 这是在其他条件无法有效选择农场时的一个特殊设置。请注意，实际上检查的是存档**文件夹**的名称，而不是存档文件本身。
 OtherMods | 一个字典，其键值对形如 `"模组的 UniqueID": true/false`（参见备注） | 如果玩家加载的模组均满足条件时，则使用此数据包。 | 这可以用于使数据包或数据文件仅在满足特定模组要求时激活。`true` 表示必须安装该模组，而 `false` 表示不能安装该模组。例如：`OtherMods: { "Esca.FarmTypeManager" : true, "FakeModID" : false }`，这种情况要求必须安装了 FTM 模组，但不能安装 FakeModID 模组。
@@ -424,7 +423,7 @@ OtherMods | 一个字典，其键值对形如 `"模组的 UniqueID": true/false`
   }
   ```
 3. 在 `[FTM] Your Pack Name` 文件夹中创建或复制一个 FTM 配置文件，并将其命名为 **content.json**。其格式与 `FarmTypeManager\data` 文件夹中的农场数据文件完全相同。
-4. 如果您希望此数据包仅在特定农场类型上生效，请在 **content.json** 文件的底部添加 `File_Conditions` 字段，并设置 `FarmTypes`、`FarmerNames`、`SaveFileNames`、`OtherMods` 等条件。请参阅上面的 [File Conditions](#file-conditions) 部分以获取更多信息。
+4. 如果您希望此数据包仅在特定农场类型上生效，请在 **content.json** 文件的底部添加 `File_Conditions` 字段，并设置 `FarmTypes` `FarmerNames` `SaveFileNames` `OtherMods` 等条件。请参阅上面的 [File Conditions](#file-conditions) 部分以获取更多信息。
 
 ## 其它模组功能
 
