@@ -58,6 +58,7 @@ French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmT
 German | [de.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/de.json) | [777PamPam777](https://next.nexusmods.com/profile/777PamPam777)
 Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
 Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
+Chinese (Simplified) | [zh.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/zh.json) | [SummerFleur](https://github.com/SummerFleur2997)
 
 ## Examples
 Below are a few general examples of changes modders can make, spawning various objects on the farm or the other in-game maps.

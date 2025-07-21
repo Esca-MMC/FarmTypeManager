@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "启用控制台命令",
+  "Config.EnableConsoleCommands.Desc": "启用由 FTM 添加的控制台命令\n此选项在重启 Stardew Valley 后生效。",
+  "Config.EnableContentPacks.Name": "启用数据包加载",
+  "Config.EnableContentPacks.Desc": "启用所有 FTM 数据包\n如果禁用此选项，则仅使用 FarmTypeManager/data 中的文件。",
+  "Config.EnableTraceLogMessages.Name": "启用日志跟踪信息",
+  "Config.EnableTraceLogMessages.Desc": "将 FTM 的 [TRACE] 级别消息记录到 SMAPI 的日志文件中。\n如果禁用此选项，日志文件将减小，但提供的信息会更少。",
+  "Config.EnableEPUDebugMessages.Name": "启用 EPU 调试消息",
+  "Config.EnableEPUDebugMessages.Desc": "启用扩展前置条件工具（EPU）的调试消息。\n这在创建具有前置条件的模组时可能会很有帮助。",
+  "Config.MonsterLimitPerLocation.Name": "地区怪物生成上限",
+  "Config.MonsterLimitPerLocation.Desc": "FTM 在单个地图上允许的最大怪物数量。\n使用较低的数字可以改善游戏的帧率。50 是一个常见的建议。\n输入 NULL 以允许无限生成的怪物。"
+}
