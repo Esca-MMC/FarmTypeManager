@@ -1,17 +1,17 @@
-﻿using FarmTypeManager.CustomActions;
+﻿using StardewModdingAPI;
+using StardewValley.Delegates;
 using System;
-using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.CustomActions
 {
     /// <summary>A handler only intended to test the custom action system.</summary>
     public class TestHandler : ICustomActionHandler
     {
-        public string ModId => FTMUtility.Manifest?.UniqueID;
+        public string ProviderModId => FTMUtility.Manifest?.UniqueID;
 
         public Type SettingsType => typeof(TestSettings);
 
-        public bool TryPerform(string actionId, object rawSettings, out string error)
+        public bool TryPerform(string actionId, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {
             var settings = rawSettings as TestSettings;
 
@@ -26,9 +26,7 @@ namespace FarmTypeManager
                 return false;
             }
 
-            //FTMUtility.Monitor.Log($"Custom action \"Test\" was just performed! Arbitrary setting data: {settings.Fake_setting_3}", LogLevel.Info);
-            string test = $"Custom action \"Test\" was just performed! Arbitrary setting data: {settings.Fake_setting_3}";
-            _ = test.Trim();
+            FTMUtility.Monitor.Log($"Custom action \"Test\" was just performed! Arbitrary setting data: {settings.Fake_setting_3}", LogLevel.Info);
             error = null;
             return true;
         }

@@ -17,7 +17,8 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A set of action IDs and the handlers used to perform them.</summary>
         private static Dictionary<string, ICustomActionHandler> Handlers { get; } = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "Test", new TestHandler() }
+            { "Test", new TestHandler() },
+            { "SpawnObject", new SpawnObjectHandler() }
         };
 
         /*******************/
@@ -31,7 +32,7 @@ namespace FarmTypeManager.CustomActions
         public static void RegisterCustomAction(string actionId, ICustomActionHandler handler)
         {
             Handlers[actionId] = handler;
-            FTMUtility.Monitor.Log($"New custom action handler registered. Mod ID: \"{handler?.ModId}\". Action ID: \"{actionId}\".", LogLevel.Trace);
+            FTMUtility.Monitor.Log($"New custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". Action ID: \"{actionId}\".", LogLevel.Trace);
         }
 
         /// <summary>Get the type of settings used by this custom action ID, if it exists.</summary>
@@ -45,7 +46,7 @@ namespace FarmTypeManager.CustomActions
 
         /// <summary>Perform custom actions from all entries in all assets, if they have the trigger specified in <paramref name="triggerContext"/>.</summary>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
-        /// <param name="triggerContext">Contextual information about the raised trigger, e.g. its ID and optional arguments.</param>
+        /// <param name="triggerContext">Contextual information about the raised trigger.</param>
         public static void PerformActionsByTrigger(GameStateQueryContext queryContext, TriggerActionContext triggerContext)
         {
             foreach (var asset in CustomActionsAssetManager.GetAllData())
@@ -56,6 +57,9 @@ namespace FarmTypeManager.CustomActions
                     {
                         foreach (var action in GetActionsToPerform(asset.Item1, entry.Key, entry.Value, queryContext))
                         {
+                            if (FTMUtility.Monitor.IsVerbose)
+                                FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Key: \"{entry.Key}\". Action: \"{action?.ActionId}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
+
                             if (!TryPerformAction(action, queryContext, triggerContext, out string error))
                                 FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{asset.Item1}\", entry key \"{entry.Key}\". {error}", LogLevel.Warn);
                         }
@@ -68,7 +72,7 @@ namespace FarmTypeManager.CustomActions
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive.</param>
         /// <param name="entryId">The ID (key) of the entry within this asset.</param>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
-        /// <param name="triggerContext">Contextual information about a raised trigger, e.g. its ID and optional arguments.</param>
+        /// <param name="triggerContext">Contextual information about a raised trigger.</param>
         public static void PerformActionsFromEntry(string assetName, string entryId, GameStateQueryContext queryContext, TriggerActionContext triggerContext)
         {
             var asset = CustomActionsAssetManager.GetDataFromAsset(assetName);
@@ -82,6 +86,9 @@ namespace FarmTypeManager.CustomActions
 
             foreach (var action in GetActionsToPerform(assetName, entryId, entryData, queryContext))
             {
+                if (FTMUtility.Monitor.IsVerbose)
+                    FTMUtility.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Key: \"{entryId}\". Action: \"{action?.ActionId}\".", LogLevel.Trace);
+
                 if (!TryPerformAction(action, queryContext, triggerContext, out string error))
                     FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{assetName}\", entry key \"{entryId}\". {error}", LogLevel.Warn);
             }
@@ -169,7 +176,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Tries to perform a custom action with the given data.</summary>
         /// <param name="data">The data needed to perform a custom action.</param>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
-        /// <param name="triggerContext">Contextual information about a raised trigger, e.g. its ID and optional arguments.</param>
+        /// <param name="triggerContext">Contextual information about a raised trigger.</param>
         /// <param name="error">Error text describing why this action could not be performed, if applicable.</param>
         /// <returns>True if the custom action was successfully performed. False if it could not be performed, e.g. due to invalid settings.</returns>
         private static bool TryPerformAction(CustomActionData data, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
@@ -182,7 +189,7 @@ namespace FarmTypeManager.CustomActions
                     return false;
                 }
 
-                if (!handler.TryPerform(data.ActionId, data.Settings, out string handlerError))
+                if (!handler.TryPerform(data.ActionId, data.Settings, queryContext, triggerContext, out string handlerError))
                 {
                     error = $"The custom action \"{data.ActionId}\" failed: {handlerError}";
                     return false;
@@ -193,6 +200,9 @@ namespace FarmTypeManager.CustomActions
                 error = $"The custom action \"{data.ActionId}\" encountered an error:\n{ex}";
                 return false;
             }
+
+            if (FTMUtility.Monitor.IsVerbose)
+                FTMUtility.Monitor.Log($"Successfully performed the custom action \"{data.ActionId}\".", LogLevel.Trace);
 
             error = "";
             return true;

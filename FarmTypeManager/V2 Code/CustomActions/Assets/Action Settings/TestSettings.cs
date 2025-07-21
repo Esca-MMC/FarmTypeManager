@@ -1,8 +1,6 @@
-﻿using FarmTypeManager.CustomActions;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.CustomActions
 {
     /// <summary>Settings only intended to test the custom action system.</summary>
     public class TestSettings
