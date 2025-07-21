@@ -1,6 +1,9 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -21,9 +24,124 @@ namespace FarmTypeManager
         /// <summary>A shared <see cref="System.Random"/> instance for this mod.</summary>
         public static Random Random { get; } = new Random();
 
-        /***********/
-        /* Methods */
-        /***********/
+        /*******************/
+        /* Methods - Lists */
+        /*******************/
+
+        /// <summary>Randomize the order of items in a mutable list.</summary>
+        /// <param name="list">The list to randomize.</param>
+        public static void RandomizeList<T>(List<T> list)
+        {
+            for (int index = list.Count - 1; index > 0; index--) //for each index except the first, looping backward
+            {
+                int random = FTMUtility.Random.Next(index + 1); //get a random index between 0 and this tile's index
+
+                //swap the current tile with the tile at the random index
+                var temp = list[random];
+                list[random] = list[index];
+                list[index] = temp;
+            }
+        }
+
+        /***********************/
+        /* Methods - Locations */
+        /***********************/
+
+        /// <summary>Creates a list of all known game location names matching the provided string.</summary>
+        /// <param name="locationNames">The name(s) of the location(s) to be listed. Multiple names may be separated by commas. Case-insensitive.</param>
+        /// <param name="removeDuplicates">If true, any duplicate names that match exactly will be removed from the final list.</param>
+        /// <returns>A list of <see cref="GameLocation.NameOrUniqueName"/>s for all locations matching the provided string.</returns>
+        /// <remarks>
+        /// <para>Each name in <paramref name="locationNames"/> may start with one of the prefixes below. Currently, prefixes do not include building interior locations.</para>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <term>"Contains:"</term>
+        ///         <description>Any non-instanced locations whose names contain the remaining text will be returned. For example, "Contains:arm" will return Farm, Farmhouse, FarmCave, IslandFarmhouse, etc.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>"Prefix:"</term>
+        ///         <description>Any non-instanced locations whose names start with the remaining text will be returned. For example, "Prefix:Farm" will return Farm, Farmhouse, and FarmCave.</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>"Suffix:"</term>
+        ///         <description>Any non-instanced locations whose names end with the remaining text will be returned. For example, "Suffix:House" will return Farmhouse, Greenhouse, ScienceHouse, HaleyHouse, etc.</description>
+        ///     </item>
+        /// </list>
+        /// <para>Non-prefixed names will search for exact matches first, then building interiors (matched by building name), then any mod-specific location types.</para>
+        /// </remarks>
+        public static List<string> GetAllLocationsFromName(string locationNames, bool removeDuplicates = false)
+        {
+            List<string> locations = [];
+            if (locationNames == null) return locations;
+
+            foreach (string name in locationNames.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) //split names into separate strings around commas, then check each one
+            {
+                string[] prefixSplit = name.Split(':', 2); //split this name into prefix and suffix strings, if applicable
+
+                if (prefixSplit.Length == 2) //if this name has a prefix and suffix
+                {
+                    //handle known prefixes, and skip to the next name afterward
+                    switch (prefixSplit[0].ToLower())
+                    {
+                        case "contains":
+                            StardewValley.Utility.ForEachLocation((location) =>
+                            {
+                                if (location.Name?.ContainsIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.Name);
+                                return true;
+                            }, false, false);
+                            continue;
+
+                        case "prefix":
+                            StardewValley.Utility.ForEachLocation((location) =>
+                            {
+                                if (location.Name?.StartsWithIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.Name);
+                                return true;
+                            }, false, false);
+                            continue;
+
+                        case "suffix":
+                            StardewValley.Utility.ForEachLocation((location) =>
+                            {
+                                if (location.Name?.EndsWithIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.Name);
+                                return true;
+                            }, false, false);
+                            continue;
+                    }
+                }
+
+                //if this name did not have a prefix OR its prefix was unrecognized, treat it as a normal location name
+                if
+                (
+                    name.StartsWithIgnoreCase("UndergroundMine") //if the name is a mine level (avoid preloading these due to possible errors)
+                    || name.StartsWithIgnoreCase("VolcanoDungeon") //or if the name is a volcano level (avoid preloading these due to possible errors)
+                    || (Game1.getLocationFromName(name) != null) //or if the name is a basic, specific location that exists
+                )
+                {
+                    locations.Add(name);
+                    continue;
+                }
+
+                //if no exact matches were found, try to add any buildings with a matching indoor location
+                int buildingsFound = 0;
+                StardewValley.Utility.ForEachBuilding((building) =>
+                {
+                    if (string.Equals(name, building.indoors.Value?.Name, StringComparison.OrdinalIgnoreCase)) //if the indoor Name matches
+                    {
+                        locations.Add(building.indoors.Value.NameOrUniqueName); //use its unique name
+                        buildingsFound++;
+                    }
+                    return true;
+                }, true);
+            }
+
+            if (removeDuplicates)
+                locations = locations.Distinct().ToList();
+
+            return locations;
+        }
 
         /// <summary>Gets the named location if it's active, i.e. currently loaded and synchronized with the local player.</summary>
         /// <param name="locationName">The name of the location to get. This should match <see cref="GameLocation.NameOrUniqueName"/>.</param>
@@ -51,6 +169,10 @@ namespace FarmTypeManager
 
             return matchingLocation;
         }
+
+        /*********************/
+        /* Methods - Objects */
+        /*********************/
 
         /// <summary>Indicates whether Stardew normally allows a placed object with the given ID to be picked up by players.</summary>
         /// <param name="unqualifiedObjectId">The <see cref="StardewValley.Item.ItemId"/> of a basic non-BC object, without the qualifier "(O)".</param>
