@@ -1,6 +1,8 @@
 # Farm Type Manager (FTM)
 Despite the name, Farm Type Manager (FTM) is a framework that allows other mods to spawn objects and monsters anywhere in the game. It can also customize objects and monsters in unique ways. Modders can configure or randomize the number of objects spawned per day, where and when they spawn, and more.
 
+**🌐 In other languages: [zh (中文)](docs/readme_zh.md)**.
+
 ## Contents
 * [Installation](#installation)
 * [Translation](#translation)
