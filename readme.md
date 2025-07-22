@@ -1,6 +1,8 @@
 # Farm Type Manager (FTM)
 Despite the name, Farm Type Manager (FTM) is a framework that allows other mods to spawn objects and monsters anywhere in the game. It can also customize objects and monsters in unique ways. Modders can configure or randomize the number of objects spawned per day, where and when they spawn, and more.
 
+**🌐 In other languages: [zh (中文)](docs/readme_zh.md)**.
+
 ## Contents
 * [Installation](#installation)
 * [Translation](#translation)
@@ -56,6 +58,7 @@ French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmT
 German | [de.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/de.json) | [777PamPam777](https://next.nexusmods.com/profile/777PamPam777)
 Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
 Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
+Chinese (Simplified) | [zh.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/zh.json) | [SummerFleur](https://github.com/SummerFleur2997)
 
 ## Examples
 Below are a few general examples of changes modders can make, spawning various objects on the farm or the other in-game maps.
@@ -348,7 +351,7 @@ Name | Valid settings | Description | Notes
 SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 HP | An integer (minimum 1) | The monster's maximum health. | 
 CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
-PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
+PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings. It was designed for specific "boss" monsters that players could fight gradually over multiple days.
 Damage | An integer (minimum 0) | The amount of damage the monster's attacks deal. | Some monster types/attacks ignore this setting and use hard-coded damage values, e.g. skeleton bone-throwing attacks.
 Defense | An integer (minimum 0) | Attacks that hit the monster are reduced by this much damage. | 
 DodgeChance | An integer (minimum 0) | The percent chance the monster will completely ignore each attack. | 
