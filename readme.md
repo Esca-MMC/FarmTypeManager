@@ -351,7 +351,7 @@ Name | Valid settings | Description | Notes
 SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 HP | An integer (minimum 1) | The monster's maximum health. | 
 CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
-PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
+PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings. It was designed for specific "boss" monsters that players could fight gradually over multiple days.
 Damage | An integer (minimum 0) | The amount of damage the monster's attacks deal. | Some monster types/attacks ignore this setting and use hard-coded damage values, e.g. skeleton bone-throwing attacks.
 Defense | An integer (minimum 0) | Attacks that hit the monster are reduced by this much damage. | 
 DodgeChance | An integer (minimum 0) | The percent chance the monster will completely ignore each attack. | 
