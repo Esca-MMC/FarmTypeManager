@@ -1,6 +1,8 @@
 # Farm Type Manager (FTM)
 顾名思义，Farm Type Manager（FTM）是一个允许其他模组在游戏中的任何地方生成各种物品和怪物的前置框架模组。它还可以以独特的方式自定义物品和怪物。可以方便地让模组作者配置或随机化生成的物品数量、生成地点和生成时间等规则。
 
+**🌐 其它语言：[en (English)](../readme.md)**.
+
 > **注**：下文内容中提到的所有“数据包”，均指代其他依赖 FTM 的模组。
 
 ## 目录
@@ -356,7 +358,6 @@ Settings | 一个字典，其键值对形如 `"设置项": 设置值` | 一组�
 SpawnWeight | 一个整数（最小值/默认值为 1） | 此怪物类型的生成权重。| 提高某怪物生成的几率，类似于在有效怪物列表中添加多个副本。例如：如果怪物 A 的生成权重为 5、怪物 B 的生成权重为 1，则 A 的生成机会将会是 B 的 5 倍。
 HP | 一个整数（最小值为 1） | 怪物的最大生命值。| 
 CurrentHP | 一个整数（最小值为 1） | 怪物生成时的生命值（非最大生命值）。| 这主要用于模拟怪物以受伤的状态生成，或是适用于可以治疗自身的怪物。
-PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings.
 PersistentHP | true, **false** | 怪物是否会在过夜后保留前一天受到的伤害。| 仅适用于设置了 `DaysUntilSpawnsExpire` 的怪物。此设置非常适合用在一些 Boss 怪物上，这使得玩家可以在多天内与其战斗，而不必担心它们会在每天结束时恢复到满血状态。
 Damage | 一个整数（最小值为 0） | 怪物的攻击值。| 某些怪物类型或某些怪物的特定攻击手段会忽略此设置并使用硬编码的伤害值，例如骷髅投掷骨头造成的伤害。
 Defense | 一个整数（最小值为 0） | 怪物的防御值 | 每次受到攻击时，怪物受到的伤害会减少此数值。|
