@@ -142,16 +142,9 @@ namespace FarmTypeManager.CustomActions
                     totalWeight += action.Weight; //add up any valid list items' weights
             }
 
-            switch (data.ActionMode?.ToLower() ?? "all") //if null, treat as "all"
+            switch (data.ActionMode)
             {
-                case "all": //return every valid action each time
-                    for (int x = 0; x < timesToPerform; x++)
-                    {
-                        foreach (var action in actionList)
-                            yield return action;
-                    }
-                    break;
-                case "random": //return a random valid action each time, adjusted by weight
+                case CustomActionsAsset.ActionModes.Random:
                     for (int x = 0; x < timesToPerform; x++)
                     {
                         int random = FTMUtility.Random.Next(totalWeight);
@@ -167,9 +160,14 @@ namespace FarmTypeManager.CustomActions
                         }
                     }
                     break;
+                case CustomActionsAsset.ActionModes.All:
                 default:
-                    FTMUtility.Monitor.LogOnce($"Couldn't get custom actions from the asset \"{assetId}\", entry key \"{entryId}\". ActionMode is \"{data.ActionMode}\", which is not valid. Valid options: \"All\", \"Random\".", LogLevel.Warn);
-                    yield break;
+                    for (int x = 0; x < timesToPerform; x++)
+                    {
+                        foreach (var action in actionList)
+                            yield return action;
+                    }
+                    break;
             }
         }
 
