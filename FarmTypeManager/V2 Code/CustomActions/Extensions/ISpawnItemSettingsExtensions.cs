@@ -5,43 +5,15 @@ using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
 using static FarmTypeManager.CustomActions.ISpawnItemSettings;
-using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>Extensions for use with "settings" types.</summary>
-    public static class SettingsExtensions
+    /// <summary>Extension methods for the <see cref="ISpawnItemSettings"/> interface.</summary>
+    public static class ISpawnItemSettingsExtensions
     {
         /*********************/
-        /* ILocationSettings */
+        /* Extension methods */
         /*********************/
-
-        /// <summary>Get all specified locations that are active for the current local player.</summary>
-        /// <returns>A list of all specificied locations that are active for the current local player.</returns>
-        /// <remarks>This uses any location names in <see cref="ILocationSettings"/>. It does not account for <see cref="LocationListMode"/>.</remarks>
-        public static List<GameLocation> GetActiveLocations<T>(this T settings) where T : ILocationSettings
-        {
-            List<string> nameList = [];
-
-            if (settings.Location != null)
-                nameList.AddRange(FTMUtility.GetAllLocationsFromName(settings.Location));
-
-            if (settings.LocationList != null)
-                foreach (string name in settings.LocationList)
-                    nameList.AddRange(FTMUtility.GetAllLocationsFromName(name));
-
-            List<GameLocation> locationList = [];
-
-            foreach (string name in nameList)
-                if (FTMUtility.GetLocationIfActive(name) is GameLocation location)
-                    locationList.Add(location);
-
-            return locationList;
-        }
-
-        /**********************/
-        /* ISpawnItemSettings */
-        /**********************/
 
         /// <summary>Create items from these settings' item data.</summary>
         /// <param name="gsqContext">The game context to use when checking conditions.</param>
@@ -112,27 +84,9 @@ namespace FarmTypeManager.CustomActions
             return items;
         }
 
-        /// <summary>Applies any necessary changes to a created item.</summary>
-        /// <param name="item">The item to modify.</param>
-        /// <returns>The modified item.</returns>
-        private static void ApplyItemChanges(this FTMSpawnItemData data, Item item)
-        {
-            if (item == null)
-                return;
-
-            if (data.Indestructible == true)
-                item.modData[FTMUtility.ModDataKeys.CanBePickedUp] = "false";
-
-            if (item is Object obj)
-            {
-                string unqualifiedItemId = obj.ItemId;
-
-                obj.IsSpawnedObject = data.CanPickUp ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId);
-                obj.Flipped = data.Flipped ?? obj.Flipped;
-                obj.Fragility = data.Indestructible == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.Indestructible is true; otherwise, check data normally
-                obj.MinutesUntilReady = data.Health ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
-            }
-        }
+        /*******************/
+        /* Implementations */
+        /*******************/
 
         /// <summary>Get a random entry from a list of item data entries. Each entry's chance to be selected is multiplied by <see cref="FTMSpawnItemData.Weight"/>.</summary>
         /// <param name="list">A list of item data entries.</param>
@@ -153,7 +107,7 @@ namespace FarmTypeManager.CustomActions
                     weight -= random;
             }
 
-            throw new ArgumentOutOfRangeException($"{nameof(FTMSpawnItemData)}.{nameof(FTMSpawnItemData.Weight)}");
+            throw new Exception("A logic error has caused this randomization method to fail. Please report this to the mod's developer.");
         }
 
         /// <summary>Get all entries from this instance with valid conditions.</summary>
