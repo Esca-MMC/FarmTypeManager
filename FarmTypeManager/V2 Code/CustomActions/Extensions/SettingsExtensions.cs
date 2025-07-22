@@ -4,6 +4,8 @@ using StardewValley.Delegates;
 using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
+using static FarmTypeManager.CustomActions.ISpawnItemSettings;
+using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -55,12 +57,38 @@ namespace FarmTypeManager.CustomActions
             List<FTMSpawnItemData> data = GetEntries(settings, gsqContext);
             List<Item> items = [];
 
-            if (string.Equals("All", settings.ItemListMode, StringComparison.OrdinalIgnoreCase))
+            switch (settings.ItemListMode)
             {
-                for (int x = 0; x < timesToRepeat; x++)
-                {
-                    foreach (var entry in data)
+                case ItemListModes.All:
+                    for (int x = 0; x < timesToRepeat; x++)
                     {
+                        foreach (var entry in data)
+                        {
+                            if (FTMUtility.Random.NextDouble() < entry.ChanceToSkip)
+                            {
+                                if (includeNull)
+                                    items.Add(null);
+                            }
+                            else
+                            {
+                                //generate an item from query data, if possible
+                                var item = ItemQueryResolver.TryResolveRandomItem(entry, itemContext, inputItem: gsqContext.InputItem,
+                                    logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
+
+                                entry.ApplyItemChanges(item);
+
+                                if (item != null || includeNull)
+                                    items.Add(item);
+                            }
+                        }
+                    }
+                    break;
+                case ItemListModes.Random:
+                default:
+                    for (int x = 0; x < timesToRepeat; x++)
+                    {
+                        var entry = GetWeightedRandom(data);
+
                         if (FTMUtility.Random.NextDouble() < entry.ChanceToSkip)
                         {
                             if (includeNull)
@@ -68,59 +96,41 @@ namespace FarmTypeManager.CustomActions
                         }
                         else
                         {
-                            //generate an item from query data, if possible
+                            //generate an item from data, if possible
                             var item = ItemQueryResolver.TryResolveRandomItem(entry, itemContext, inputItem: gsqContext.InputItem,
                                 logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
 
-                            ApplyItemChanges(item, entry);
+                            entry.ApplyItemChanges(item);
+
                             if (item != null || includeNull)
                                 items.Add(item);
                         }
                     }
-                }
-            }
-            else //default to Random mode
-            {
-                for (int x = 0; x < timesToRepeat; x++)
-                {
-                    var entry = GetWeightedRandom(data);
-
-                    if (FTMUtility.Random.NextDouble() < entry.ChanceToSkip)
-                    {
-                        if (includeNull)
-                            items.Add(null);
-                    }
-                    else
-                    {
-                        //generate an item from data, if possible
-                        var item = ItemQueryResolver.TryResolveRandomItem(entry, itemContext, inputItem: gsqContext.InputItem,
-                            logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
-
-                        ApplyItemChanges(item, entry);
-                        if (item != null || includeNull)
-                            items.Add(item);
-                    }
-                }
+                    break;
             }
 
             return items;
         }
 
-        /// <summary>Applies any necessary changes from this mod's custom item data to this item.</summary>
+        /// <summary>Applies any necessary changes to a created item.</summary>
         /// <param name="item">The item to modify.</param>
-        /// <param name="data">The data used to create the item.</param>
         /// <returns>The modified item.</returns>
-        private static void ApplyItemChanges(Item item, FTMSpawnItemData data)
+        private static void ApplyItemChanges(this FTMSpawnItemData data, Item item)
         {
-            //TODO: implement and apply any custom stuff here
-            //      remember stuff like minutesUntilReady and the pickup field I forget the name of (see ftmutility)
+            if (item == null)
+                return;
 
-            if (item is StardewValley.Object obj)
+            if (data.Indestructible == true)
+                item.modData[FTMUtility.ModDataKeys.CanBePickedUp] = "false";
+
+            if (item is Object obj)
             {
                 string unqualifiedItemId = obj.ItemId;
 
-                obj.MinutesUntilReady = FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
-                obj.IsSpawnedObject = FTMUtility.CanPickUpByDefault(unqualifiedItemId);
+                obj.IsSpawnedObject = data.CanPickUp ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId);
+                obj.Flipped = data.Flipped ?? obj.Flipped;
+                obj.Fragility = data.Indestructible == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.Indestructible is true; otherwise, check data normally
+                obj.MinutesUntilReady = data.Health ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
             }
         }
 
