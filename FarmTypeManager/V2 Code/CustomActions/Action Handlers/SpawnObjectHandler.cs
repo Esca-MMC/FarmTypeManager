@@ -56,34 +56,35 @@ namespace FarmTypeManager.CustomActions
 
             ItemQueryContext itemContext = new(queryContext.Location, queryContext.Player, FTMUtility.Random, $"Creating items for FTM. Custom action ID: \"{actionId}\". Trigger ID: {triggerContext.Trigger}.");
 
-            if (string.Equals(settings.LocationListMode, "Random", StringComparison.OrdinalIgnoreCase))
+            switch (settings.LocationListMode)
             {
-                //distribute items randomly among each location
-                int count = locations.Count;
-                Dictionary<int, int> timesForEachLocationIndex = new(count);
-                for (int x = 0; x < times; x++)
-                {
-                    int index = FTMUtility.Random.Next(count);
-                    if (timesForEachLocationIndex.ContainsKey(index))
-                        timesForEachLocationIndex[index]++;
-                    else
-                        timesForEachLocationIndex[index] = 1;
-                }
+                case ILocationSettings.LocationListModes.All:
+                    foreach (GameLocation location in locations)
+                    {
+                        if (!TrySpawnItems(location, settings, queryContext, itemContext, times, out error))
+                            return false;
+                    }
+                    break;
 
-                foreach (var entry in timesForEachLocationIndex)
-                {
-                    if (!TrySpawnItems(locations[entry.Key], settings, queryContext, itemContext, entry.Value, out error))
-                        return false;
-                }
-            }
-            else //if "All" location mode (default)
-            {
-                //try to spawn a full set of items at each location
-                foreach (GameLocation location in locations)
-                {
-                    if (!TrySpawnItems(location, settings, queryContext, itemContext, times, out error))
-                        return false;
-                }
+                case ILocationSettings.LocationListModes.Random:
+                default:
+                    int count = locations.Count;
+                    Dictionary<int, int> timesForEachLocationIndex = new(count);
+                    for (int x = 0; x < times; x++)
+                    {
+                        int index = FTMUtility.Random.Next(count);
+                        if (timesForEachLocationIndex.ContainsKey(index))
+                            timesForEachLocationIndex[index]++;
+                        else
+                            timesForEachLocationIndex[index] = 1;
+                    }
+
+                    foreach (var entry in timesForEachLocationIndex)
+                    {
+                        if (!TrySpawnItems(locations[entry.Key], settings, queryContext, itemContext, entry.Value, out error))
+                            return false;
+                    }
+                    break;
             }
 
             error = null;
