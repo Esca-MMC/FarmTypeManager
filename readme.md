@@ -52,13 +52,13 @@ See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.c
 Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
-Brazilian Portuguese | [pt-BR.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/pt-BR.json) | [roanrobersson](https://github.com/roanrobersson)
+Chinese (Simplified) | [zh.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/zh.json) | [SummerFleur](https://github.com/SummerFleur2997)
 Dutch | [nl.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/nl.json) | [UnrealThingTriesCode](https://github.com/UnrealThingTriesCode)
 French | [fr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/fr.json) | [Fsecho7](https://next.nexusmods.com/profile/Fsecho7)
 German | [de.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/de.json) | [777PamPam777](https://next.nexusmods.com/profile/777PamPam777)
+Portuguese (Brazilian) | [pt-BR.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/pt-BR.json) | [roanrobersson](https://github.com/roanrobersson)
 Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
 Ukrainian | [uk.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/uk.json) | [burunduk](https://github.com/burunduk)
-Chinese (Simplified) | [zh.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/zh.json) | [SummerFleur](https://github.com/SummerFleur2997)
 
 ## Examples
 Below are a few general examples of changes modders can make, spawning various objects on the farm or the other in-game maps.
@@ -351,7 +351,7 @@ Name | Valid settings | Description | Notes
 SpawnWeight | An integer (minimum/default 1) | The weighted spawn chance of this monster type. | Increases the odds of spawning this monster type instead of others, similar to adding multiple copies of it to the list. Example: If this monster type's weight is 5 and another type's weight is 1, this type will spawn 5 times as often.
 HP | An integer (minimum 1) | The monster's maximum health. | 
 CurrentHP | An integer (minimum 1) | The monster's current (not maximum) health at spawn. | This is mainly useful for "themed" monsters to spawn with injuries, or monsters capable of healing themselves.
-PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings. It was designed for specific "boss" monsters that players could fight gradually over multiple days.
+PersistentHP | true, **false** | Whether the monster will keep any HP damage overnight. | This only applies to monsters with `DaysUntilSpawnsExpire` settings. This is intended for unique monsters that don't respawn when defeated, and allows players to defeat them gradually over multiple days.
 Damage | An integer (minimum 0) | The amount of damage the monster's attacks deal. | Some monster types/attacks ignore this setting and use hard-coded damage values, e.g. skeleton bone-throwing attacks.
 Defense | An integer (minimum 0) | Attacks that hit the monster are reduced by this much damage. | 
 DodgeChance | An integer (minimum 0) | The percent chance the monster will completely ignore each attack. | 
