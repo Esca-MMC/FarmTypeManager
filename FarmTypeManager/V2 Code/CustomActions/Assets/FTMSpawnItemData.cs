@@ -5,7 +5,7 @@ using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>An data model for spawnable items, with additions for this mod's features.</summary>
+    /// <summary>A data model for spawnable items, with additions for this mod's features.</summary>
     public class FTMSpawnItemData : GenericSpawnItemDataWithCondition
     {
         /************************/
