@@ -43,11 +43,9 @@ namespace FarmTypeManager.CustomActions
                             }
                             else
                             {
-                                //generate an item from query data, if possible
-                                var item = ItemQueryResolver.TryResolveRandomItem(entry, itemContext, inputItem: gsqContext.InputItem,
+                                //generate one item from query data, if possible
+                                var item = entry.TryResolveRandomItem(itemContext, inputItem: gsqContext.InputItem,
                                     logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
-
-                                entry.ApplyItemChanges(item);
 
                                 if (item != null || includeNull)
                                     items.Add(item);
@@ -68,11 +66,9 @@ namespace FarmTypeManager.CustomActions
                         }
                         else
                         {
-                            //generate an item from data, if possible
-                            var item = ItemQueryResolver.TryResolveRandomItem(entry, itemContext, inputItem: gsqContext.InputItem,
+                            //generate one item from query data, if possible
+                            var item = entry.TryResolveRandomItem(itemContext, inputItem: gsqContext.InputItem,
                                 logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
-
-                            entry.ApplyItemChanges(item);
 
                             if (item != null || includeNull)
                                 items.Add(item);

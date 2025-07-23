@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using StardewValley.GameData;
 using StardewValley.Objects;
+using System.Collections.Generic;
 using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
@@ -18,6 +19,20 @@ namespace FarmTypeManager.CustomActions
 
         /// <summary>The random chance that this entry should produce no items, from 0 (always produce items normally) to 1 (never produce items).</summary>
         public double ChanceToSkip { get; set; } = 0;
+
+        /***************************/
+        /* Properties - Containers */
+        /***************************/
+
+        /// <summary>The contents of a container, e.g. the items within a <see cref="Chest"/>.</summary>
+        public List<FTMSpawnItemData> Contents { get; set; } = null;
+
+        /**************************/
+        /* Properties - Furniture */
+        /**************************/
+
+        /// <summary>The number of times to rotate a placed <see cref="Furniture"/> item.</summary>
+        public int? Rotation { get; set; } = null;
 
         /**********************/
         /* Properties - Items */
@@ -65,12 +80,5 @@ namespace FarmTypeManager.CustomActions
         /// <summary>An <see cref="Object"/>'s health or durability when created, e.g. the number of hits from a basic tool needed to harvest/destroy it. Primarily affects stones and ore.</summary>
         /// <remarks>See <see cref="Object.MinutesUntilReady"/>. Pickaxes treat that property on objects as a health/durability value.</remarks>
         public int? Health { get; set; } = null;
-
-        /**************************/
-        /* Properties - Furniture */
-        /**************************/
-
-        /// <summary>The number of times to rotate a placed <see cref="Furniture"/> item.</summary>
-        public int? Rotation { get; set; } = null;
     }
 }
