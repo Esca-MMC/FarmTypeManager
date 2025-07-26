@@ -7,15 +7,16 @@ using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>A handler only intended to test the custom action system.</summary>
     public class SpawnObjectHandler : ICustomActionHandler
     {
-        /**********************/
-        /* Interface features */
-        /**********************/
+        /************************/
+        /* ICustomActionHandler */
+        /************************/
 
         public string ProviderModId => FTMUtility.Manifest?.UniqueID;
         public Type SettingsType => typeof(SpawnObjectSettings);
@@ -61,7 +62,7 @@ namespace FarmTypeManager.CustomActions
                 case ILocationSettings.LocationListModes.All:
                     foreach (GameLocation location in locations)
                     {
-                        if (!TrySpawnItems(location, settings, queryContext, itemContext, times, out error))
+                        if (!TrySpawnObjects(location, settings, queryContext, itemContext, times, out error))
                             return false;
                     }
                     break;
@@ -81,7 +82,7 @@ namespace FarmTypeManager.CustomActions
 
                     foreach (var entry in timesForEachLocationIndex)
                     {
-                        if (!TrySpawnItems(locations[entry.Key], settings, queryContext, itemContext, entry.Value, out error))
+                        if (!TrySpawnObjects(locations[entry.Key], settings, queryContext, itemContext, entry.Value, out error))
                             return false;
                     }
                     break;
@@ -92,15 +93,25 @@ namespace FarmTypeManager.CustomActions
         }
 
         /*******************/
-        /* Implementations */
+        /* Private methods */
         /*******************/
 
-        private bool TrySpawnItems(GameLocation location, SpawnObjectSettings settings, GameStateQueryContext queryContext, ItemQueryContext itemContext, int timesToRepeat, out string error)
+        /// <summary>Spawns a set number of <see cref="Object"/>s at a location.</summary>
+        /// <param name="location">The in-game location to use.</param>
+        /// <param name="settings">The spawn settings to use.</param>
+        /// <param name="queryContext">Contextual information to use when checking conditions.</param>
+        /// <param name="itemContext">The item context to use when generating items.</param>
+        /// <param name="numberOfItems">The number of items to generate.</param>
+        /// <param name="error">Error text describing why items could not be spawned, if applicable.</param>
+        /// <returns>True if spawning completed without errors, even if nothing was spawned (e.g. if tiles are blocked). False if any errors were encountered.</returns>
+        private bool TrySpawnObjects(GameLocation location, SpawnObjectSettings settings, GameStateQueryContext queryContext, ItemQueryContext itemContext, int numberOfItems, out string error)
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
 
-            List<Item> items = settings.CreateItems(queryContext, itemContext, timesToRepeat, false);
-            Queue<Vector2> tiles = new(TileQueryManager.GetTilesFromQuery(settings.TileCondition, location).Take(items.Count)); //get enough tiles for each item, if possible
+            List<Item> items = settings.CreateItems(queryContext, itemContext, numberOfItems, false);
+            
+            var tileQuery = new TileQuery(location, settings.TileCondition);
+            Queue<Vector2> tiles = new(tileQuery.GetTiles(true).Take(items.Count)); //get enough tiles for each item, if possible
 
             int totalSpawned = 0;
             foreach (Item item in items)
@@ -108,7 +119,7 @@ namespace FarmTypeManager.CustomActions
                 if (tiles.Count == 0)
                     break;
 
-                if (item is StardewValley.Object obj)
+                if (item is Object obj)
                 {
                     if (location.objects.TryAdd(tiles.Dequeue(), obj))
                         totalSpawned++;
