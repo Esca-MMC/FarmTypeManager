@@ -28,7 +28,7 @@ namespace FarmTypeManager
         /* Methods - Lists */
         /*******************/
 
-        /// <summary>Randomize the order of items in a mutable list.</summary>
+        /// <summary>Randomize the order of elements in a mutable list.</summary>
         /// <param name="list">The list to randomize.</param>
         public static void RandomizeList<T>(List<T> list)
         {
@@ -36,7 +36,7 @@ namespace FarmTypeManager
             {
                 int random = FTMUtility.Random.Next(index + 1); //get a random index between 0 and this tile's index
 
-                //swap the current tile with the tile at the random index
+                //swap the current element with the element at the random index
                 var temp = list[random];
                 list[random] = list[index];
                 list[index] = temp;
