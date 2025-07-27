@@ -42,7 +42,7 @@ namespace FarmTypeManager.TileQueries
             //Allow every tile from X,Y (inclusive) to X+Width,Y+Width (exclusive). Example: X=2, Y=2, Width=5, Height=5 should include tiles 2,2 through 6,6.
 
             List<Vector2> tiles = new(Rectangle.Width * Rectangle.Height);
-            
+
             int right = Rectangle.Right;
             int bottom = Rectangle.Bottom;
 

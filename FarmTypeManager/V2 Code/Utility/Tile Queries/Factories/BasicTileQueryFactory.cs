@@ -41,28 +41,28 @@ namespace FarmTypeManager.TileQueries
                     return new AreaXYTileQuery(queryArgs);
                 case "!AREA_XY":
                     return new NotAreaXYTileQuery(queryArgs);
-                    /*
-                case "PROPERTY":
-                    return ???;
-                case "!PROPERTY":
-                    return ???;
-                case "INDEX":
-                    return ???;
-                case "!INDEX":
-                    return ???;
+                /*
+            case "PROPERTY":
+                return ???;
+            case "!PROPERTY":
+                return ???;
+            case "INDEX":
+                return ???;
+            case "!INDEX":
+                return ???;
 
-                case "PASSABLE":
-                    return ???;
-                case "!PASSABLE":
-                    return ???;
-                case "ALLOWS_OBJECTS":
-                    return ???;
-                case "!ALLOWS_OBJECTS":
-                    return ???;
-                case "OCCUPIED":
-                    return ???;
-                case "!OCCUPIED":
-                    return ???;*/
+            case "PASSABLE":
+                return ???;
+            case "!PASSABLE":
+                return ???;
+            case "ALLOWS_OBJECTS":
+                return ???;
+            case "!ALLOWS_OBJECTS":
+                return ???;
+            case "OCCUPIED":
+                return ???;
+            case "!OCCUPIED":
+                return ???;*/
                 case "CAN_PLACE_ITEM":
                     return new CanPlaceItemTileQuery(location);
                 case "!CAN_PLACE_ITEM":
