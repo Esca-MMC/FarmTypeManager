@@ -104,12 +104,12 @@ namespace FarmTypeManager.CustomActions
         /// <param name="numberOfItems">The number of items to generate.</param>
         /// <param name="error">Error text describing why items could not be spawned, if applicable.</param>
         /// <returns>True if spawning completed without errors, even if nothing was spawned (e.g. if tiles are blocked). False if any errors were encountered.</returns>
-        private bool TrySpawnObjects(GameLocation location, SpawnObjectSettings settings, GameStateQueryContext queryContext, ItemQueryContext itemContext, int numberOfItems, out string error)
+        private static bool TrySpawnObjects(GameLocation location, SpawnObjectSettings settings, GameStateQueryContext queryContext, ItemQueryContext itemContext, int numberOfItems, out string error)
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
 
             List<Item> items = settings.CreateItems(queryContext, itemContext, numberOfItems, false);
-            
+
             var tileQuery = new TileQuery(location, settings.TileCondition);
             Queue<Vector2> tiles = new(tileQuery.GetTiles(true).Take(items.Count)); //get enough tiles for each item, if possible
 
