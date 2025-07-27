@@ -37,7 +37,7 @@ namespace FarmTypeManager.TileQueries
             {
                 if (!ArgUtility.TryGet(queryArgs, x, out string rawSubQuery, out error, false, $"Query in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
-                
+
                 string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(rawSubQuery); //split sub-query into arguments around spaces (and remove empty entries)
                 ITileQuery subQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(Location, subQueryArgs); //note: this is intended to throw an exception if a key doesn't exist
                 Queries.Add(subQuery);
