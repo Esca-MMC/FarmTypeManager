@@ -9,6 +9,7 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* ITileQuery */
         /**************/
+
         public int CheckTilePriority => ITileQuery.Priority_VeryHigh;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
         public bool CheckTile(Vector2 tile) => true;

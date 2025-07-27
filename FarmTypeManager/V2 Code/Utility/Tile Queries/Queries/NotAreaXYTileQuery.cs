@@ -24,9 +24,9 @@ namespace FarmTypeManager.TileQueries
             BottomRightCorner = new(Math.Max(tile1.X, tile2.X), Math.Max(tile1.Y, tile2.Y)); //use the higher X and Y
         }
 
-        /********************/
-        /* Class properties */
-        /********************/
+        /**************/
+        /* Properties */
+        /**************/
 
         /// <summary>The top left corner tile within the invalid area, i.e. the tile with the lowest X and Y values.</summary>
         private Point TopLeftCorner { get; set; }
@@ -37,6 +37,7 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* ITileQuery */
         /**************/
+
         public int CheckTilePriority => ITileQuery.Priority_High;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
         public bool CheckTile(Vector2 tile) => tile.X < TopLeftCorner.X || tile.X > BottomRightCorner.X || tile.Y < TopLeftCorner.Y || tile.Y > BottomRightCorner.Y;

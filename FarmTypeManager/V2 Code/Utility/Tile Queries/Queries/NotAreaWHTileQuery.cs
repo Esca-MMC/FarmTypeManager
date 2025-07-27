@@ -21,9 +21,9 @@ namespace FarmTypeManager.TileQueries
             Rectangle = rectangle;
         }
 
-        /********************/
-        /* Class properties */
-        /********************/
+        /**************/
+        /* Properties */
+        /**************/
 
         /// <summary>The rectangular area to consider invalid.</summary>
         private Rectangle Rectangle { get; }
@@ -31,6 +31,7 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* ITileQuery */
         /**************/
+
         public int CheckTilePriority => ITileQuery.Priority_High;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
         public bool CheckTile(Vector2 tile) => !Rectangle.Contains(tile);

@@ -110,7 +110,7 @@ namespace FarmTypeManager.CustomActions
 
             List<Item> items = settings.CreateItems(queryContext, itemContext, numberOfItems, false);
 
-            var tileQuery = new TileQuery(location, settings.TileCondition);
+            var tileQuery = new TileCondition(location, $"!HAS_OBJECT, {settings.TileCondition}"); //create tile condition, and require that the tile be clear of objects
             Queue<Vector2> tiles = new(tileQuery.GetTiles(true).Take(items.Count)); //get enough tiles for each item, if possible
 
             int totalSpawned = 0;
