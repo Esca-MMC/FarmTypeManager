@@ -21,12 +21,9 @@ namespace FarmTypeManager.TileQueries
             Rectangle = rectangle;
         }
 
-        /********************/
-        /* Class properties */
-        /********************/
-
-        /// <summary>If true, <see cref="CheckTile"/> should always return true. Used to improve performance when this instance's <see cref="GetStartingTiles"/> is used.</summary>
-        private bool AlwaysReturnTrue { get; set; } = false;
+        /**************/
+        /* Properties */
+        /**************/
 
         /// <summary>The rectangular area to consider invalid.</summary>
         private Rectangle Rectangle { get; }
@@ -34,9 +31,10 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* ITileQuery */
         /**************/
+
         public int CheckTilePriority => ITileQuery.Priority_High;
         public int StartingTilesPriority => ITileQuery.Priority_High;
-        public bool CheckTile(Vector2 tile) => AlwaysReturnTrue || Rectangle.Contains(tile);
+        public bool CheckTile(Vector2 tile) => Rectangle.Contains(tile);
         public List<Vector2> GetStartingTiles()
         {
             //Allow every tile from X,Y (inclusive) to X+Width,Y+Width (exclusive). Example: X=2, Y=2, Width=5, Height=5 should include tiles 2,2 through 6,6.
@@ -50,7 +48,6 @@ namespace FarmTypeManager.TileQueries
                 for (int y = Rectangle.Y; y < bottom; y++)
                     tiles.Add(new Vector2(x, y));
 
-            AlwaysReturnTrue = true;
             return tiles;
         }
     }

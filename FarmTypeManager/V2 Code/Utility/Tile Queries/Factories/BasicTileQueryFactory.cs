@@ -24,9 +24,9 @@ namespace FarmTypeManager.TileQueries
                 case "!TRUE":
                     return new FalseTileQuery();
 
-                /*case "SIZE":
-                    return ???;
-                case "!SIZE":
+                case "SIZE":
+                    return new SizeTileQuery(location, queryArgs);
+                /*case "!SIZE":
                     return ???;
                 case "ANY":
                     return ???;
@@ -41,28 +41,28 @@ namespace FarmTypeManager.TileQueries
                     return new AreaXYTileQuery(queryArgs);
                 case "!AREA_XY":
                     return new NotAreaXYTileQuery(queryArgs);
-                /*
-            case "PROPERTY":
-                return ???;
-            case "!PROPERTY":
-                return ???;
-            case "INDEX":
-                return ???;
-            case "!INDEX":
-                return ???;
 
-            case "PASSABLE":
-                return ???;
-            case "!PASSABLE":
-                return ???;
-            case "ALLOWS_OBJECTS":
-                return ???;
-            case "!ALLOWS_OBJECTS":
-                return ???;
-            case "OCCUPIED":
-                return ???;
-            case "!OCCUPIED":
-                return ???;*/
+                case "PROPERTY":
+                    return new PropertyTileQuery(location, queryArgs);
+                case "!PROPERTY":
+                    return new NotPropertyTileQuery(location, queryArgs);
+                case "INDEX":
+                    return new IndexTileQuery(location, queryArgs);
+                case "!INDEX":
+                    return new NotIndexTileQuery(location, queryArgs);
+
+                case "PASSABLE":
+                    return new PassableTileQuery(location);
+                case "!PASSABLE":
+                    return new NotPassableTileQuery(location);
+                case "HAS_OBJECT":
+                    return new HasObjectTileQuery(location);
+                case "!HAS_OBJECT":
+                    return new NotHasObjectTileQuery(location);
+                case "OCCUPIED":
+                    return new OccupiedTileQuery(location);
+                case "!OCCUPIED":
+                    return new NotOccupiedTileQuery(location);
                 case "CAN_PLACE_ITEM":
                     return new CanPlaceItemTileQuery(location);
                 case "!CAN_PLACE_ITEM":
@@ -106,8 +106,8 @@ namespace FarmTypeManager.TileQueries
 
                 { "PASSABLE", factory },
                 { "!PASSABLE", factory },
-                { "ALLOWS_OBJECTS", factory },
-                { "!ALLOWS_OBJECTS", factory },
+                { "HAS_OBJECT", factory },
+                { "!HAS_OBJECT", factory },
                 { "OCCUPIED", factory },
                 { "!OCCUPIED", factory },
                 { "CAN_PLACE_ITEM", factory },

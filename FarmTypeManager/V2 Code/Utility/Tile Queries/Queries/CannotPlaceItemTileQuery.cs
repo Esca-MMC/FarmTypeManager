@@ -8,9 +8,9 @@ namespace FarmTypeManager.TileQueries
     /// <param name="location">The in-game location to check.</param>
     public class CannotPlaceItemTileQuery(GameLocation location) : ITileQuery
     {
-        /********************/
-        /* Class properties */
-        /********************/
+        /**************/
+        /* Properties */
+        /**************/
 
         /// <summary>The in-game location to check.</summary>
         private GameLocation Location { get; } = location;
@@ -21,7 +21,6 @@ namespace FarmTypeManager.TileQueries
 
         public int CheckTilePriority => ITileQuery.Priority_Low;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
-
         public bool CheckTile(Vector2 tile) => !Location.CanItemBePlacedHere(tile);
         public List<Vector2> GetStartingTiles() => throw new System.NotImplementedException();
     }
