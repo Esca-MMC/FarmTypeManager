@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A factory that generates instances of this mod's built-in tile query types.</summary>
-    public class BasicTileQueryFactory : ITileQueryFactory
+    public class NativeTileQueryFactory : ITileQueryFactory
     {
         /**************/
         /* ITileQuery */
@@ -26,12 +26,14 @@ namespace FarmTypeManager.TileQueries
 
                 case "SIZE":
                     return new SizeTileQuery(location, queryArgs);
-                /*case "!SIZE":
-                    return ???;
-                case "ANY":
+                case "!SIZE":
+                    return new NotSizeTileQuery(location, queryArgs);
+                /*case "ANY":
                     return ???;
                 case "!ANY":
                     return ???;*/
+                case "NOT":
+                    return new NotTileQuery(location, queryArgs);
 
                 case "AREA_WH":
                     return new AreaWHTileQuery(queryArgs);
@@ -80,7 +82,7 @@ namespace FarmTypeManager.TileQueries
         /// <summary>Creates a case-insensitive dictionary populated with all built-in query keys, each associated with a shared instance of this class.</summary>
         public static Dictionary<string, ITileQueryFactory> GetDefaultQueryFactories()
         {
-            var factory = new BasicTileQueryFactory();
+            var factory = new NativeTileQueryFactory();
 
             Dictionary<string, ITileQueryFactory> factories = new(StringComparer.OrdinalIgnoreCase)
             {
@@ -93,6 +95,7 @@ namespace FarmTypeManager.TileQueries
                 { "!SIZE", factory },
                 { "ANY", factory },
                 { "!ANY", factory },
+                { "NOT", factory },
 
                 { "AREA_WH", factory },
                 { "!AREA_WH", factory },

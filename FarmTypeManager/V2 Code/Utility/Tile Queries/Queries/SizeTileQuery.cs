@@ -35,12 +35,12 @@ namespace FarmTypeManager.TileQueries
             int x = 3;
             do
             {
-                if (!ArgUtility.TryGet(queryArgs, x, out string rawSubQuery, out error, false, $"Query in argument {x}"))
+                if (!ArgUtility.TryGet(queryArgs, x, out string subQuery, out error, false, $"Query in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-                string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(rawSubQuery); //split sub-query into arguments around spaces (and remove empty entries)
-                ITileQuery subQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(Location, subQueryArgs); //note: this is intended to throw an exception if a key doesn't exist
-                Queries.Add(subQuery);
+                string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(subQuery); //split sub-query into arguments around spaces (and remove empty entries)
+                ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(Location, subQueryArgs); //create the sub-query (or throw an exception)
+                Queries.Add(parsedSubQuery);
 
                 x++;
             }
@@ -132,7 +132,6 @@ namespace FarmTypeManager.TileQueries
 
             return true;
         }
-
         public List<Vector2> GetStartingTiles() => StartingTilesQuery?.GetStartingTiles() ?? throw new NotImplementedException(); //if an appropriate sub-query exists, use it; otherwise, treat this as not implemented
     }
 }

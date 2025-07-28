@@ -32,7 +32,7 @@ namespace FarmTypeManager.TileQueries
 
         /// <summary>Tile query keys and the factories that create their tile queries.</summary>
         /// <remarks>Keys are case-insensitive. Query keys with prefixes such as '!' are considered distinct, separate query keys; the prefix should be included here.</remarks>
-        public static Dictionary<string, ITileQueryFactory> TileQueryFactories = BasicTileQueryFactory.GetDefaultQueryFactories();
+        public static Dictionary<string, ITileQueryFactory> TileQueryFactories = NativeTileQueryFactory.GetDefaultQueryFactories();
 
         /// <summary>Whether this instance's state has changed and it should be reinitialized next time it's used.</summary>
         private bool Dirty { get; set; } = false;
