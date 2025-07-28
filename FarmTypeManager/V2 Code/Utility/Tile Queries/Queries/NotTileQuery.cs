@@ -8,7 +8,7 @@ namespace FarmTypeManager.TileQueries
     /// <summary>A handler for the "NOT" tile query. Allows tiles if they were rejected by its sub-query. Used to generically negate other queries, equivalent to the '!' prefix.</summary>
     /// <remarks>
     /// <para>Expected string format: "NOT {Sub-query}". Example: "NOT \"AREA 2 2 5 5\"".</para>
-    /// <para>This query is mainly intended for use with custom queries that don't implement specific code for '!' versions, either by developers or users. It's generally less efficient than directly implementing the negated query.</para>
+    /// <para>This query is mainly intended for use with custom queries that don't implement specific code for '!' versions. It's generally less efficient than directly implementing the negated query, and some queries (e.g. those with caching logic) may not be negated correctly.</para>
     /// </remarks>
     public class NotTileQuery : ITileQuery
     {
