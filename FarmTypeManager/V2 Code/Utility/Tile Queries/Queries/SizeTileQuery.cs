@@ -17,9 +17,8 @@ namespace FarmTypeManager.TileQueries
         /// <param name="queryArgs">The text of the query to handle, split by spaces with quote awareness. The first argument is the query key.</param>
         public SizeTileQuery(GameLocation location, string[] queryArgs)
         {
-            Location = location;
-            MapWidth = Location.map.Layers[0].LayerWidth;
-            MapHeight = Location.map.Layers[0].LayerHeight;
+            MapWidth = location.map.Layers[0].LayerWidth;
+            MapHeight = location.map.Layers[0].LayerHeight;
 
             if (!ArgUtility.TryGetInt(queryArgs, 1, out int sizeWidth, out string error, "Width")
                 || !ArgUtility.TryGetInt(queryArgs, 2, out int sizeHeight, out error, "Height"))
@@ -39,7 +38,7 @@ namespace FarmTypeManager.TileQueries
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
                 string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(subQuery); //split sub-query into arguments around spaces (and remove empty entries)
-                ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(Location, subQueryArgs); //create the sub-query (or throw an exception)
+                ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(location, subQueryArgs); //create the sub-query (or throw an exception)
                 Queries.Add(parsedSubQuery);
 
                 x++;
@@ -53,9 +52,6 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* Properties */
         /**************/
-
-        /// <summary>The in-game location to check.</summary>
-        private GameLocation Location { get; }
 
         /// <summary><see cref="Location"/>'s width in tiles.</summary>
         private int MapWidth { get; }
@@ -105,8 +101,7 @@ namespace FarmTypeManager.TileQueries
                             return false; //this sub-tile is invalid, so the checked tile is invalid
                     }
 
-                    //if this tile hasn't been checked yet, check it
-                    if (!Location.isTileOnMap(tileToCheck))
+                    if (tileToCheck. X < 0 || tileToCheck.X >= MapWidth || tileToCheck.Y < 0 || tileToCheck.Y >= MapHeight)
                     {
                         CheckTileCache[tileToCheck] = false;
                         return false;
