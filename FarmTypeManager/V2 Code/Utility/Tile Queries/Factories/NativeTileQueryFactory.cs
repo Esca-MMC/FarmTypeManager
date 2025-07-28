@@ -26,8 +26,6 @@ namespace FarmTypeManager.TileQueries
 
                 case "SIZE":
                     return new SizeTileQuery(location, queryArgs);
-                case "!SIZE":
-                    return new NotSizeTileQuery(location, queryArgs);
                 /*case "ANY":
                     return ???;
                 case "!ANY":
@@ -92,7 +90,6 @@ namespace FarmTypeManager.TileQueries
                 { "!FALSE", factory },
 
                 { "SIZE", factory },
-                { "!SIZE", factory },
                 { "ANY", factory },
                 { "!ANY", factory },
                 { "NOT", factory },
