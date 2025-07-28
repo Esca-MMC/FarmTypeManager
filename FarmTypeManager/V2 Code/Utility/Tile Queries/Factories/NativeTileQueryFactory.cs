@@ -17,22 +17,25 @@ namespace FarmTypeManager.TileQueries
 
             switch (queryArgs[0].ToUpperInvariant())
             {
-                case "TRUE":
-                case "!FALSE":
-                    return new TrueTileQuery();
+                //basic
                 case "FALSE":
                 case "!TRUE":
                     return new FalseTileQuery();
+                case "TRUE":
+                case "!FALSE":
+                    return new TrueTileQuery();
 
-                case "SIZE":
-                    return new SizeTileQuery(location, queryArgs);
-                /*case "ANY":
-                    return ???;
+                //meta
+                case "ANY":
+                    return new AnyTileQuery(location, queryArgs);
                 case "!ANY":
-                    return ???;*/
+                    return new NotAnyTileQuery(location, queryArgs);
                 case "NOT":
                     return new NotTileQuery(location, queryArgs);
+                case "SIZE":
+                    return new SizeTileQuery(location, queryArgs);
 
+                //ranges
                 case "AREA_WH":
                     return new AreaWHTileQuery(queryArgs);
                 case "!AREA_WH":
@@ -42,15 +45,17 @@ namespace FarmTypeManager.TileQueries
                 case "!AREA_XY":
                     return new NotAreaXYTileQuery(queryArgs);
 
-                case "PROPERTY":
-                    return new PropertyTileQuery(location, queryArgs);
-                case "!PROPERTY":
-                    return new NotPropertyTileQuery(location, queryArgs);
+                //simple properties
                 case "INDEX":
                     return new IndexTileQuery(location, queryArgs);
                 case "!INDEX":
                     return new NotIndexTileQuery(location, queryArgs);
+                case "PROPERTY":
+                    return new PropertyTileQuery(location, queryArgs);
+                case "!PROPERTY":
+                    return new NotPropertyTileQuery(location, queryArgs);
 
+                //complex properties
                 case "PASSABLE":
                     return new PassableTileQuery(location);
                 case "!PASSABLE":
@@ -68,6 +73,7 @@ namespace FarmTypeManager.TileQueries
                 case "!CAN_PLACE_ITEM":
                     return new CannotPlaceItemTileQuery(location);
 
+                //unknown properties (e.g. sent to this handler incorrectly)
                 default:
                     throw new ArgumentException($"Query key '{queryArgs[0]}' is not recognized by this factory type.");
             }
@@ -84,34 +90,34 @@ namespace FarmTypeManager.TileQueries
 
             Dictionary<string, ITileQueryFactory> factories = new(StringComparer.OrdinalIgnoreCase)
             {
-                { "TRUE", factory },
-                { "!TRUE", factory },
                 { "FALSE", factory },
                 { "!FALSE", factory },
-
-                { "SIZE", factory },
+                { "TRUE", factory },
+                { "!TRUE", factory },
+                
                 { "ANY", factory },
                 { "!ANY", factory },
                 { "NOT", factory },
+                { "SIZE", factory },
 
                 { "AREA_WH", factory },
                 { "!AREA_WH", factory },
                 { "AREA_XY", factory },
                 { "!AREA_XY", factory },
 
-                { "PROPERTY", factory },
-                { "!PROPERTY", factory },
                 { "INDEX", factory },
                 { "!INDEX", factory },
+                { "PROPERTY", factory },
+                { "!PROPERTY", factory },
 
-                { "PASSABLE", factory },
-                { "!PASSABLE", factory },
+                { "CAN_PLACE_ITEM", factory },
+                { "!CAN_PLACE_ITEM", factory },
                 { "HAS_OBJECT", factory },
                 { "!HAS_OBJECT", factory },
                 { "OCCUPIED", factory },
                 { "!OCCUPIED", factory },
-                { "CAN_PLACE_ITEM", factory },
-                { "!CAN_PLACE_ITEM", factory },
+                { "PASSABLE", factory },
+                { "!PASSABLE", factory },
             };
 
             return factories;
