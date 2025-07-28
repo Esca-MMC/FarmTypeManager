@@ -21,7 +21,7 @@ namespace FarmTypeManager.TileQueries
         public NotTileQuery(GameLocation location, string[] queryArgs)
         {
             if (queryArgs.Length > 2)
-                throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: 'Too many arguments were provided. The sub-query argument may need to be wrapped in quotation marks. Example: NOT \"AREA 2 2 5 5\" '.");
+                throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: 'Too many arguments were provided (expected 2, got {queryArgs.Length}). The sub-query argument may need to be wrapped in quotation marks. Example: NOT \"AREA 2 2 5 5\" '.");
 
             if (!ArgUtility.TryGet(queryArgs, 1, out string subQuery, out string error, false, "Query in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
