@@ -94,7 +94,7 @@ namespace FarmTypeManager.TileQueries
                 { "!FALSE", factory },
                 { "TRUE", factory },
                 { "!TRUE", factory },
-                
+
                 { "ANY", factory },
                 { "!ANY", factory },
                 { "NOT", factory },

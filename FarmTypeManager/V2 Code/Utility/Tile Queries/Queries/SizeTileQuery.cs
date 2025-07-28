@@ -101,7 +101,7 @@ namespace FarmTypeManager.TileQueries
                             return false; //this sub-tile is invalid, so the checked tile is invalid
                     }
 
-                    if (tileToCheck. X < 0 || tileToCheck.X >= MapWidth || tileToCheck.Y < 0 || tileToCheck.Y >= MapHeight)
+                    if (tileToCheck.X < 0 || tileToCheck.X >= MapWidth || tileToCheck.Y < 0 || tileToCheck.Y >= MapHeight)
                     {
                         CheckTileCache[tileToCheck] = false;
                         return false;
