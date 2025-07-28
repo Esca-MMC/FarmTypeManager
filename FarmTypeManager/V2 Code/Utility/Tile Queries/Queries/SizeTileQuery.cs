@@ -53,26 +53,26 @@ namespace FarmTypeManager.TileQueries
         /* Properties */
         /**************/
 
-        /// <summary><see cref="Location"/>'s width in tiles.</summary>
-        private int MapWidth { get; }
+        /// <summary>The results of <see cref="CheckTile(Vector2)"/> for any tiles that were already checked. Used to skip redundant checks.</summary>
+        private Dictionary<Vector2, bool> CheckTileCache { get; set; } = [];
 
         /// <summary><see cref="Location"/>'s height in tiles.</summary>
         private int MapHeight { get; }
 
+        /// <summary><see cref="Location"/>'s width in tiles.</summary>
+        private int MapWidth { get; }
+
         /// <summary>A list of sub-queries parsed from arguments.</summary>
         private List<ITileQuery> Queries { get; set; } = [];
-
-        /// <summary>The horizontal size of the area to check.</summary>
-        private int SizeWidth { get; }
 
         /// <summary>The vertical size of the area to check.</summary>
         private int SizeHeight { get; }
 
+        /// <summary>The horizontal size of the area to check.</summary>
+        private int SizeWidth { get; }
+
         /// <summary>The sub-query to use when getting a starting tile set, if any.</summary>
         private ITileQuery StartingTilesQuery { get; set; }
-
-        /// <summary>The results of <see cref="CheckTile(Vector2)"/> for any tiles that were already checked. Used to skip redundant checks.</summary>
-        private Dictionary<Vector2, bool> CheckTileCache { get; set; } = [];
 
         /**************/
         /* ITileQuery */
