@@ -30,7 +30,7 @@ namespace FarmTypeManager.TileQueries
                 if (tile.X >= 0 && tile.X < mapWidth && tile.Y >= 0 && tile.Y < mapHeight) //if the location has this tile
                     Tiles.Add(tile);
 
-                x++;
+                x += 2;
             }
             while (x < queryArgs.Length);
         }

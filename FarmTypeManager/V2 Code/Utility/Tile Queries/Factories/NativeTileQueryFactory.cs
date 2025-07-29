@@ -48,6 +48,10 @@ namespace FarmTypeManager.TileQueries
                     return new AreaXYTileQuery(location, queryArgs);
                 case "!AREA_XY":
                     return new NotAreaXYTileQuery(queryArgs);
+                case "AREA_CIRCLE":
+                    return new AreaCircleTileQuery(location, queryArgs);
+                case "!AREA_CIRCLE":
+                    return new NotAreaCircleTileQuery(queryArgs);
 
                 //simple properties
                 case "INDEX":
@@ -111,6 +115,8 @@ namespace FarmTypeManager.TileQueries
                 { "!AREA_WH", factory },
                 { "AREA_XY", factory },
                 { "!AREA_XY", factory },
+                { "AREA_CIRCLE", factory },
+                { "!AREA_CIRCLE", factory },
 
                 { "INDEX", factory },
                 { "!INDEX", factory },

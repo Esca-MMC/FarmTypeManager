@@ -24,7 +24,7 @@ namespace FarmTypeManager.TileQueries
 
                 Tiles.Add(tile);
 
-                x++;
+                x += 2;
             }
             while (x < queryArgs.Length);
         }
