@@ -6,7 +6,6 @@ using StardewValley.Delegates;
 using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
@@ -108,25 +107,26 @@ namespace FarmTypeManager.CustomActions
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
 
-            List<Item> items = settings.CreateItems(queryContext, itemContext, numberOfItems, false);
-
             var tileQuery = new TileCondition(location, $"!HAS_OBJECT, {settings.TileCondition}"); //create tile condition, and require that the tile be clear of objects
-            Queue<Vector2> tiles = new(tileQuery.GetTiles(true).Take(items.Count)); //get enough tiles for each item, if possible
+            var tiles = tileQuery.GetTiles(true).GetEnumerator();
 
             int totalSpawned = 0;
-            foreach (Item item in items)
+            foreach (Item item in settings.CreateItems(queryContext, itemContext, numberOfItems, false))
             {
-                if (tiles.Count == 0)
+                if (!tiles.MoveNext()) //if no more tiles exist, stop
                     break;
+
+                Vector2 tile = tiles.Current;
 
                 if (item is Object obj)
                 {
-                    if (location.objects.TryAdd(tiles.Dequeue(), obj))
+                    if (location.objects.TryAdd(tile, obj))
                         totalSpawned++;
                 }
             }
 
-            FTMUtility.Monitor.Log($"Spawned {totalSpawned} objects at {location.NameOrUniqueName}.", LogLevel.Trace);
+            if (totalSpawned > 0 || FTMUtility.Monitor.IsVerbose)
+                FTMUtility.Monitor.Log($"Spawned {totalSpawned} objects at {location.NameOrUniqueName}.", LogLevel.Trace);
 
             error = null;
             return true;
