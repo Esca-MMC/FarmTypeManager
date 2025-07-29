@@ -2,6 +2,7 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using xTile.Tiles;
 
 namespace FarmTypeManager.TileQueries
 {
@@ -13,9 +14,13 @@ namespace FarmTypeManager.TileQueries
         /* Constructor */
         /***************/
 
+        /// <param name="location">The in-game location to check.</param>
         /// <param name="queryArgs">The text of the query to handle, split by spaces with quote awareness. The first argument is the query key.</param>
-        public AreaWHTileQuery(string[] queryArgs)
+        public AreaWHTileQuery(GameLocation location, string[] queryArgs)
         {
+            MapWidth = location.map.Layers[0].LayerWidth;
+            MapHeight = location.map.Layers[0].LayerHeight;
+
             if (!ArgUtility.TryGetRectangle(queryArgs, 1, out Rectangle rectangle, out string error, $"Area Rectangle"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
             Rectangle = rectangle;
@@ -24,6 +29,12 @@ namespace FarmTypeManager.TileQueries
         /**************/
         /* Properties */
         /**************/
+
+        /// <summary>The target location's height in tiles.</summary>
+        private int MapHeight { get; }
+
+        /// <summary>The target location's width in tiles.</summary>
+        private int MapWidth { get; }
 
         /// <summary>The rectangular area to consider invalid.</summary>
         private Rectangle Rectangle { get; }
@@ -46,7 +57,8 @@ namespace FarmTypeManager.TileQueries
 
             for (int x = Rectangle.X; x < right; x++)
                 for (int y = Rectangle.Y; y < bottom; y++)
-                    tiles.Add(new Vector2(x, y));
+                    if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight) //if the location has this tile
+                        tiles.Add(new Vector2(x, y));
 
             return tiles;
         }

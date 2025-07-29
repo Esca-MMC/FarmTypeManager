@@ -24,6 +24,10 @@ namespace FarmTypeManager.TileQueries
                 case "TRUE":
                 case "!FALSE":
                     return new TrueTileQuery();
+                case "EXACT":
+                    return new ExactTileQuery(location, queryArgs);
+                case "!EXACT":
+                    return new NotExactTileQuery(queryArgs);
 
                 //meta
                 case "ANY":
@@ -37,11 +41,11 @@ namespace FarmTypeManager.TileQueries
 
                 //ranges
                 case "AREA_WH":
-                    return new AreaWHTileQuery(queryArgs);
+                    return new AreaWHTileQuery(location, queryArgs);
                 case "!AREA_WH":
                     return new NotAreaWHTileQuery(queryArgs);
                 case "AREA_XY":
-                    return new AreaXYTileQuery(queryArgs);
+                    return new AreaXYTileQuery(location, queryArgs);
                 case "!AREA_XY":
                     return new NotAreaXYTileQuery(queryArgs);
 
@@ -94,6 +98,9 @@ namespace FarmTypeManager.TileQueries
                 { "!FALSE", factory },
                 { "TRUE", factory },
                 { "!TRUE", factory },
+                { "EXACT", factory },
+                { "!EXACT", factory },
+
 
                 { "ANY", factory },
                 { "!ANY", factory },
