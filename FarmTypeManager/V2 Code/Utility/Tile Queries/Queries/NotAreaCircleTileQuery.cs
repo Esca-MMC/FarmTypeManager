@@ -2,11 +2,10 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager.TileQueries
 {
-    /// <summary>A handler for the "!AREA_CIRCLE" tile query. Rejects tiles within the specified radius of a tile or point.</summary>
+    /// <summary>A handler for the "!AREA_CIRCLE" tile query. Rejects tiles within the specified radius of a tile or point, forming a circular area.</summary>
     /// <remarks>Expected string format: "!AREA_CIRCLE {X} {Y} {Radius}". Example: "!AREA_CIRCLE 2 2 5".</remarks>
     public class NotAreaCircleTileQuery : ITileQuery
     {
