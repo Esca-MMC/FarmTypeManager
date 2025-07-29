@@ -2,7 +2,6 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using xTile.Tiles;
 
 namespace FarmTypeManager.TileQueries
 {
