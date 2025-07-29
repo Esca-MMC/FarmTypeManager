@@ -21,10 +21,10 @@ namespace FarmTypeManager.CustomActions
         /// <param name="timesToRepeat">The number of times to repeat item generation. This does NOT guarantee the number of items that will be output; some queries may generate multiple items or null items.</param>
         /// <param name="includeNull">If true, null item entries may be included in the return value, e.g. in place of items that were randomly skipped. If false, null entries will be excluded.</param>
         /// <returns>A set of items generated from these settings' item data. Null entries indicate that an item should be skipped and not spawned.</returns>
-        public static List<Item> CreateItems<T>(this T settings, GameStateQueryContext gsqContext, ItemQueryContext itemContext, int timesToRepeat, bool includeNull) where T : ISpawnItemSettings
+        public static IEnumerable<Item> CreateItems<T>(this T settings, GameStateQueryContext gsqContext, ItemQueryContext itemContext, int timesToRepeat, bool includeNull) where T : ISpawnItemSettings
         {
             if (timesToRepeat <= 0)
-                return [];
+                yield break;
 
             List<FTMSpawnItemData> data = GetEntries(settings, gsqContext);
             List<Item> items = [];
@@ -48,7 +48,7 @@ namespace FarmTypeManager.CustomActions
                                     logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
 
                                 if (item != null || includeNull)
-                                    items.Add(item);
+                                    yield return item;
                             }
                         }
                     }
@@ -71,13 +71,11 @@ namespace FarmTypeManager.CustomActions
                                 logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
 
                             if (item != null || includeNull)
-                                items.Add(item);
+                                yield return item;
                         }
                     }
                     break;
             }
-
-            return items;
         }
 
         /*******************/
