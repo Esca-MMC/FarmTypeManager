@@ -98,10 +98,10 @@ namespace FarmTypeManager.CustomActions
                 if (random < weight)
                     return entry;
                 else
-                    weight -= random;
+                    random -= weight;
             }
 
-            throw new Exception("A logic error has caused this randomization method to fail. Please report this to the mod's developer.");
+            throw new Exception($"A logic error has caused the method {typeof(ISpawnItemSettingsExtensions)}.{nameof(GetWeightedRandom)} to fail. Please report this to the mod's developer.");
         }
 
         /// <summary>Get all entries from this instance with valid conditions.</summary>

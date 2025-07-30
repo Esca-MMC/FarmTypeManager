@@ -47,16 +47,16 @@ namespace FarmTypeManager.CustomActions
             if (item == null)
                 return;
 
-            if (data.Indestructible == true)
+            if (data.PreventPickup == true)
                 item.modData[FTMUtility.ModDataKeys.CanBePickedUp] = "false";
 
             if (item is Object obj)
             {
                 string unqualifiedItemId = obj.ItemId;
 
-                obj.IsSpawnedObject = data.CanPickUp ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId);
+                obj.IsSpawnedObject = data.PreventPickup == false && (data.IsSpawnedObject ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId)); //false if data.PreventPickup is true; otherwise, check data normally
                 obj.Flipped = data.Flipped ?? obj.Flipped;
-                obj.Fragility = data.Indestructible == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.Indestructible is true; otherwise, check data normally
+                obj.Fragility = data.PreventPickup == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.PreventPickup is true; otherwise, check data normally
                 obj.MinutesUntilReady = data.Health ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
             }
         }
