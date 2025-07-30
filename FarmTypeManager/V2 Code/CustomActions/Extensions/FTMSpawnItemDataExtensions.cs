@@ -57,7 +57,7 @@ namespace FarmTypeManager.CustomActions
                 obj.IsSpawnedObject = data.PreventPickup == false && (data.IsSpawnedObject ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId)); //false if data.PreventPickup is true; otherwise, check data normally
                 obj.Flipped = data.Flipped ?? obj.Flipped;
                 obj.Fragility = data.PreventPickup == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.PreventPickup is true; otherwise, check data normally
-                obj.MinutesUntilReady = data.Health ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
+                obj.MinutesUntilReady = data.MinutesUntilReady ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
             }
         }
     }
