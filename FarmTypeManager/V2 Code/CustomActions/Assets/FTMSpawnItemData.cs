@@ -78,7 +78,7 @@ namespace FarmTypeManager.CustomActions
         public int? Fragility { get; set; } = null;
 
         /// <summary>An <see cref="Object"/>'s health or durability when created, e.g. the number of hits from a basic tool needed to harvest/destroy it. Primarily affects stones and ore.</summary>
-        /// <remarks>See <see cref="Object.MinutesUntilReady"/>. Pickaxes treat that property on objects as a health/durability value.</remarks>
-        public int? Health { get; set; } = null;
+        /// <remarks>See <see cref="Object.MinutesUntilReady"/>. Some tools use the value as the health/durability of hit objects. Some machines use it as a "minutes until ready" counter for contained objects.</remarks>
+        public int? MinutesUntilReady { get; set; } = null;
     }
 }
