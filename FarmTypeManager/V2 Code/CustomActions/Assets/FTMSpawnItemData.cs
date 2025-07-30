@@ -38,20 +38,20 @@ namespace FarmTypeManager.CustomActions
         /* Properties - Items */
         /**********************/
 
-        /// <summary>Whether an item should be flagged as indestructible, i.e. prevented from being picked up, or destroyed.</summary>
+        /// <summary>Whether an item should be flagged to prevent it being picked up. This may or may not prevent removal by other means.</summary>
         /// <remarks>
-        /// <para>For a basic <see cref="Object"/>, this should set <see cref="Object.Fragility"/> to <see cref="Object.fragility_Indestructable"/>, overriding <see cref="Fragility"/> if necessary.</para>
-        /// <para>"<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" should also be set in <see cref="Item.modData"/>, which applies additional changes to prevent removal.</para>
+        /// <para>For a basic <see cref="Object"/>, this should override fields like <see cref="Object.Fragility"/> and/or <see cref="IsSpawnedObject"/> to prevent player pickup.</para>
+        /// <para>In all cases, it should set "<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" in <see cref="Item.modData"/>, which should be used to apply further changes that prevent removal.</para>
         /// </remarks>
-        public bool Indestructible { get; set; } = false;
+        public bool PreventPickup { get; set; } = false;
 
         /************************/
         /* Properties - Objects */
         /************************/
 
         /// <summary>Whether an <see cref="Object"/> can be picked up by players.</summary>
-        /// <remarks>This setting mainly affects <see cref="Object.IsSpawnedObject"/>, which controls whether players can pick up objects. If <see cref="Indestructible"/> is true, it will generally override this setting.</remarks>
-        public bool? CanPickUp { get; set; } = null;
+        /// <remarks>This setting mainly affects <see cref="Object.IsSpawnedObject"/>, which controls whether players can pick up objects. If <see cref="PreventPickup"/> is true, it may override this setting.</remarks>
+        public bool? IsSpawnedObject { get; set; } = null;
 
         /// <summary>Whether an <see cref="Object"/> should have its sprite flipped horizontally.</summary>
         public bool? Flipped { get; set; } = null;
@@ -73,7 +73,7 @@ namespace FarmTypeManager.CustomActions
         ///         <description>Indestructible. The object cannot be picked up or affected by tools.</description>
         ///     </item>
         /// </list>
-        /// <para>If <see cref="Indestructible"/> is true, it will generally override this setting.</para>
+        /// <para>If <see cref="PreventPickup"/> is true, it may override this setting.</para>
         /// </remarks>
         public int? Fragility { get; set; } = null;
 
