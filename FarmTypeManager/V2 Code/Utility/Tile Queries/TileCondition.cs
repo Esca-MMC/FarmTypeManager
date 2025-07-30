@@ -113,6 +113,32 @@ namespace FarmTypeManager.TileQueries
             }
         }
 
+        /// <summary>Parses a comma-separated list of queries into functional handlers.</summary>
+        /// <param name="location">The in-game location that these queries will check.</param>
+        /// <param name="conditionString">A tile condition, i.e. a comma-separated list of query keys and their arguments.</param>
+        /// <returns>A list of query handlers, sorted by <see cref="ITileQuery.CheckTilePriority"/>. Null if the condition string was blank.</returns>
+        public static List<ITileQuery> ParseQueries(GameLocation location, string conditionString)
+        {
+            if (string.IsNullOrWhiteSpace(conditionString))
+                return null;
+
+            //split condition into queries by commas, but don't remove the quotes yet
+            string[] rawQueries = ArgUtility.SplitQuoteAware(conditionString, ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries, true);
+
+            List<ITileQuery> queries = new(rawQueries.Length);
+
+            foreach (string rawQuery in rawQueries)
+            {
+                string[] args = ArgUtility.SplitBySpaceQuoteAware(rawQuery); //split query into arguments around spaces (and remove empty entries)
+                var query = TileQueryFactories[args[0]].CreateTileQuery(location, args); //note: this is intended to throw an exception if a key doesn't exist
+                queries.Add(query);
+            }
+
+            queries.Sort((a, b) => b.CheckTilePriority.CompareTo(a.CheckTilePriority)); //sort by CheckTile priority from highest to lowest
+
+            return queries;
+        }
+
         /*******************/
         /* Private methods */
         /*******************/
@@ -137,23 +163,10 @@ namespace FarmTypeManager.TileQueries
             return tiles;
         }
 
-        /// <summary>Creates this query's sub-queries and/or restores them to their initial states.</summary>
+        /// <summary>Creates this condition's queries or restores them to their initial states.</summary>
         private void Initialize()
         {
-            Queries = [];
-
-            //split condition into queries by commas, but don't remove the quotes yet
-            string[] rawQueries = ArgUtility.SplitQuoteAware(Condition, ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries, true);
-
-            foreach (string rawQuery in rawQueries)
-            {
-                string[] args = ArgUtility.SplitBySpaceQuoteAware(rawQuery); //split query into arguments around spaces (and remove empty entries)
-
-                var query = TileQueryFactories[args[0]].CreateTileQuery(Location, args); //note: this is intended to throw an exception if a key doesn't exist
-                Queries.Add(query);
-            }
-
-            Queries.Sort((a, b) => b.CheckTilePriority.CompareTo(a.CheckTilePriority)); //sort by CheckTile priority from highest to lowest
+            Queries = ParseQueries(Location, Condition); //create or recreate all queries from the tile condition string
         }
     }
 }
