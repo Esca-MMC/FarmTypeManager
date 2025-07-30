@@ -22,26 +22,25 @@ namespace FarmTypeManager.TileQueries
             int x = 1;
             do
             {
-                if (!ArgUtility.TryGet(queryArgs, x, out string subQuery, out string error, false, $"Query in argument {x}"))
+                if (!ArgUtility.TryGet(queryArgs, x, out string rawQuery, out string error, false, $"Query in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
-
-                string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(subQuery); //split sub-query into arguments around spaces (and remove empty entries)
-                ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(location, subQueryArgs); //create the sub-query (or throw an exception)
-                Queries.Add(parsedSubQuery);
-
+                
+                if (TileCondition.ParseQueries(location, rawQuery) is var list && list.Count > 0)
+                    Queries.Add(list);
+                
                 x++;
             }
             while (x < queryArgs.Length);
-
-            Queries.Sort((a, b) => b.CheckTilePriority.CompareTo(a.CheckTilePriority)); //sort by CheckTile priority from highest to lowest
+            
+            Queries.Sort((a, b) => b[0].CheckTilePriority.CompareTo(a[0].CheckTilePriority)); //sort lists by the first entry's CheckTile priority from highest to lowest
         }
 
         /**************/
         /* Properties */
         /**************/
 
-        /// <summary>A list of sub-queries parsed from arguments.</summary>
-        private List<ITileQuery> Queries { get; set; } = [];
+        /// <summary>A list of sub-queries, each parsed into its component queries. Each entry should be treated as true if all of its own sub-queries return true.</summary>
+        private List<List<ITileQuery>> Queries { get; set; } = [];
 
         /**************/
         /* ITileQuery */
@@ -49,7 +48,7 @@ namespace FarmTypeManager.TileQueries
 
         public int CheckTilePriority => ITileQuery.Priority_Low;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented; //this would require merging results from all sub-queries, which is slower and not always possible
-        public bool CheckTile(Vector2 tile) => Queries.Any((query) => query.CheckTile(tile)); //true if any sub-query returns true
+        public bool CheckTile(Vector2 tile) => Queries.Any((list) => list.All((query) => query.CheckTile(tile))); //true if ANY query's list of sub-queries is ALL true
         public List<Vector2> GetStartingTiles() => throw new NotImplementedException();
     }
 }

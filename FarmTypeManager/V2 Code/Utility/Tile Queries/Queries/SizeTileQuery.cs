@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "SIZE" tile query. Allows tiles if every tile in a specified area is allowed by every sub-query.</summary>
-    /// <remarks>Expected string format: "SIZE {X} {Y} {List of sub-queries}". Example: "SIZE 2 2 \"AREA 2 2 5 5\" \"CAN_PLACE_ITEM\"".</remarks>
+    /// <remarks>Expected string format: "SIZE {X} {Y} {Sub-query}". Example: "SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\"".</remarks>
     public class SizeTileQuery : ITileQuery
     {
         /***************/
@@ -30,22 +30,11 @@ namespace FarmTypeManager.TileQueries
             SizeWidth = sizeWidth;
             SizeHeight = sizeHeight;
 
-            //get any remaining arguments as queries, but require at least 1
-            int x = 3;
-            do
-            {
-                if (!ArgUtility.TryGet(queryArgs, x, out string subQuery, out error, false, $"Query in argument {x}"))
-                    throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
+            if (!ArgUtility.TryGet(queryArgs, 3, out string subQuery, out error, false, "Query in argument 3"))
+                throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-                string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(subQuery); //split sub-query into arguments around spaces (and remove empty entries)
-                ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(location, subQueryArgs); //create the sub-query (or throw an exception)
-                Queries.Add(parsedSubQuery);
+            Queries = TileCondition.ParseQueries(location, subQuery);
 
-                x++;
-            }
-            while (x < queryArgs.Length);
-
-            Queries.Sort((a, b) => b.CheckTilePriority.CompareTo(a.CheckTilePriority)); //sort by CheckTile priority from highest to lowest
             StartingTilesQuery = TileCondition.ChooseStartingTilesSource(Queries);
         }
 

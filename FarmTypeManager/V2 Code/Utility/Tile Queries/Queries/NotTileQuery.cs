@@ -2,6 +2,7 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager.TileQueries
 {
@@ -26,25 +27,23 @@ namespace FarmTypeManager.TileQueries
             if (!ArgUtility.TryGet(queryArgs, 1, out string subQuery, out string error, false, "Query in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            string[] subQueryArgs = ArgUtility.SplitBySpaceQuoteAware(subQuery); //split sub-query into arguments around spaces (and remove empty entries)
-            ITileQuery parsedSubQuery = TileCondition.TileQueryFactories[subQueryArgs[0]].CreateTileQuery(location, subQueryArgs); //create the sub-query (or throw an exception)
-            Query = parsedSubQuery;
+            Queries = TileCondition.ParseQueries(location, subQuery);
         }
 
         /**************/
         /* Properties */
         /**************/
 
-        /// <summary>The sub-query used to implement this query./summary>
-        private ITileQuery Query { get; }
+        /// <summary>The sub-queries used to implement this query./summary>
+        private List<ITileQuery> Queries { get; }
 
         /**************/
         /* ITileQuery */
         /**************/
 
-        public int CheckTilePriority => Query.CheckTilePriority;
+        public int CheckTilePriority => Queries[0].CheckTilePriority;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
-        public bool CheckTile(Vector2 tile) => !Query.CheckTile(tile); //negate the sub-query's result
+        public bool CheckTile(Vector2 tile) => !Queries.All((query) => query.CheckTile(tile)); //negate the sub-query's result
         public List<Vector2> GetStartingTiles() => throw new NotImplementedException();
     }
 }
