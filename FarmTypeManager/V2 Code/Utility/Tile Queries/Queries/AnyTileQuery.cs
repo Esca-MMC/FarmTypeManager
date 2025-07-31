@@ -24,14 +24,14 @@ namespace FarmTypeManager.TileQueries
             {
                 if (!ArgUtility.TryGet(queryArgs, x, out string rawQuery, out string error, false, $"Query in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
-                
+
                 if (TileCondition.ParseQueries(location, rawQuery) is var list && list.Count > 0)
                     Queries.Add(list);
-                
+
                 x++;
             }
             while (x < queryArgs.Length);
-            
+
             Queries.Sort((a, b) => b[0].CheckTilePriority.CompareTo(a[0].CheckTilePriority)); //sort lists by the first entry's CheckTile priority from highest to lowest
         }
 
