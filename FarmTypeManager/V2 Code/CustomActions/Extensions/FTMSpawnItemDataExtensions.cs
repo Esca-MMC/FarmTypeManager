@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using StardewValley.Extensions;
 using StardewValley.Internal;
 using StardewValley.Objects;
 using System;
@@ -16,7 +17,6 @@ namespace FarmTypeManager.CustomActions
         {
             Item item = ItemQueryResolver.TryResolveRandomItem(data, context, avoidRepeat, avoidItemIds, formatItemId, inputItem, logError);
             data.ApplyItemChanges(item);
-
 
             if (item is Chest chest)
             {
@@ -53,11 +53,22 @@ namespace FarmTypeManager.CustomActions
             if (item is Object obj)
             {
                 string unqualifiedItemId = obj.ItemId;
+                bool isBasicObject = obj.HasTypeObject(); //true if this is a basic "(O)" object type               
 
-                obj.IsSpawnedObject = data.PreventPickup == false && (data.IsSpawnedObject ?? FTMUtility.CanPickUpByDefault(unqualifiedItemId)); //false if data.PreventPickup is true; otherwise, check data normally
                 obj.Flipped = data.Flipped ?? obj.Flipped;
                 obj.Fragility = data.PreventPickup == true ? Object.fragility_Indestructable : data.Fragility ?? obj.Fragility; //override if data.PreventPickup is true; otherwise, check data normally
-                obj.MinutesUntilReady = data.MinutesUntilReady ?? FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady;
+
+                if (data.PreventPickup)
+                    obj.IsSpawnedObject = true;
+                else if (data.IsSpawnedObject.HasValue)
+                    obj.IsSpawnedObject = data.IsSpawnedObject.Value;
+                else if (isBasicObject)
+                    obj.IsSpawnedObject = FTMUtility.CanPickUpByDefault(unqualifiedItemId);
+
+                if (data.MinutesUntilReady.HasValue)
+                    obj.MinutesUntilReady = data.MinutesUntilReady.Value;
+                else if (isBasicObject)
+                    obj.MinutesUntilReady = FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady; //use this mod's default if one exists
             }
         }
     }
