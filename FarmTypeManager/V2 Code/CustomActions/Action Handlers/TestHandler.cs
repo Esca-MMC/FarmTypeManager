@@ -8,9 +8,7 @@ namespace FarmTypeManager.CustomActions
     public class TestHandler : ICustomActionHandler
     {
         public string ProviderModId => FTMUtility.Manifest?.UniqueID;
-
         public Type SettingsType => typeof(TestSettings);
-
         public bool TryPerform(string actionId, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {
             var settings = rawSettings as TestSettings;

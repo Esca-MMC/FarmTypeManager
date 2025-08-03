@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
+using StardewValley.Extensions;
 using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>A handler only intended to test the custom action system.</summary>
+    /// <summary>The handler for a custom action that spawns forage, ore, or other placed <see cref="Object"/>s.</summary>
     public class SpawnObjectHandler : ICustomActionHandler
     {
         /************************/
@@ -54,7 +55,7 @@ namespace FarmTypeManager.CustomActions
                 return true;
             }
 
-            ItemQueryContext itemContext = new(queryContext.Location, queryContext.Player, FTMUtility.Random, $"Creating items for FTM. Custom action ID: \"{actionId}\". Trigger ID: {triggerContext.Trigger}.");
+            ItemQueryContext itemContext = new(queryContext.Location, queryContext.Player, FTMUtility.Random, $"FTM custom action handler. Custom action ID: \"{actionId}\". Trigger ID: {triggerContext.Trigger}. Handler type: \"{typeof(SpawnObjectHandler)}\".");
 
             switch (settings.LocationListMode)
             {
@@ -118,10 +119,15 @@ namespace FarmTypeManager.CustomActions
 
                 Vector2 tile = tiles.Current;
 
-                if (item is Object obj)
+                if (item is Object obj && (obj.HasTypeObject() || obj.HasTypeBigCraftable()))
                 {
                     if (location.objects.TryAdd(tile, obj))
                         totalSpawned++;
+                }
+                else if (item != null)
+                {
+                    error = $"Failed to spawn an object: this object type is not supported. Item ID: \"{item.QualifiedItemId}\".";
+                    return false;
                 }
             }
 
