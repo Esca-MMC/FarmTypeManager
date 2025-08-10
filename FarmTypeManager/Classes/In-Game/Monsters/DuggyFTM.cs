@@ -83,8 +83,11 @@ namespace FarmTypeManager.Monsters
                 if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
                     location.characters.Remove(this);
             }
-
             this.updateGlow();
+            if (stunTime.Value > 0)
+            {
+                stunTime.Value -= (int)time.ElapsedGameTime.TotalMilliseconds;
+            }
         }
 
         //This override fixes the following Duggy behavioral bugs:
@@ -111,7 +114,7 @@ namespace FarmTypeManager.Monsters
                                 return;
                         }
                         this.Position = new Vector2(this.Player.Position.X, this.Player.Position.Y + (float)this.Player.Sprite.SpriteHeight - (float)this.Sprite.SpriteHeight);
-                        this.currentLocation.localSound(nameof(Duggy));
+                        this.currentLocation.localSound("Duggy");
                         this.Position = this.Player.Tile * 64f;
                     }
                     this.IsInvisible = false;
@@ -133,44 +136,17 @@ namespace FarmTypeManager.Monsters
                 return;
             this.IsInvisible = true;
             this.Sprite.currentFrame = 0;
+            //remove the tile sprite alteration and object/TF/clump/LTF destruction code here
             this.DamageToFarmer = 0;
-            //skip the base Duggy's tile alterations
         }
 
         /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
         private void Monster_behaviorAtGameTick(GameTime time)
         {
             if (timeBeforeAIMovementAgain > 0f)
-            {
-                timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
-            }
-            if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
-            {
-                return;
-            }
-            IsWalkingTowardPlayer = false;
-            Point monsterPixel = StandingPixel;
-            Point playerPixel = Player.StandingPixel;
-            if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
-            {
-                if (playerPixel.X - monsterPixel.X > 0)
-                {
-                    SetMovingLeft(b: true);
-                }
-                else
-                {
-                    SetMovingRight(b: true);
-                }
-            }
-            else if (playerPixel.Y - monsterPixel.Y > 0)
-            {
-                SetMovingUp(b: true);
-            }
-            else
-            {
-                SetMovingDown(b: true);
-            }
-            MovePosition(time, Game1.viewport, currentLocation);
+			{
+				timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+			}
         }
     }
 }

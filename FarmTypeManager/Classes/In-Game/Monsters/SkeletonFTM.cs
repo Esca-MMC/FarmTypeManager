@@ -70,7 +70,7 @@ namespace FarmTypeManager
 
             /// <summary>A modified version of the base monster class's method.</summary>
             /// <remarks>
-            /// Based on the original code of SDV v1.5.6. Modifed code sections are commented.
+            /// Based on the original code of SDV v1.6.16 pre-alpha. Modifed code sections are commented.
             /// Intended changes:
             /// * Fix a base game issue where Skeletons always use a sight range of 8
             /// * Implement a custom monster setting to disable ranged attacks (bone throwing)
@@ -165,33 +165,6 @@ namespace FarmTypeManager
                 {
                     timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
                 }
-                if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
-                {
-                    return;
-                }
-                IsWalkingTowardPlayer = false;
-                Point monsterPixel = StandingPixel;
-                Point playerPixel = Player.StandingPixel;
-                if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
-                {
-                    if (playerPixel.X - monsterPixel.X > 0)
-                    {
-                        SetMovingLeft(b: true);
-                    }
-                    else
-                    {
-                        SetMovingRight(b: true);
-                    }
-                }
-                else if (playerPixel.Y - monsterPixel.Y > 0)
-                {
-                    SetMovingUp(b: true);
-                }
-                else
-                {
-                    SetMovingDown(b: true);
-                }
-                MovePosition(time, Game1.viewport, currentLocation);
             }
         }
     }
