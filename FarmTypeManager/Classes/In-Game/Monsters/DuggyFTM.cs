@@ -3,7 +3,6 @@ using Netcode;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Monsters;
-using System;
 using System.Xml.Serialization;
 using xTile.Layers;
 
@@ -144,9 +143,9 @@ namespace FarmTypeManager.Monsters
         private void Monster_behaviorAtGameTick(GameTime time)
         {
             if (timeBeforeAIMovementAgain > 0f)
-			{
-				timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
-			}
+            {
+                timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+            }
         }
     }
 }
