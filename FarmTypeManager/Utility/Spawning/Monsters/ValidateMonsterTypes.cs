@@ -288,10 +288,10 @@ namespace FarmTypeManager
                         if (validTypes[x].Settings["DodgeChance"] is long) //if this is a readable integer
                         {
                             int dodge = Convert.ToInt32(validTypes[x].Settings["DodgeChance"]);
-                            if (dodge < 1) //if the setting is too low
+                            if (dodge < 0) //if the setting is too low
                             {
-                                Monitor.Log($"The \"DodgeChance\" setting for monster type \"{validTypes[x].MonsterName}\" is {dodge}. Setting it to 1.", LogLevel.Trace);
-                                validTypes[x].Settings["DodgeChance"] = (long)1; //set the validated setting to 1
+                                Monitor.Log($"The \"DodgeChance\" setting for monster type \"{validTypes[x].MonsterName}\" is {dodge}. Setting it to 0.", LogLevel.Trace);
+                                validTypes[x].Settings["DodgeChance"] = (long)0; //set the validated setting to 0
                             }
                         }
                         else //if this isn't a readable integer
