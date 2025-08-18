@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 
 namespace FarmTypeManager
 {
@@ -85,8 +84,8 @@ namespace FarmTypeManager
                             return idOrName;
                         foreach (var entry in hatsData)
                         {
-                                if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
-                                    return entry.Key;
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
+                                return entry.Key;
                         }
                         break;
                     case "(o)":
