@@ -40,24 +40,23 @@ namespace FarmTypeManager
                     case "b":
                     case "boot":
                     case "boots":
-                        var bootsData = Game1.content.Load<Dictionary<string, string>>("Data\\Boots");
+                        var bootsData = DataLoader.Boots(Game1.content);
                         if (bootsData.ContainsKey(idOrName))
                             return idOrName;
                         foreach (var entry in bootsData)
                         {
-                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
-                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
-                                    return entry.Key;
+                            if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
+                                return entry.Key;
                         }
                         break;
                     case "fence":
                     case "fences":
                     case "gate":
                     case "gates":
-                        //Note: Fence data is stored with basic object data, e.g. in the "Data/Objects" asset. Fences can be identified by entries in Data/Fences.
+                        //Note: Fence objects are stored in basic object data, e.g. in the "Data/Objects" asset. Fences can be identified by an entry in Data/Fences with a matching key.
                         var fenceData = DataLoader.Fences(Game1.content);
 
-                        if (Game1.objectData.TryGetValue(idOrName, out var fenceEntry) && fenceData.ContainsKey(idOrName)) //if this matches an object's ID and a fence entry
+                        if (Game1.objectData.ContainsKey(idOrName) && fenceData.ContainsKey(idOrName)) //if this matches an object's ID and a fence entry
                             return idOrName;
                         foreach (var entry in Game1.objectData)
                         {
@@ -81,13 +80,12 @@ namespace FarmTypeManager
                     case "h":
                     case "hat":
                     case "hats":
-                        var hatsData = Game1.content.Load<Dictionary<string, string>>("Data\\hats");
+                        var hatsData = DataLoader.Hats(Game1.content);
                         if (hatsData.ContainsKey(idOrName))
                             return idOrName;
                         foreach (var entry in hatsData)
                         {
-                            if (entry.Value?.Split('/') is string[] fields) //if this entry isn't null, split it
-                                if (string.Equals(fields[0], idOrName, StringComparison.OrdinalIgnoreCase))
+                                if (string.Equals(entry.Value?.Name, idOrName, StringComparison.OrdinalIgnoreCase))
                                     return entry.Key;
                         }
                         break;
