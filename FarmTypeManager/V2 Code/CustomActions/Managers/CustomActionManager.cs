@@ -32,7 +32,8 @@ namespace FarmTypeManager.CustomActions
         public static void RegisterCustomAction(string actionId, ICustomActionHandler handler)
         {
             Handlers[actionId] = handler;
-            FTMUtility.Monitor.Log($"New custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". Action ID: \"{actionId}\".", LogLevel.Trace);
+            if (FTMUtility.Monitor.IsVerbose)
+                FTMUtility.Monitor.Log($"Custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". Action ID: \"{actionId}\".", LogLevel.Trace);
         }
 
         /// <summary>Get the type of settings used by this custom action ID, if it exists.</summary>
@@ -53,17 +54,27 @@ namespace FarmTypeManager.CustomActions
             {
                 foreach (var entry in asset.Item2) //for each entry in this asset
                 {
-                    if (entry.Value?.Trigger != null && entry.Value.Trigger.Split(' ', System.StringSplitOptions.TrimEntries).Contains(triggerContext.Trigger, StringComparer.OrdinalIgnoreCase)) //if this entry contains the specified trigger
-                    {
-                        foreach (var action in GetActionsToPerform(asset.Item1, entry.Key, entry.Value, queryContext))
-                        {
-                            if (FTMUtility.Monitor.IsVerbose)
-                                FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Key: \"{entry.Key}\". Action: \"{action?.ActionId}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
+                    if (entry.Value?.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entry.Value.MarkAppliedWithFlag)) //if this entry is already flagged as complete
+                        continue;
 
-                            if (!TryPerformAction(action, queryContext, triggerContext, out string error))
-                                FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{asset.Item1}\", entry key \"{entry.Key}\". {error}", LogLevel.Warn);
-                        }
+                    //TODO: cache the split results below (either in this class, the entry class, or an extension of it)
+                    if (entry.Value?.Trigger == null || !entry.Value.Trigger.Split(' ', System.StringSplitOptions.TrimEntries).Contains(triggerContext.Trigger, StringComparer.OrdinalIgnoreCase)) //if this entry does NOT contain the specified trigger
+                        continue;
+
+                    if (entry.Value.Condition != null && !GameStateQuery.CheckConditions(entry.Value.Condition, queryContext)) //if this entry's condition is false
+                        continue;
+
+                    foreach (var action in GetActionsToPerform(asset.Item1, entry.Key, entry.Value, queryContext))
+                    {
+                        if (FTMUtility.Monitor.IsVerbose)
+                            FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Key: \"{entry.Key}\". Action: \"{action?.ActionId}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
+
+                        if (!TryPerformAction(action, queryContext, triggerContext, out string error))
+                            FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{asset.Item1}\", entry key \"{entry.Key}\". {error}", LogLevel.Warn);
                     }
+
+                    if (entry.Value.MarkAppliedWithFlag != null)
+                        Game1.player.mailReceived.Add(entry.Value.MarkAppliedWithFlag); //add this entry's completion flag
                 }
             }
         }
@@ -82,7 +93,14 @@ namespace FarmTypeManager.CustomActions
             if (!asset.TryGetValue(entryId, out var entryData))
             {
                 FTMUtility.Monitor.Log($"Couldn't get custom actions from the asset \"{assetName}\". The entry key \"{entryId}\" was not found.", LogLevel.Warn);
+                return;
             }
+
+            if (entryData.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entryData.MarkAppliedWithFlag)) //if this entry is already flagged as complete
+                return;
+
+            if (entryData.Condition != null && !GameStateQuery.CheckConditions(entryData.Condition, queryContext)) //if this entry's condition is false
+                return;
 
             foreach (var action in GetActionsToPerform(assetName, entryId, entryData, queryContext))
             {
@@ -92,6 +110,9 @@ namespace FarmTypeManager.CustomActions
                 if (!TryPerformAction(action, queryContext, triggerContext, out string error))
                     FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{assetName}\", entry key \"{entryId}\". {error}", LogLevel.Warn);
             }
+
+            if (entryData.MarkAppliedWithFlag != null)
+                Game1.player.mailReceived.Add(entryData.MarkAppliedWithFlag); //add this entry's completion flag
         }
 
         /*******************/
@@ -109,14 +130,14 @@ namespace FarmTypeManager.CustomActions
             if (data == null || data.CustomActions == null)
                 yield break;
 
-            if (data.MaxTimes < 1)
-                yield break;
-
             if (data.MinTimes > data.MaxTimes)
             {
                 FTMUtility.Monitor.Log($"Couldn't get custom actions from the asset \"{assetId}\", entry key \"{entryId}\". MinTimes ({data.MinTimes}) is greater than MaxTimes ({data.MaxTimes}).", LogLevel.Warn);
                 yield break;
             }
+
+            if (data.MaxTimes < 1)
+                yield break;
 
             int timesToPerform;
             if (data.MinTimes == data.MaxTimes)
@@ -125,9 +146,6 @@ namespace FarmTypeManager.CustomActions
                 timesToPerform = FTMUtility.Random.Next(data.MinTimes, data.MaxTimes + 1);
 
             if (timesToPerform < 1)
-                yield break;
-
-            if (data.Condition != null && !GameStateQuery.CheckConditions(data.Condition, queryContext)) //if the main condition is false
                 yield break;
 
             int totalWeight = 0;
