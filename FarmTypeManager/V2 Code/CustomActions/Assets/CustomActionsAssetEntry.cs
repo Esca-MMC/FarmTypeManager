@@ -9,6 +9,17 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A set of triggers from the Data/TriggerActions system. When one of these triggers occurs, this entry's actions will be performed.</summary>
         /// <remarks>Case-insensitive. Multiple triggers should be separated by spaces.</remarks>
         public string Trigger { get; init; } = null;
+        /// <summary>The mail flag to use as a completion marker for this action, if any.</summary>
+        /// <remarks>
+        /// <para>
+        /// In general, this setting causes the entry to only be performed once. It is similar in function to <see cref="StardewValley.GameData.TriggerActionData.MarkActionApplied"/>, but uses mail flags, allowing 
+        /// </para>
+        /// <para>
+        /// If this value is set (not null or blank), then when this entry's actions are successfully performed, the value will be set as a mail flag for the current local player.
+        /// If the player already has the mail flag, this entry's customs actions will be skipped.
+        /// </para>
+        /// </remarks>
+        public string MarkAppliedWithFlag { get; init; } = null;
         /// <summary>A <see cref="GameStateQuery"/> condition. If it's null or it returns true when checked, this entry's actions can be performed.</summary>
         public string Condition { get; init; } = null;
         /// <summary>The method to use when selecting actions to perform from <see cref="CustomActions"/>.</summary>
