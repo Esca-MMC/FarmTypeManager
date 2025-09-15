@@ -15,7 +15,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The name of the registry asset used to populate <see cref="AssetNames"/>.</summary>
         public static string RegistryAssetName { get; set; } = null;
 
-        /// <summary>A list of asset names to load as <see cref="CustomActionsAsset"/> assets.</summary>
+        /// <summary>A list of asset names to load as <see cref="CustomActionsAssetEntry"/> assets.</summary>
         private static List<string> AssetNames { get; set; } = [];
 
         /*****************/
@@ -41,14 +41,14 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Gets all available custom actions data.</summary>
         /// <returns>All available custom actions data, each paired with a descriptive ID, e.g. its asset name.</returns>
         /// <remarks>This currently only includes data loaded from assets specified in the asset registry. If a future update adds support for data from other sources (e.g. content packs), this method will include those as well.</remarks>
-        public static IEnumerable<(string, Dictionary<string, CustomActionsAsset>)> GetAllData()
+        public static IEnumerable<(string, Dictionary<string, CustomActionsAssetEntry>)> GetAllData()
         {
             foreach (string assetName in AssetNames)
             {
-                Dictionary<string, CustomActionsAsset> asset;
+                Dictionary<string, CustomActionsAssetEntry> asset;
                 try
                 {
-                    asset = AssetHelper.GetAsset<Dictionary<string, CustomActionsAsset>>(assetName);
+                    asset = AssetHelper.GetAsset<Dictionary<string, CustomActionsAssetEntry>>(assetName);
                 }
                 catch (Exception ex)
                 {
@@ -64,12 +64,12 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Gets custom actions data from a specific asset in the content system, if available.</summary>
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive (capitalization is ignored).</param>
         /// <returns>The asset and its name, or null if it could not be loaded.</returns>
-        public static Dictionary<string, CustomActionsAsset> GetDataFromAsset(string assetName)
+        public static Dictionary<string, CustomActionsAssetEntry> GetDataFromAsset(string assetName)
         {
-            Dictionary<string, CustomActionsAsset> asset;
+            Dictionary<string, CustomActionsAssetEntry> asset;
             try
             {
-                asset = AssetHelper.GetAsset<Dictionary<string, CustomActionsAsset>>(assetName);
+                asset = AssetHelper.GetAsset<Dictionary<string, CustomActionsAssetEntry>>(assetName);
             }
             catch (Exception ex)
             {
@@ -104,7 +104,7 @@ namespace FarmTypeManager.CustomActions
 
                 //tell AssetHelper to load this asset
                 if (!AssetHelper.HasDefault(entry.Key))
-                    AssetHelper.SetDefault(entry.Key, () => new Dictionary<string, CustomActionsAsset>(StringComparer.OrdinalIgnoreCase));
+                    AssetHelper.SetDefault(entry.Key, () => new Dictionary<string, CustomActionsAssetEntry>(StringComparer.OrdinalIgnoreCase));
             }
         }
 
