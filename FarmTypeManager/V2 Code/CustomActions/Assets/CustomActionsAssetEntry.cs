@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>A set of data that describes when to trigger customizable actions, which actions to trigger, and settings specific to each action.</summary>
-    public class CustomActionsAsset
+    public class CustomActionsAssetEntry
     {
         /// <summary>A set of triggers from the Data/TriggerActions system. When one of these triggers occurs, this entry's actions will be performed.</summary>
         /// <remarks>Case-insensitive. Multiple triggers should be separated by spaces.</remarks>

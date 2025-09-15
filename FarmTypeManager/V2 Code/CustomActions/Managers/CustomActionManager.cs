@@ -104,7 +104,7 @@ namespace FarmTypeManager.CustomActions
         /// <param name="data">The custom actions data to check for actions.</param>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
         /// <returns>A series of actions to perform, if any. This may vary between each call due to context, randomization, etc.</returns>
-        private static IEnumerable<CustomActionData> GetActionsToPerform(string assetId, string entryId, CustomActionsAsset data, GameStateQueryContext queryContext)
+        private static IEnumerable<CustomActionData> GetActionsToPerform(string assetId, string entryId, CustomActionsAssetEntry data, GameStateQueryContext queryContext)
         {
             if (data == null || data.CustomActions == null)
                 yield break;
@@ -144,7 +144,7 @@ namespace FarmTypeManager.CustomActions
 
             switch (data.ActionMode)
             {
-                case CustomActionsAsset.ActionModes.Random:
+                case CustomActionsAssetEntry.ActionModes.Random:
                     for (int x = 0; x < timesToPerform; x++)
                     {
                         int random = FTMUtility.Random.Next(totalWeight);
@@ -160,7 +160,7 @@ namespace FarmTypeManager.CustomActions
                         }
                     }
                     break;
-                case CustomActionsAsset.ActionModes.All:
+                case CustomActionsAssetEntry.ActionModes.All:
                 default:
                     for (int x = 0; x < timesToPerform; x++)
                     {
