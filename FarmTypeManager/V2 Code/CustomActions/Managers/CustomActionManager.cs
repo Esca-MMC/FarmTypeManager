@@ -71,6 +71,9 @@ namespace FarmTypeManager.CustomActions
 
                         if (!TryPerformAction(action, queryContext, triggerContext, out string error))
                             FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{asset.Item1}\", entry key \"{entry.Key}\". {error}", LogLevel.Warn);
+
+                        if (action.MarkAppliedWithFlag != null)
+                            Game1.player.mailReceived.Add(action.MarkAppliedWithFlag); //add this action's completion flag
                     }
 
                     if (entry.Value.MarkAppliedWithFlag != null)
@@ -109,6 +112,9 @@ namespace FarmTypeManager.CustomActions
 
                 if (!TryPerformAction(action, queryContext, triggerContext, out string error))
                     FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{assetName}\", entry key \"{entryId}\". {error}", LogLevel.Warn);
+
+                if (action.MarkAppliedWithFlag != null)
+                    Game1.player.mailReceived.Add(action.MarkAppliedWithFlag); //add this action's completion flag
             }
 
             if (entryData.MarkAppliedWithFlag != null)
@@ -153,6 +159,8 @@ namespace FarmTypeManager.CustomActions
             foreach (var action in data.CustomActions.Values)
             {
                 if (action.Weight < 1)
+                    actionList.Remove(action);
+                else if (action.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(action.MarkAppliedWithFlag)) //if the action is already flagged as complete
                     actionList.Remove(action);
                 else if (action.Condition != null && !GameStateQuery.CheckConditions(data.Condition, queryContext)) //if the action's condition is false
                     actionList.Remove(action);
