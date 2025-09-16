@@ -25,6 +25,8 @@ namespace FarmTypeManager.CustomActions
             //read all non-custom fields' values
             if (rawValue.TryGetValue("ActionId", StringComparison.OrdinalIgnoreCase, out JToken actionId) && actionId != null)
                 newValue.ActionId = actionId.ToObject<string>(serializer);
+            if (rawValue.TryGetValue("MarkAppliedWithFlag", StringComparison.OrdinalIgnoreCase, out JToken markAppliedWithFlag) && markAppliedWithFlag != null)
+                newValue.MarkAppliedWithFlag = markAppliedWithFlag.ToObject<string>(serializer);
             if (rawValue.TryGetValue("Condition", StringComparison.OrdinalIgnoreCase, out JToken condition) && condition != null)
                 newValue.Condition = condition?.ToObject<string>(serializer);
             if (rawValue.TryGetValue("Weight", StringComparison.OrdinalIgnoreCase, out JToken weight) && weight != null)

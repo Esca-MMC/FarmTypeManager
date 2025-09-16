@@ -8,6 +8,17 @@ namespace FarmTypeManager.CustomActions
     {
         /// <summary>The ID of the action to perform.</summary>
         public string ActionId { get; set; } = null;
+        /// <summary>The mail flag to use as a completion marker for this action, if any.</summary>
+        /// <remarks>
+        /// <para>
+        /// In general, this setting causes the action to only be performed once. It is similar in function to <see cref="StardewValley.GameData.TriggerActionData.MarkActionApplied"/>, but uses mail flags.
+        /// </para>
+        /// <para>
+        /// If this value is set, then when this action is performed, the value will be set as a mail flag for the current local player.
+        /// If the player already has the mail flag, this action will be skipped.
+        /// </para>
+        /// </remarks>
+        public string MarkAppliedWithFlag { get; set; } = null;
         /// <summary>A <see cref="GameStateQuery"/> condition. If it's null or it returns true when checked, this entry can be performed and/or included when actions are selected.</summary>
         public string Condition { get; set; } = null;
         /// <summary>The weight to use for this entry when randomly selecting actions, if applicable.</summary>
