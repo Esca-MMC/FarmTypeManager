@@ -21,6 +21,9 @@ namespace FarmTypeManager.CustomActions
             { "SpawnObject", new SpawnObjectHandler() }
         };
 
+        /// <summary>A set of asset entry IDs and their parsed triggers.</summary>
+        private static Dictionary<string, HashSet<string>> ParsedTriggersCache { get; } = new(StringComparer.OrdinalIgnoreCase);
+
         /*******************/
         /* Handler methods */
         /*******************/
@@ -57,8 +60,18 @@ namespace FarmTypeManager.CustomActions
                     if (entry.Value?.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entry.Value.MarkAppliedWithFlag)) //if this entry is already flagged as complete
                         continue;
 
-                    //TODO: cache the split results below (either in this class, the entry class, or an extension of it)
-                    if (entry.Value?.Trigger == null || !entry.Value.Trigger.Split(' ', System.StringSplitOptions.TrimEntries).Contains(triggerContext.Trigger, StringComparer.OrdinalIgnoreCase)) //if this entry does NOT contain the specified trigger
+                    if (entry.Value?.Trigger == null)
+                        continue;
+
+                    if (!ParsedTriggersCache.TryGetValue(entry.Key, out HashSet<string> parsedTriggers)) //try to get this entry's parsed triggers; if they're not cached yet, parse and cache them
+                    {
+                        parsedTriggers = new(StringComparer.OrdinalIgnoreCase);
+                        foreach (string trigger in entry.Value.Trigger.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+                            parsedTriggers.Add(trigger);
+                        ParsedTriggersCache.Add(entry.Key, parsedTriggers);
+                    }
+
+                    if (!parsedTriggers.Contains(triggerContext.Trigger, StringComparer.OrdinalIgnoreCase)) //if this entry does NOT contain the specified trigger
                         continue;
 
                     if (entry.Value.Condition != null && !GameStateQuery.CheckConditions(entry.Value.Condition, queryContext)) //if this entry's condition is false
