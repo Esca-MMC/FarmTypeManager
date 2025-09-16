@@ -21,7 +21,7 @@ namespace FarmTypeManager.CustomActions
             { "SpawnObject", new SpawnObjectHandler() }
         };
 
-        /// <summary>A set of asset entry IDs and their parsed triggers.</summary>
+        /// <summary>A set of raw strings and the triggers parsed from them.</summary>
         private static Dictionary<string, HashSet<string>> ParsedTriggersCache { get; } = new(StringComparer.OrdinalIgnoreCase);
 
         /*******************/
@@ -63,12 +63,12 @@ namespace FarmTypeManager.CustomActions
                     if (entry.Value?.Trigger == null)
                         continue;
 
-                    if (!ParsedTriggersCache.TryGetValue(entry.Key, out HashSet<string> parsedTriggers)) //try to get this entry's parsed triggers; if they're not cached yet, parse and cache them
+                    if (!ParsedTriggersCache.TryGetValue(entry.Value.Trigger, out HashSet<string> parsedTriggers)) //try to get cached triggers for this trigger string; if it's not cached yet, parse and cache it
                     {
                         parsedTriggers = new(StringComparer.OrdinalIgnoreCase);
                         foreach (string trigger in entry.Value.Trigger.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
                             parsedTriggers.Add(trigger);
-                        ParsedTriggersCache.Add(entry.Key, parsedTriggers);
+                        ParsedTriggersCache.Add(entry.Value.Trigger, parsedTriggers);
                     }
 
                     if (!parsedTriggers.Contains(triggerContext.Trigger, StringComparer.OrdinalIgnoreCase)) //if this entry does NOT contain the specified trigger
