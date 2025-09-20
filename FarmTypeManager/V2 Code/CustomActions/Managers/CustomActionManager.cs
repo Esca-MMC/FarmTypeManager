@@ -17,8 +17,8 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A set of action IDs and the handlers used to perform them.</summary>
         private static Dictionary<string, ICustomActionHandler> Handlers { get; } = new(StringComparer.OrdinalIgnoreCase)
         {
-            { "Test", new TestHandler() },
-            { "SpawnObject", new SpawnObjectHandler() }
+            { "SpawnObject", new SpawnObjectHandler() },
+            { "TriggerAction", new TriggerActionHandler() }
         };
 
         /// <summary>A set of raw strings and the triggers parsed from them.</summary>

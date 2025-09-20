@@ -33,9 +33,5 @@ namespace FarmTypeManager.CustomActions
         public int MaxTimes { get; set; } = 1;
         public List<QuantityModifier> TimesModifiers { get; set; } = null;
         public QuantityModifier.QuantityModifierMode TimesModifierMode { get; set; } = default;
-
-        /********************/
-        /* Other properties */
-        /********************/
     }
 }
