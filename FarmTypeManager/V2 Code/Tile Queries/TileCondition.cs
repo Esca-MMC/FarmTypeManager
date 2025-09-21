@@ -23,9 +23,6 @@ namespace FarmTypeManager.TileQueries
             Initialize();
         }
 
-        //TODO: add a constructor that specifies a size
-        //      convert the condition from "query 1, query 2, etc" into "SIZE X Y \"query 1\" \"query 2\" \"etc\""
-
         /**************/
         /* Properties */
         /**************/

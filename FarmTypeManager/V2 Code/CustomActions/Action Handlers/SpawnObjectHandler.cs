@@ -70,7 +70,7 @@ namespace FarmTypeManager.CustomActions
                 case ILocationSettings.LocationListModes.Random:
                 default:
                     int count = locations.Count;
-                    Dictionary<int, int> timesForEachLocationIndex = new(count);
+                    Dictionary<int, int> timesForEachLocationIndex = new(count); //key = random index in the location list; value = number of times to use that location
                     for (int x = 0; x < times; x++)
                     {
                         int index = FTMUtility.Random.Next(count);
