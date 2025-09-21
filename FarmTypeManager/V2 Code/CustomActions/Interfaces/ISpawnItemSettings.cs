@@ -29,7 +29,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The mode to use when combining modifiers from <see cref="TimesModifiers"/>.</summary>
         QuantityModifier.QuantityModifierMode TimesModifierMode { get; set; }
 
-        /// <summary>The available values of <see cref="ILocationSettings.LocationListMode"/>.</summary>
+        /// <summary>The available values of <see cref="ItemListMode"/>.</summary>
         public enum ItemListModes
         {
             /// <summary>All valid item data in this list should be used at once.</summary>

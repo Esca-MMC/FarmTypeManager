@@ -13,7 +13,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The behavior to use when selecting locations from <see cref="LocationList"/>.</summary>
         LocationListModes LocationListMode { get; set; }
 
-        /// <summary>The available values of <see cref="ILocationSettings.LocationListMode"/>.</summary>
+        /// <summary>The available values of <see cref="LocationListMode"/>.</summary>
         public enum LocationListModes
         {
             /// <summary>All locations from the list should be used. For example, if an action spawns objects, it should spawn a full set of objects at each listed location.</summary>
