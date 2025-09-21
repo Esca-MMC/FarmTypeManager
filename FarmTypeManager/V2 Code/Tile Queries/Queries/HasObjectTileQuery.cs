@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FarmTypeManager.TileQueries
 {
-    /// <summary>A handler for the "HAS_OBJECT" tile query. Allows tiles that contain an object, big craftable, or furniture.</summary>
+    /// <summary>A handler for the "HAS_OBJECT" tile query. Allows tiles that contain an object or big craftable.</summary>
     public class HasObjectTileQuery : ITileQuery
     {
         /***************/
@@ -31,7 +31,7 @@ namespace FarmTypeManager.TileQueries
 
         public int CheckTilePriority => ITileQuery.Priority_Normal;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
-        public bool CheckTile(Vector2 tile) => Location.isObjectAtTile((int)tile.X, (int)tile.Y);
+        public bool CheckTile(Vector2 tile) => Location.Objects.ContainsKey(tile);
         public List<Vector2> GetStartingTiles() => throw new NotImplementedException();
     }
 }
