@@ -17,6 +17,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A set of action IDs and the handlers used to perform them.</summary>
         private static Dictionary<string, ICustomActionHandler> Handlers { get; } = new(StringComparer.OrdinalIgnoreCase)
         {
+            { "DespawnObject", new DespawnObjectHandler() },
             { "SpawnObject", new SpawnObjectHandler() },
             { "TriggerAction", new TriggerActionHandler() }
         };
@@ -185,7 +186,7 @@ namespace FarmTypeManager.CustomActions
                     actionList.Remove(action);
                 else if (action.Value.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(action.Value.MarkAppliedWithFlag)) //if the action is already flagged as complete
                     actionList.Remove(action);
-                else if (action.Value.Condition != null && !GameStateQuery.CheckConditions(data.Condition, queryContext)) //if the action's condition is false
+                else if (action.Value.Condition != null && !GameStateQuery.CheckConditions(action.Value.Condition, queryContext)) //if the action's condition is false
                     actionList.Remove(action);
                 else
                     totalWeight += action.Value.Weight; //add up any valid list items' weights
