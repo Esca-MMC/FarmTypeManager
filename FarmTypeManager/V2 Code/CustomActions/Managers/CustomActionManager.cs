@@ -80,13 +80,17 @@ namespace FarmTypeManager.CustomActions
                     foreach (var action in GetActionsToPerform(asset.Item1, entry.Key, entry.Value, queryContext))
                     {
                         if (FTMUtility.Monitor.IsVerbose)
-                            FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Key: \"{entry.Key}\". Action: \"{action?.ActionId}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
+                            FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
 
-                        if (!TryPerformAction(action, queryContext, triggerContext, out string error))
-                            FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{asset.Item1}\", entry key \"{entry.Key}\". {error}", LogLevel.Warn);
+                        if (!TryPerformAction(action.Value, queryContext, triggerContext, out string error))
+                        {
+                            FTMUtility.Monitor.Log($"Failed to perform a custom action by trigger.", LogLevel.Warn);
+                            FTMUtility.Monitor.Log($"Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\".", LogLevel.Warn);
+                            FTMUtility.Monitor.Log($"Reason: {error}", LogLevel.Warn);
+                        }
 
-                        if (action.MarkAppliedWithFlag != null)
-                            Game1.player.mailReceived.Add(action.MarkAppliedWithFlag); //add this action's completion flag
+                        if (action.Value.MarkAppliedWithFlag != null)
+                            Game1.player.mailReceived.Add(action.Value.MarkAppliedWithFlag); //add this action's completion flag
                     }
 
                     if (entry.Value.MarkAppliedWithFlag != null)
@@ -121,13 +125,17 @@ namespace FarmTypeManager.CustomActions
             foreach (var action in GetActionsToPerform(assetName, entryId, entryData, queryContext))
             {
                 if (FTMUtility.Monitor.IsVerbose)
-                    FTMUtility.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Key: \"{entryId}\". Action: \"{action?.ActionId}\".", LogLevel.Trace);
+                    FTMUtility.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Trace);
 
-                if (!TryPerformAction(action, queryContext, triggerContext, out string error))
-                    FTMUtility.Monitor.Log($"Couldn't perform a custom action from the asset \"{assetName}\", entry key \"{entryId}\". {error}", LogLevel.Warn);
+                if (!TryPerformAction(action.Value, queryContext, triggerContext, out string error))
+                {
+                    FTMUtility.Monitor.Log($"Failed to perform a custom action action by entry.", LogLevel.Warn);
+                    FTMUtility.Monitor.Log($"Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Warn);
+                    FTMUtility.Monitor.Log($"Reason: {error}", LogLevel.Warn);
+                }
 
-                if (action.MarkAppliedWithFlag != null)
-                    Game1.player.mailReceived.Add(action.MarkAppliedWithFlag); //add this action's completion flag
+                if (action.Value.MarkAppliedWithFlag != null)
+                    Game1.player.mailReceived.Add(action.Value.MarkAppliedWithFlag); //add this action's completion flag
             }
 
             if (entryData.MarkAppliedWithFlag != null)
@@ -138,13 +146,13 @@ namespace FarmTypeManager.CustomActions
         /* Private methods */
         /*******************/
 
-        /// <summary>Gets a series of actions to perform from the given data when triggered.</summary>
+        /// <summary>Gets a series of actions to perform from the given data when triggered. Keys are actions' string IDs, values are action data.</summary>
         /// <param name="assetId">A descriptive ID for this data's asset, e.g. the asset name used to load it through the content system.</param>
         /// <param name="entryId">The ID for this data within its asset.</param>
         /// <param name="data">The custom actions data to check for actions.</param>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
-        /// <returns>A series of actions to perform, if any. This may vary between each call due to context, randomization, etc.</returns>
-        private static IEnumerable<CustomActionData> GetActionsToPerform(string assetId, string entryId, CustomActionsAssetEntry data, GameStateQueryContext queryContext)
+        /// <returns>A series of actions to perform based on the current context, if any. Values </returns>
+        private static IEnumerable<KeyValuePair<string, CustomActionData>> GetActionsToPerform(string assetId, string entryId, CustomActionsAssetEntry data, GameStateQueryContext queryContext)
         {
             if (data == null || data.CustomActions == null)
                 yield break;
@@ -168,17 +176,19 @@ namespace FarmTypeManager.CustomActions
                 yield break;
 
             int totalWeight = 0;
-            List<CustomActionData> actionList = new(data.CustomActions.Values); //copy all actions
-            foreach (var action in data.CustomActions.Values)
+            List<KeyValuePair<string, CustomActionData>> actionList = new(data.CustomActions); //copy all actions
+            foreach (var action in data.CustomActions)
             {
-                if (action.Weight < 1)
+                if (action.Value == null)
                     actionList.Remove(action);
-                else if (action.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(action.MarkAppliedWithFlag)) //if the action is already flagged as complete
+                else if (action.Value.Weight < 1)
                     actionList.Remove(action);
-                else if (action.Condition != null && !GameStateQuery.CheckConditions(data.Condition, queryContext)) //if the action's condition is false
+                else if (action.Value.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(action.Value.MarkAppliedWithFlag)) //if the action is already flagged as complete
+                    actionList.Remove(action);
+                else if (action.Value.Condition != null && !GameStateQuery.CheckConditions(data.Condition, queryContext)) //if the action's condition is false
                     actionList.Remove(action);
                 else
-                    totalWeight += action.Weight; //add up any valid list items' weights
+                    totalWeight += action.Value.Weight; //add up any valid list items' weights
             }
 
             switch (data.ActionMode)
@@ -189,13 +199,13 @@ namespace FarmTypeManager.CustomActions
                         int random = FTMUtility.Random.Next(totalWeight);
                         foreach (var action in actionList)
                         {
-                            if (random < action.Weight)
+                            if (random < action.Value.Weight)
                             {
                                 yield return action;
                                 break;
                             }
                             else
-                                random -= action.Weight;
+                                random -= action.Value.Weight;
                         }
                     }
                     break;

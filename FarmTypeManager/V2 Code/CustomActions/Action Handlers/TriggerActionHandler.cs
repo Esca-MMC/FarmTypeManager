@@ -37,7 +37,7 @@ namespace FarmTypeManager.CustomActions
 
             List<string> triggerActions = new(settings.Actions ?? []);
             if (settings.Action != null)
-                triggerActions.Add(settings.Action);
+                triggerActions.Insert(0, settings.Action);
 
             switch (settings.ActionsMode)
             {
