@@ -58,10 +58,13 @@ namespace FarmTypeManager.CustomActions
             {
                 foreach (var entry in asset.Item2) //for each entry in this asset
                 {
-                    if (entry.Value?.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entry.Value.MarkAppliedWithFlag)) //if this entry is already flagged as complete
+                    if (entry.Value?.Trigger == null)
                         continue;
 
-                    if (entry.Value?.Trigger == null)
+                    if (entry.Value.HostOnly && !Context.IsMainPlayer)
+                        return;
+
+                    if (entry.Value.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entry.Value.MarkAppliedWithFlag)) //if this entry is already flagged as complete
                         continue;
 
                     if (!ParsedTriggersCache.TryGetValue(entry.Value.Trigger, out HashSet<string> parsedTriggers)) //try to get cached triggers for this trigger string; if it's not cached yet, parse and cache it
@@ -116,6 +119,9 @@ namespace FarmTypeManager.CustomActions
                 FTMUtility.Monitor.Log($"Couldn't get custom actions from the asset \"{assetName}\". The entry key \"{entryId}\" was not found.", LogLevel.Warn);
                 return;
             }
+
+            if (entryData.HostOnly && !Context.IsMainPlayer)
+                return;
 
             if (entryData.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(entryData.MarkAppliedWithFlag)) //if this entry is already flagged as complete
                 return;

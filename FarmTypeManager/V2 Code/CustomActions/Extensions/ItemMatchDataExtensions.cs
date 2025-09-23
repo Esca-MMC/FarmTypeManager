@@ -1,7 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.Delegates;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
 
@@ -107,7 +106,7 @@ namespace FarmTypeManager.CustomActions
 
             //everything matches
 
-            return true; 
+            return true;
         }
     }
 }
