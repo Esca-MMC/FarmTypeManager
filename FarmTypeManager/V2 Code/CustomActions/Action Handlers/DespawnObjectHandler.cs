@@ -7,7 +7,6 @@ using StardewValley.Extensions;
 using StardewValley.Internal;
 using System;
 using System.Collections.Generic;
-using xTile.Dimensions;
 using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
