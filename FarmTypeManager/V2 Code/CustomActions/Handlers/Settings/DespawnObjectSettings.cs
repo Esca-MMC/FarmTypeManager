@@ -5,7 +5,7 @@ using static FarmTypeManager.CustomActions.ILocationSettings;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>Settings used by <see cref="DespawnObjectHandler"/>.</summary>
-    public class DespawnObjectSettings : ILocationSettings, ITileSettings, IDespawnItemSettings
+    public class DespawnObjectSettings : ILocationSettings, ITileSettings, IDespawnItemSettings, ITimesToPerformSettings
     {
         /*********************/
         /* ILocationSettings */
@@ -26,6 +26,11 @@ namespace FarmTypeManager.CustomActions
         /************************/
         public ItemMatchData ItemMatchData { get; set; } = null;
         public List<ItemMatchData> ItemMatchDataList { get; set; } = null;
+
+        /***************************/
+        /* ITimesToPerformSettings */
+        /***************************/
+
         public int MinTimes { get; set; } = 1;
         public int MaxTimes { get; set; } = 1;
         public List<QuantityModifier> TimesModifiers { get; set; } = null;

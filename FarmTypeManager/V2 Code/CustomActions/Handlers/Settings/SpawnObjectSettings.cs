@@ -6,7 +6,7 @@ using static FarmTypeManager.CustomActions.ISpawnItemSettings;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>Settings used by <see cref="SpawnObjectHandler"/>.</summary>
-    public class SpawnObjectSettings : ILocationSettings, ITileSettings, ISpawnItemSettings
+    public class SpawnObjectSettings : ILocationSettings, ITileSettings, ISpawnItemSettings, ITimesToPerformSettings
     {
         /*********************/
         /* ILocationSettings */
@@ -29,6 +29,11 @@ namespace FarmTypeManager.CustomActions
         public FTMSpawnItemData Item { get; set; } = null;
         public List<FTMSpawnItemData> ItemList { get; set; } = null;
         public ItemListModes ItemListMode { get; set; } = ItemListModes.Random;
+
+        /***************************/
+        /* ITimesToPerformSettings */
+        /***************************/
+
         public int MinTimes { get; set; } = 1;
         public int MaxTimes { get; set; } = 1;
         public List<QuantityModifier> TimesModifiers { get; set; } = null;
