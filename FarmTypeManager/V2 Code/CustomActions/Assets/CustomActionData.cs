@@ -6,8 +6,8 @@ namespace FarmTypeManager.CustomActions
     /// <summary>A set of generic data used to perform a custom action.</summary>
     public class CustomActionData
     {
-        /// <summary>The ID of the action to perform.</summary>
-        public string ActionId { get; set; } = null;
+        /// <summary>The type of custom action to perform, e.g. "SpawnObject".</summary>
+        public string ActionType { get; set; } = null;
         /// <summary>The mail flag to use as a completion marker for this action, if any.</summary>
         /// <remarks>
         /// <para>
@@ -24,7 +24,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The weight to use for this entry when randomly selecting actions, if applicable.</summary>
         /// <remarks>This is equivalent to adding additional copies of this entry to a set. For example, an entry with weight = 10 should be 10 times as likely to be selected as an entry with weight = 1.</remarks>
         public int Weight { get; set; } = 1;
-        /// <summary>The settings to use for when performing this action. Its type should be determined by its action ID's handler, generally at creation time.</summary>
+        /// <summary>The settings to use for when performing this action. Its type should be determined by its action type's handler, generally at creation time.</summary>
         public object Settings { get; set; } = null;
     }
 }

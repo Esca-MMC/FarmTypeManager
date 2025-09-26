@@ -14,7 +14,7 @@ namespace FarmTypeManager.CustomActions
         /* Properties */
         /**************/
 
-        /// <summary>A set of action IDs and the handlers used to perform them.</summary>
+        /// <summary>A set of action types and the handlers used to perform them.</summary>
         private static Dictionary<string, ICustomActionHandler> Handlers { get; } = new(StringComparer.OrdinalIgnoreCase)
         {
             { "DespawnObject", new DespawnObjectHandler() },
@@ -29,21 +29,21 @@ namespace FarmTypeManager.CustomActions
         /* Handler methods */
         /*******************/
 
-        /// <summary>Adds a new custom action ID and its implementation handler, or overwrites an existing action ID's handler.</summary>
-        /// <param name="actionId">The custom action ID to handle. Case-insensitive.</param>
+        /// <summary>Adds a new custom action type and its implementation handler, or overwrites an existing action type's handler.</summary>
+        /// <param name="actionType">The custom action type's unique ID, used in fields such as <see cref="CustomActionData.ActionType"/>. This is case-insensitive, but may appear in log messages.</param>
         /// <param name="handler">The instance that implements this action.</param>
         /// <remarks>To avoid issues with asset caching, other mods should provide handlers for all of their custom actions as soon as possible, e.g. in their Entry method or a GameLaunched event.</remarks>
-        public static void RegisterCustomAction(string actionId, ICustomActionHandler handler)
+        public static void RegisterCustomAction(string actionType, ICustomActionHandler handler)
         {
-            Handlers[actionId] = handler;
+            Handlers[actionType] = handler;
             if (FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.Log($"Custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". Action ID: \"{actionId}\".", LogLevel.Trace);
+                FTMUtility.Monitor.Log($"Custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". ActionType: \"{actionType}\".", LogLevel.Trace);
         }
 
-        /// <summary>Get the type of settings used by this custom action ID, if it exists.</summary>
-        /// <param name="actionId">The custom action ID to check.</param>
-        /// <returns>The type used for this custom action ID's settings, or null if the ID/handler/type doesn't exist.</returns>
-        public static Type GetSettingsType(string actionId) => Handlers.TryGetValue(actionId, out var handler) ? handler?.SettingsType ?? null : null;
+        /// <summary>Get the type of settings used by this custom action type, if it exists.</summary>
+        /// <param name="actionType">The custom action type to check.</param>
+        /// <returns>The type used for this custom action type's settings, or null if the ID/handler/type doesn't exist.</returns>
+        public static Type GetSettingsType(string actionType) => Handlers.TryGetValue(actionType, out var handler) ? handler?.SettingsType ?? null : null;
 
         /******************/
         /* Action methods */
@@ -237,26 +237,26 @@ namespace FarmTypeManager.CustomActions
         {
             try
             {
-                if (data.ActionId == null || !Handlers.TryGetValue(data.ActionId, out var handler) || handler == null)
+                if (data.ActionType == null || !Handlers.TryGetValue(data.ActionType, out var handler) || handler == null)
                 {
-                    error = $"The custom action \"{data.ActionId}\" doesn't seem to exist.";
+                    error = $"The custom action \"{data.ActionType}\" doesn't seem to exist.";
                     return false;
                 }
 
-                if (!handler.TryPerform(data.ActionId, data.Settings, queryContext, triggerContext, out string handlerError))
+                if (!handler.TryPerform(data.ActionType, data.Settings, queryContext, triggerContext, out string handlerError))
                 {
-                    error = $"The custom action \"{data.ActionId}\" failed: {handlerError}";
+                    error = $"The custom action \"{data.ActionType}\" failed: {handlerError}";
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                error = $"The custom action \"{data.ActionId}\" encountered an error:\n{ex}";
+                error = $"The custom action \"{data.ActionType}\" encountered an error:\n{ex}";
                 return false;
             }
 
             if (FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.Log($"Successfully performed the custom action \"{data.ActionId}\".", LogLevel.Trace);
+                FTMUtility.Monitor.Log($"Successfully performed the custom action \"{data.ActionType}\".", LogLevel.Trace);
 
             error = "";
             return true;

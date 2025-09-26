@@ -20,7 +20,7 @@ namespace FarmTypeManager.CustomActions
 
         public string ProviderModId => FTMUtility.Manifest?.UniqueID;
         public Type SettingsType => typeof(SpawnObjectSettings);
-        public bool TryPerform(string actionId, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
+        public bool TryPerform(string actionType, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {
             var settings = rawSettings as SpawnObjectSettings;
             if (rawSettings == null)
@@ -55,7 +55,7 @@ namespace FarmTypeManager.CustomActions
                 return true;
             }
 
-            ItemQueryContext itemContext = new(queryContext.Location, queryContext.Player, FTMUtility.Random, $"FTM custom action handler. Custom action ID: \"{actionId}\". Trigger ID: {triggerContext.Trigger}. Handler type: \"{typeof(SpawnObjectHandler)}\".");
+            ItemQueryContext itemContext = new(queryContext.Location, queryContext.Player, FTMUtility.Random, $"FTM custom action handler. ActionType: \"{actionType}\". Trigger: \"{triggerContext.Trigger}\". Handler type: \"{typeof(SpawnObjectHandler)}\".");
 
             switch (settings.LocationListMode)
             {

@@ -20,7 +20,7 @@ namespace FarmTypeManager.CustomActions
 
         public string ProviderModId => FTMUtility.Manifest?.UniqueID;
         public Type SettingsType => typeof(DespawnObjectSettings);
-        public bool TryPerform(string actionId, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
+        public bool TryPerform(string actionType, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {
             var settings = rawSettings as DespawnObjectSettings;
             if (rawSettings == null)
