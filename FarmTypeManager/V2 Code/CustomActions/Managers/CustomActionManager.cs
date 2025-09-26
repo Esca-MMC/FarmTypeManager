@@ -106,9 +106,9 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Perform custom actions from a specific entry in a specific asset.</summary>
         /// <param name="assetName">The asset's name, e.g. "Characters/Abigail". Case-insensitive.</param>
         /// <param name="entryId">The ID (key) of the entry within this asset.</param>
-        /// <param name="queryContext">Contextual information to use when checking conditions.</param>
+        /// <param name="queryContext">Contextual information to use when checking conditions. If null, the "Manual" trigger and blank context will be used.</param>
         /// <param name="triggerContext">Contextual information about a raised trigger.</param>
-        public static void PerformActionsFromEntry(string assetName, string entryId, GameStateQueryContext queryContext, TriggerActionContext triggerContext)
+        public static void PerformActionsFromEntry(string assetName, string entryId, GameStateQueryContext queryContext, TriggerActionContext? triggerContext)
         {
             var asset = CustomActionsAssetManager.GetDataFromAsset(assetName);
             if (asset == null)
@@ -134,7 +134,7 @@ namespace FarmTypeManager.CustomActions
                 if (FTMUtility.Monitor.IsVerbose)
                     FTMUtility.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Trace);
 
-                if (!TryPerformAction(action.Value, queryContext, triggerContext, out string error))
+                if (!TryPerformAction(action.Value, queryContext, triggerContext ?? new TriggerActionContext("Manual", [], null), out string error))
                 {
                     FTMUtility.Monitor.Log($"Failed to perform a custom action action by entry.", LogLevel.Warn);
                     FTMUtility.Monitor.Log($"Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Warn);
