@@ -76,6 +76,10 @@ namespace FarmTypeManager.TileQueries
                     return new HasObjectTileQuery(location);
                 case "!HAS_OBJECT":
                     return new NotHasObjectTileQuery(location);
+                case "HAS_FURNITURE":
+                    return new HasFurnitureTileQuery(location);
+                case "!HAS_FURNITURE":
+                    return new NotHasFurnitureTileQuery(location);
                 case "OCCUPIED":
                     return new OccupiedTileQuery(location);
                 case "!OCCUPIED":
@@ -132,6 +136,8 @@ namespace FarmTypeManager.TileQueries
                 { "!CAN_PLACE_ITEM", factory },
                 { "HAS_OBJECT", factory },
                 { "!HAS_OBJECT", factory },
+                { "HAS_FURNITURE", factory },
+                { "!HAS_FURNITURE", factory },
                 { "OCCUPIED", factory },
                 { "!OCCUPIED", factory },
                 { "PASSABLE", factory },

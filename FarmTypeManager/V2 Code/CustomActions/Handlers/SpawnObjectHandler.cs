@@ -11,7 +11,7 @@ using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>The handler for a custom action that spawns forage, ore, or other placed <see cref="Object"/>s.</summary>
+    /// <summary>The handler for a custom action that spawns forage, ore, or other placed <see cref="Object"/>s. This supports (O) and (BC) item types.</summary>
     public class SpawnObjectHandler : ICustomActionHandler
     {
         /************************/
