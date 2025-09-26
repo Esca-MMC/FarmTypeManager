@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>Extension methods for the <see cref="ITimesToPerformSettings"/> interface.</summary>
-    public static class ITimesToPerformExtensions
+    public static class ITimesToPerformSettingsExtensions
     {
         /// <summary>Gets a random number within the range specified by settings in <see cref="ITimesToPerformSettings"/>.</summary>
         /// <typeparam name="T">A type that implements <see cref="ITimesToPerformSettings"/>.</typeparam>
