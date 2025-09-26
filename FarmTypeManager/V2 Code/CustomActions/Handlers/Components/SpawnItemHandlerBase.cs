@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>A base for handlers that spawn a set of items at in-game locations.</summary>
-    public abstract class SpawnItemHandlerBase<TSettings> : ICustomActionHandler where TSettings : class, ILocationSettings, ITileSettings, ISpawnItemSettings
+    public abstract class SpawnItemHandlerBase<TSettings> : ICustomActionHandler where TSettings : class, ILocationSettings, ITileSettings, ISpawnItemSettings, ITimesToPerformSettings
     {
         /************************/
         /* ICustomActionHandler */

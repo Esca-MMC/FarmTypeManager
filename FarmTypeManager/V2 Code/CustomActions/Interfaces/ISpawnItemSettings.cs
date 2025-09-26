@@ -15,20 +15,6 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The behavior to use when selecting item data from <see cref="ItemList"/>.</summary>
         ItemListModes ItemListMode { get; set; }
 
-        /// <summary>The minimum number of times to spawn items from this data.</summary>
-        /// <remarks>When <see cref="ItemListMode"/> is set to "All", this is the minimum number of times to generate each item. Otherwise, this is the minimum number of items to generate.</remarks>
-        int MinTimes { get; set; }
-
-        /// <summary>The maximum number of times to spawn items from this data.</summary>
-        /// <remarks>When <see cref="ItemListMode"/> is set to "All", this is the maximum number of times to generate each item. Otherwise, this is the maximum number of items to generate.</remarks>
-        int MaxTimes { get; set; }
-
-        /// <summary>A list of modifiers to apply to the random number generated from <see cref="MinTimes"/> and <see cref="MaxTimes"/>.</summary>
-        List<QuantityModifier> TimesModifiers { get; set; }
-
-        /// <summary>The mode to use when combining modifiers from <see cref="TimesModifiers"/>.</summary>
-        QuantityModifier.QuantityModifierMode TimesModifierMode { get; set; }
-
         /// <summary>The available values of <see cref="ItemListMode"/>.</summary>
         public enum ItemListModes
         {
