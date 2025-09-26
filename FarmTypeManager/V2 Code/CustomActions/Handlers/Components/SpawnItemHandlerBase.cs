@@ -46,7 +46,7 @@ namespace FarmTypeManager.CustomActions
             }
 
             //get a random number from min to max, apply modifiers, and round to the nearest integer
-            int times = (int)Math.Round(Utility.ApplyQuantityModifiers(FTMUtility.Random.Next(settings.MinTimes, settings.MaxTimes + 1), settings.TimesModifiers, settings.TimesModifierMode, queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, FTMUtility.Random));
+            int times = settings.GetRandomTimes(queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random);
             if (times <= 0)
             {
                 error = null;
