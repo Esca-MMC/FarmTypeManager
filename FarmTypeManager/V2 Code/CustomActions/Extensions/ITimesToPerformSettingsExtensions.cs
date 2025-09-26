@@ -1,8 +1,5 @@
 ﻿using StardewValley;
-using StardewValley.Delegates;
-using StardewValley.Network.NetEvents;
 using System;
-using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {

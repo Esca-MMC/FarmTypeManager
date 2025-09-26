@@ -1,5 +1,4 @@
-﻿using StardewValley.GameData;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
