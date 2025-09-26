@@ -1,11 +1,29 @@
 ﻿using StardewValley;
+using StardewValley.GameData;
 using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>A set of data that describes when to trigger customizable actions, which actions to trigger, and settings specific to each action.</summary>
-    public class CustomActionsAssetEntry
+    public class CustomActionsAssetEntry : ITimesToPerformSettings
     {
+        /*********/
+        /* Enums */
+        /*********/
+
+        /// <summary>The available values of <see cref="ActionMode"/>.</summary>
+        public enum ActionModes
+        {
+            /// <summary>Every valid action will be performed each time.</summary>
+            All,
+            /// <summary>One random action will be performed each time, with chances based on <see cref="CustomActionData.Weight"/>.</summary>
+            Random
+        }
+
+        /**************/
+        /* Properties */
+        /**************/
+
         /// <summary>A set of triggers from the Data/TriggerActions system. When one of these triggers occurs, this entry's actions will be performed.</summary>
         /// <remarks>Case-insensitive. Multiple triggers should be separated by spaces.</remarks>
         public string Trigger { get; set; } = null;
@@ -33,24 +51,25 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The method to use when selecting actions to perform from <see cref="CustomActions"/>.</summary>
         public ActionModes ActionMode { get; set; } = ActionModes.All;
 
+        /***************************/
+        /* ITimesToPerformSettings */
+        /***************************/
+
         /// <summary>The minimum number of times to perform actions from this entry when it's triggered.</summary>
-        /// <remarks>A random number between <see cref="MinTimes"/> and <see cref="MaxTimes"/> is chosen each time this entry is triggered.</remarks>
         public int MinTimes { get; set; } = 1;
 
         /// <summary>The maximum number of times to perform actions from this entry when it's triggered.</summary>
-        /// <remarks>A random number between <see cref="MinTimes"/> and <see cref="MaxTimes"/> is chosen each time this entry is triggered.</remarks>
         public int MaxTimes { get; set; } = 1;
+
+        public List<QuantityModifier> TimesModifiers { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public QuantityModifier.QuantityModifierMode TimesModifierMode { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        /***********************/
+        /* Custom actions list */
+        /***********************/
+        //NOTE: This is in a separate section at the bottom for organizational reasons. Raw exports of this asset, e.g. from Content Patcher's "patch export" command, would otherwise split settings above/below this list of large objects.
 
         /// <summary>A list of custom actions to perform when this entry is triggered.</summary>
         public Dictionary<string, CustomActionData> CustomActions { get; set; } = null;
-
-        /// <summary>The available values of <see cref="ActionMode"/>.</summary>
-        public enum ActionModes
-        {
-            /// <summary>Every valid action will be performed each time.</summary>
-            All,
-            /// <summary>One random action will be performed each time, with chances based on <see cref="CustomActionData.Weight"/>.</summary>
-            Random
-        }
     }
 }
