@@ -5,13 +5,12 @@ using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>The handler for a custom action that spawns forage, ore, or other placed <see cref="Object"/>s. This supports (O) and (BC) item types.</summary>
+    /// <summary>The handler for a custom action that spawns forage, craftables, or other basic placed <see cref="Object"/>s.</summary>
     public class SpawnObjectHandler : SpawnItemHandlerBase<SpawnObjectSettings>
     {
-        /*******************/
-        /* Private methods */
-        /*******************/
-        protected override bool TryPlaceItem<TItem>(GameLocation location, Vector2 tile, TItem item, out string placementError)
+        protected override string ModifyTileCondition(string tileCondition) => $"!HAS_OBJECT, {tileCondition}"; //exclude any tiles blocked by an existing object of this type
+
+        protected override bool TryPlaceItem(GameLocation location, Vector2 tile, Item item, out string placementError)
         {
             if (item is Object obj && (obj.HasTypeObject() || obj.HasTypeBigCraftable()))
             {

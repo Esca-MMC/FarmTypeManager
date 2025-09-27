@@ -1,11 +1,11 @@
 ﻿using FarmTypeManager.TileQueries;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Internal;
-using System;
-using System.Collections.Generic;
+using xTile.Tiles;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -20,8 +20,8 @@ namespace FarmTypeManager.CustomActions
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
 
-            var tileQuery = new TileCondition(location, settings.TileCondition);
-            var tiles = tileQuery.GetTiles(true).GetEnumerator();
+            var tileCondition = new TileCondition(location, ModifyTileCondition(settings.TileCondition));
+            var tiles = tileCondition.GetTiles(true).GetEnumerator();
 
             ItemQueryContext itemContext = new(location, queryContext.Player, queryContext.Random, $"FTM custom action handler. Trigger: \"{triggerContext.Trigger}\". Handler type: \"{GetType()}\".");
 
@@ -36,6 +36,8 @@ namespace FarmTypeManager.CustomActions
                 if (TryPlaceItem(location, tile, item, out string placementError))
                 {
                     totalSpawned++;
+                    if (FTMUtility.Monitor.IsVerbose)
+                        FTMUtility.Monitor.VerboseLog($"Spawned an item. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. Item ID: \"{item.QualifiedItemId}\".");
                 }
                 else if (placementError != null) //if placement failed and also returned error text
                 {
@@ -51,18 +53,23 @@ namespace FarmTypeManager.CustomActions
             return true;
         }
 
-        /********************/
-        /* Abstract methods */
-        /********************/
+        /***********/
+        /* Methods */
+        /***********/
+
+        /// <summary>Modifies a tile condition string to include this handler's requirements or optimizations, if any.</summary>
+        /// <param name="tileCondition">The tile condition string to modify.</param>
+        /// <returns>A modified version of the tile condition.</returns>
+        /// <remarks>The base method returns the tile condition without any changes. Some handlers may implement changes to improve performance, avoid problematic tiles, etc.</remarks>
+        protected virtual string ModifyTileCondition(string tileCondition) => tileCondition;
 
         /// <summary>Places an item on a specified tile, if possible.</summary>
-        /// <typeparam name="TItem">The type of <see cref="Item"/> being placed.</typeparam>
         /// <param name="location">The in-game location to use.</param>
         /// <param name="tile">The tile to use.</param>
         /// <param name="item">The item to place.</param>
         /// <param name="placementError">Error text describing why an error occured during placement, e.g. the item type was invalid. Null if placement succeeeded, or if it only failed due to obstructions.</param>
         /// <returns>True if the item was successfully placed. False if placement was obstructed, or if an error occurred.</returns>
         /// <remarks>If error is null, this method should NOT cause the handler to return false. Failure due to obstructions shouldn't be treated as an error. Returning false with non-null error text indicates an error (e.g. an invalid item type).</remarks>
-        protected abstract bool TryPlaceItem<TItem>(GameLocation location, Vector2 tile, TItem item, out string placementError) where TItem : Item;
+        protected abstract bool TryPlaceItem(GameLocation location, Vector2 tile, Item item, out string placementError);
     }
 }
