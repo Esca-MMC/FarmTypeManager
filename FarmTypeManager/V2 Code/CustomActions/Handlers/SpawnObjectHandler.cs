@@ -11,16 +11,16 @@ namespace FarmTypeManager.CustomActions
         /*******************/
         /* Private methods */
         /*******************/
-        protected override bool TryPlaceItem<TItem>(GameLocation location, Vector2 tile, TItem item, out string error)
+        protected override bool TryPlaceItem<TItem>(GameLocation location, Vector2 tile, TItem item, out string placementError)
         {
             if (item is Object obj && (obj.HasTypeObject() || obj.HasTypeBigCraftable()))
             {
-                error = null;
+                placementError = null;
                 return location.objects.TryAdd(tile, obj);
             }
             else
             {
-                error = $"This action can only place basic objects (O) and big craftables (BC).";
+                placementError = $"This action can only place basic objects (O) and big craftables (BC).";
                 return false;
             }
         }
