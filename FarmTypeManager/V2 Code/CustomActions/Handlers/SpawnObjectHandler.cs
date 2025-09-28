@@ -6,7 +6,7 @@ using Object = StardewValley.Object;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>The handler for a custom action that spawns forage, craftables, or other basic placed <see cref="Object"/>s.</summary>
-    public class SpawnObjectHandler : SpawnItemHandlerBase<SpawnObjectSettings>
+    public class SpawnObjectHandler : SpawnItemHandlerBase<SpawnItemSettings>
     {
         protected override string ModifyTileCondition(string tileCondition) => $"!HAS_OBJECT, {tileCondition}"; //exclude any tiles blocked by an existing object of this type
 
