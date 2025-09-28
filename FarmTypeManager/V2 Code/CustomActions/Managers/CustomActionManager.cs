@@ -19,6 +19,7 @@ namespace FarmTypeManager.CustomActions
         {
             { "DespawnFurniture", new DespawnFurnitureHandler() },
             { "DespawnObject", new DespawnObjectHandler() },
+            { "SpawnFurniture", new SpawnFurnitureHandler() },
             { "SpawnObject", new SpawnObjectHandler() },
             { "TriggerAction", new TriggerActionHandler() }
         };
