@@ -17,6 +17,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A set of action types and the handlers used to perform them.</summary>
         private static Dictionary<string, ICustomActionHandler> Handlers { get; } = new(StringComparer.OrdinalIgnoreCase)
         {
+            { "DespawnFurniture", new DespawnFurnitureHandler() },
             { "DespawnObject", new DespawnObjectHandler() },
             { "SpawnObject", new SpawnObjectHandler() },
             { "TriggerAction", new TriggerActionHandler() }

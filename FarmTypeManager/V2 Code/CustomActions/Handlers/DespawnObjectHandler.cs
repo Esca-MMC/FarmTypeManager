@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Delegates;
+using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
@@ -46,7 +47,7 @@ namespace FarmTypeManager.CustomActions
                     times--;
 
                     if (FTMUtility.Monitor.IsVerbose)
-                        FTMUtility.Monitor.VerboseLog($"{nameof(DespawnObjectHandler)}: Removing a placed object. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. Object ID: \"{obj.QualifiedItemId}\".");
+                        FTMUtility.Monitor.VerboseLog($"{nameof(DespawnObjectHandler)}: Removing a placed object. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. Object ID: \"{obj.QualifiedItemId}\".  Display Name: \"{obj.DisplayName}\".");
                 }
             }
 
