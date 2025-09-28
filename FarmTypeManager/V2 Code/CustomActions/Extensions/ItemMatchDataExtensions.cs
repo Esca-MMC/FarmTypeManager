@@ -17,16 +17,18 @@ namespace FarmTypeManager.CustomActions
         /// <returns>True if the item matches this data's criteria. False if the item doesn't match.</returns>
         public static bool Match(this ItemMatchData data, Item item, GameLocation location, GameStateQueryContext queryContext)
         {
+            //NOTE: Return data.InvertResults instead of false, and !data.InvertResults instead of true. When that setting is true, it correctly inverts the results.
+
             if (data.Category != null && data.Category != item.Category)
-                return false;
+                return data.InvertResults;
 
             if (data.CategoryList != null && !data.CategoryList.Contains(item.Category))
-                return false;
+                return data.InvertResults;
 
             if (data.ContextTag != null)
             {
                 if (!ItemContextTagManager.DoesTagQueryMatch(data.ContextTag, item.GetContextTags())) //if the item is missing any context tags (note: method supports multiple comma-separated tags and '!' negation)
-                    return false;
+                    return data.InvertResults;
             }
 
             if (data.ContextTagList != null && data.ContextTagList.Count > 0)
@@ -44,69 +46,69 @@ namespace FarmTypeManager.CustomActions
                 }
 
                 if (!anyStringMatches)
-                    return false;
+                    return data.InvertResults;
             }
 
             if (data.Id != null && !string.Equals(item.QualifiedItemId, data.Id, StringComparison.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             if (data.IdList != null && !data.IdList.Contains(item.QualifiedItemId, StringComparer.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             if (data.MinQuality != null && data.MinQuality > item.Quality)
-                return false;
+                return data.InvertResults;
 
             if (data.MaxQuality != null && data.MaxQuality < item.Quality)
-                return false;
+                return data.InvertResults;
 
             if (data.MinStackSize != null && data.MinStackSize > item.Stack)
-                return false;
+                return data.InvertResults;
 
             if (data.MaxStackSize != null && data.MaxStackSize < item.Stack)
-                return false;
+                return data.InvertResults;
 
             if (data.ModData != null)
             {
                 foreach (var entry in data.ModData)
                 {
                     if (!item.modData.TryGetValue(entry.Key, out string value)) //if the item doesn't have the specified key
-                        return false;
+                        return data.InvertResults;
                     if (value != null && !string.Equals(entry.Value, value, StringComparison.OrdinalIgnoreCase)) //if the specified value isn't null and doesn't match the item value
-                        return false;
+                        return data.InvertResults;
                 }
             }
 
             if (data.Name != null && !string.Equals(data.Name, item.Name, StringComparison.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             if (data.NameList != null && !data.NameList.Contains(item.Name, StringComparer.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             if (data.PerItemCondition != null && !GameStateQuery.CheckConditions(data.PerItemCondition, location ?? queryContext.Location, queryContext.Player, item)) //if the provided condition doesn't match (using the most relevant/available context data)
-                return false;
+                return data.InvertResults;
 
             if (data.Type != null && !string.Equals(data.Type, item.GetItemTypeId(), StringComparison.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             if (data.TypeList != null && !data.TypeList.Contains(item.GetItemTypeId(), StringComparer.OrdinalIgnoreCase))
-                return false;
+                return data.InvertResults;
 
             //check fields that are specific to StardewValley.Object
 
             var obj = item as Object;
 
             if (data.Fragility != null && (obj == null || obj.Fragility != data.Fragility))
-                return false;
+                return data.InvertResults;
 
             if (data.MinMinutesUntilReady != null && (obj == null || data.MinMinutesUntilReady > obj.MinutesUntilReady))
-                return false;
+                return data.InvertResults;
 
             if (data.MaxMinutesUntilReady != null && (obj == null || data.MaxMinutesUntilReady < obj.MinutesUntilReady))
-                return false;
+                return data.InvertResults;
 
             //everything matches
 
-            return true;
+            return !data.InvertResults;
         }
     }
 }

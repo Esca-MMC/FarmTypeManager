@@ -9,6 +9,9 @@ namespace FarmTypeManager.CustomActions
         /* Item properties */
         /*******************/
 
+        /// <summary>If true, these criteria will be inverted, producing the opposite result when checked. Any items that did NOT match will match instead, and vice versa.</summary>
+        public bool InvertResults { get; set; } = false;
+
         public int? Category { get; set; } = null;
 
         public List<int> CategoryList { get; set; } = null;
