@@ -6,7 +6,7 @@ using static FarmTypeManager.CustomActions.ISpawnItemSettings;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>Settings used by <see cref="SpawnObjectHandler"/>.</summary>
-    public class SpawnObjectSettings : ILocationSettings, ITileSettings, ISpawnItemSettings, ITimesToPerformSettings
+    public class SpawnItemSettings : ILocationSettings, ITileSettings, ISpawnItemSettings, ITimesToPerformSettings
     {
         /*********************/
         /* ILocationSettings */
