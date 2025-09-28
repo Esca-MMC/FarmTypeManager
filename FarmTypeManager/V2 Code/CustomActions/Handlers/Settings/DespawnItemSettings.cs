@@ -4,8 +4,8 @@ using static FarmTypeManager.CustomActions.ILocationSettings;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>Settings used by <see cref="DespawnObjectHandler"/>.</summary>
-    public class DespawnObjectSettings : ILocationSettings, ITileSettings, IDespawnItemSettings, ITimesToPerformSettings
+    /// <summary>Settings used by handlers that despawn (remove) items, e.g. <see cref="DespawnObjectHandler"/>.</summary>
+    public class DespawnItemSettings : ILocationSettings, ITileSettings, IMatchItemSettings, ITimesToPerformSettings
     {
         /*********************/
         /* ILocationSettings */
