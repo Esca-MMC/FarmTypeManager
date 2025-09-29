@@ -6,7 +6,7 @@ namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!CAN_PLACE_ITEM" tile query. Allows tiles that are NOT allowed by <see cref="GameLocation.CanItemBePlacedHere"/>.</summary>
     /// <param name="location">The in-game location to check.</param>
-    public class CannotPlaceItemTileQuery(GameLocation location) : ITileQuery
+    public class NotCanPlaceItemTileQuery(GameLocation location) : ITileQuery
     {
         /**************/
         /* Properties */
