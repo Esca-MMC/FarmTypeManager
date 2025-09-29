@@ -26,5 +26,13 @@ namespace FarmTypeManager.CustomActions
                 return false;
             }
         }
+
+        protected override Vector2 GetItemSize(Item item)
+        {
+            if (item is Furniture furniture)
+                return new Vector2(furniture.getTilesWide(), furniture.getTilesHigh());
+            else
+                return Vector2.One;
+        }
     }
 }

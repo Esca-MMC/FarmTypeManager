@@ -4,6 +4,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Internal;
+using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -18,16 +19,37 @@ namespace FarmTypeManager.CustomActions
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
 
-            var tileCondition = new TileCondition(location, ModifyTileCondition(settings.TileCondition));
-            var tiles = tileCondition.GetTiles(true).GetEnumerator();
+            //var tileCondition = new TileCondition(location, ModifyTileCondition(settings.TileCondition));
+            //var tiles = tileCondition.GetTiles(true).GetEnumerator();
 
             ItemQueryContext itemContext = new(location, queryContext.Player, queryContext.Random, $"FTM custom action handler. Trigger: \"{triggerContext.Trigger}\". Handler type: \"{GetType()}\".");
+
+            Dictionary<Vector2, IEnumerator<Vector2>> SizedTiles = []; //key = width and height of an item to spawn; value = the tile enumerator to use for that item
 
             int totalSpawned = 0;
             foreach (Item item in settings.CreateItems(queryContext, itemContext, numberOfItems, false))
             {
-                if (!tiles.MoveNext()) //if no more tiles exist, stop
-                    break;
+                Vector2 size = GetItemSize(item);
+                if (!SizedTiles.TryGetValue(size, out var tiles)) //try to get the enumerator for tiles of this size
+                {
+                    //if the condition for this item size doesn't exist yet, create and store it
+
+                    string modifiedCondition = ModifyTileCondition(settings.TileCondition);
+                    if (settings.TileCondition != null && (size.X > 1 || size.Y > 1)) //if a tile condition was provided & this item is larger than 1x1
+                        modifiedCondition = ArgUtility.UnsplitQuoteAware(["SIZE", size.X.ToString(), size.Y.ToString(), modifiedCondition], ' '); //add "SIZE X Y" query to the condition with quote adjustments
+
+                    TileCondition tileCondition = new(location, modifiedCondition);
+                    tiles = tileCondition.GetTiles(true).GetEnumerator();
+                    SizedTiles[size] = tiles;
+                }
+
+                if (!tiles.MoveNext()) //if no more tiles exist of this size
+                {
+                    if (size == Vector2.One) //if this is 1x1, no sizes can be placed anymore, so stop early
+                        break;
+                    else
+                        continue; //skip this item
+                }
 
                 Vector2 tile = tiles.Current;
 
@@ -54,6 +76,11 @@ namespace FarmTypeManager.CustomActions
         /***********/
         /* Methods */
         /***********/
+
+        /// <summary>Gets the width and height, in tiles, occupied by the item when placed.</summary>
+        /// <param name="item">The item to check.</param>
+        /// <returns>The width (X) and height (Y) in tile that the item would occupy when placed.</returns>
+        protected virtual Vector2 GetItemSize(Item item) => Vector2.One;
 
         /// <summary>Modifies a tile condition string to include this handler's requirements or optimizations, if any.</summary>
         /// <param name="tileCondition">The tile condition string to modify.</param>
