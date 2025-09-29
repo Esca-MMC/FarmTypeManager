@@ -87,7 +87,7 @@ namespace FarmTypeManager.TileQueries
                 case "CAN_PLACE_ITEM":
                     return new CanPlaceItemTileQuery(location);
                 case "!CAN_PLACE_ITEM":
-                    return new CannotPlaceItemTileQuery(location);
+                    return new NotCanPlaceItemTileQuery(location);
 
                 //unknown properties (e.g. sent to this handler incorrectly)
                 default:
