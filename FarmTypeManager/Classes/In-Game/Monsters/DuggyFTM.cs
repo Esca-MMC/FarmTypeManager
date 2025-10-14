@@ -3,7 +3,6 @@ using Netcode;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Monsters;
-using System;
 using System.Xml.Serialization;
 using xTile.Layers;
 
