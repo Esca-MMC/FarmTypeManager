@@ -17,8 +17,14 @@ namespace FarmTypeManager.CustomActions
         public static int GetRandomTimes<T>(this T settings, GameLocation location, Farmer player, Item targetItem, Item inputItem, Random random) where T : ITimesToPerformSettings
         {
             int startingNum = FTMUtility.Random.Next(settings.MinTimes, settings.MaxTimes + 1); //get a random number between min and max (inclusive)
-            float modifiedNum = Utility.ApplyQuantityModifiers(startingNum, settings.TimesModifiers, settings.TimesModifierMode, location, player, targetItem, inputItem, random ?? FTMUtility.Random); //apply modifiers with any provided GSQ context
-            return (int)Math.Round(modifiedNum); //round to the nearest integer
+            
+            if (settings.TimesModifiers?.Count > 0)
+            {
+                float modifiedNum = Utility.ApplyQuantityModifiers(startingNum, settings.TimesModifiers, settings.TimesModifierMode, location, player, targetItem, inputItem, random ?? FTMUtility.Random); //apply modifiers with any provided GSQ context
+                return (int)Math.Round(modifiedNum); //round to the nearest integer
+            }
+            else
+                return startingNum;
         }
     }
 }

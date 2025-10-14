@@ -172,14 +172,7 @@ namespace FarmTypeManager.CustomActions
                 yield break;
             }
 
-            if (data.MaxTimes < 1)
-                yield break;
-
-            int timesToPerform;
-            if (data.MinTimes == data.MaxTimes)
-                timesToPerform = data.MinTimes;
-            else
-                timesToPerform = FTMUtility.Random.Next(data.MinTimes, data.MaxTimes + 1);
+            int timesToPerform = data.GetRandomTimes(queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random);
 
             if (timesToPerform < 1)
                 yield break;
