@@ -13,7 +13,7 @@ namespace FarmTypeManager.Monsters
     public class DuggyFTM : Duggy, ICustomDamage
     {
         [XmlElement("FTM_customDamage")]
-        public readonly NetInt customDamage = new NetInt(8); //default set to mimic hardcoded values
+        public readonly NetInt customDamage = new(8); //default set to mimic hardcoded values
 
         /// <summary>A customizable value for DamageToFarmer, used to preserve it during temporary damage changes.</summary>
         [XmlIgnore]
@@ -65,26 +65,32 @@ namespace FarmTypeManager.Monsters
         // * error that prevented multiplayer farmhands from loading the game while these monsters exist (null location/map/layer data)
         public override void update(GameTime time, GameLocation location)
         {
-            if (this.invincibleCountdown > 0)
+            if (invincibleCountdown > 0)
             {
-                this.glowingColor = Color.Cyan;
-                this.invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
-                if (this.invincibleCountdown <= 0)
-                    this.stopGlowing();
+                glowingColor = Color.Cyan;
+                invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
+                if (invincibleCountdown <= 0)
+                {
+                    stopGlowing();
+                }
             }
-            if (!location.farmers.Any())
-                return;
-            this.behaviorAtGameTick(time);
-
-            Layer backLayer = location?.map?.RequireLayer("Back"); //if this monster's location exists and is loaded, get the back layer
-            if (backLayer != null) //if the layer exists
+            if (location.farmers.Any())
             {
-                //perform the original removal check
-                if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
-                    location.characters.Remove(this);
+                behaviorAtGameTick(time);
+                Layer backLayer = location?.map?.RequireLayer("Back"); //null check the location and map before trying to load the layer
+                if (backLayer != null) //if the layer exists, allow the normal self-removal check
+                {
+                    if (base.Position.X < 0f || base.Position.X > (float)(backLayer.LayerWidth * 64) || base.Position.Y < 0f || base.Position.Y > (float)(backLayer.LayerHeight * 64))
+                    {
+                        location.characters.Remove(this);
+                    }
+                }
+                updateGlow();
+                if (stunTime.Value > 0)
+                {
+                    stunTime.Value -= (int)time.ElapsedGameTime.TotalMilliseconds;
+                }
             }
-
-            this.updateGlow();
         }
 
         //This override fixes the following Duggy behavioral bugs:
@@ -94,47 +100,54 @@ namespace FarmTypeManager.Monsters
         public override void behaviorAtGameTick(GameTime time)
         {
             Monster_behaviorAtGameTick(time); //call this manual implementation rather than the "base" method, due to the way nested subclasses work
-            this.isEmoting = false;
-            this.Sprite.loop = false;
-            Rectangle boundingBox = this.GetBoundingBox();
-            if (this.Sprite.currentFrame < 4)
+            isEmoting = false;
+            Sprite.loop = false;
+            if (stunTime.Value > 0)
             {
-                boundingBox.Inflate(128, 128);
-                if (!this.IsInvisible || boundingBox.Contains(Player.StandingPixel))
+                return;
+            }
+            Rectangle r = GetBoundingBox();
+            if (Sprite.currentFrame < 4)
+            {
+                r.Inflate(128, 128);
+                if (!base.IsInvisible || r.Contains(base.Player.StandingPixel))
                 {
-                    if (this.IsInvisible)
+                    if (base.IsInvisible)
                     {
                         if (currentLocation?.map != null) //if the player has access to the current location's map (a necessary check for farmhands in some locations)
                         {
-                            //only check for the NPCBarrier flag, ignoring the base Duggy's other movement restrictions
+                            //only check for the NPCBarrier flag, ignoring the base Duggy's other movement restrictions (e.g. for "Diggable" or index 0)
                             if (currentLocation.map.RequireLayer("Back").Tiles[Player.TilePoint.X, Player.TilePoint.Y].Properties.ContainsKey("NPCBarrier"))
                                 return;
                         }
-                        this.Position = new Vector2(this.Player.Position.X, this.Player.Position.Y + (float)this.Player.Sprite.SpriteHeight - (float)this.Sprite.SpriteHeight);
-                        this.currentLocation.localSound(nameof(Duggy));
-                        this.Position = this.Player.Tile * 64f;
+                        base.Position = new Vector2(base.Player.Position.X, base.Player.Position.Y + (float)base.Player.Sprite.SpriteHeight - (float)Sprite.SpriteHeight);
+                        base.currentLocation.localSound("Duggy");
+                        base.Position = base.Player.Tile * 64f;
                     }
-                    this.IsInvisible = false;
-                    this.Sprite.interval = 100f;
-                    this.Sprite.AnimateDown(time);
+                    base.IsInvisible = false;
+                    Sprite.interval = 100f;
+                    Sprite.AnimateDown(time);
                 }
             }
-            if (this.Sprite.currentFrame >= 4 && this.Sprite.currentFrame < 8)
+            if (Sprite.currentFrame >= 4 && Sprite.currentFrame < 8)
             {
-                boundingBox.Inflate(-128, -128);
-                this.currentLocation.isCollidingPosition(boundingBox, Game1.viewport, false, 8, false, this);
-                this.Sprite.AnimateRight(time);
-                this.Sprite.interval = 220f;
-                this.DamageToFarmer = CustomDamage; //use customizable damage instead of hardcoded values
+                r.Inflate(-128, -128);
+                base.currentLocation.isCollidingPosition(r, Game1.viewport, isFarmer: false, 8, glider: false, this);
+                Sprite.AnimateRight(time);
+                Sprite.interval = 220f;
+                base.DamageToFarmer = CustomDamage; //use customizable damage instead of hardcoded values
             }
-            if (this.Sprite.currentFrame >= 8)
-                this.Sprite.AnimateUp(time);
-            if (this.Sprite.currentFrame < 10)
-                return;
-            this.IsInvisible = true;
-            this.Sprite.currentFrame = 0;
-            this.DamageToFarmer = 0;
-            //skip the base Duggy's tile alterations
+            if (Sprite.currentFrame >= 8)
+            {
+                Sprite.AnimateUp(time);
+            }
+            if (Sprite.currentFrame >= 10)
+            {
+                base.IsInvisible = true;
+                Sprite.currentFrame = 0;
+                //skip the base Duggy's tile alterations
+                base.DamageToFarmer = 0;
+            }
         }
 
         /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
@@ -144,33 +157,6 @@ namespace FarmTypeManager.Monsters
             {
                 timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
             }
-            if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
-            {
-                return;
-            }
-            IsWalkingTowardPlayer = false;
-            Point monsterPixel = StandingPixel;
-            Point playerPixel = Player.StandingPixel;
-            if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
-            {
-                if (playerPixel.X - monsterPixel.X > 0)
-                {
-                    SetMovingLeft(b: true);
-                }
-                else
-                {
-                    SetMovingRight(b: true);
-                }
-            }
-            else if (playerPixel.Y - monsterPixel.Y > 0)
-            {
-                SetMovingUp(b: true);
-            }
-            else
-            {
-                SetMovingDown(b: true);
-            }
-            MovePosition(time, Game1.viewport, currentLocation);
         }
     }
 }
