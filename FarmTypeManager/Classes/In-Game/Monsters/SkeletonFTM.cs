@@ -20,7 +20,7 @@ namespace FarmTypeManager
 
             /// <summary>True if this monster's normal ranged attack behavior should be enabled.</summary>
             [XmlElement("FTM_rangedAttacks")]
-            public readonly NetBool rangedAttacks = new NetBool(value: true);
+            public readonly NetBool rangedAttacks = new(value: true);
 
             /*** Reflected fields ***/
 
@@ -70,7 +70,7 @@ namespace FarmTypeManager
 
             /// <summary>A modified version of the base monster class's method.</summary>
             /// <remarks>
-            /// Based on the original code of SDV v1.5.6. Modifed code sections are commented.
+            /// Based on the original code of SDV v1.6.16 alpha. Modifed code sections are commented.
             /// Intended changes:
             /// * Fix a base game issue where Skeletons always use a sight range of 8
             /// * Implement a custom monster setting to disable ranged attacks (bone throwing)
@@ -88,7 +88,7 @@ namespace FarmTypeManager
                 {
                     controller = new PathFindController(this, base.currentLocation, base.Player.TilePoint, -1, null, 200);
                     spottedPlayer = true;
-                    if (controller == null || controller.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
+                    if (controller?.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
                     {
                         Halt();
                         facePlayer(base.Player);
@@ -98,19 +98,19 @@ namespace FarmTypeManager
                 }
                 else if (throwing.Value)
                 {
-                    if (base.invincibleCountdown > 0)
+                    if (invincibleCountdown > 0)
                     {
-                        base.invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
-                        if (base.invincibleCountdown <= 0)
+                        invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
+                        if (invincibleCountdown <= 0)
                         {
-                            base.stopGlowing();
+                            stopGlowing();
                         }
                     }
                     if (Sprite.Animate(time, 20, 4, 150f))
                     {
-                        this.throwing.Value = false;
-                        this.Sprite.currentFrame = 0;
-                        this.faceDirection(2);
+                        throwing.Value = false;
+                        Sprite.currentFrame = 0;
+                        faceDirection(2);
                         Vector2 v = StardewValley.Utility.getVelocityTowardPlayer(new Point((int)base.Position.X, (int)base.Position.Y), 8f, base.Player);
                         if (isMage.Value)
                         {
@@ -129,15 +129,16 @@ namespace FarmTypeManager
                         }
                     }
                 }
-                //check the ranged attacks setting before attempting to start throwing, and replace 8 with the threshold value (sight range)
-                else if (rangedAttacks.Value && spottedPlayer && controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.Tile, base.Player.Tile, moveTowardPlayerThreshold.Value))
+                //* check the ranged attacks setting before attempting to start throwing
+                //* replace 8 with the threshold value (sight range)
+                else if (rangedAttacks.Value && spottedPlayer && controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.009 : 0.003) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.Tile, base.Player.Tile, moveTowardPlayerThreshold.Value))
                 {
                     throwing.Value = true;
                     Halt();
                     Sprite.currentFrame = 20;
                     shake(750);
                 }
-                else if (this.withinPlayerThreshold(2))
+                else if (withinPlayerThreshold(2))
                 {
                     controller = null;
                 }
@@ -145,7 +146,7 @@ namespace FarmTypeManager
                 {
                     controller = new PathFindController(this, base.currentLocation, base.Player.TilePoint, -1, null, 200);
                     controllerAttemptTimer = (base.wildernessFarmMonster ? 2000 : 1000);
-                    if (controller == null || controller.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
+                    if (controller?.pathToEndPoint == null || controller.pathToEndPoint.Count == 0)
                     {
                         Halt();
                     }
@@ -165,33 +166,6 @@ namespace FarmTypeManager
                 {
                     timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
                 }
-                if (Player?.isRafting != true || !withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
-                {
-                    return;
-                }
-                IsWalkingTowardPlayer = false;
-                Point monsterPixel = StandingPixel;
-                Point playerPixel = Player.StandingPixel;
-                if (Math.Abs(playerPixel.Y - monsterPixel.Y) > 192)
-                {
-                    if (playerPixel.X - monsterPixel.X > 0)
-                    {
-                        SetMovingLeft(b: true);
-                    }
-                    else
-                    {
-                        SetMovingRight(b: true);
-                    }
-                }
-                else if (playerPixel.Y - monsterPixel.Y > 0)
-                {
-                    SetMovingUp(b: true);
-                }
-                else
-                {
-                    SetMovingDown(b: true);
-                }
-                MovePosition(time, Game1.viewport, currentLocation);
             }
         }
     }

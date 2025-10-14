@@ -1,12 +1,12 @@
 ﻿{
-   "Name": "Farm Type Manager (FTM)",
-   "Author": "Esca",
-   "Version": "1.25.1",
-   "Description": "Allows custom spawning of content from each farm type: forage, large objects, ore, and monsters",
-   "UniqueID": "Esca.FarmTypeManager",
-   "EntryDll": "FarmTypeManager.dll",
-   "MinimumApiVersion": "4.0.0",
-   "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ],
+  "Name": "Farm Type Manager (FTM)",
+  "Author": "Esca",
+  "Version": "1.25.2-alpha.20251014",
+  "Description": "Allows custom spawning of content from each farm type: forage, large objects, ore, and monsters",
+  "UniqueID": "Esca.FarmTypeManager",
+  "EntryDll": "FarmTypeManager.dll",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [ "Nexus:3231", "GitHub:Esca-MMC/FarmTypeManager", "ModDrop:598755" ],
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
