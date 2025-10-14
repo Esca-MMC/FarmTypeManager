@@ -61,13 +61,13 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The maximum number of times to perform actions from this entry when it's triggered.</summary>
         public int MaxTimes { get; set; } = 1;
 
-        public List<QuantityModifier> TimesModifiers { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-        public QuantityModifier.QuantityModifierMode TimesModifierMode { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+        public List<QuantityModifier> TimesModifiers { get; set; } = null;
+
+        public QuantityModifier.QuantityModifierMode TimesModifierMode { get; set; } = default;
 
         /***********************/
         /* Custom actions list */
         /***********************/
-        //NOTE: This is in a separate section at the bottom for organizational reasons. Raw exports of this asset, e.g. from Content Patcher's "patch export" command, would otherwise split settings above/below this list of large objects.
 
         /// <summary>A list of custom actions to perform when this entry is triggered.</summary>
         public Dictionary<string, CustomActionData> CustomActions { get; set; } = null;

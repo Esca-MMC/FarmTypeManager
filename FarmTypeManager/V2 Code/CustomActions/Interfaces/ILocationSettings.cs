@@ -8,8 +8,10 @@ namespace FarmTypeManager.CustomActions
     {
         /// <summary>The internal name of a single <see cref="GameLocation"/>.</summary>
         string Location { get; set; }
+
         /// <summary>A list of internal names for <see cref="GameLocation"/>s.</summary>
         List<string> LocationList { get; set; }
+
         /// <summary>The behavior to use when selecting locations from <see cref="LocationList"/>.</summary>
         LocationListModes LocationListMode { get; set; }
 

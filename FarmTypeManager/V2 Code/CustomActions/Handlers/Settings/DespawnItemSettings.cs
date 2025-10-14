@@ -24,6 +24,7 @@ namespace FarmTypeManager.CustomActions
         /************************/
         /* IDespawnItemSettings */
         /************************/
+
         public ItemMatchData ItemMatchData { get; set; } = null;
         public List<ItemMatchData> ItemMatchDataList { get; set; } = null;
 
