@@ -17,19 +17,13 @@ namespace FarmTypeManager.TileQueries
 
             switch (queryArgs[0].ToUpperInvariant())
             {
-                //basic
+                //meta
                 case "FALSE":
                 case "!TRUE":
                     return new FalseTileQuery();
                 case "TRUE":
                 case "!FALSE":
                     return new TrueTileQuery();
-                case "EXACT":
-                    return new ExactTileQuery(location, queryArgs);
-                case "!EXACT":
-                    return new NotExactTileQuery(queryArgs);
-
-                //meta
                 case "ANY":
                     return new AnyTileQuery(location, queryArgs);
                 case "!ANY":
@@ -58,6 +52,10 @@ namespace FarmTypeManager.TileQueries
                     return new NotAreaDiamondTileQuery(queryArgs);
 
                 //simple properties
+                case "EXACT":
+                    return new ExactTileQuery(location, queryArgs);
+                case "!EXACT":
+                    return new NotExactTileQuery(queryArgs);
                 case "INDEX":
                     return new IndexTileQuery(location, queryArgs);
                 case "!INDEX":
@@ -72,14 +70,6 @@ namespace FarmTypeManager.TileQueries
                     return new PassableTileQuery(location);
                 case "!PASSABLE":
                     return new NotPassableTileQuery(location);
-                case "HAS_OBJECT":
-                    return new HasObjectTileQuery(location);
-                case "!HAS_OBJECT":
-                    return new NotHasObjectTileQuery(location);
-                case "HAS_FURNITURE":
-                    return new HasFurnitureTileQuery(location);
-                case "!HAS_FURNITURE":
-                    return new NotHasFurnitureTileQuery(location);
                 case "OCCUPIED":
                     return new OccupiedTileQuery(location);
                 case "!OCCUPIED":
@@ -88,6 +78,28 @@ namespace FarmTypeManager.TileQueries
                     return new CanPlaceItemTileQuery(location);
                 case "!CAN_PLACE_ITEM":
                     return new NotCanPlaceItemTileQuery(location);
+
+                //object types
+                case "HAS_OBJECT":
+                    return new HasObjectTileQuery(location);
+                case "!HAS_OBJECT":
+                    return new NotHasObjectTileQuery(location);
+                case "HAS_FURNITURE":
+                    return new HasFurnitureTileQuery(location);
+                case "!HAS_FURNITURE":
+                    return new NotHasFurnitureTileQuery(location);
+                case "HAS_SMALL_TERRAIN_FEATURE":
+                    return new HasSmallTerrainFeatureTileQuery(location);
+                case "!HAS_SMALL_TERRAIN_FEATURE":
+                    return new NotHasSmallTerrainFeatureTileQuery(location);
+                case "HAS_LARGE_TERRAIN_FEATURE":
+                    return new HasLargeTerrainFeatureTileQuery(location);
+                case "!HAS_LARGE_TERRAIN_FEATURE":
+                    return new NotHasLargeTerrainFeatureTileQuery(location);
+                case "HAS_RESOURCE_CLUMP":
+                    return new HasResourceClumpTileQuery(location);
+                case "!HAS_RESOURCE_CLUMP":
+                    return new NotHasResourceClumpTileQuery(location);
 
                 //unknown properties (e.g. sent to this handler incorrectly)
                 default:
@@ -106,18 +118,17 @@ namespace FarmTypeManager.TileQueries
 
             Dictionary<string, ITileQueryFactory> factories = new(StringComparer.OrdinalIgnoreCase)
             {
+                //meta
                 { "FALSE", factory },
                 { "!FALSE", factory },
                 { "TRUE", factory },
                 { "!TRUE", factory },
-                { "EXACT", factory },
-                { "!EXACT", factory },
-
                 { "ANY", factory },
                 { "!ANY", factory },
                 { "NOT", factory },
                 { "SIZE", factory },
 
+                //ranges
                 { "AREA_WH", factory },
                 { "!AREA_WH", factory },
                 { "AREA_XY", factory },
@@ -127,21 +138,33 @@ namespace FarmTypeManager.TileQueries
                 { "AREA_DIAMOND", factory },
                 { "!AREA_DIAMOND", factory },
 
+                //simple properties
+                { "EXACT", factory },
+                { "!EXACT", factory },
                 { "INDEX", factory },
                 { "!INDEX", factory },
                 { "PROPERTY", factory },
                 { "!PROPERTY", factory },
 
+                //complex properties
+                { "PASSABLE", factory },
+                { "!PASSABLE", factory },
+                { "OCCUPIED", factory },
+                { "!OCCUPIED", factory },
                 { "CAN_PLACE_ITEM", factory },
                 { "!CAN_PLACE_ITEM", factory },
+
+                //object types
                 { "HAS_OBJECT", factory },
                 { "!HAS_OBJECT", factory },
                 { "HAS_FURNITURE", factory },
                 { "!HAS_FURNITURE", factory },
-                { "OCCUPIED", factory },
-                { "!OCCUPIED", factory },
-                { "PASSABLE", factory },
-                { "!PASSABLE", factory },
+                { "HAS_SMALL_TERRAIN_FEATURE", factory },
+                { "!HAS_SMALL_TERRAIN_FEATURE", factory },
+                { "HAS_LARGE_TERRAIN_FEATURE", factory },
+                { "!HAS_LARGE_TERRAIN_FEATURE", factory },
+                { "HAS_RESOURCE_CLUMP", factory },
+                { "!HAS_RESOURCE_CLUMP", factory },
             };
 
             return factories;
