@@ -1,9 +1,7 @@
 ﻿using FarmTypeManager.TileQueries;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;

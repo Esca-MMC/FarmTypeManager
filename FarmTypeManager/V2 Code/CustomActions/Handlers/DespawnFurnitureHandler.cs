@@ -5,7 +5,6 @@ using StardewValley.Delegates;
 using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
-using xTile.Tiles;
 
 namespace FarmTypeManager.CustomActions
 {

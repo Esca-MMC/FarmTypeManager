@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Extensions;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
