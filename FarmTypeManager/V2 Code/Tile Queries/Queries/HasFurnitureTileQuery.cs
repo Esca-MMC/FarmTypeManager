@@ -30,7 +30,7 @@ namespace FarmTypeManager.TileQueries
         /* ITileQuery */
         /**************/
 
-        public int CheckTilePriority => ITileQuery.Priority_Normal;
+        public int CheckTilePriority => ITileQuery.Priority_Low;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
         public bool CheckTile(Vector2 tile) => TileHasFurniture(tile);
         public List<Vector2> GetStartingTiles() => throw new NotImplementedException();
@@ -50,12 +50,8 @@ namespace FarmTypeManager.TileQueries
             Point position = new(x, y);
 
             foreach (Furniture f in Location.furniture)
-            {
                 if (f.GetBoundingBox().Contains(position))
-                {
                     return true;
-                }
-            }
 
             return false;
         }
