@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using System;
 using System.Collections.Generic;
+using xTile.Dimensions;
 
 namespace FarmTypeManager.TileQueries
 {
@@ -79,7 +80,7 @@ namespace FarmTypeManager.TileQueries
                 case "!CAN_PLACE_ITEM":
                     return new NotCanPlaceItemTileQuery(location);
 
-                //object types
+                //objects
                 case "HAS_OBJECT":
                     return new HasObjectTileQuery(location);
                 case "!HAS_OBJECT":
@@ -100,6 +101,12 @@ namespace FarmTypeManager.TileQueries
                     return new HasResourceClumpTileQuery(location);
                 case "!HAS_RESOURCE_CLUMP":
                     return new NotHasResourceClumpTileQuery(location);
+
+                //characters
+                case "HAS_CHARACTER":
+                    return new HasCharacterTileQuery(location);
+                case "!HAS_CHARACTER":
+                    return new NotHasCharacterTileQuery(location);
 
                 //unknown properties (e.g. sent to this handler incorrectly)
                 default:
@@ -153,8 +160,8 @@ namespace FarmTypeManager.TileQueries
                 { "!OCCUPIED", factory },
                 { "CAN_PLACE_ITEM", factory },
                 { "!CAN_PLACE_ITEM", factory },
-
-                //object types
+                
+                //objects
                 { "HAS_OBJECT", factory },
                 { "!HAS_OBJECT", factory },
                 { "HAS_FURNITURE", factory },
@@ -165,7 +172,12 @@ namespace FarmTypeManager.TileQueries
                 { "!HAS_LARGE_TERRAIN_FEATURE", factory },
                 { "HAS_RESOURCE_CLUMP", factory },
                 { "!HAS_RESOURCE_CLUMP", factory },
-            };
+
+                //characters
+                {"HAS_CHARACTER", factory },
+                {"!HAS_CHARACTER", factory }
+            }
+            ;
 
             return factories;
         }
