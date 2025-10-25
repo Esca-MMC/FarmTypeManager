@@ -29,7 +29,7 @@ namespace FarmTypeManager.TileQueries
         /* ITileQuery */
         /**************/
 
-        public int CheckTilePriority => ITileQuery.Priority_Normal;
+        public int CheckTilePriority => ITileQuery.Priority_High;
         public int StartingTilesPriority => ITileQuery.Priority_NotImplemented;
         public bool CheckTile(Vector2 tile) => !Location.Objects.ContainsKey(tile);
         public List<Vector2> GetStartingTiles() => throw new NotImplementedException();
