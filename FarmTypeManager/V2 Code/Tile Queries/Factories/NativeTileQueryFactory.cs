@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using xTile.Dimensions;
 
 namespace FarmTypeManager.TileQueries
@@ -85,10 +86,18 @@ namespace FarmTypeManager.TileQueries
                     return new HasObjectTileQuery(location);
                 case "!HAS_OBJECT":
                     return new NotHasObjectTileQuery(location);
+                case "HAS_OBJECT_ID":
+                    return new HasObjectIDTileQuery(location, queryArgs);
+                case "!HAS_OBJECT_ID":
+                    return new NotHasObjectIDTileQuery(location, queryArgs);
                 case "HAS_FURNITURE":
                     return new HasFurnitureTileQuery(location);
                 case "!HAS_FURNITURE":
                     return new NotHasFurnitureTileQuery(location);
+                case "HAS_FURNITURE_ID":
+                    return new HasFurnitureIdTileQuery(location, queryArgs);
+                case "!HAS_FURNITURE_ID":
+                    return new NotHasFurnitureIdTileQuery(location, queryArgs);
                 case "HAS_SMALL_TERRAIN_FEATURE":
                     return new HasSmallTerrainFeatureTileQuery(location);
                 case "!HAS_SMALL_TERRAIN_FEATURE":
@@ -164,8 +173,12 @@ namespace FarmTypeManager.TileQueries
                 //objects
                 { "HAS_OBJECT", factory },
                 { "!HAS_OBJECT", factory },
+                { "HAS_OBJECT_ID", factory },
+                { "!HAS_OBJECT_ID", factory },
                 { "HAS_FURNITURE", factory },
                 { "!HAS_FURNITURE", factory },
+                { "HAS_FURNITURE_ID", factory },
+                { "!HAS_FURNITURE_ID", factory },
                 { "HAS_SMALL_TERRAIN_FEATURE", factory },
                 { "!HAS_SMALL_TERRAIN_FEATURE", factory },
                 { "HAS_LARGE_TERRAIN_FEATURE", factory },
