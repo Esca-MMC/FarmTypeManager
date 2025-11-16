@@ -1,7 +1,7 @@
 ﻿{
    "Name": "Farm Type Manager (FTM)",
    "Author": "Esca",
-   "Version": "1.26.1",
+   "Version": "1.26.2-alpha.20251116",
    "Description": "Allows custom spawning of content from each farm type: forage, large objects, ore, and monsters",
    "UniqueID": "Esca.FarmTypeManager",
    "EntryDll": "FarmTypeManager.dll",
