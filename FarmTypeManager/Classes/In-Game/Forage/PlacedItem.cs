@@ -6,6 +6,7 @@ using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Xml.Serialization;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace FarmTypeManager
 {
@@ -95,28 +96,38 @@ namespace FarmTypeManager
                 if (modData.TryGetValue(Utility.ModDataKeys.CanBePickedUp, out var data) && data.StartsWith("f", StringComparison.OrdinalIgnoreCase)) //if this is flagged as "cannot be picked up"
                     return false;
 
-                SetForageQuality(Location); //if this is forage, set its quality
-                if (!Game1.player.canMove || this.isTemporarilyInvisible || !Game1.player.couldInventoryAcceptThisItem(Item)) //if this isn't the local player OR they can't currently pick this up
+                SetForageQuality(); //if this is forage, set its quality
+                if (!Game1.player.canMove || isTemporarilyInvisible || !Game1.player.couldInventoryAcceptThisItem(Item)) //if this isn't the local player OR they can't currently pick this up
                     return false; //this placed item was not used
 
-                //add the contained item to the player's inventory and remove this placed item
-                if (Game1.player.addItemToInventoryBool(Item, true)) //add this item to the player's inventory; if successful,
+                //add the item to the player's inventory
+                //NOTE: this assumes there's enough inventory space for this entire item stack, enforced by earlier checks
+                
+                OnForagePickup(out Item extraStack); //perform forage-related tasks if necessary
+                Game1.player.addItemToInventory(Item); //add the main stack (which should be guaranteed to fit)
+                if (extraStack != null)
                 {
-                    OnForagePickup(Item, Location); //if this is forage, perform related tasks
-
-                    Location.localSound("pickUpItem");
-                    DelayedAction.playSoundAfterDelay("coin", 300);
-                    Game1.player.animateOnce(279 + Game1.player.FacingDirection); //do the player's "pick up object" animation
-                    Item = null; //clear this placed item's reference to the item
-                    Location.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
+                    if (Game1.player.addItemToInventory(extraStack) is Item remainder) //try to add the extra stack; if any items couldn't fit and still remain...
+                    {
+                        Point centerOfPlayer = Game1.player.GetBoundingBox().Center;
+                        Vector2 dropPosition = new Vector2(centerOfPlayer.X, centerOfPlayer.Y);
+                        Game1.createItemDebris(remainder, dropPosition, Game1.player.FacingDirection, Game1.player.currentLocation); //drop the item at the player's position
+                    }
                 }
+
+                Location.localSound("pickUpItem");
+                DelayedAction.playSoundAfterDelay("coin", 300);
+                Game1.player.animateOnce(279 + Game1.player.FacingDirection); //do the player's "pick up object" animation
+                Game1.player.canMove = false; //prevent movement during the animation (which should automatically re-enable it afterward)
+                    
+                Item = null; //clear this placed item's reference to the item
+                Location?.terrainFeatures.Remove(tileLocation); //remove this placed item from the game
 
                 return true; //this placed item was used
             }
 
             /// <summary>Assigns quality to this item if it is a forage object based on the local player's Foraging skill and professions.</summary>
-            /// <param name="location">The current location of this item.</param>
-            private void SetForageQuality(GameLocation location)
+            private void SetForageQuality()
             {
                 if (Item is StardewValley.Object obj && obj.isForage()) //if this item is forage
                 {
@@ -139,39 +150,35 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>Performs post-pickup forage object behaviors. These include Gatherer profession effects, experience gain, and statistics updates.</summary>
-            /// <param name="item">The possible forage item.</param>
-            /// <param name="location">The item's current location.</param>
-            private void OnForagePickup(Item item, GameLocation location)
+            /// <summary>Performs mid-pickup forage object behaviors. Sets item quality, adds relevant skill experience, and updates foraging statistics.</summary>
+            /// <param name="extraStack">Returns any extra forage items generated, e.g. due to the Gatherer profession doubling forage output.</param>
+            /// <returns>True if the provided item is considered forage.</returns>
+            private bool OnForagePickup(out Item extraStack)
             {
+                extraStack = null;
                 if (Item is StardewValley.Object obj && obj.isForage()) //if this is a forage object
                 {
                     int totalStackSize = obj.Stack;
 
-                    //check the "double forage" profession chance
+                    //perform the "double forage" profession check
                     if (Game1.player.professions.Contains(Farmer.gatherer) && Utility.RNG.NextDouble() < 0.2) //20% chance if the player has the Gatherer profession
                     {
                         totalStackSize *= 2; //double the recorded total stack size
 
-                        Item secondStack = Item.getOne(); //copy the item
-                        secondStack.Stack = Item.Stack; //copy the original stack size
-
-                        if (!Game1.player.addItemToInventoryBool(secondStack, true)) //add the second stack to the player's inventory; if there is not enough space for all of it,
-                        {
-                            //drop the remaining stack on the ground
-                            Point centerOfPlayer = Game1.player.GetBoundingBox().Center; //get the player's center
-                            Vector2 dropPosition = new Vector2(centerOfPlayer.X, centerOfPlayer.Y); //create a Vector2 of the player's center
-                            Game1.createItemDebris(secondStack, dropPosition, Game1.player.FacingDirection, location); //drop the item at the player's position
-                        }
+                        extraStack = Item.getOne(); //copy the item
+                        extraStack.Stack = Item.Stack; //copy the original stack size
                     }
 
-                    if (location.isFarmBuildingInterior()) //if this is was collected inside a farm building
-                        Game1.player.gainExperience(Farmer.farmingSkill, 5 * totalStackSize); //gain farming experience multiplied by stack size
+                    if (Location?.isFarmBuildingInterior() == true) //if this is was collected inside a farm building
+                        Game1.player.gainExperience(Farmer.farmingSkill, 5 * totalStackSize); //gain 5 farming experience multiplied by stack size
                     else
-                        Game1.player.gainExperience(Farmer.foragingSkill, 7 * totalStackSize); //gain foraging experience multiplied by stack size
+                        Game1.player.gainExperience(Farmer.foragingSkill, 7 * totalStackSize); //gain 7 foraging experience multiplied by stack size
 
                     Game1.stats.ItemsForaged += (uint)totalStackSize; //increase the "items foraged" stat by the object's stack size
+                    
+                    return true; //this item is forage
                 }
+                return false; //this is not forage
             }
         }
     }
