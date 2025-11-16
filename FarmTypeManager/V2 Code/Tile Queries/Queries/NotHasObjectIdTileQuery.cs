@@ -2,7 +2,6 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager.TileQueries
 {
@@ -34,7 +33,7 @@ namespace FarmTypeManager.TileQueries
 
         /// <summary>The in-game location to check.</summary>
         private GameLocation Location { get; }
-        
+
         /// <summary>A set of qualified IDs to check. Case-insensitive.</summary>
         private HashSet<string> Ids { get; }
 
