@@ -94,7 +94,7 @@ namespace FarmTypeManager.CustomActions
         /// <param name="item">The item to place.</param>
         /// <param name="placementError">Error text describing why an error occured during placement, e.g. the item type was invalid. Null if placement succeeeded, or if it only failed due to obstructions.</param>
         /// <returns>True if the item was successfully placed. False if placement was obstructed, or if an error occurred.</returns>
-        /// <remarks>If error is null, this method should NOT cause the handler to return false. Failure due to obstructions shouldn't be treated as an error. Returning false with non-null error text indicates an error (e.g. an invalid item type).</remarks>
+        /// <remarks>If <paramref name="placementError"/> is null, a false return value should NOT be treated as an error by the caller. "Safe" failures can occur due to obstructed tiles, etc. Returning false with non-null error text indicates an error (e.g. due to invalid item types, caught exceptions, etc).</remarks>
         protected abstract bool TryPlaceItem(GameLocation location, Vector2 tile, Item item, out string placementError);
     }
 }
