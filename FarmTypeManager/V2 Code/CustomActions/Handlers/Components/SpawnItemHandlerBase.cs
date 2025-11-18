@@ -27,7 +27,7 @@ namespace FarmTypeManager.CustomActions
             Dictionary<Vector2, IEnumerator<Vector2>> SizedTiles = []; //key = width and height of an item to spawn; value = the tile enumerator to use for that item
 
             int totalSpawned = 0;
-            foreach (Item item in settings.CreateItems(queryContext, itemContext, numberOfItems, false))
+            foreach (Item item in settings.CreateItems(queryContext, itemContext, numberOfItems))
             {
                 Vector2 size = GetItemSize(item);
                 if (!SizedTiles.TryGetValue(size, out var tiles)) //try to get the enumerator for tiles of this size
