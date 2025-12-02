@@ -493,5 +493,35 @@ namespace FarmTypeManager
                 }
             }
         }
+
+        /// <summary>Instanced APIs provided by other mods.</summary>
+        public static class ModAPIs
+        {
+            private static bool triedToLoadQuickSaveAPI = false;
+            private static IQuickSaveAPI _quickSaveAPI = null;
+            public static IQuickSaveAPI QuickSaveAPI
+            {
+                get
+                {
+                    if (!triedToLoadQuickSaveAPI)
+                        _quickSaveAPI = Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
+
+                    return _quickSaveAPI;
+                }
+            }
+
+            private static bool triedToLoadSaveAnywhereAPI = false;
+            private static ISaveAnywhereAPI _saveAnywhereAPI = null;
+            public static ISaveAnywhereAPI SaveAnywhereAPI
+            {
+                get
+                {
+                    if (!triedToLoadSaveAnywhereAPI)
+                        _saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+
+                    return _saveAnywhereAPI;
+                }
+            }
+        }
     }
 }

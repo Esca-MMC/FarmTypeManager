@@ -6,7 +6,7 @@ using StardewValley.Delegates;
 using StardewValley.Triggers;
 using System;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.HarmonyPatches
 {
     /// <summary>A Harmony patch that passes triggers and context information to this mod's custom action system.</summary>
     public static class HarmonyPatch_TriggerCustomActions

@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using FarmTypeManager.Serialization;
+using StardewModdingAPI;
 
 namespace FarmTypeManager
 {
@@ -10,6 +11,7 @@ namespace FarmTypeManager
             //FTM 2.0 events (TODO: categorize these better)
             AssetHelper.Initialize(helper);
             CustomActions.CustomActionsAssetManager.Initialize(helper);
+            SerializerEvents.Initialize();
 
             //spawn-related events
             helper.Events.GameLoop.DayEnding += DayEnding;

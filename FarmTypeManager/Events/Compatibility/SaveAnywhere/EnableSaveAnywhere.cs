@@ -25,17 +25,15 @@ namespace FarmTypeManager
         /// <summary>Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves).</summary>
         public void EnableSaveAnywhere(object sender, GameLaunchedEventArgs e)
         {
-            //Save Anywhere: pass compatibility events for handling this mod's custom classes
-            ISaveAnywhereAPI saveAnywhere = Utility.Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
-            if (saveAnywhere != null) //if the API was accessed successfully
-            {
-                Utility.Monitor.Log("Save Anywhere API loaded. Sending compatibility events.", LogLevel.Trace);
-                saveAnywhere.addBeforeSaveEvent(ModManifest.UniqueID, SaveAnywhere_BeforeSave);
-                saveAnywhere.addAfterSaveEvent(ModManifest.UniqueID, SaveAnywhere_AfterSave);
+            if (FTMUtility.ModAPIs.SaveAnywhereAPI == null)
+                return;
 
-                Helper.Events.GameLoop.DayEnding += SaveAnywhere_DayEnding;
-                Helper.Events.GameLoop.ReturnedToTitle += SaveAnywhere_ReturnedToTitle;
-            }
+            FTMUtility.Monitor.Log("Save Anywhere API found. Adding compatibility events for FTM content packs.", LogLevel.Trace);
+            FTMUtility.ModAPIs.SaveAnywhereAPI.addBeforeSaveEvent(ModManifest.UniqueID, SaveAnywhere_BeforeSave);
+            FTMUtility.ModAPIs.SaveAnywhereAPI.addAfterSaveEvent(ModManifest.UniqueID, SaveAnywhere_AfterSave);
+
+            Helper.Events.GameLoop.DayEnding += SaveAnywhere_DayEnding;
+            Helper.Events.GameLoop.ReturnedToTitle += SaveAnywhere_ReturnedToTitle;
         }
 
         /// <summary>Saves and removes objects/data that cannot be handled by Stardew Valley's save process.</summary>

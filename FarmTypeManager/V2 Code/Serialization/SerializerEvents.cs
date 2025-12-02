@@ -1,0 +1,16 @@
+﻿namespace FarmTypeManager.Serialization
+{
+    public static class SerializerEvents
+    {
+        /// <summary>Initalize serialization-related events.</summary>
+        public static void Initialize()
+        {
+            FTMUtility.Helper.Events.GameLoop.GameLaunched += (_, _) => GameLaunched_Initialize();
+        }
+
+        private static void GameLaunched_Initialize()
+        {
+            PlacedItemSerializer.Initialize();
+        }
+    }
+}

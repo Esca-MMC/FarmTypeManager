@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using StardewModdingAPI;
+using FarmTypeManager.HarmonyPatches;
 
 namespace FarmTypeManager
 {
