@@ -26,7 +26,7 @@ namespace FarmTypeManager.Serialization
             Id = instance.QualifiedItemId;
             IsSpawnedObject = obj?.IsSpawnedObject;
             MinutesUntilReady = obj?.MinutesUntilReady;
-            ModData = instance.modDataForSerialization is var modData && modData.Length > 0 ? modData : null; //get the serializer-prepared version of the instance's mod data; if the data is null or empty, use null
+            ModData = instance.modDataForSerialization is var modData && modData?.Length > 0 ? modData : null; //get the serializer-prepared version of the instance's mod data; if the data is null or empty, use null
             Quality = instance.Quality;
             Stack = instance.Stack;
         }

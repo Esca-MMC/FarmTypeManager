@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using QuickSave.API;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Extensions;
 using System;
@@ -504,7 +505,10 @@ namespace FarmTypeManager
                 get
                 {
                     if (!triedToLoadQuickSaveAPI)
+                    {
                         _quickSaveAPI = Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
+                        triedToLoadQuickSaveAPI = true;
+                    }
 
                     return _quickSaveAPI;
                 }
@@ -517,7 +521,10 @@ namespace FarmTypeManager
                 get
                 {
                     if (!triedToLoadSaveAnywhereAPI)
+                    {
                         _saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+                        triedToLoadSaveAnywhereAPI = true;
+                    }
 
                     return _saveAnywhereAPI;
                 }

@@ -23,7 +23,7 @@ namespace FarmTypeManager.Serialization
         {
             Item = instance.Item != null ? new ItemSaveData(instance.Item) : null;
             LocationName = instance.Location?.NameOrUniqueName;
-            ModData = instance.modDataForSerialization is var modData && modData.Length > 0 ? modData : null; //get the serializer-prepared version of the instance's mod data; if the data is null or empty, use null
+            ModData = instance.modDataForSerialization is var modData && modData?.Length > 0 ? modData : null; //get the serializer-prepared version of the instance's mod data; if the data is null or empty, use null
             Tile = instance.Tile;
         }
 
