@@ -32,6 +32,8 @@ namespace FarmTypeManager.TileQueries
                     return new NotTileQuery(location, queryArgs);
                 case "SIZE":
                     return new SizeTileQuery(location, queryArgs);
+                case "!SIZE":
+                    return new NotSizeTileQuery(location, queryArgs);
 
                 //ranges
                 case "AREA_WH":
@@ -141,6 +143,7 @@ namespace FarmTypeManager.TileQueries
                 { "!ANY", factory },
                 { "NOT", factory },
                 { "SIZE", factory },
+                { "!SIZE", factory },
 
                 //ranges
                 { "AREA_WH", factory },
