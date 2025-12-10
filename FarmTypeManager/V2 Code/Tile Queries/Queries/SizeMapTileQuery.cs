@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace FarmTypeManager.TileQueries
 {
-    /// <summary>A handler for the "SIZE" tile query. Allows tiles if every tile in a specified area is allowed by the sub-query.</summary>
-    /// <remarks>Expected string format: "SIZE {X} {Y} {Sub-query} [Allow overlap]". Example: "SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
-    public class SizeTileQuery : ITileQuery
+    /// <summary>A handler for the "SIZE_MAP" tile query. Allows tiles if every tile in a specified collision map is allowed by the sub-query.</summary>
+    /// <remarks>Expected string format: "SIZE_MAP {Collision map} {Sub-query} [Allow overlap]". Example: "SIZE_MAP XXX\nXOX\nXXX \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
+    public class SizeMapTileQuery : ITileQuery
     {
         /***************/
         /* Constructor */
@@ -15,30 +15,25 @@ namespace FarmTypeManager.TileQueries
 
         /// <param name="location">The in-game location to check.</param>
         /// <param name="queryArgs">The text of the query to handle, split by spaces with quote awareness. The first argument is the query key.</param>
-        public SizeTileQuery(GameLocation location, string[] queryArgs)
+        public SizeMapTileQuery(GameLocation location, string[] queryArgs)
         {
             MapWidth = location.map.Layers[0].LayerWidth;
             MapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGetInt(queryArgs, 1, out int sizeWidth, out string error, "Int \"Width\" in argument 1")
-                || !ArgUtility.TryGetInt(queryArgs, 2, out int sizeHeight, out error, "Int \"Height\" in argument 2"))
+            if (!ArgUtility.TryGet(queryArgs, 1, out string collisionMap, out string error, false, "String \"Collision map\" in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            if (sizeWidth < 1 || sizeHeight < 1)
-                throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: 'Width ({sizeWidth}) and Height ({sizeHeight}) must be above zero'.");
-
-            SizeWidth = sizeWidth;
-            SizeHeight = sizeHeight;
-
-            if (!ArgUtility.TryGet(queryArgs, 3, out string subQuery, out error, false, "String \"Query\" in argument 3"))
+            if (!ArgUtility.TryGet(queryArgs, 2, out string subQuery, out error, false, "String \"Sub-query\" in argument 2"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            if (!ArgUtility.TryGetOptionalBool(queryArgs, 4, out bool allowOverlap, out error, false, "Optional bool \"Allow overlap\" in argument 4"))
+            if (!ArgUtility.TryGetOptionalBool(queryArgs, 3, out bool allowOverlap, out error, false, "Optional bool \"Allow overlap\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Queries = TileCondition.ParseQueries(location, subQuery);
 
             StartingTilesQuery = TileCondition.ChooseStartingTilesSource(Queries);
+
+            CollisionTiles = FTMUtility.ParseCollisionMap(collisionMap); //parse the list of "impassable" tiles (e.g. 'X') in this map as offsets
 
             AllowOverlap = allowOverlap;
         }
@@ -69,13 +64,10 @@ namespace FarmTypeManager.TileQueries
         private int MapWidth { get; }
 
         /// <summary>A list of sub-queries parsed from arguments.</summary>
-        private List<ITileQuery> Queries { get; } = [];
+        private List<ITileQuery> Queries { get; }
 
-        /// <summary>The vertical size of the area to check.</summary>
-        private int SizeHeight { get; }
-
-        /// <summary>The horizontal size of the area to check.</summary>
-        private int SizeWidth { get; }
+        /// <summary>The tile offsets to use when checking for collision.</summary>
+        private List<Vector2> CollisionTiles { get; }
 
         /// <summary>The sub-query to use when getting a starting tile set, if any.</summary>
         private ITileQuery StartingTilesQuery { get; }
@@ -86,48 +78,45 @@ namespace FarmTypeManager.TileQueries
 
         public int CheckTilePriority => ITileQuery.Priority_VeryLow;
         public int StartingTilesPriority => StartingTilesQuery?.StartingTilesPriority ?? ITileQuery.Priority_NotImplemented; //if an appropriate sub-query exists, use it; otherwise, treat this as not implemented
-        public bool CheckTile(Vector2 tile) //using this tile as the top left corner, check every tile in the area with every sub-query; return false if any return false
+        public bool CheckTile(Vector2 tile) //using this tile as the starting position, check every tile in the area with every sub-query; return false if any return false
         {
-            List<Vector2> tilesUsed = new(SizeWidth * SizeHeight);
+            List<Vector2> tilesUsed = new(CollisionTiles.Count);
 
-            for (int x = 0; x < SizeWidth; x++)
+            foreach (Vector2 offset in CollisionTiles)
             {
-                for (int y = 0; y < SizeHeight; y++)
+                Vector2 tileToCheck = tile + offset; //get this tile of the collision map, relative to the provided tile
+
+                if (CheckTileCache.TryGetValue(tileToCheck, out bool cachedResult))
                 {
-                    Vector2 tileToCheck = new(tile.X + x, tile.Y + y);
-
-                    if (CheckTileCache.TryGetValue(tileToCheck, out bool cachedResult))
+                    if (cachedResult)
                     {
-                        if (cachedResult)
-                        {
-                            tilesUsed.Add(tileToCheck);
-                            continue; //this sub-tile is valid
-                        }
-                        else
-                            return false; //this sub-tile is invalid, so the checked tile is invalid
+                        tilesUsed.Add(tileToCheck);
+                        continue; //this sub-tile is valid
                     }
+                    else
+                        return false; //this sub-tile is invalid, so the checked tile is invalid
+                }
 
-                    if (tileToCheck.X < 0 || tileToCheck.X >= MapWidth || tileToCheck.Y < 0 || tileToCheck.Y >= MapHeight)
+                if (tileToCheck.X < 0 || tileToCheck.X >= MapWidth || tileToCheck.Y < 0 || tileToCheck.Y >= MapHeight)
+                {
+                    CheckTileCache[tileToCheck] = false;
+                    return false;
+                }
+
+                foreach (var query in Queries)
+                {
+                    if (!query.CheckTile(tileToCheck))
                     {
                         CheckTileCache[tileToCheck] = false;
                         return false;
                     }
-
-                    foreach (var query in Queries)
-                    {
-                        if (!query.CheckTile(tileToCheck))
-                        {
-                            CheckTileCache[tileToCheck] = false;
-                            return false;
-                        }
-                    }
-
-                    tilesUsed.Add(tileToCheck);
-                    CheckTileCache[tileToCheck] = true;
                 }
+
+                tilesUsed.Add(tileToCheck);
+                CheckTileCache[tileToCheck] = true;
             }
 
-            //all used tiles are valid
+            //all tiles are valid
 
             if (AllowOverlap)
                 foreach (Vector2 tileUsed in tilesUsed)

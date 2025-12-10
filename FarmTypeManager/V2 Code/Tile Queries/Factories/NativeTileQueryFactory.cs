@@ -1,6 +1,7 @@
 ﻿using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace FarmTypeManager.TileQueries
 {
@@ -34,6 +35,8 @@ namespace FarmTypeManager.TileQueries
                     return new SizeTileQuery(location, queryArgs);
                 case "!SIZE":
                     return new NotSizeTileQuery(location, queryArgs);
+                case "SIZE_MAP":
+                    return new SizeMapTileQuery(location, queryArgs);
 
                 //ranges
                 case "AREA_WH":
@@ -144,6 +147,7 @@ namespace FarmTypeManager.TileQueries
                 { "NOT", factory },
                 { "SIZE", factory },
                 { "!SIZE", factory },
+                { "SIZE_MAP", factory },
 
                 //ranges
                 { "AREA_WH", factory },
