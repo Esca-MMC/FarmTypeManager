@@ -55,6 +55,10 @@ namespace FarmTypeManager.TileQueries
                     return new AreaDiamondTileQuery(location, queryArgs);
                 case "!AREA_DIAMOND":
                     return new NotAreaDiamondTileQuery(queryArgs);
+                case "AREA_MAP":
+                    return new AreaMapTileQuery(location, queryArgs);
+                case "!AREA_MAP":
+                    return new NotAreaMapTileQuery(queryArgs);
 
                 //simple properties
                 case "EXACT":
@@ -158,6 +162,8 @@ namespace FarmTypeManager.TileQueries
                 { "!AREA_CIRCLE", factory },
                 { "AREA_DIAMOND", factory },
                 { "!AREA_DIAMOND", factory },
+                { "AREA_MAP", factory },
+                { "!AREA_MAP", factory },
 
                 //simple properties
                 { "EXACT", factory },
