@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!INDEX" tile query. Allows tiles that do NOT have certain index values on the specified layer.</summary>
-    /// <remarks>Expected string format: "!INDEX {Layer} [List of values]". Example: "!INDEX Back 1 2 3".</remarks>
+    /// <remarks>Expected string format: "!INDEX {map layer} [tile index]+". Example: "!INDEX Back 1 2 3".</remarks>
     public class NotIndexTileQuery : ITileQuery
     {
         /***************/
@@ -19,7 +19,7 @@ namespace FarmTypeManager.TileQueries
         {
             Location = location;
 
-            if (!ArgUtility.TryGet(queryArgs, 1, out string layer, out string error, false, "Map Layer Name"))
+            if (!ArgUtility.TryGet(queryArgs, 1, out string layer, out string error, false, "string \"map layer\" in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Layer = layer;
@@ -29,7 +29,7 @@ namespace FarmTypeManager.TileQueries
                 IndexValues = [];
                 for (int x = 3; x < queryArgs.Length; x++)
                 {
-                    if (!ArgUtility.TryGetInt(queryArgs, x, out int index, out error, $"Tile index in argument {x}"))
+                    if (!ArgUtility.TryGetInt(queryArgs, x, out int index, out error, $"int \"tile index\" in argument {x}"))
                         throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
                     IndexValues.Add(index);
                 }

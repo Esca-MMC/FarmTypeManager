@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "AREA_XY" tile query. Allows tiles within a rectangular area between two tiles.</summary>
-    /// <remarks>Expected string format: "AREA_XY {X1} {Y1} {X2} {Y2}". Example: "AREA_XY 2 2 5 5".</remarks>
+    /// <remarks>Expected string format: "AREA_XY {x1} {y1} {x2} {y2}". Example: "AREA_XY 2 2 5 5".</remarks>
     public class AreaXYTileQuery : ITileQuery
     {
         /***************/
@@ -20,8 +20,8 @@ namespace FarmTypeManager.TileQueries
             MapWidth = location.map.Layers[0].LayerWidth;
             MapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGetPoint(queryArgs, 1, out Point tile1, out string error, "Area Tile 1")
-                || !ArgUtility.TryGetPoint(queryArgs, 3, out Point tile2, out error, "Area Tile 2"))
+            if (!ArgUtility.TryGetPoint(queryArgs, 1, out Point tile1, out string error, "Vector2 \"tile 1\" in arguments 1-2")
+                || !ArgUtility.TryGetPoint(queryArgs, 3, out Point tile2, out error, "Vector2 \"tile 2\" in arguments 3-4"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             TopLeftCorner = new(Math.Min(tile1.X, tile2.X), Math.Min(tile1.Y, tile2.Y)); //use the lower X and Y

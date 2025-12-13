@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "SIZE_MAP" tile query. Allows tiles if every tile in a specified collision map is allowed by the sub-query.</summary>
-    /// <remarks>Expected string format: "SIZE_MAP {Collision map} {Sub-query} [Allow overlap]". Example: "SIZE_MAP XXX\nXOX\nXXX \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
+    /// <remarks>Expected string format: "SIZE_MAP {collision map} {sub-query} [allow overlap]". Example: "SIZE_MAP XXX\nXOX\nXXX \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
     public class SizeMapTileQuery : ITileQuery
     {
         /***************/
@@ -20,13 +20,13 @@ namespace FarmTypeManager.TileQueries
             MapWidth = location.map.Layers[0].LayerWidth;
             MapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGet(queryArgs, 1, out string collisionMap, out string error, false, "String \"Collision map\" in argument 1"))
+            if (!ArgUtility.TryGet(queryArgs, 1, out string collisionMap, out string error, false, "string \"collision map\" in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            if (!ArgUtility.TryGet(queryArgs, 2, out string subQuery, out error, false, "String \"Sub-query\" in argument 2"))
+            if (!ArgUtility.TryGet(queryArgs, 2, out string subQuery, out error, false, "string \"sub-query\" in argument 2"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            if (!ArgUtility.TryGetOptionalBool(queryArgs, 3, out bool allowOverlap, out error, false, "Optional bool \"Allow overlap\" in argument 3"))
+            if (!ArgUtility.TryGetOptionalBool(queryArgs, 3, out bool allowOverlap, out error, false, "bool \"allow overlap\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Queries = TileCondition.ParseQueries(location, subQuery);

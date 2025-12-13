@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "HAS_OBJECT_ID" tile query. Allows tiles that contain an object or big craftable with the specified ID(s).</summary>
-    /// <remarks>Expected string format: "HAS_OBJECT_ID {ID}+". Example: "HAS_OBJECT_ID (O)16 (BC)9".</remarks>
+    /// <remarks>Expected string format: "HAS_OBJECT_ID {id}+". Example: "HAS_OBJECT_ID (O)16 (BC)9".</remarks>
     public class HasObjectIDTileQuery : ITileQuery
     {
         /***************/

@@ -7,7 +7,7 @@ using System.Linq;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!ANY" tile query. Rejects tiles if any sub-query allows them.</summary>
-    /// <remarks>Expected string format: "!ANY {List of sub-queries}". Example: "!ANY \"AREA 2 2 5 5\" \"AREA 12 2 5 5\"".</remarks>
+    /// <remarks>Expected string format: "!ANY {sub-query}+". Example: "!ANY \"AREA 2 2 5 5\" \"AREA 12 2 5 5\"".</remarks>
     public class NotAnyTileQuery : ITileQuery
     {
         /***************/

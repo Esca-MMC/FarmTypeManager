@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!AREA_WH" tile query. Allows tiles outside of the specified rectangular area.</summary>
-    /// <remarks>Expected string format: "!AREA_WH {X} {Y} {Width} {Height}". Example: "!AREA_WH 2 2 5 5".</remarks>
+    /// <remarks>Expected string format: "!AREA_WH {x} {y} {width} {height}". Example: "!AREA_WH 2 2 5 5".</remarks>
     public class NotAreaWHTileQuery : ITileQuery
     {
         /***************/
@@ -16,7 +16,7 @@ namespace FarmTypeManager.TileQueries
         /// <param name="queryArgs">The text of the query to handle, split by spaces with quote awareness. The first argument is the query key.</param>
         public NotAreaWHTileQuery(string[] queryArgs)
         {
-            if (!ArgUtility.TryGetRectangle(queryArgs, 1, out Rectangle rectangle, out string error, $"Area Rectangle"))
+            if (!ArgUtility.TryGetRectangle(queryArgs, 1, out Rectangle rectangle, out string error, $"Rectangle \"area rectangle\" in arguments 1-4"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
             Rectangle = rectangle;
         }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "SIZE" tile query. Allows tiles if every tile in a specified area is allowed by the sub-query.</summary>
-    /// <remarks>Expected string format: "SIZE {X} {Y} {Sub-query} [Allow overlap]". Example: "SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
+    /// <remarks>Expected string format: "SIZE {width} {height} {sub-query} [allow overlap]". Example: "SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\" true".</remarks>
     public class SizeTileQuery : ITileQuery
     {
         /***************/
@@ -20,8 +20,8 @@ namespace FarmTypeManager.TileQueries
             MapWidth = location.map.Layers[0].LayerWidth;
             MapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGetInt(queryArgs, 1, out int sizeWidth, out string error, "Int \"Width\" in argument 1")
-                || !ArgUtility.TryGetInt(queryArgs, 2, out int sizeHeight, out error, "Int \"Height\" in argument 2"))
+            if (!ArgUtility.TryGetInt(queryArgs, 1, out int sizeWidth, out string error, "int \"width\" in argument 1")
+                || !ArgUtility.TryGetInt(queryArgs, 2, out int sizeHeight, out error, "int \"height\" in argument 2"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             if (sizeWidth < 1 || sizeHeight < 1)
@@ -30,10 +30,10 @@ namespace FarmTypeManager.TileQueries
             SizeWidth = sizeWidth;
             SizeHeight = sizeHeight;
 
-            if (!ArgUtility.TryGet(queryArgs, 3, out string subQuery, out error, false, "String \"Query\" in argument 3"))
+            if (!ArgUtility.TryGet(queryArgs, 3, out string subQuery, out error, false, "string \"sub-query\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            if (!ArgUtility.TryGetOptionalBool(queryArgs, 4, out bool allowOverlap, out error, false, "Optional bool \"Allow overlap\" in argument 4"))
+            if (!ArgUtility.TryGetOptionalBool(queryArgs, 4, out bool allowOverlap, out error, false, "bool \"allow overlap\" in argument 4"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Queries = TileCondition.ParseQueries(location, subQuery);

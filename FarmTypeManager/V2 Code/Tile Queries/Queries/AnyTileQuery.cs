@@ -7,7 +7,7 @@ using System.Linq;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "ANY" tile query. Allows tiles if any sub-query allows them.</summary>
-    /// <remarks>Expected string format: "ANY {List of sub-queries}". Example: "ANY \"AREA 2 2 5 5\" \"AREA 12 2 5 5\"".</remarks>
+    /// <remarks>Expected string format: "ANY {sub-query}+". Example: "ANY \"AREA 2 2 5 5\" \"AREA 12 2 5 5\"".</remarks>
     public class AnyTileQuery : ITileQuery
     {
         /***************/
@@ -22,10 +22,10 @@ namespace FarmTypeManager.TileQueries
             int x = 1;
             do
             {
-                if (!ArgUtility.TryGet(queryArgs, x, out string rawQuery, out string error, false, $"Query in argument {x}"))
+                if (!ArgUtility.TryGet(queryArgs, x, out string subQuery, out string error, false, $"string \"sub-query\" in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-                if (TileCondition.ParseQueries(location, rawQuery) is var list && list.Count > 0)
+                if (TileCondition.ParseQueries(location, subQuery) is var list && list.Count > 0)
                     Queries.Add(list);
 
                 x++;

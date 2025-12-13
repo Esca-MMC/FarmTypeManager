@@ -7,7 +7,7 @@ using System.Linq;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "EXACT" tile query. Allows one or more specific tiles.</summary>
-    /// <remarks>Expected string format: "EXACT {X Y}+". Example: "EXACT 2 2".</remarks>
+    /// <remarks>Expected string format: "EXACT {x y}+". Example: "EXACT 2 2".</remarks>
     public class ExactTileQuery : ITileQuery
     {
         /***************/
@@ -24,7 +24,7 @@ namespace FarmTypeManager.TileQueries
             int x = 1;
             do
             {
-                if (!ArgUtility.TryGetVector2(queryArgs, x, out Vector2 tile, out string error, true, $"Tile in argument {x}"))
+                if (!ArgUtility.TryGetVector2(queryArgs, x, out Vector2 tile, out string error, true, $"Vector2 \"tile\" in argument {x}"))
                     throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
                 if (tile.X >= 0 && tile.X < mapWidth && tile.Y >= 0 && tile.Y < mapHeight) //if the location has this tile

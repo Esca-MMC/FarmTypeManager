@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!HAS_FURNITURE" tile query. Allows tiles that do NOT contain at least one furniture item with the specified ID(s).</summary>
-    /// <remarks>Expected string format: "!HAS_FURNITURE_ID {ID}+". Example: "!HAS_FURNITURE_ID (O)16 (BC)9".</remarks>
+    /// <remarks>Expected string format: "!HAS_FURNITURE_ID {id}+". Example: "!HAS_FURNITURE_ID (F)6".</remarks>
     public class NotHasFurnitureIdTileQuery : ITileQuery
     {
         /***************/

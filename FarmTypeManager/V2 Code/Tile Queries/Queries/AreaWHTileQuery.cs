@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "AREA_WH" tile query. Allows tiles within the specified rectangular area.</summary>
-    /// <remarks>Expected string format: "AREA_WH {X} {Y} {Width} {Height}". Example: "AREA_WH 2 2 5 5".</remarks>
+    /// <remarks>Expected string format: "AREA_WH {x} {y} {width} {height}". Example: "AREA_WH 2 2 5 5".</remarks>
     public class AreaWHTileQuery : ITileQuery
     {
         /***************/
@@ -20,7 +20,7 @@ namespace FarmTypeManager.TileQueries
             MapWidth = location.map.Layers[0].LayerWidth;
             MapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGetRectangle(queryArgs, 1, out Rectangle rectangle, out string error, $"Area Rectangle"))
+            if (!ArgUtility.TryGetRectangle(queryArgs, 1, out Rectangle rectangle, out string error, $"Rectangle \"area rectangle\" in arguments 1-4"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
             Rectangle = rectangle;
         }

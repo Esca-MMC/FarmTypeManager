@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!AREA_CIRCLE" tile query. Rejects tiles within the specified radius of a tile or point, forming a circular area.</summary>
-    /// <remarks>Expected string format: "!AREA_CIRCLE {X} {Y} {Radius}". Example: "!AREA_CIRCLE 2 2 5".</remarks>
+    /// <remarks>Expected string format: "!AREA_CIRCLE {x} {y} {radius}". Example: "!AREA_CIRCLE 2 2 5".</remarks>
     public class NotAreaCircleTileQuery : ITileQuery
     {
         /***************/
@@ -16,8 +16,8 @@ namespace FarmTypeManager.TileQueries
         /// <param name="queryArgs">The text of the query to handle, split by spaces with quote awareness. The first argument is the query key.</param>
         public NotAreaCircleTileQuery(string[] queryArgs)
         {
-            if (!ArgUtility.TryGetVector2(queryArgs, 1, out Vector2 centerTile, out string error, false, "Center Tile")
-                || !ArgUtility.TryGetInt(queryArgs, 3, out int radius, out error, "Radius"))
+            if (!ArgUtility.TryGetVector2(queryArgs, 1, out Vector2 centerTile, out string error, false, "Vector2 \"center tile\" in arguments 1-2")
+                || !ArgUtility.TryGetInt(queryArgs, 3, out int radius, out error, "int \"radius\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             int minX = (int)centerTile.X - radius;

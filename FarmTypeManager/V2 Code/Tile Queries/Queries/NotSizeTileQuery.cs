@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "!SIZE" tile query. Rejects tiles if every tile in a specified area is allowed by the sub-query.</summary>
-    /// <remarks>Expected string format: "!SIZE {X} {Y} {Sub-query}". Example: "!SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\"".</remarks>
+    /// <remarks>Expected string format: "!SIZE {width} {height} {sub-query} [allow overlap]". Example: "!SIZE 2 2 \"AREA 2 2 5 5, CAN_PLACE_ITEM\"".</remarks>
     public class NotSizeTileQuery : ITileQuery
     {
         /***************/

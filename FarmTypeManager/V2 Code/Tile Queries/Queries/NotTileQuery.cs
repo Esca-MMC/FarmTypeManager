@@ -8,7 +8,7 @@ namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "NOT" tile query. Allows tiles if they were rejected by its sub-query. Used to generically negate other queries, equivalent to the '!' prefix.</summary>
     /// <remarks>
-    /// <para>Expected string format: "NOT {Sub-query}". Example: "NOT \"AREA 2 2 5 5\"".</para>
+    /// <para>Expected string format: "NOT {sub-query}". Example: "NOT \"AREA 2 2 5 5\"".</para>
     /// <para>This query is mainly intended for use with custom queries that don't implement specific code for '!' versions. It's generally less efficient than directly implementing the negated query, and some queries (e.g. those with caching logic) may not be negated correctly.</para>
     /// </remarks>
     public class NotTileQuery : ITileQuery
@@ -24,7 +24,7 @@ namespace FarmTypeManager.TileQueries
             if (queryArgs.Length > 2)
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: 'Too many arguments were provided (expected 2, got {queryArgs.Length}). The sub-query argument may need to be wrapped in quotation marks. Example: NOT \"AREA 2 2 5 5\" '.");
 
-            if (!ArgUtility.TryGet(queryArgs, 1, out string subQuery, out string error, false, "Query in argument 1"))
+            if (!ArgUtility.TryGet(queryArgs, 1, out string subQuery, out string error, false, "string \"sub-query\" in argument 1"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Queries = TileCondition.ParseQueries(location, subQuery);

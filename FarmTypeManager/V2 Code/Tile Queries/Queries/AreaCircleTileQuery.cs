@@ -7,7 +7,7 @@ using System.Linq;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "AREA_CIRCLE" tile query. Allows tiles within the specified radius of a tile or point, forming a circular area.</summary>
-    /// <remarks>Expected string format: "AREA_CIRCLE {X} {Y} {Radius}". Example: "AREA_CIRCLE 2 2 5".</remarks>
+    /// <remarks>Expected string format: "AREA_CIRCLE {x} {y} {radius}". Example: "AREA_CIRCLE 2 2 5".</remarks>
     public class AreaCircleTileQuery : ITileQuery
     {
         /***************/
@@ -21,8 +21,8 @@ namespace FarmTypeManager.TileQueries
             int mapWidth = location.map.Layers[0].LayerWidth;
             int mapHeight = location.map.Layers[0].LayerHeight;
 
-            if (!ArgUtility.TryGetVector2(queryArgs, 1, out Vector2 centerTile, out string error, false, "Center Tile")
-                || !ArgUtility.TryGetInt(queryArgs, 3, out int radius, out error, "Radius"))
+            if (!ArgUtility.TryGetVector2(queryArgs, 1, out Vector2 centerTile, out string error, false, "Vector2 \"center tile\" in arguments 1-2")
+                || !ArgUtility.TryGetInt(queryArgs, 3, out int radius, out error, "int \"radius\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             int minX = (int)centerTile.X - radius;

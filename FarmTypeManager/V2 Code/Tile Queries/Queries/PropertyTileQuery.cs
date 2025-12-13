@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace FarmTypeManager.TileQueries
 {
     /// <summary>A handler for the "PROPERTY" tile query. Allows tiles that have the specified tile property and optional value(s).</summary>
-    /// <remarks>Expected string format: "PROPERTY {Layer} {Property} [List of values]". Example: "PROPERTY Back Diggable T True".</remarks>
+    /// <remarks>Expected string format: "PROPERTY {map layer} {tile property key} [tile property value]+". Example: "PROPERTY Back Diggable T True".</remarks>
     public class PropertyTileQuery : ITileQuery
     {
         /***************/
@@ -19,8 +19,8 @@ namespace FarmTypeManager.TileQueries
         {
             Location = location;
 
-            if (!ArgUtility.TryGet(queryArgs, 1, out string layer, out string error, false, "Map Layer Name") ||
-                !ArgUtility.TryGet(queryArgs, 2, out string propertyKey, out error, false, "Tile Property Key"))
+            if (!ArgUtility.TryGet(queryArgs, 1, out string layer, out string error, false, "string \"map layer\" in argument 1") ||
+                !ArgUtility.TryGet(queryArgs, 2, out string propertyKey, out error, false, "string \"tile property key\" in argument 2"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
             Layer = layer;
