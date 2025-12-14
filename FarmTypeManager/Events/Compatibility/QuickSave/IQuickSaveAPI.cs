@@ -13,8 +13,8 @@ namespace QuickSave.API
          * 3. QS-Saved (IsSaving = false)
          */
 
-/// <summary>Fires before a Quicksave is being created</summary>
-public event SavingDelegate SavingEvent;
+        /// <summary>Fires before a Quicksave is being created</summary>
+        public event SavingDelegate SavingEvent;
         /// <summary>Fires while a QuickSave is being created, directly after the ExtraSaveData was generated and before it is written to the savefile.</summary>
         public event SavingExtraDataDelegate SavingExtraDataEvent;
         /// <summary>Fires after a Quicksave has been created</summary>
