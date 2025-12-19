@@ -539,52 +539,34 @@ namespace FarmTypeManager
         /// <summary>A set of persistent keys for <see cref="IHaveModData.modData"/> entries.</summary>
         public static class ModDataKeys
         {
-            private static string _canBePickedUp = null;
             /// <summary>The unique key used with the <see cref="ConfigItem.CanBePickedUp"/> item setting.</summary>
             public static string CanBePickedUp
             {
-                get
-                {
-                    if (_canBePickedUp == null)
-                        _canBePickedUp = FTMUtility.Helper.ModRegistry.ModID + "/CanBePickedUp";
-                    return _canBePickedUp;
-                }
+                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/CanBePickedUp";
             }
 
-            private static string _extraLoot = null;
             /// <summary>The unique key used with the "ExtraLoot" setting in <see cref="MonsterType.Settings"/>.</summary>
             public static string ExtraLoot
             {
-                get
-                {
-                    if (_extraLoot == null)
-                        _extraLoot = FTMUtility.Helper.ModRegistry.ModID + "/ExtraLoot";
-                    return _extraLoot;
-                }
+                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/ExtraLoot";
             }
 
-            private static string _instantKillImmunity = null;
             /// <summary>The unique key used with the "InstantKillImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
             public static string InstantKillImmunity
             {
-                get
-                {
-                    if (_instantKillImmunity == null)
-                        _instantKillImmunity = FTMUtility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
-                    return _instantKillImmunity;
-                }
+                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
             }
 
-            private static string _stunImmunity = null;
+            /// <summary>The unique key used with the "IsOn" setting in <see cref="FarmTypeManager.CustomActions.FTMSpawnItemData"/>.</summary>
+            public static string IsOn
+            {
+                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/IsOn";
+            }
+
             /// <summary>The unique key used with the "StunImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
             public static string StunImmunity
             {
-                get
-                {
-                    if (_stunImmunity == null)
-                        _stunImmunity = FTMUtility.Helper.ModRegistry.ModID + "/StunImmunity";
-                    return _stunImmunity;
-                }
+                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/StunImmunity";
             }
         }
 
