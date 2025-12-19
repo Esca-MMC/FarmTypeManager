@@ -9,9 +9,9 @@ namespace FarmTypeManager.CustomActions
     /// <summary>A data model for spawnable items, with additions for this mod's features.</summary>
     public class FTMSpawnItemData : GenericSpawnItemDataWithCondition
     {
-        /************************/
-        /* Properties - General */
-        /************************/
+        /*********************/
+        /* Properties - Meta */
+        /*********************/
 
         /// <summary>The weight to use for this entry when randomly selecting it, if applicable.</summary>
         /// <remarks>This is equivalent to adding additional copies of this entry to a set. For example, an entry with weight = 10 should be 10 times as likely to be selected as an entry with weight = 1.</remarks>
@@ -19,6 +19,17 @@ namespace FarmTypeManager.CustomActions
 
         /// <summary>The random chance that this entry should produce no items, from 0 (always produce items normally) to 1 (never produce items).</summary>
         public double ChanceToSkip { get; set; } = 0;
+
+        /**************************/
+        /* Properties - All items */
+        /**************************/
+
+        /// <summary>Whether an item should be flagged to prevent it being picked up. This may or may not prevent removal by other means.</summary>
+        /// <remarks>
+        /// <para>For a basic <see cref="Object"/>, this should override fields like <see cref="Object.Fragility"/> and/or <see cref="IsSpawnedObject"/> to prevent player pickup.</para>
+        /// <para>In all cases, it should set "<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" in <see cref="Item.modData"/>, which should be used to apply further changes that prevent removal.</para>
+        /// </remarks>
+        public bool PreventPickup { get; set; } = false;
 
         /***************************/
         /* Properties - Containers */
@@ -34,20 +45,9 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The number of times to rotate a placed <see cref="Furniture"/> item.</summary>
         public int? Rotation { get; set; } = null;
 
-        /**********************/
-        /* Properties - Items */
-        /**********************/
-
-        /// <summary>Whether an item should be flagged to prevent it being picked up. This may or may not prevent removal by other means.</summary>
-        /// <remarks>
-        /// <para>For a basic <see cref="Object"/>, this should override fields like <see cref="Object.Fragility"/> and/or <see cref="IsSpawnedObject"/> to prevent player pickup.</para>
-        /// <para>In all cases, it should set "<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" in <see cref="Item.modData"/>, which should be used to apply further changes that prevent removal.</para>
-        /// </remarks>
-        public bool PreventPickup { get; set; } = false;
-
-        /************************/
-        /* Properties - Objects */
-        /************************/
+        /***********************/
+        /* Properties - Object */
+        /***********************/
 
         /// <summary>Whether an <see cref="Object"/> can be picked up by players.</summary>
         /// <remarks>This setting mainly affects <see cref="Object.IsSpawnedObject"/>, which controls whether players can pick up objects. If <see cref="PreventPickup"/> is true, it may override this setting.</remarks>
@@ -76,6 +76,10 @@ namespace FarmTypeManager.CustomActions
         /// <para>If <see cref="PreventPickup"/> is true, it may override this setting.</para>
         /// </remarks>
         public int? Fragility { get; set; } = null;
+
+        /// <summary>Whether an <see cref="Object"/> should be "on" or "off" when created.</summary>
+        /// <remarks>See <see cref="Object.IsOn"/>. This primarily applies to big craftables with the <see cref="Torch"/> class, and decides whether their lights are active when spawned.</remarks>
+        public bool? IsOn { get; set; } = null;
 
         /// <summary>An <see cref="Object"/>'s health or durability when created, e.g. the number of hits from a basic tool needed to harvest/destroy it. Primarily affects stones and ore.</summary>
         /// <remarks>See <see cref="Object.MinutesUntilReady"/>. Some tools use the value as the health/durability of hit objects. Some machines use it as a "minutes until ready" counter for contained objects.</remarks>

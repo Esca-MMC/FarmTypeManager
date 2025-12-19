@@ -50,6 +50,9 @@ namespace FarmTypeManager.CustomActions
             if (data.PreventPickup == true)
                 item.modData[FTMUtility.ModDataKeys.CanBePickedUp] = "false";
 
+            if (data.IsOn.HasValue)
+                item.modData[FTMUtility.ModDataKeys.IsOn] = data.IsOn.Value.ToString();
+
             if (item is Object obj)
             {
                 string unqualifiedItemId = obj.ItemId;
