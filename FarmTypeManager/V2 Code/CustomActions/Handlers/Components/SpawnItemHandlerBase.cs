@@ -18,15 +18,11 @@ namespace FarmTypeManager.CustomActions
         protected override bool TryActionAtLocation(GameLocation location, TSettings settings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, int numberOfItems, out string error)
         {
             queryContext = new(location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random, queryContext.IgnoreQueryKeys, queryContext.CustomFields); //use the current location for context
-
-            //var tileCondition = new TileCondition(location, ModifyTileCondition(settings.TileCondition));
-            //var tiles = tileCondition.GetTiles(true).GetEnumerator();
-
             ItemQueryContext itemContext = new(location, queryContext.Player, queryContext.Random, $"FTM custom action handler. Trigger: \"{triggerContext.Trigger}\". Handler type: \"{GetType()}\".");
-
-            Dictionary<Vector2, IEnumerator<Vector2>> SizedTiles = []; //key = width and height of an item to spawn; value = the tile enumerator to use for that item
-
+            
+            Dictionary<Vector2, IEnumerator<Vector2>> SizedTiles = []; //key = the tile size needed to place an item; value = the tile enumerator to use for that size
             int totalSpawned = 0;
+
             foreach (Item item in settings.CreateItems(queryContext, itemContext, numberOfItems))
             {
                 Vector2 size = GetItemSize(item);
