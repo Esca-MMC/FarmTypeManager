@@ -31,11 +31,8 @@ namespace FarmTypeManager.CustomActions
         /// </remarks>
         public bool PreventPickup { get; set; } = false;
 
-        /***************************/
-        /* Properties - Containers */
-        /***************************/
-
-        /// <summary>The contents of a container, e.g. the items within a <see cref="Chest"/>.</summary>
+        /// <summary>A list of items contained within the main item, if applicable.</summary>
+        /// <remarks>This field may be used for unique item features like sprinkler attachments, items displayed on signs, etc. If not applicable to the main item, this field should be ignored.</remarks>
         public List<FTMSpawnItemData> Contents { get; set; } = null;
 
         /**************************/

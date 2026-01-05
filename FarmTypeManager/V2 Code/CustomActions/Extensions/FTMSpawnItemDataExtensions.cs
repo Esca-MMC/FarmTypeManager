@@ -1,7 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Internal;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using Object = StardewValley.Object;
@@ -17,24 +16,6 @@ namespace FarmTypeManager.CustomActions
         {
             Item item = ItemQueryResolver.TryResolveRandomItem(data, context, avoidRepeat, avoidItemIds, formatItemId, inputItem, logError);
             data.ApplyItemChanges(item);
-
-            if (item is Chest chest)
-            {
-                foreach (FTMSpawnItemData containedItemData in data.Contents)
-                {
-                    if (containedItemData == null)
-                        continue;
-
-                    Item containedItem = containedItemData.TryResolveRandomItem(context, avoidRepeat, avoidItemIds, formatItemId, inputItem, logError);
-                    if (containedItem != null)
-                    {
-                        containedItemData.ApplyItemChanges(containedItem);
-                        chest.Items.Add(containedItem);
-                    }
-                }
-            }
-
-            //TODO: handle sub-items for other containers, e.g. a custom BreakableContainer; may require storing the items or data in a static manager, like 1.x loot drops
 
             return item;
         }

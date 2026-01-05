@@ -1,11 +1,7 @@
-﻿using FarmTypeManager.TileQueries;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
+﻿using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Internal;
 using System.Collections.Generic;
-using xTile.Dimensions;
 
 namespace FarmTypeManager.CustomActions
 {
