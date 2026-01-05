@@ -5,8 +5,9 @@ using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>A base for handlers that perform actions at a customizable set of locations.</summary>
-    public abstract class LocationHandlerBase<TSettings> : ICustomActionHandler where TSettings : class, ILocationSettings, ITimesToPerformSettings
+    /// <summary>A base for most handlers. Performs one or more actions at one or more active locations.</summary>
+    public abstract class BasicHandlerBase<TSettings> : ICustomActionHandler
+        where TSettings : class, ILocationSettings, ITimesToPerformSettings
     {
         /************************/
         /* ICustomActionHandler */
@@ -84,18 +85,18 @@ namespace FarmTypeManager.CustomActions
             return true;
         }
 
-        /********************/
-        /* Abstract methods */
-        /********************/
+        /***************/
+        /* New methods */
+        /***************/
 
         /// <summary>Tries to perform this action at the specified location.</summary>
         /// <param name="location">The in-game location to use.</param>
         /// <param name="settings">The custom action's settings.</param>
         /// <param name="queryContext">Contextual information to use when checking conditions.</param>
         /// <param name="triggerContext">Contextual information about a raised trigger.</param>
-        /// <param name="numberOfItems">The number of items to generate.</param>
-        /// <param name="error">Error text describing why items could not be spawned. Null if no errors occurred.</param>
-        /// <returns>True if spawning completed without errors, even if nothing was spawned (e.g. if tiles are blocked). False if any errors were encountered.</returns>
+        /// <param name="numberOfTimes">The number of times to perform the action.</param>
+        /// <param name="error">Error text describing why the action couldn't be performed. Null if no errors occurred.</param>
+        /// <returns>True if this method completed without errors, even the action had no effect (e.g. if item spawns were prevented by obstructions). False if any errors were encountered.</returns>
         protected abstract bool TryActionAtLocation(GameLocation location, TSettings settings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, int numberOfItems, out string error);
     }
 }

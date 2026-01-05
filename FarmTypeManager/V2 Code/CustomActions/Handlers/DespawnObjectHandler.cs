@@ -9,7 +9,7 @@ using Object = StardewValley.Object;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>The handler for a custom action that despawns (removes) forage, craftables, or other basic placed <see cref="Object"/>s.</summary>
-    public class DespawnObjectHandler : LocationHandlerBase<DespawnItemSettings>, ICustomActionHandler
+    public class DespawnObjectHandler : BasicHandlerBase<DespawnItemSettings>, ICustomActionHandler
     {
         protected override bool TryActionAtLocation(GameLocation location, DespawnItemSettings settings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, int times, out string error)
         {

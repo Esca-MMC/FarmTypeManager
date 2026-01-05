@@ -9,7 +9,7 @@ using System.Linq;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>The handler for a custom action that despawns (removes) <see cref="Furniture"/>.</summary>
-    public class DespawnFurnitureHandler : LocationHandlerBase<DespawnItemSettings>, ICustomActionHandler
+    public class DespawnFurnitureHandler : BasicHandlerBase<DespawnItemSettings>, ICustomActionHandler
     {
         protected override bool TryActionAtLocation(GameLocation location, DespawnItemSettings settings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, int times, out string error)
         {

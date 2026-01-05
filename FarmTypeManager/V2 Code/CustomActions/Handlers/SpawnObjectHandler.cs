@@ -7,9 +7,17 @@ namespace FarmTypeManager.CustomActions
     /// <summary>The handler for a custom action that spawns forage, craftables, or other basic placed <see cref="Object"/>s.</summary>
     public class SpawnObjectHandler : SpawnItemHandlerBase<SpawnItemSettings>
     {
+        /************************/
+        /* SpawnItemHandlerBase */
+        /************************/
+
+        protected override string LogTextForAnInstance => "an object";
+
+        protected override string LogTextForInstances => "objects";
+
         protected override string ModifyTileCondition(string tileCondition) => $"!HAS_OBJECT, {tileCondition}"; //exclude any tiles blocked by an existing object of this type
 
-        protected override bool TryPlaceItem(GameLocation location, Vector2 tile, Item item, out string placementError)
+        protected override bool TrySpawn(GameLocation location, Vector2 tile, Item item, out string placementError)
         {
             if (item is Object obj)
             {
@@ -19,10 +27,14 @@ namespace FarmTypeManager.CustomActions
             }
             else
             {
-                placementError = $"Can't place an item because it's null or not a \"StardewValley.Object\". The item ID \"{item?.QualifiedItemId}\" has type \"{item?.GetType().FullName}\".";
+                placementError = $"This action can only place basic objects. The item's type is \"{item?.GetType().FullName ?? "null"}\", which isn't an \"Object\" type.";
                 return false;
             }
         }
+
+        /*****************/
+        /* Other methods */
+        /*****************/
 
         private static Object ModifyObjectForPlacement(Object obj, Vector2 tile)
         {
