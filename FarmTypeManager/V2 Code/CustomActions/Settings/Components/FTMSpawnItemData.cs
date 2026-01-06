@@ -1,7 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.GameData;
 using StardewValley.Objects;
-using System.Collections.Generic;
 using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
@@ -30,10 +29,6 @@ namespace FarmTypeManager.CustomActions
         /// <para>In all cases, it should set "<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" in <see cref="Item.modData"/>, which should be used to apply further changes that prevent removal.</para>
         /// </remarks>
         public bool PreventPickup { get; set; } = false;
-
-        /// <summary>A list of items contained within the main item, if applicable.</summary>
-        /// <remarks>This field may be used for unique item features like sprinkler attachments, items displayed on signs, etc. If not applicable to the main item, this field should be ignored.</remarks>
-        public List<FTMSpawnItemData> Contents { get; set; } = null;
 
         /**************************/
         /* Properties - Furniture */

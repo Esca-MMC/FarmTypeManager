@@ -539,7 +539,7 @@ namespace FarmTypeManager
         /// <summary>A set of persistent keys for <see cref="IHaveModData.modData"/> entries.</summary>
         public static class ModDataKeys
         {
-            /// <summary>The unique key used with the <see cref="ConfigItem.CanBePickedUp"/> item setting.</summary>
+            /// <summary>The unique key used with the <see cref="ConfigItem.CanBePickedUp"/> setting.</summary>
             public static string CanBePickedUp
             {
                 get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/CanBePickedUp";
@@ -557,7 +557,7 @@ namespace FarmTypeManager
                 get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
             }
 
-            /// <summary>The unique key used with the "IsOn" setting in <see cref="FarmTypeManager.CustomActions.FTMSpawnItemData"/>.</summary>
+            /// <summary>The unique key used with the <see cref="FarmTypeManager.CustomActions.FTMSpawnItemData.IsOn"/> setting.</summary>
             public static string IsOn
             {
                 get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/IsOn";

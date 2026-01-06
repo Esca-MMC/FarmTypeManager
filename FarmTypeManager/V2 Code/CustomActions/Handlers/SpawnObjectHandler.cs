@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Objects;
 using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
@@ -22,6 +23,9 @@ namespace FarmTypeManager.CustomActions
             if (item is Object obj)
             {
                 obj = ModifyObjectForPlacement(obj, tile);
+                obj.Location = location;
+                obj.TileLocation = tile;
+
                 placementError = null;
                 return location.objects.TryAdd(tile, obj);
             }
@@ -36,24 +40,45 @@ namespace FarmTypeManager.CustomActions
         /* Other methods */
         /*****************/
 
+        /// <summary>Applies any required modifications to an object before it's placed, e.g. to handle special object types or apply customizations from mod data.</summary>
+        /// <param name="obj">The object to modify.</param>
+        /// <param name="tile">The tile where the object will later be placed.</param>
+        /// <returns>The modified object instance, or a replacement if its type needs to change before placement.</returns>
         private static Object ModifyObjectForPlacement(Object obj, Vector2 tile)
         {
-            if (obj is Torch torch) //if this is already a torch (as of SDV v1.6.15, "(O)" objects are generated this way)
+            switch (obj)
             {
-                torch.IsOn = true;
-                torch.initializeLightSource(tile);
+                case Torch torch: //if this is an "(O)" object torch (as of SDV v1.6.15, these have the type Torch in inventory, unlike "(BC)" torches)
+                    torch.IsOn = true;
+                    torch.initializeLightSource(tile);
+                    break;
+
+                default: //no type-based handling (e.g. it's just an Object)
+
+                    if (obj.bigCraftable.Value)
+                    {
+                        if (obj.HasContextTag("torch_item"))
+                        {
+                            if (!obj.modData.TryGetValue(FTMUtility.ModDataKeys.IsOn, out string isOnText) || !bool.TryParse(isOnText, out bool isOn)) //try to get on/off state from mod data
+                                isOn = true; //if not parsed, default to true
+                            obj.modData.Remove(FTMUtility.ModDataKeys.IsOn); //if applicable, remove mod data (NOTE: disable this if the data is needed after spawn, e.g. if a pseudo-serializer handles these items)
+
+                            Torch torch = new(obj.ItemId, true) { IsOn = isOn }; //recreate the item as a torch; BCs only use this class while placed
+                            torch.modData.CopyFrom(obj.modData);
+                            obj = torch;
+
+                            torch.initializeLightSource(tile);
+                        }
+                        else if (obj.HasContextTag("sign_item"))
+                        {
+                            Sign sign = new(tile, obj.ItemId); //recreate the item as a sign; BCs only use this class while placed
+                            sign.modData.CopyFrom(obj.modData);
+                            obj = sign;
+                        }
+                    }
+
+                    break;
             }
-            else if (obj.bigCraftable.Value && obj.HasContextTag("torch_item"))
-            {
-                if (!obj.modData.TryGetValue(FTMUtility.ModDataKeys.IsOn, out string isOnText) || !bool.TryParse(isOnText, out bool isOn)) //try to get this torch's on/off state from its mod data
-                    isOn = true; //if mod data doesn't exist or parsing fails, default to true
-
-                obj.modData.Remove(FTMUtility.ModDataKeys.IsOn); //if applicable, remove the data because it's now unnecessary (NOTE: disable this if a custom class with a pseudo-serializer can use the data)
-
-                obj = new Torch(obj.ItemId, true) { IsOn = isOn }; //recreate the item as a torch, because BCs only use this class while placed
-                obj.initializeLightSource(tile);
-            }
-
             return obj;
         }
     }
