@@ -157,7 +157,7 @@ namespace FarmTypeManager.Serialization
                 return;
 
             InstancesByLocation.Clear(); //clear tracked instances
-            
+
             foreach (var entry in saveDataByLocation) //for each location with saved instances
             {
                 GameLocation location = FTMUtility.GetLocationIfActive(entry.Key);
