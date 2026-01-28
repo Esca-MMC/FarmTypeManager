@@ -2,6 +2,7 @@
 using StardewValley.Delegates;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -29,13 +30,6 @@ namespace FarmTypeManager.CustomActions
                 return false;
             }
 
-            List<GameLocation> locations = settings.GetActiveLocations();
-            if (locations.Count <= 0)
-            {
-                error = null;
-                return true;
-            }
-
             if (settings.MinTimes > settings.MaxTimes)
             {
                 error = $"MinTimes ({settings.MinTimes}) is greater than MaxTimes ({settings.MaxTimes}).";
@@ -50,36 +44,9 @@ namespace FarmTypeManager.CustomActions
                 return true;
             }
 
-            switch (settings.LocationListMode)
-            {
-                case ILocationSettings.LocationListModes.All:
-                    foreach (GameLocation location in locations)
-                    {
-                        if (!TryActionAtLocation(location, settings, queryContext, triggerContext, times, out error))
-                            return false;
-                    }
-                    break;
-
-                case ILocationSettings.LocationListModes.Random:
-                default:
-                    int count = locations.Count;
-                    Dictionary<int, int> timesForEachLocationIndex = new(count); //key = random index in the location list; value = number of times to use that location
-                    for (int x = 0; x < times; x++)
-                    {
-                        int index = FTMUtility.Random.Next(count);
-                        if (timesForEachLocationIndex.ContainsKey(index))
-                            timesForEachLocationIndex[index]++;
-                        else
-                            timesForEachLocationIndex[index] = 1;
-                    }
-
-                    foreach (var entry in timesForEachLocationIndex)
-                    {
-                        if (!TryActionAtLocation(locations[entry.Key], settings, queryContext, triggerContext, entry.Value, out error))
-                            return false;
-                    }
-                    break;
-            }
+            foreach ((GameLocation, int) result in settings.GetActiveLocationsAndTimes(times)) //get active locations, and the number of times each location should be used
+                if (!TryActionAtLocation(result.Item1, settings, queryContext, triggerContext, result.Item2, out error))
+                    return false;
 
             error = null;
             return true;

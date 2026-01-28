@@ -178,49 +178,8 @@ namespace FarmTypeManager.CustomActions
             if (timesToPerform < 1)
                 yield break;
 
-            int totalWeight = 0;
-            List<KeyValuePair<string, CustomActionData>> actionList = new(data.CustomActions); //copy all actions
-            foreach (var action in data.CustomActions)
-            {
-                if (action.Value == null)
-                    actionList.Remove(action);
-                else if (action.Value.Weight < 1)
-                    actionList.Remove(action);
-                else if (action.Value.MarkAppliedWithFlag != null && Game1.player.hasOrWillReceiveMail(action.Value.MarkAppliedWithFlag)) //if the action is already flagged as complete
-                    actionList.Remove(action);
-                else if (action.Value.Condition != null && !GameStateQuery.CheckConditions(action.Value.Condition, queryContext)) //if the action's condition is false
-                    actionList.Remove(action);
-                else
-                    totalWeight += action.Value.Weight; //add up any valid list items' weights
-            }
-
-            switch (data.ActionMode)
-            {
-                case CustomActionsAssetEntry.ActionModes.Random:
-                    for (int x = 0; x < timesToPerform; x++)
-                    {
-                        int random = FTMUtility.Random.Next(totalWeight);
-                        foreach (var action in actionList)
-                        {
-                            if (random < action.Value.Weight)
-                            {
-                                yield return action;
-                                break;
-                            }
-                            else
-                                random -= action.Value.Weight;
-                        }
-                    }
-                    break;
-                case CustomActionsAssetEntry.ActionModes.All:
-                default:
-                    for (int x = 0; x < timesToPerform; x++)
-                    {
-                        foreach (var action in actionList)
-                            yield return action;
-                    }
-                    break;
-            }
+            foreach (var output in data.CustomActions.GetWeightedConditionalElements(data.CustomActionsMode, timesToPerform, queryContext)) //get actions to perform based on mode/conditions/weight
+                yield return output;
         }
 
         /// <summary>Tries to perform a custom action with the given data.</summary>

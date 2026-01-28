@@ -1,7 +1,6 @@
 ﻿using StardewValley.GameData;
 using System.Collections.Generic;
 using static FarmTypeManager.CustomActions.ILocationSettings;
-using static FarmTypeManager.CustomActions.ISpawnItemSettings;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -14,7 +13,7 @@ namespace FarmTypeManager.CustomActions
 
         public string Location { get; set; } = null;
         public List<string> LocationList { get; set; } = null;
-        public LocationListModes LocationListMode { get; set; } = LocationListModes.All;
+        public SelectionMode LocationListMode { get; set; } = SelectionMode.All;
 
         /*****************/
         /* ITileSettings */
@@ -28,7 +27,7 @@ namespace FarmTypeManager.CustomActions
 
         public FTMSpawnItemData Item { get; set; } = null;
         public List<FTMSpawnItemData> ItemList { get; set; } = null;
-        public ItemListModes ItemListMode { get; set; } = ItemListModes.Random;
+        public SelectionMode ItemListMode { get; set; } = SelectionMode.Random;
 
         /***************************/
         /* ITimesToPerformSettings */

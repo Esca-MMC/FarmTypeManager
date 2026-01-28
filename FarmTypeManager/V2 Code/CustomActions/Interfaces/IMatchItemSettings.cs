@@ -2,7 +2,7 @@
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>Settings that specify item despawn (removal) data.</summary>
+    /// <summary>Settings with item matching data, e.g. for actions that modify or remove items.</summary>
     public interface IMatchItemSettings
     {
         /// <summary>An item matching data entry.</summary>

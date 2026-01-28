@@ -35,34 +35,15 @@ namespace FarmTypeManager.CustomActions
                 return true;
             }
 
-            List<string> triggerActions = new(settings.Actions ?? []);
+            List<string> triggerActions = [];
             if (settings.Action != null)
-                triggerActions.Insert(0, settings.Action);
+                triggerActions.Add(settings.Action);
+            if (settings.ActionList != null)
+                triggerActions.AddRange(settings.ActionList);
 
-            switch (settings.ActionsMode)
-            {
-                case TriggerActionSettings.ActionsModes.All:
-                    for (int x = 0; x < times; x++)
-                        foreach (string action in triggerActions)
-                            if (!TriggerActionManager.TryRunAction(action, triggerContext.Trigger, triggerContext.TriggerArgs, out error, out _))
-                                return false;
-                    break;
-
-                case TriggerActionSettings.ActionsModes.Random:
-                default:
-                    //create a list of random indices from the trigger list
-                    List<int> randomIndexList = new(times);
-                    int count = triggerActions.Count;
-                    for (int x = 0; x < times; x++)
-                        randomIndexList.Add(FTMUtility.Random.Next(count));
-
-                    foreach (var index in randomIndexList) //run each randomly selected trigger
-                    {
-                        if (!TriggerActionManager.TryRunAction(triggerActions[index], triggerContext.Trigger, triggerContext.TriggerArgs, out error, out _))
-                            return false;
-                    }
-                    break;
-            }
+            foreach (string action in FTMUtility.SelectElementsByMode(triggerActions, settings.ActionListMode, times)) //select actions to perform
+                if (!TriggerActionManager.TryRunAction(action, triggerContext.Trigger, triggerContext.TriggerArgs, out error, out _))
+                    return false;
 
             error = null;
             return true;

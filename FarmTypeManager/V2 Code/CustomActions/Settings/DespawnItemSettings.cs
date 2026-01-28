@@ -1,6 +1,5 @@
 ﻿using StardewValley.GameData;
 using System.Collections.Generic;
-using static FarmTypeManager.CustomActions.ILocationSettings;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -13,7 +12,7 @@ namespace FarmTypeManager.CustomActions
 
         public string Location { get; set; } = null;
         public List<string> LocationList { get; set; } = null;
-        public LocationListModes LocationListMode { get; set; } = LocationListModes.All;
+        public SelectionMode LocationListMode { get; set; } = SelectionMode.All;
 
         /*****************/
         /* ITileSettings */

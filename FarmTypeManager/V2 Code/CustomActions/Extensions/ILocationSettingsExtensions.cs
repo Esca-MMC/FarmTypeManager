@@ -1,5 +1,6 @@
 ﻿using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -27,6 +28,28 @@ namespace FarmTypeManager.CustomActions
                     locationList.Add(location);
 
             return locationList;
+        }
+
+        /// <summary>Yields a set of active locations from these settings, each paired with the number of times to use that location (e.g. to perform an action there).</summary>
+        /// <param name="timesToSelect">The number of times to perform an action, or to perform it for each location, depending on selection mode.</param>
+        /// <returns>A yielded series of active locations to use, each paired with the number of times to use that location. Any unused locations will be excluded.</returns>
+        public static IEnumerable<(GameLocation, int)> GetActiveLocationsAndTimes<T>(this T settings, int timesToSelect) where T : ILocationSettings
+        {
+            if (timesToSelect < 1)
+                yield break;
+
+            List<GameLocation> activeLocations = settings.GetActiveLocations();
+            if (activeLocations.Count < 1)
+                yield break;
+
+            List<int> timesToUseThisIndex = new(new int[activeLocations.Count]); //create a parallel list of "times to use" for each location list index (and initialize values to 0)
+
+            foreach (int index in FTMUtility.SelectElementsByMode(Enumerable.Range(0, activeLocations.Count).ToList(), settings.LocationListMode, timesToSelect)) //select indices to use
+                timesToUseThisIndex[index]++; //increment each selected index's "times to use"
+
+            for (int x = 0; x < activeLocations.Count; x++) //for each location index
+                if (timesToUseThisIndex[x] > 0) //if it should be used at all
+                    yield return (activeLocations[x], timesToUseThisIndex[x]); //yield the location and the number of times to use it
         }
     }
 }

@@ -12,16 +12,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>A list of internal names for <see cref="GameLocation"/>s.</summary>
         List<string> LocationList { get; set; }
 
-        /// <summary>The behavior to use when selecting locations from <see cref="LocationList"/>.</summary>
-        LocationListModes LocationListMode { get; set; }
-
-        /// <summary>The available values of <see cref="LocationListMode"/>.</summary>
-        public enum LocationListModes
-        {
-            /// <summary>All locations from the list should be used. For example, if an action spawns objects, it should spawn a full set of objects at each listed location.</summary>
-            All,
-            /// <summary>Locations from the list should be used in random order.</summary>
-            Random
-        }
+        /// <summary>The behavior to use when selecting locations.</summary>
+        SelectionMode LocationListMode { get; set; }
     }
 }
