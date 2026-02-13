@@ -173,7 +173,7 @@ namespace FarmTypeManager.CustomActions
                 yield break;
             }
 
-            int timesToPerform = data.GetRandomTimes(queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random);
+            int timesToPerform = data.GetRandomTimes(queryContext);
 
             if (timesToPerform < 1)
                 yield break;

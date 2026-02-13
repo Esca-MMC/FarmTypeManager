@@ -1,8 +1,6 @@
 ﻿using StardewValley;
 using StardewValley.Delegates;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -37,7 +35,7 @@ namespace FarmTypeManager.CustomActions
             }
 
             //get a random number from min to max, apply modifiers, and round to the nearest integer
-            int times = settings.GetRandomTimes(queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random);
+            int times = settings.GetRandomTimes(queryContext);
             if (times <= 0)
             {
                 error = null;

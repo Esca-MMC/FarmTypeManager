@@ -15,9 +15,9 @@ namespace FarmTypeManager.CustomActions
         public int Weight { get; set; } = 1;
         public string MarkAppliedWithFlag { get; set; } = null;
 
-        /*********************/
-        /* Properties - Meta */
-        /*********************/
+        /**************************/
+        /* Properties - Selection */
+        /**************************/
 
         /// <summary>The random chance that this entry should produce no items, from 0 (always produce items normally) to 1 (never produce items).</summary>
         public double ChanceToSkip { get; set; } = 0;

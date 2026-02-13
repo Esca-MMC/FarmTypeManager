@@ -15,7 +15,7 @@ namespace FarmTypeManager.CustomActions
         /// <param name="timesToSelect">The number of key-value pairs (or sets of key-value pairs) to return, depending on mode.</param>
         /// <param name="queryContext">The game state query (GSQ) context to use when checking conditions.</param>
         /// <returns>A yielded series of key-value pairs from the dictionary.</returns>
-        public static IEnumerable<KeyValuePair<TKey,TValue>> GetWeightedConditionalElements<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, SelectionMode mode, int timesToSelect, GameStateQueryContext queryContext)
+        public static IEnumerable<KeyValuePair<TKey, TValue>> GetWeightedConditionalElements<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, SelectionMode mode, int timesToSelect, GameStateQueryContext queryContext)
             where TValue : IWeightedConditionalElement
         {
             if (dictionary == null || dictionary.Count < 1 || timesToSelect < 1) //if no pairs were provided/requested

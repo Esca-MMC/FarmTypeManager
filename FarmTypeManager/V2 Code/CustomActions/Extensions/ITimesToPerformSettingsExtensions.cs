@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using StardewValley.Delegates;
 using System;
 
 namespace FarmTypeManager.CustomActions
@@ -8,11 +9,11 @@ namespace FarmTypeManager.CustomActions
     {
         /// <summary>Gets a random number within the range specified by settings in <see cref="ITimesToPerformSettings"/>.</summary>
         /// <typeparam name="T">A type that implements <see cref="ITimesToPerformSettings"/>.</typeparam>
-        /// <param name="location">The location to use in game state query context, if any.</param>
-        /// <param name="player">The player to use in game state query context, if any.</param>
-        /// <param name="targetItem">The target item to use in game state query context, if any.</param>
-        /// <param name="inputItem">The input item to use in game state query context, if any.</param>
-        /// <param name="random">The random number generator to use in game state query context, if any. If not provided, this method will use <see cref="FTMUtility.Random"/>.</param>
+        /// <param name="location">The location to use when checking conditions.</param>
+        /// <param name="player">The player to use when checking conditions.</param>
+        /// <param name="targetItem">The target item to use when checking conditions.</param>
+        /// <param name="inputItem">The input item to use when checking conditions.</param>
+        /// <param name="random">The random number generator to use when checking conditions. If not provided, <see cref="FTMUtility.Random"/> will be used. Note that <see cref="FTMUtility.Random"/> will always be used in other logic; this argument only affects conditions.</param>
         /// <returns>A random number within the range specified by settings in <see cref="ITimesToPerformSettings"/>.</returns>
         public static int GetRandomTimes<T>(this T settings, GameLocation location, Farmer player, Item targetItem, Item inputItem, Random random) where T : ITimesToPerformSettings
         {
@@ -26,5 +27,10 @@ namespace FarmTypeManager.CustomActions
             else
                 return startingNum;
         }
+
+        /// <inheritdoc cref="GetRandomTimes{T}(T, GameLocation, Farmer, Item, Item, Random)"/>
+        /// <param name="queryContext">The context to use when checking conditions, if any.</param>
+        public static int GetRandomTimes<T>(this T settings, GameStateQueryContext queryContext) where T : ITimesToPerformSettings
+            => GetRandomTimes(settings, queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, queryContext.Random);
     }
 }

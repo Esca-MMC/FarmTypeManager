@@ -1,6 +1,5 @@
 ﻿using StardewValley.GameData;
 using System.Collections.Generic;
-using static FarmTypeManager.CustomActions.ILocationSettings;
 
 namespace FarmTypeManager.CustomActions
 {
