@@ -93,8 +93,8 @@ namespace FarmTypeManager.CustomActions
 
         /// <summary>Get a unique identifier for this spawn. Only used in log messages.</summary>
         /// <param name="instance">The spawn to identify. May be null.</param>
-        /// <returns>A unique identifier for this spawn. Should return "N/A" if the type doesn't have unique IDs, or "null" if the instance is null.</returns>
-        protected virtual string GetId(TSpawn instance) => instance != null ? "N/A" : "null";
+        /// <returns>A unique identifier for this spawn.</returns>
+        protected virtual string GetId(TSpawn instance) => instance != null ? "[no ID]" : "[null]";
 
         /// <summary>Gets the width and height, in tiles, that a spawned instance would occupy when placed.</summary>
         /// <param name="item">The item to check.</param>
@@ -110,10 +110,10 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Places an instance on a tile, if possible.</summary>
         /// <param name="location">The in-game location to use.</param>
         /// <param name="tile">The tile to use.</param>
-        /// <param name="item">The item to place.</param>
-        /// <param name="placementError">Error text describing why an error occured during placement, e.g. the item type was invalid. Null if placement succeeeded, or if it only failed due to obstructions.</param>
+        /// <param name="instance">The instance to place.</param>
+        /// <param name="placementError">Error text describing why an error occured during placement, e.g. an instance's type was invalid. Null if placement succeeeded, or if it only failed due to obstructions.</param>
         /// <returns>True if the instance was successfully spawned. False if spawning was prevented (e.g. by tile obstructions) or if an error occurred.</returns>
-        /// <remarks>If <paramref name="placementError"/> is null, a false return value should NOT be treated as an error; it only indicates that item placement was skipped. A false return value with non-null error text should be treated as an error (e.g. due to an invalid item type or caught exception).</remarks>
+        /// <remarks>If <paramref name="placementError"/> is null, a false return value should NOT be treated as an error; it only indicates that placement was skipped. A false return value with non-null error text should be treated as an error (e.g. due to an invalid instance type or caught exception).</remarks>
         protected abstract bool TrySpawn(GameLocation location, Vector2 tile, TSpawn instance, out string placementError);
     }
 }

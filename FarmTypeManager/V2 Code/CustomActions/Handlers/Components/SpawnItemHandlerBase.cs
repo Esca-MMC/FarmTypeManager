@@ -19,6 +19,6 @@ namespace FarmTypeManager.CustomActions
             return settings.CreateItems(queryContext, itemContext, numberOfTimes);
         }
 
-        protected override string GetId(Item instance) => instance?.QualifiedItemId;
+        protected override string GetId(Item instance) => instance?.QualifiedItemId ?? base.GetId(instance);
     }
 }

@@ -5,12 +5,12 @@ using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>The handler for a custom action that spawns forage, craftables, or other basic placed <see cref="Object"/>s.</summary>
+    /// <summary>The handler for a custom action that spawns <see cref="Furniture"/> objects.</summary>
     public class SpawnFurnitureHandler : SpawnItemHandlerBase<SpawnItemSettings>
     {
-        protected override string LogTextForInstances => "furniture";
-
         protected override string LogTextForAnInstance => "a furniture item";
+
+        protected override string LogTextForInstances => "furniture";
 
         protected override Vector2 GetSize(Item instance)
         {
