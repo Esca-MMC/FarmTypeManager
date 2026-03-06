@@ -57,7 +57,10 @@ namespace FarmTypeManager
                     if (location == null) return false;
                     Vector2 tile = TileLocation;
 
-                    releaseContents();
+                    if (releaseContents()) // gain forage experience if something was dug out
+                    {
+                        t.getLastFarmerToUse().gainExperience(Farmer.foragingSkill, 15);
+                    }
 
                     //perform the base method's other artifact spot tasks
                     if (!location.terrainFeatures.ContainsKey(tile))
@@ -72,11 +75,11 @@ namespace FarmTypeManager
             }
 
             /// <summary>Drops the items from this object's "items" list.</summary>
-            /// <param name="location">The location of this object.</param>
+            /// <returns>True if something dropped, false otherwise.</returns>
             /// <remarks>This replaces the method's original behavior and no longer takes Farmer as an argument.</remarks>
-            public void releaseContents()
+            public bool releaseContents()
             {
-                if (Items == null || Items.Count < 1) { return; } //if there are no items listed, do nothing
+                if (Items == null || Items.Count < 1) { return false; } //if there are no items listed, do nothing
 
                 Vector2 itemPosition = new Vector2(boundingBox.Center.X, boundingBox.Center.Y); //get the "pixel" location where these items should spawn
 
@@ -84,6 +87,7 @@ namespace FarmTypeManager
                 {
                     Game1.createItemDebris(item, itemPosition, Utility.RNG.Next(4), Location); //spawn the item as "debris" at this location
                 }
+                return true;
             }
         }
     }
