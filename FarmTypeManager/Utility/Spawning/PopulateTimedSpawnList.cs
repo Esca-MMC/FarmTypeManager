@@ -1,6 +1,5 @@
 ﻿using StardewModdingAPI;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {
@@ -15,10 +14,10 @@ namespace FarmTypeManager
             /// <param name="area">The SpawnArea for which these saved objects were generated.</param>
             public static void PopulateTimedSpawnList(List<SavedObject> objects, FarmData data, SpawnArea area)
             {
-                List<TimedSpawn> timedSpawns = new List<TimedSpawn>(); //the list of fully processed objects and associated data
+                List<TimedSpawn> timedSpawns = []; //the list of fully processed objects and associated data
 
-                List<int> possibleTimesList = new List<int>(); //a list of valid spawn times
-                Dictionary<int, int> timeCounts = new Dictionary<int, int>(); //tracks the number of objects assigned to each time
+                List<int> possibleTimesList = []; //a list of valid spawn times
+                Dictionary<int, int> timeCounts = []; //tracks the number of objects assigned to each time
 
                 if (area.SpawnTiming == null) //if the SpawnTiming setting is null
                 {
@@ -68,9 +67,7 @@ namespace FarmTypeManager
                     }
 
                     if (possibleTimesList.Count <= 0) //if no valid spawn times are left
-                    {
                         break; //skip the rest of the objects
-                    }
                 }
 
                 TimedSpawns.Add(timedSpawns); //add the processed list of timed spawns to Utility.TimedSpawns

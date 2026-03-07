@@ -22,7 +22,7 @@ namespace FarmTypeManager
                     return true;
 
                 //quicker 1x1 check
-                if (size.X == 1 && size.Y == 1) 
+                if (size.X == 1 && size.Y == 1)
                     return IsSingleTileValid(location, tile, strictTileChecking);
 
                 //multi-tile check

@@ -1,5 +1,4 @@
 ﻿using FarmTypeManager.Monsters;
-using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;

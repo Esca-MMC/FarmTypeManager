@@ -5,7 +5,6 @@ using StardewValley.Monsters;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FarmTypeManager
 {
