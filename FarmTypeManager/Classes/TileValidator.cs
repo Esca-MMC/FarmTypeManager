@@ -44,7 +44,9 @@ namespace FarmTypeManager
 
                 for (int index = 0; index < TileList.Count; index++) //for each listed tile
                 {
-                    if (InvalidTiles.Contains(TileList[index])) //skip tiles already known to be invalid
+                    Vector2 listedTile = TileList[index];
+
+                    if (InvalidTiles.Contains(listedTile)) //skip tiles already known to be invalid
                         continue;
 
                     bool allTilesValid = true;
@@ -54,12 +56,11 @@ namespace FarmTypeManager
                     {
                         for (int y = 0; y < size.Y; y++)
                         {
-                            Vector2 tileToCheck = new Vector2(TileList[index].X + x, TileList[index].Y + y); //the tile currently being checked
+                            Vector2 tileToCheck = new Vector2(listedTile.X + x, listedTile.Y + y); //the tile currently being checked
 
                             if (InvalidTiles.Contains(tileToCheck) || !Utility.IsTileValid(Location, tileToCheck, new Point(1, 1), StrictTileChecking)) //if the tile being checked is NOT valid
                             {
-                                InvalidTiles.Add(tileToCheck); //add the tile to the "invalid tiles" set
-
+                                InvalidTiles.Add(tileToCheck);
                                 allTilesValid = false;
                                 break; //skip the rest of the "y" loop
                             }
@@ -71,12 +72,8 @@ namespace FarmTypeManager
 
                     if (allTilesValid) //if all necessary tiles were valid
                     {
-                        Vector2 finalTile = TileList[index]; //get the indexed tile
-
-                        //remove the tile from the list
-                        TileList.RemoveAt(index);
-
-                        return finalTile;
+                        InvalidTiles.Add(listedTile); //exclude the listed tile from future checks
+                        return listedTile;
                     }
                 }
 
