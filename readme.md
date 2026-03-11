@@ -239,7 +239,7 @@ For a more detailed description of the complex item settings, see the table belo
 
 Name | Required | Valid settings | Description | Notes
 -----|----------|----------------|-------------|------
-Category | Yes | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Weapon" | The category of the spawned item.| "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
+Category | Yes | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Trinket", "Weapon" | The category of the spawned item.| "Breakable" will randomly produce a barrel or crate. "Buried" will create an artifact spot with customizable "Contents".
 Name | Yes | An item name or ID, e.g. `"Red Mushroom"` | The name or ID of the spawned item. | This setting is required **except** when the category is a container (e.g. "chest" or "breakable").
 CanBePickedUp | No | true, false | When set to false, players will not be allowed to pick up this item. "True" has no effect. | Furniture and craftables set to false can be used, but not picked up. This setting has no effect on containers or monster loot. **Please use caution** with this setting. If necessary, players can use the `remove_items` command to override this.
 Contents | No | A list of other items, e.g. `[16, "joja cola"]` | A list of items within this container. | This setting will be ignored by non-container item categories. It uses the same formatting as other item lists, so it can use complex item definitions as well.

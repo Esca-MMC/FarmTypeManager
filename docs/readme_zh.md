@@ -247,7 +247,7 @@ CustomTileIndex | 一个整数列表 | 图块集中的索引列表，用于 Incl
 
 名称 | 必需项 | 有效值 | 描述 | 备注
 ----|-------|-------|------|---- 
-Category | 是 | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Weapon" | 生成物品的类别。| “Breakable”将随机生成一个木桶或箱子（如矿井内可破坏的木桶和箱子那样）。“Buried”将创建一个包含自定义内容物的远古斑点（参见“Contents”字段）。
+Category | 是 | "Barrel", "Big Craftable", "Boots", "Breakable", "Buried", "Chest", "Crate", "DGA", "Fence", "Gate", "Furniture", "Hat", "Object", "Pants", "Ring", "Shirt", "Tool", "Trinket", "Weapon" | 生成物品的类别。| “Breakable”将随机生成一个木桶或箱子（如矿井内可破坏的木桶和箱子那样）。“Buried”将创建一个包含自定义内容物的远古斑点（参见“Contents”字段）。
 Name | 是 | 物品名称或 ID，例如 `"Red Mushroom"` | 生成物品的名称或 ID。| 除非 Category 为容器（例如“chest”或“breakable”），否则此设置是必需的。
 CanBePickedUp | 否 | true, false | 设置为 false 时，玩家将无法拾取此物品。设置为 true 则无影响。| 当家具和可制作物品设置为 false 时可以使用，但不能被拾取。此设置对容器或怪物掉落物不生效。**请务必谨慎使用此设置**。必要时，玩家可以使用 `remove_items` 命令来覆盖此设置。
 Contents | 否 | 一个物品列表，例如 `[16, "joja cola"]` | 容器内的物品列表。| 若当前物品不是容器，则此项将被忽略。使用与其他物品列表相同的格式，因此也可以使用复杂的物品定义。
