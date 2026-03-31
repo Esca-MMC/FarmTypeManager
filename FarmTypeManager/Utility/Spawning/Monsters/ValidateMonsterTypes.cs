@@ -29,6 +29,15 @@ namespace FarmTypeManager
 
                 for (int x = validTypes.Count - 1; x >= 0; x--) //for each monster type in the new list (iterating backward to allow safe removal)
                 {
+                    if (validTypes[x] == null || validTypes[x].MonsterName == null)
+                    {
+                        Monitor.Log($"A listed monster (\"{validTypes[x]?.MonsterName}\") is null, or has a null \"MonsterName\".", LogLevel.Info);
+                        Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
+
+                        validTypes.RemoveAt(x); //remove this type from the valid list
+                        continue; //skip to the next monster type
+                    }
+
                     //validate monster names
                     bool validName = false;
 
@@ -207,7 +216,7 @@ namespace FarmTypeManager
 
                     if (!validName) //if the name is invalid
                     {
-                        Monitor.Log($"A listed monster (\"{validTypes[x].MonsterName}\") doesn't match any known monster types. Make sure that name isn't misspelled in your config file.", LogLevel.Info);
+                        Monitor.Log($"A listed monster's name (\"{validTypes[x].MonsterName}\") doesn't match any known monster types. Make sure that name isn't misspelled in your content file.", LogLevel.Info);
                         Monitor.Log($"Affected spawn area: {areaID}", LogLevel.Info);
 
                         validTypes.RemoveAt(x); //remove this type from the valid list
