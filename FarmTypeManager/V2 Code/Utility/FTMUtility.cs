@@ -221,12 +221,42 @@ namespace FarmTypeManager
         /* Methods - Color */
         /*******************/
 
+        /// <summary>Yields an infinite series of colors, parsed from a list of RGB or RGBA strings.</summary>
+        /// <param name="colorStrings">A list of RGB or RGBA strings (e.g. "255 0 0" or "255 0 0 255" for pure red). </param>
+        /// <param name="mode">The mode to use when selecting colors.</param>
+        /// <param name="timesToSelect">The number of times to select colors, depending on mode.</param>
+        /// <returns>An infinite yielded series of colors.</returns>
+        /// <remarks>
+        /// This returns infinite colors by repeating indefinitely.
+        /// The "times to select" argument only affects the behavior of some selection modes.
+        /// For example, given mode = Order and timesToSelect = 1, this will repeatedly return the first listed color.
+        /// </remarks>
+        public static IEnumerable<Color> ParseColors(List<string> colorStrings, SelectionMode mode, int timesToSelect)
+        {
+            List<Color> colors = [];
+            foreach (string colorString in colorStrings)
+            {
+                if (!TryParseColor(colorString, out Color color, out string error))
+                    throw new ArgumentException($"While creating a monster, a 'Color' value couldn't be parsed: {error}");
+                colors.Add(color);
+            }
+
+            while (true)
+            {
+                foreach (Color color in SelectElementsByMode(colors, mode, timesToSelect))
+                    yield return color;
+            }
+        }
+
         /// <summary>Tries to parse a text string into a color.</summary>
         /// <param name="text">The text to parse.</param>
         /// <param name="color">The parsed color, or a default color if parsing fails.</param>
         /// <param name="error">A description of why this text could not be parsed. Null if parsing succeeds.</param>
         /// <returns>The color indicated by the parsed text.</returns>
-        /// <remarks>Supported formats are "R G B" (red green blue) and "R G B A" (red green blue alpha). Each value must be from 0 to 255, and separated by spaces.</remarks>
+        /// <remarks>
+        /// Supported formats are "R G B" (red green blue) and "R G B A" (red green blue alpha). Each value must be from 0 to 255, and separated by spaces.
+        /// For example, "0 255 0 127" is pure green with 50% transparency.
+        /// </remarks>
         public static bool TryParseColor(string text, out Color color, out string error)
         {
             if (string.IsNullOrWhiteSpace(text))
@@ -240,7 +270,7 @@ namespace FarmTypeManager
             if (split?.Length < 3 || split.Length > 4)
             {
                 color = default;
-                error = $"The text \"{text}\" can't be converted into a color: Wrong number of space-separated values. Got {split.Length}, expected 3 or 4 (RGB or RGBA).";
+                error = $"The text \"{text}\" can't be converted into a color: Wrong number of space-separated values. Found {split.Length}, expected 3 or 4 (RGB or RGBA).";
                 return false;
             }
 
@@ -682,36 +712,96 @@ namespace FarmTypeManager
         }
 
         /// <summary>A set of persistent keys for <see cref="IHaveModData.modData"/> entries.</summary>
+        /// <remarks>For legacy reasons, the mod ID is followed by '/' instead of the community-recommended '_'.</remarks>
         public static class ModDataKeys
         {
-            /// <summary>The unique key used with the <see cref="ConfigItem.CanBePickedUp"/> setting.</summary>
+            /// <summary>The unique key used with the "can be picked up" item setting.</summary>
             public static string CanBePickedUp
             {
-                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/CanBePickedUp";
+                get => field ??= Helper.ModRegistry.ModID + "/CanBePickedUp";
             }
 
-            /// <summary>The unique key used with the "ExtraLoot" setting in <see cref="MonsterType.Settings"/>.</summary>
+            /// <summary>The unique key used with the "color" monster setting.</summary>
+            public static string Color
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/Color";
+            }
+
+            /// <summary>The unique key used with the "disable ranged attacks" monster setting.</summary>
+            public static string DisableRangedAttacks
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/DisableRangedAttacks";
+            }
+
+            /// <summary>The unique key used with the "extra loot" monster setting.</summary>
             public static string ExtraLoot
             {
-                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/ExtraLoot";
+                get => field ??= Helper.ModRegistry.ModID + "/ExtraLoot";
             }
 
-            /// <summary>The unique key used with the "InstantKillImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
+            /// <summary>The unique key used with the "gender" monster setting.</summary>
+            public static string Gender
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/Gender";
+            }
+
+            /// <summary>The unique key used with the "instant kill immunity" monster setting.</summary>
             public static string InstantKillImmunity
             {
-                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/InstantKillImmunity";
+                get => field ??= Helper.ModRegistry.ModID + "/InstantKillImmunity";
             }
 
-            /// <summary>The unique key used with the <see cref="FarmTypeManager.CustomActions.FTMSpawnItemData.IsOn"/> setting.</summary>
+            /// <summary>The unique key used with the "is on" item setting.</summary>
             public static string IsOn
             {
-                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/IsOn";
+                get => field ??= Helper.ModRegistry.ModID + "/IsOn";
             }
 
-            /// <summary>The unique key used with the "StunImmunity" setting in <see cref="MonsterType.Settings"/>.</summary>
+            /// <summary>The unique key used with the "segments" monster setting.</summary>
+            public static string Segments
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/Segments";
+            }
+
+            /// <summary>The unique key used to store IDs that identify each instance to its type's serializer.</summary>
+            /// <remarks>
+            /// <para>
+            /// This is only used by instance types that require it.
+            /// IDs should be unique among any instances stored in the same set, e.g. all instances at a specific location.
+            /// IDs are NOT necessarily globally unique or permanent. For example, a saved instance's ID may change after being loaded.
+            /// </para>
+            /// </remarks>
+            public static string SerializerId
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/SerializerId";
+            }
+
+            /// <summary>The unique key used with the "sight range" monster setting.</summary>
+            public static string SightRange
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/SightRange";
+            }
+
+            /// <summary>The unique key used with the "sprite" monster setting.</summary>
+            public static string Sprite
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/Sprite";
+            }
+
+            /// <summary>The unique key used to store IDs that spawn instances of a specific type, e.g. a monster type's ID.</summary>
+            /// <remarks>
+            /// This is not a unique identifier for a single instance; it is similar to <see cref="Item.ItemId"/>. See <see cref="SerializerId"/> to identify instances.
+            /// This is only used by certain types that don't provide their own ID-based spawn system (or didn't at the time of writing), e.g. monsters.
+            /// </remarks>
+            public static string SpawnId
+            {
+                get => field ??= Helper.ModRegistry.ModID + "/SpawnId";
+            }
+
+            /// <summary>The unique key used with the "stun immunity" monster setting.</summary>
             public static string StunImmunity
             {
-                get => field ??= FTMUtility.Helper.ModRegistry.ModID + "/StunImmunity";
+                get => field ??= Helper.ModRegistry.ModID + "/StunImmunity";
             }
         }
 

@@ -10,6 +10,7 @@
 
         private static void GameLaunched_Initialize()
         {
+            MonsterSerializer.Initialize();
             PlacedItemSerializer.Initialize();
         }
     }

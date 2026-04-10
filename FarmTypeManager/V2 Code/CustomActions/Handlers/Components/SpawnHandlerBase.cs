@@ -56,7 +56,7 @@ namespace FarmTypeManager.CustomActions
                 }
                 else if (placementError != null) //if placement failed and also returned error text
                 {
-                    error = $"Failed to spawn {LogTextForAnInstance} due to a placement error. ID: \"{GetId(instance)}\". Error: \"{placementError}\".";
+                    error = $"Failed to spawn {LogTextForAnInstance} due to an error during placement. ID: \"{GetId(instance)}\". Error: \"{placementError}\".";
                     return false;
                 }
             }
@@ -94,7 +94,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>Get a unique identifier for this spawn. Only used in log messages.</summary>
         /// <param name="instance">The spawn to identify. May be null.</param>
         /// <returns>A unique identifier for this spawn.</returns>
-        protected virtual string GetId(TSpawn instance) => instance != null ? "[no ID]" : "[null]";
+        protected virtual string GetId(TSpawn instance) => instance != null ? "[null ID]" : "[null spawn instance]";
 
         /// <summary>Gets the width and height, in tiles, that a spawned instance would occupy when placed.</summary>
         /// <param name="item">The item to check.</param>

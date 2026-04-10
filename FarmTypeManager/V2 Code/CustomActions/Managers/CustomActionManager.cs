@@ -21,6 +21,7 @@ namespace FarmTypeManager.CustomActions
             { "DespawnObject", new DespawnObjectHandler() },
             { "SpawnFurniture", new SpawnFurnitureHandler() },
             { "SpawnObject", new SpawnObjectHandler() },
+            { "SpawnMonster", new SpawnMonsterHandler() },
             { "SpawnPlacedItem", new SpawnPlacedItemHandler() },
             { "TriggerAction", new TriggerActionHandler() }
         };

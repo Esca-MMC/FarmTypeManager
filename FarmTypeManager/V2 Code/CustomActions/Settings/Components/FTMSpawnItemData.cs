@@ -26,10 +26,10 @@ namespace FarmTypeManager.CustomActions
         /* Properties - All items */
         /**************************/
 
-        /// <summary>Whether an item should be flagged to prevent it being picked up. This may or may not prevent removal by other means.</summary>
+        /// <summary>Whether an item should be flagged to prevent it being picked up, if possible.</summary>
         /// <remarks>
         /// <para>For a basic <see cref="Object"/>, this should override fields like <see cref="Object.Fragility"/> and/or <see cref="IsSpawnedObject"/> to prevent player pickup.</para>
-        /// <para>In all cases, it should set "<see cref="FTMUtility.ModDataKeys.CanBePickedUp"/>": "false" in <see cref="Item.modData"/>, which should be used to apply further changes that prevent removal.</para>
+        /// <para>In all cases, it should set the key <see cref="FTMUtility.ModDataKeys.CanBePickedUp"/> to the value "false" in <see cref="Item.modData"/>, which should be checked by any code that prevents removal.</para>
         /// </remarks>
         public bool PreventPickup { get; set; } = false;
 

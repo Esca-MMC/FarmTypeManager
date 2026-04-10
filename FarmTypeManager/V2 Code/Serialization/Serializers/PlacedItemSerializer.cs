@@ -10,9 +10,9 @@ namespace FarmTypeManager.Serialization
     /// <summary>The pseudo-serializer used to save and load <see cref="PlacedItem"/> instances.</summary>
     /// <remarks>
     /// <para>
-    /// This mod uses pseudo-serializers to save and load custom types that aren't recognized by the game's save seralizer.
+    /// This mod uses workaround serializers to save and load custom types that aren't recognized by the game's save seralizer.
     /// The game will throw errors and freeze if it attempts to save unrecognized in-game types.
-    /// These pseudo-serializers remove instances before the game saves, save them elsewhere, and re-add them after the main save process.
+    /// These serializers remove instances before the game saves, save them elsewhere, and re-add them after the main save process.
     /// </para>
     /// <para>
     /// If proper serialization is added for these types (e.g. via SpaceCore or future SMAPI support), this class's "save" method(s) should be safe to disable.
@@ -30,7 +30,7 @@ namespace FarmTypeManager.Serialization
 
         /// <summary>The key to use for this class's save data.</summary>
         /// <remarks>This is intended for use with methods like <see cref="IDataHelper.WriteJsonFile"/>, which don't require keys to be unique between mods.</remarks>
-        public static string SaveDataKey { get; set; } = "Serialization_PlacedItem";
+        public static string SaveDataKey { get; set; } = "PlacedItemSerializer";
 
         /// <summary>A set of all added instances to serialize, divided by their in-game location name. Keys are location names; values are lists of weak references to the instances.</summary>
         /// <remarks>
@@ -39,40 +39,70 @@ namespace FarmTypeManager.Serialization
         /// </remarks>
         private static Dictionary<string, List<WeakReference<PlacedItem>>> InstancesByLocation { get; set; } = new(StringComparer.OrdinalIgnoreCase);
 
+        /*****************/
+        /* Setup methods */
+        /*****************/
+
+        /// <summary>Initializes this serializer's events and other setup tasks.</summary>
+        /// <remarks>
+        /// <para>To describe the intended flow of these events:</para>
+        /// <list type="number">
+        /// <item>
+        /// <para>Before a session loads, this class should clear its tracked instances.</para>
+        /// <para>This prevents tracking instances from a previously loaded session. It may not be strictly necessary, and it requires correct timing, but improves performance when saving.</para>
+        /// </item>
+        /// <item>
+        /// <para>After a session loads, this class should run its "load and add to world" method.</para>
+        /// <para>That method places any instances from save data into the game, and then clears this class's save data. (Clearing the save data doesn't become permanent until the game actually saves.)</para>
+        /// </item>
+        /// <item>
+        /// <para>Before a game session saves, this class should run its "save and remove from world" method.</para>
+        /// <para>That method finds any tracked instances that still exist in-game, removes them, creates save data for them, clears all tracked instances, then updates the save data.</para>
+        /// </item>
+        /// <item>
+        /// <para>After a game session saves, this class should run its "load and add to world" method. (See "2.")</para>
+        /// </item>
+        /// </list>
+        /// <para>
+        /// It's possible that these events will be called multiple times in succession, e.g. due to both normal SMAPI events and quick-save events.
+        /// The "save" and "load" methods should be careful not to overwrite their own work in these cases.
+        /// For example, the "save" method should do nothing if it detects that unloaded save data exist (e.g. it's not null).
+        /// The "load" event should null save data after loading, to allow future saves while preventing itself from loading multiple sets.
+        /// </para>
+        /// </remarks>
+        public static void Initialize()
+        {
+            FTMUtility.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => InstancesByLocation.Clear(); //NOTE: this is equivalent to clearing before a load can begin
+            FTMUtility.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
+
+            FTMUtility.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
+            FTMUtility.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
+
+            if (FTMUtility.ModAPIs.QuickSaveAPI != null)
+            {
+                FTMUtility.ModAPIs.QuickSaveAPI.LoadingEvent += (_, _) => InstancesByLocation.Clear();
+                FTMUtility.ModAPIs.QuickSaveAPI.LoadedEvent += (_, _) => LoadAndAddToWorld();
+
+                FTMUtility.ModAPIs.QuickSaveAPI.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
+                FTMUtility.ModAPIs.QuickSaveAPI.SavedEvent += (_, _) => LoadAndAddToWorld();
+            }
+        }
+
         /******************/
         /* Public methods */
         /******************/
 
-        /// <summary>Initialize this serializer's events and other setup tasks.</summary>
-        public static void Initialize()
-        {
-            FTMUtility.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
-            FTMUtility.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
-            FTMUtility.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
-
-            FTMUtility.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => InstancesByLocation.Clear();
-
-            if (FTMUtility.ModAPIs.QuickSaveAPI is var quickSave and not null) //NOTE: the APIs' method getters seem to trick "is" into allowing null, so "and not null" is necessary here
-            {
-                quickSave.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
-                quickSave.SavedEvent += (_, _) => LoadAndAddToWorld();
-                quickSave.LoadedEvent += (_, _) => LoadAndAddToWorld();
-            }
-
-            if (FTMUtility.ModAPIs.SaveAnywhereAPI is var saveAnywhere and not null)
-            {
-                saveAnywhere.addBeforeSaveEvent(FTMUtility.Manifest.UniqueID, SaveAndRemoveFromWorld);
-                saveAnywhere.addBeforeSaveEvent(FTMUtility.Manifest.UniqueID, LoadAndAddToWorld);
-            }
-        }
-
-        /// <summary>Add a new instance of this type to the tracking system.</summary>
+        /// <summary>Adds a new instance of this type to the tracking system.</summary>
         /// <param name="instance">The instance to track.</param>
         /// <param name="locationName">The instance's location's <see cref="GameLocation.NameOrUniqueName"/>.</param>
         public static void Add(PlacedItem instance, string locationName)
         {
             if (!Context.IsMainPlayer)
-                return;
+                throw new Exception("Failed to register a placed item with the serializer. The current local player must be the host of a game session (StardewModdingAPI.Context.IsMainPlayer must be true).");
+            else if (instance == null)
+                throw new NullReferenceException($"Failed to register a placed item with the serializer. The argument \"PlacedItem instance\" is null.");
+            else if (locationName == null)
+                throw new NullReferenceException($"Failed to register a placed item with the serializer. The argument \"string locationName\" is null.");
 
             if (!InstancesByLocation.TryGetValue(locationName, out var list)) //if this location has no list yet
             {
@@ -83,9 +113,9 @@ namespace FarmTypeManager.Serialization
             list.Add(new(instance)); //add a weak reference to this instance
         }
 
-        /*****************/
-        /* Event methods */
-        /*****************/
+        /*******************/
+        /* Private methods */
+        /*******************/
 
         /// <summary>Finds tracked instances, removes them from the game, and creates save data for them. This method should be called before a game session starts saving.</summary>
         /// <remarks>
@@ -155,8 +185,6 @@ namespace FarmTypeManager.Serialization
             var saveDataByLocation = FTMUtility.Helper.Data.ReadSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey); //read save data, if any
             if (saveDataByLocation == null) //if data is null (not just empty)
                 return;
-
-            InstancesByLocation.Clear(); //clear tracked instances
 
             foreach (var entry in saveDataByLocation) //for each location with saved instances
             {

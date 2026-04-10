@@ -39,6 +39,7 @@ namespace FarmTypeManager
             HarmonyPatch_OptimizeMonsterCode.ApplyPatch(harmony);
             HarmonyPatch_StunImmunity.ApplyPatch(harmony);
             HarmonyPatch_ToggleExtraLoot.ApplyPatch(harmony);
+            HarmonyPatch_DropMonsterLoot.ApplyPatch(harmony);
             HarmonyPatch_TriggerCustomActions.ApplyPatch(harmony);
             HarmonyPatch_UpdateCursorOverPlacedItem.ApplyPatch(harmony);
         }
