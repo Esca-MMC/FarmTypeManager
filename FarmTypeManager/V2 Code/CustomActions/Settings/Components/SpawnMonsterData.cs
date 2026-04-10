@@ -1,6 +1,4 @@
-﻿using StardewValley;
-using StardewValley.GameData;
-using StardewValley.Monsters;
+﻿using StardewValley.GameData;
 using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions

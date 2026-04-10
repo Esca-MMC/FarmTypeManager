@@ -1,12 +1,10 @@
 ﻿using FarmTypeManager.Serialization;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
-using xTile.Dimensions;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -43,7 +41,7 @@ namespace FarmTypeManager.CustomActions
             if (FTMUtility.MConfig?.MonsterLimitPerLocation.HasValue == true) //if the player has set a monster limit
             {
                 int monstersAtLocation = 0; //count any monsters in the query context location
-                foreach (var character in queryContext.Location?.characters ?? []) 
+                foreach (var character in queryContext.Location?.characters ?? [])
                     if (character is Monster)
                         monstersAtLocation++;
 
@@ -84,7 +82,7 @@ namespace FarmTypeManager.CustomActions
             Monster monster;
             try
             {
-                 monster = MonsterManager.Create(instance, location);
+                monster = MonsterManager.Create(instance, location);
                 MonsterSerializer.Add(monster, instance, location.NameOrUniqueName);
             }
             catch (Exception ex)

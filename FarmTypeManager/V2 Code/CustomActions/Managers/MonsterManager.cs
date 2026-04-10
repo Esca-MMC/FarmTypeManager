@@ -1,10 +1,5 @@
-﻿using FarmTypeManager.Serialization;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+﻿using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Delegates;
-using StardewValley.GameData;
-using StardewValley.Internal;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -51,7 +46,7 @@ namespace FarmTypeManager.CustomActions
         {
             if (monsterId == null || !Handlers.TryGetValue(monsterId, out var handler))
                 return null;
-            
+
             return handler.TileSize;
         }
 

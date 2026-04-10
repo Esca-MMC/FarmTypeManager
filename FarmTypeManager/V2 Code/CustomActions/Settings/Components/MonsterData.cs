@@ -1,11 +1,6 @@
-﻿using FarmTypeManager.Serialization;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using StardewValley;
-using StardewValley.Delegates;
-using StardewValley.GameData.Tools;
-using StardewValley.Internal;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;

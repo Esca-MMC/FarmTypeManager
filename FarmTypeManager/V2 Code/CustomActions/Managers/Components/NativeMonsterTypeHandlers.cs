@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Extensions;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
@@ -98,7 +97,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "BigGreenSlime",
                     new(
-                        (tile) => new BigSlimeFTM(tile, 0), 
+                        (tile) => new BigSlimeFTM(tile, 0),
                         (monster) =>
                         {
                             if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
@@ -312,7 +311,7 @@ namespace FarmTypeManager.CustomActions
                                         FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: GreenSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender)) 
+                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -679,7 +678,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "HotHead", //NOTE: grouped with MetalHead due to similarity and being a sub-class
                     new(
-                        (tile) => new HotHead(tile), 
+                        (tile) => new HotHead(tile),
                         (monster) =>
                         {
                             if (monster is HotHead hot)

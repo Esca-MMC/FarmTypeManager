@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
-using Object = StardewValley.Object;
 
 namespace FarmTypeManager.CustomActions
 {

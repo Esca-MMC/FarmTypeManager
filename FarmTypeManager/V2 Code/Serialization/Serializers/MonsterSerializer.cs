@@ -1,12 +1,9 @@
 ﻿using FarmTypeManager.CustomActions;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using xTile.Tiles;
 
 namespace FarmTypeManager.Serialization
 {
