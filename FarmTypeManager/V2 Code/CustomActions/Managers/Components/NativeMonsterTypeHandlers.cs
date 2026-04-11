@@ -164,7 +164,7 @@ namespace FarmTypeManager.CustomActions
                     )
                 },
                 {
-                    "BigBlueSlime",
+                    "BigPurpleSlime",
                     new(
                         (tile) => new BigSlimeFTM(tile, 121),
                         (monster) =>
@@ -1039,6 +1039,8 @@ namespace FarmTypeManager.CustomActions
                         Vector2.One
                     )
                 },
+
+                //TODO: test these; add aliases to manager; add fallback support for reflection-based custom monsters (call old method from inside a unique one-off handler?); look into adding player ;ocations to loc parsing?
             };
         }
     }
