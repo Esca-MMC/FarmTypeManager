@@ -39,7 +39,14 @@ namespace FarmTypeManager.CustomActions
             if (colorStrings.Count == 0)
                 colorsToUse = null;
             else
+            {
                 colorsToUse = FTMUtility.SelectElementsByMode(colorStrings, spawnData.ColorListMode, times).GetEnumerator();
+                
+                //move to the first color to use; if the enumerator is empty, don't use it
+                //NOTE: MoveNext must be called to reach the first item when using enumerators "manually"; before this, Current is null/default
+                if (!colorsToUse.MoveNext())
+                    colorsToUse = null;
+            }
 
             foreach (string monsterID in FTMUtility.SelectElementsByMode(monsterIDs, spawnData.IdListMode, times)) //for each monster to create
             {
