@@ -266,7 +266,7 @@ namespace FarmTypeManager
                 return false;
             }
 
-            string[] split = text.Split(text, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            string[] split = text.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             if (split?.Length < 3 || split.Length > 4)
             {
                 color = default;

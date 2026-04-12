@@ -83,21 +83,22 @@ namespace FarmTypeManager.CustomActions
             try
             {
                 monster = MonsterManager.Create(instance, location);
+
+                if (monster == null)
+                {
+                    if (instance?.SpawnId == null)
+                        placementError = "Failed to create a monster because its ID was null.";
+                    else
+                        placementError = $"Failed to create a monster because its ID is not recognized.";
+
+                    return false;
+                }
+
                 MonsterSerializer.Add(monster, instance, location.NameOrUniqueName);
             }
             catch (Exception ex)
             {
                 placementError = $"Failed to create a monster due to an error. Full error message: {ex}";
-                return false;
-            }
-
-            if (monster == null)
-            {
-                if (instance?.SpawnId == null)
-                    placementError = "Failed to create a monster because its ID was null.";
-                else
-                    placementError = $"Failed to create a monster because its ID is not recognized.";
-
                 return false;
             }
 
