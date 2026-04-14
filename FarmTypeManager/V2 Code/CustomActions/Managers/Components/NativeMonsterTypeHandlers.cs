@@ -298,7 +298,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "GreenSlime",
                     new(
-                        (tile) => new GreenSlime(tile, 0) { readyToMate = -35000 }, //disable mating with magic value
+                        (tile) => new GreenSlime(tile, 0) { readyToMate = int.MaxValue }, //disable mating
                         (monster) =>
                         {
                             if (monster is GreenSlime slime)
@@ -348,7 +348,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "BlueSlime",
                     new(
-                        (tile) => new GreenSlime(tile, 40) { readyToMate = -35000 },
+                        (tile) => new GreenSlime(tile, 40) { readyToMate = int.MaxValue },
                         (monster) =>
                         {
                             if (monster is GreenSlime slime)
@@ -398,7 +398,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "RedSlime",
                     new(
-                        (tile) => new GreenSlime(tile, 80) { readyToMate = -35000 },
+                        (tile) => new GreenSlime(tile, 80) { readyToMate = int.MaxValue },
                         (monster) =>
                         {
                             if (monster is GreenSlime slime)
@@ -448,7 +448,7 @@ namespace FarmTypeManager.CustomActions
                 {
                     "PurpleSlime",
                     new(
-                        (tile) => new GreenSlime(tile, 121) { readyToMate = -35000 },
+                        (tile) => new GreenSlime(tile, 121) { readyToMate = int.MaxValue },
                         (monster) =>
                         {
                             if (monster is GreenSlime slime)
@@ -500,7 +500,7 @@ namespace FarmTypeManager.CustomActions
                     new(
                         (tile) =>
                         {
-                            GreenSlime slime = new(tile, 0) { readyToMate = -35000 };
+                            GreenSlime slime = new(tile, 0) { readyToMate = int.MaxValue };
                             slime.makeTigerSlime();
                             return slime;
                         },
@@ -555,7 +555,7 @@ namespace FarmTypeManager.CustomActions
                     new(
                         (tile) =>
                         {
-                            GreenSlime slime = new(tile, 0) { readyToMate = -35000 };
+                            GreenSlime slime = new(tile, 0) { readyToMate = int.MaxValue };
                             slime.makePrismatic();
                             return slime;
                         },

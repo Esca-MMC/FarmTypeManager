@@ -87,8 +87,8 @@ namespace FarmTypeManager
                             int num2 = Game1.random.Next(2, 5);
                             for (int index = 0; index < num2; ++index)
                             {
-                                GreenSlime spawnSlime = new GreenSlime(this.Position, MineLevelOfDeathSpawns); //use MineLevelOfDeathSpawns instead of checking the game state
-                                spawnSlime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
+                                GreenSlime spawnSlime = new(this.Position, MineLevelOfDeathSpawns); //use MineLevelOfDeathSpawns instead of checking the game state
+                                spawnSlime.readyToMate = int.MaxValue; //disable slime mating
 
                                 int ID = Utility.MonsterTracker.AddMonster(spawnSlime) ?? Utility.RNG.Next(int.MinValue, -1); //add the new slime to the tracker and get an ID for it (or randomly generate one if this fails)
                                 spawnSlime.id = ID; //assign the ID to this slime
