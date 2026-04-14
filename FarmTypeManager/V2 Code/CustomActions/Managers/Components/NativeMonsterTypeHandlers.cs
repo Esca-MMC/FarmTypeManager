@@ -10,7 +10,7 @@ using static FarmTypeManager.ModEntry;
 namespace FarmTypeManager.CustomActions
 {
     /// <summary>Contains this mod's built-in monster type handlers, e.g. for types in the base game.</summary>
-    public static class NativeMonsterHandlers
+    public static class NativeMonsterTypeHandlers
     {
         /// <summary>Provides this mod's built-in monster type handlers, e.g. for types in the base game.</summary>
         public static Dictionary<string, MonsterTypeHandler> Get()

@@ -14,7 +14,7 @@ namespace FarmTypeManager.CustomActions
         /**************/
 
         /// <summary>A set of handlers for known monster type IDs.</summary>
-        private static readonly Dictionary<string, MonsterTypeHandler> Handlers = NativeMonsterHandlers.Get();
+        private static readonly Dictionary<string, MonsterTypeHandler> Handlers = NativeMonsterTypeHandlers.Get();
 
         /******************/
         /* Public methods */
