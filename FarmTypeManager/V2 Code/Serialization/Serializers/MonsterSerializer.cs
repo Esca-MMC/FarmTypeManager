@@ -244,6 +244,8 @@ namespace FarmTypeManager.Serialization
             if (saveDataByLocation == null) //if data is null (not just empty)
                 return;
 
+            int daysPlayed = WorldDate.GetDaysPlayed(Game1.year, Game1.season, Game1.dayOfMonth); //get current date for removal checks
+
             foreach (var entry in saveDataByLocation) //for each location with saved instances
             {
                 GameLocation location = FTMUtility.GetLocationIfActive(entry.Key);
@@ -252,6 +254,9 @@ namespace FarmTypeManager.Serialization
 
                 foreach (var saveData in entry.Value) //for each saved instance
                 {
+                    if (saveData.DayToRemove.HasValue && saveData.DayToRemove <= daysPlayed) //if this should be removed today (or should've already been removed)
+                        continue;
+
                     Monster monster = MonsterManager.Create(saveData, location);
                     if (monster == null)
                     {

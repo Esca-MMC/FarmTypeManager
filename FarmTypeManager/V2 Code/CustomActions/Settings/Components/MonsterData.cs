@@ -4,6 +4,7 @@ using StardewValley;
 using StardewValley.Monsters;
 using System;
 using System.Collections.Generic;
+using StardewModdingAPI.Utilities;
 
 namespace FarmTypeManager.CustomActions
 {
@@ -88,9 +89,18 @@ namespace FarmTypeManager.CustomActions
         /// </remarks>
         public bool DisableStun { get; set; } = false;
 
-        /// <summary>A set of custom entries to add to the monster's <see cref="IHaveModData.modData"/> property.</summary>
-        /// <remarks>If any other customizations edit the same entries during initial monster creation, this property's entries should overwrite them.</remarks>
-        public Dictionary<string, string> ModData { get; set; } = [];
+        /// <summary>The number of days to wait before removing this monster from the game overnight. If null, it won't be automatically removed.</summary>
+        /// <remarks>
+        /// <para>
+        /// This defaults to 1, which means the monster will be removed overnight: it will only will exist on the day it spawned.
+        /// 2 will cause the monster to persist overnight once after spawning, then be removed the following night, and so on.
+        /// Values lower than 1 are equivalent to 1.
+        /// </para>
+        /// <para>
+        /// This should be used to generate a value for <see cref="DayToRemove"/>, e.g. during initial creation or customization.
+        /// </para>
+        /// </remarks>
+        public int? DaysUntilRemoved { get; set; } = 1;
 
         /********************************************/
         /* Properties - Type-specific customization */
@@ -110,19 +120,34 @@ namespace FarmTypeManager.CustomActions
         /// <remarks>For example, this sets the number of tail segments on a royal <see cref="Serpent"/>, or the number of extra "stacked" slimes on top of a <see cref="GreenSlime"/>.</remarks>
         public int? Segments { get; set; } = null;
 
+        /***********/
+        /* ModData */
+        /***********/
+
+        /// <summary>A set of custom entries to add to the monster's <see cref="IHaveModData.modData"/> property.</summary>
+        /// <remarks>If any other customizations edit the same entries during initial monster creation, this property's entries should overwrite them.</remarks>
+        public Dictionary<string, string> ModData { get; set; } = [];
+
         /*************************************************/
         /* Properties - Placement and serialization info */
         /*************************************************/
 
         //NOTE: The monster's GameLocation and its name are omitted here for complexity and performance reasons.
+        //      Monster creation and/or placement methods should apply it themselves as needed.
         //      Notably, none of the base game monster types need to know their location at construction time.
-        //      Any methods that place monsters should know the target location and set "Monster.currentLocation" after creation.
 
         /// <summary>The monster's pixel position, i.e. <see cref="Character.Position"/>.</summary>
         public Vector2? Position { get; set; } = null;
 
         /// <summary>The monster's current movement velocity, i.e. <see cref="Character.xVelocity"/> and <see cref="Character.yVelocity"/>.</summary>
         public Vector2? Velocity { get; set; } = null;
+
+        /// <summary>The day when this monster should be removed from the game. If null, no automatic removal is needed.</summary>
+        /// <remarks>
+        /// This should be set based on <see cref="DaysUntilRemoved"/> at monster creation time, e.g. by adding that value to <see cref="WorldDate.GetDaysPlayed(int, Season, int)"/>.
+        /// When the next in-game day matches (or exceeds) this value, the monster and its data should be removed.
+        /// </remarks>
+        public int? DayToRemove { get; set; } = null;
 
         /***********/
         /* Methods */
@@ -232,13 +257,16 @@ namespace FarmTypeManager.CustomActions
                 monster.yVelocity = Velocity.Value.Y;
             }
 
+            if (DaysUntilRemoved.HasValue && DayToRemove == null) //if a removal date is needed
+                DayToRemove = WorldDate.GetDaysPlayed(Game1.year, Game1.season, Game1.dayOfMonth) + DaysUntilRemoved; //set it based on the current in-game date
+
             /***********/
             /* ModData */
             /***********/
 
             if (ModData != null)
                 foreach (var entry in ModData)
-                    monster.modData[entry.Key] = entry.Value; //set each custom value (NOTE: this should be applied last, which allows custom overrides and/or saved data to take priority)
+                    monster.modData[entry.Key] = entry.Value; //set each custom value (NOTE: this should be applied last, which prioritizes custom overrides and saved data)
         }
 
         /// <summary>Updates variable properties based on the monster instance's current state, if relevant.</summary>

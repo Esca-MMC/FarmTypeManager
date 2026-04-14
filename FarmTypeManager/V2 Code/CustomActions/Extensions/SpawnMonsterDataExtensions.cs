@@ -69,12 +69,14 @@ namespace FarmTypeManager.CustomActions
                     DisableExtraLoot = spawnData.DisableExtraLoot,
                     DisableInstantKill = spawnData.DisableInstantKill,
                     DisableStun = spawnData.DisableStun,
-                    ModData = spawnData.ModData,
+                    DaysUntilRemoved = spawnData.DaysUntilRemoved,
 
                     Color = colorsToUse?.Current ?? null,
                     DisableRangedAttacks = spawnData.DisableRangedAttacks,
                     Gender = spawnData.Gender,
-                    Segments = spawnData.Segments
+                    Segments = spawnData.Segments,
+
+                    ModData = spawnData.ModData
                 };
 
                 if (colorsToUse != null && !colorsToUse.MoveNext()) //if out of colors

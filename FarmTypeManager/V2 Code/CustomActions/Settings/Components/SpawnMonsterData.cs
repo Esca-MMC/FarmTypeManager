@@ -92,8 +92,8 @@ namespace FarmTypeManager.CustomActions
         /// <inheritdoc cref="MonsterData.DisableStun"/>
         public bool DisableStun { get; set; } = false;
 
-        /// <inheritdoc cref="MonsterData.ModData"/>
-        public Dictionary<string, string> ModData { get; set; } = null;
+        /// <inheritdoc cref="MonsterData.DaysUntilRemoved"/>
+        public int DaysUntilRemoved { get; set; } = 1;
 
         /********************************************/
         /* Properties - Type-specific customization */
@@ -116,5 +116,12 @@ namespace FarmTypeManager.CustomActions
 
         /// <inheritdoc cref="MonsterData.Segments"/>
         public int? Segments { get; set; } = null;
+
+        /***********/
+        /* ModData */
+        /***********/
+
+        /// <inheritdoc cref="MonsterData.ModData"/>
+        public Dictionary<string, string> ModData { get; set; } = null;
     }
 }
