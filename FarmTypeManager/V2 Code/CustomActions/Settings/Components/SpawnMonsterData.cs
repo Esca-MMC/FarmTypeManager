@@ -93,7 +93,7 @@ namespace FarmTypeManager.CustomActions
         public bool DisableStun { get; set; } = false;
 
         /// <inheritdoc cref="MonsterData.DaysUntilRemoved"/>
-        public int DaysUntilRemoved { get; set; } = 1;
+        public int? DaysUntilRemoved { get; set; } = 1;
 
         /********************************************/
         /* Properties - Type-specific customization */
