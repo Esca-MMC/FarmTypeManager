@@ -1,7 +1,9 @@
 ﻿using QuickSave.API;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Monsters;
 using System;
+using FarmTypeManager;
 
 namespace FarmTypeManager.Utilities
 {
@@ -20,9 +22,9 @@ namespace FarmTypeManager.Utilities
         /// <summary>A shared <see cref="System.Random"/> instance for this mod.</summary>
         public static Random Random { get; } = new Random();
 
-        /***************/
-        /* Sub-classes */
-        /***************/
+        /******************/
+        /* Nested classes */
+        /******************/
 
         /// <summary>Encapsulates a global <see cref="StardewModdingAPI.IMonitor"/> for this mod. Must be given an IMonitor in the ModEntry class to produce output.</summary>
         public static class Monitor
@@ -78,6 +80,42 @@ namespace FarmTypeManager.Utilities
                     {
                         monitor.VerboseLog(message);
                     }
+                }
+            }
+        }
+
+        /// <summary>API instances provided by other mods.</summary>
+        public static class ModAPIs
+        {
+            private static bool triedToLoadQuickSaveAPI = false;
+            private static IQuickSaveAPI _quickSaveAPI = null;
+            public static IQuickSaveAPI QuickSaveAPI
+            {
+                get
+                {
+                    if (!triedToLoadQuickSaveAPI)
+                    {
+                        _quickSaveAPI = Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
+                        triedToLoadQuickSaveAPI = true;
+                    }
+
+                    return _quickSaveAPI;
+                }
+            }
+
+            private static bool triedToLoadSaveAnywhereAPI = false;
+            private static ISaveAnywhereAPI _saveAnywhereAPI = null;
+            public static ISaveAnywhereAPI SaveAnywhereAPI
+            {
+                get
+                {
+                    if (!triedToLoadSaveAnywhereAPI)
+                    {
+                        _saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
+                        triedToLoadSaveAnywhereAPI = true;
+                    }
+
+                    return _saveAnywhereAPI;
                 }
             }
         }
@@ -176,40 +214,15 @@ namespace FarmTypeManager.Utilities
             }
         }
 
-        /// <summary>API instances provided by other mods.</summary>
-        public static class ModAPIs
+        /// <summary>A set of persistent keys for save data stored with <see cref="IDataHelper.WriteJsonFile"/> or similar methods.</summary>
+        /// <remarks>These keys do not use the mod's ID as a prefix. SMAPI's save data system separates each mod's keys.</remarks>
+        public static class SaveDataKeys
         {
-            private static bool triedToLoadQuickSaveAPI = false;
-            private static IQuickSaveAPI _quickSaveAPI = null;
-            public static IQuickSaveAPI QuickSaveAPI
-            {
-                get
-                {
-                    if (!triedToLoadQuickSaveAPI)
-                    {
-                        _quickSaveAPI = Helper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
-                        triedToLoadQuickSaveAPI = true;
-                    }
+            /// <summary>The unique key used by <see cref="Serialization.MonsterSerializer"/>.</summary>
+            public static string MonsterSerializer => "MonsterSerializer";
 
-                    return _quickSaveAPI;
-                }
-            }
-
-            private static bool triedToLoadSaveAnywhereAPI = false;
-            private static ISaveAnywhereAPI _saveAnywhereAPI = null;
-            public static ISaveAnywhereAPI SaveAnywhereAPI
-            {
-                get
-                {
-                    if (!triedToLoadSaveAnywhereAPI)
-                    {
-                        _saveAnywhereAPI = Helper.ModRegistry.GetApi<ISaveAnywhereAPI>("Omegasis.SaveAnywhere");
-                        triedToLoadSaveAnywhereAPI = true;
-                    }
-
-                    return _saveAnywhereAPI;
-                }
-            }
+            /// <summary>The unique key used by <see cref="Serialization.PlacedItemSerializer"/>.</summary>
+            public static string PlacedItemSerializer => "PlacedItemSerializer";
         }
     }
 }

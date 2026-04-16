@@ -26,8 +26,7 @@ namespace FarmTypeManager.Serialization
         /**************/
 
         /// <summary>The key to use for this class's save data.</summary>
-        /// <remarks>This is intended for use with methods like <see cref="IDataHelper.WriteJsonFile"/>, which don't require keys to be unique between mods.</remarks>
-        public static string SaveDataKey { get; } = "MonsterSerializer";
+        public static string SaveDataKey => Properties.SaveDataKeys.MonsterSerializer;
 
         /// <summary>A set of all instances' serializer IDs and serialization data.</summary>
         private static Dictionary<string, MonsterData> IDsAndData { get; } = new(StringComparer.OrdinalIgnoreCase);

@@ -30,8 +30,7 @@ namespace FarmTypeManager.Serialization
         /**************/
 
         /// <summary>The key to use for this class's save data.</summary>
-        /// <remarks>This is intended for use with methods like <see cref="IDataHelper.WriteJsonFile"/>, which don't require keys to be unique between mods.</remarks>
-        public static string SaveDataKey { get; set; } = "PlacedItemSerializer";
+        public static string SaveDataKey => Properties.SaveDataKeys.PlacedItemSerializer;
 
         /// <summary>A set of all added instances to serialize, divided by their in-game location name. Keys are location names; values are lists of weak references to the instances.</summary>
         /// <remarks>
