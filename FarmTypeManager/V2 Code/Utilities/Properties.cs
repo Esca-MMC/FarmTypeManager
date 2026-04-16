@@ -1,9 +1,7 @@
 ﻿using QuickSave.API;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Monsters;
 using System;
-using FarmTypeManager;
 
 namespace FarmTypeManager.Utilities
 {
