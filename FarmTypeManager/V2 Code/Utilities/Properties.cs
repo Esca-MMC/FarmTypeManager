@@ -121,56 +121,35 @@ namespace FarmTypeManager.Utilities
         }
 
         /// <summary>A set of persistent keys for <see cref="IHaveModData.modData"/> entries.</summary>
-        /// <remarks>For legacy reasons, the mod ID is followed by '/' instead of the community-recommended '_'.</remarks>
+        /// <remarks>
+        /// <para>These keys are read-only and lazily initialized, allowing time to receive the mod ID before they're referenced.</para>
+        /// <para>For legacy reasons, the mod ID is followed by a slash (/) instead of the current community convention, an underscore (_).</para>
+        /// </remarks>
         public static class ModDataKeys
         {
             /// <summary>The unique key used with the "can be picked up" item setting.</summary>
-            public static string CanBePickedUp
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/CanBePickedUp";
-            }
+            public static string CanBePickedUp => field ??= Helper.ModRegistry.ModID + "/CanBePickedUp";
 
             /// <summary>The unique key used with the "color" monster setting.</summary>
-            public static string Color
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/Color";
-            }
+            public static string Color => field ??= Helper.ModRegistry.ModID + "/Color";
 
             /// <summary>The unique key used with the "disable ranged attacks" monster setting.</summary>
-            public static string DisableRangedAttacks
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/DisableRangedAttacks";
-            }
+            public static string DisableRangedAttacks => field ??= Helper.ModRegistry.ModID + "/DisableRangedAttacks";
 
             /// <summary>The unique key used with the "extra loot" monster setting.</summary>
-            public static string ExtraLoot
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/ExtraLoot";
-            }
+            public static string ExtraLoot => field ??= Helper.ModRegistry.ModID + "/ExtraLoot";
 
             /// <summary>The unique key used with the "gender" monster setting.</summary>
-            public static string Gender
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/Gender";
-            }
+            public static string Gender => field ??= Helper.ModRegistry.ModID + "/Gender";
 
             /// <summary>The unique key used with the "instant kill immunity" monster setting.</summary>
-            public static string InstantKillImmunity
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/InstantKillImmunity";
-            }
+            public static string InstantKillImmunity => field ??= Helper.ModRegistry.ModID + "/InstantKillImmunity";
 
             /// <summary>The unique key used with the "is on" item setting.</summary>
-            public static string IsOn
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/IsOn";
-            }
+            public static string IsOn => field ??= Helper.ModRegistry.ModID + "/IsOn";
 
             /// <summary>The unique key used with the "segments" monster setting.</summary>
-            public static string Segments
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/Segments";
-            }
+            public static string Segments => field ??= Helper.ModRegistry.ModID + "/Segments";
 
             /// <summary>The unique key used to store IDs that identify each instance to its type's serializer.</summary>
             /// <remarks>
@@ -180,38 +159,23 @@ namespace FarmTypeManager.Utilities
             /// IDs are NOT necessarily globally unique or permanent. For example, a saved instance's ID may change after being loaded.
             /// </para>
             /// </remarks>
-            public static string SerializerId
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/SerializerId";
-            }
+            public static string SerializerId => field ??= Helper.ModRegistry.ModID + "/SerializerId";
 
             /// <summary>The unique key used with the "sight range" monster setting.</summary>
-            public static string SightRange
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/SightRange";
-            }
+            public static string SightRange => field ??= Helper.ModRegistry.ModID + "/SightRange";
 
             /// <summary>The unique key used with the "sprite" monster setting.</summary>
-            public static string Sprite
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/Sprite";
-            }
+            public static string Sprite => field ??= Helper.ModRegistry.ModID + "/Sprite";
 
             /// <summary>The unique key used to store IDs that spawn instances of a specific type, e.g. a monster type's ID.</summary>
             /// <remarks>
             /// This is not a unique identifier for a single instance; it is similar to <see cref="Item.ItemId"/>. See <see cref="SerializerId"/> to identify instances.
             /// This is only used by certain types that don't provide their own ID-based spawn system (or didn't at the time of writing), e.g. monsters.
             /// </remarks>
-            public static string SpawnId
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/SpawnId";
-            }
+            public static string SpawnId => field ??= Helper.ModRegistry.ModID + "/SpawnId";
 
             /// <summary>The unique key used with the "stun immunity" monster setting.</summary>
-            public static string StunImmunity
-            {
-                get => field ??= Helper.ModRegistry.ModID + "/StunImmunity";
-            }
+            public static string StunImmunity => field ??= Helper.ModRegistry.ModID + "/StunImmunity";
         }
 
         /// <summary>A set of persistent keys for save data stored with <see cref="IDataHelper.WriteJsonFile"/> or similar methods.</summary>
