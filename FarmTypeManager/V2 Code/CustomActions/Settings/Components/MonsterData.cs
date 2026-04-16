@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FarmTypeManager.Utilities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Monsters;

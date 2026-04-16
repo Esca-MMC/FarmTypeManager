@@ -1,4 +1,6 @@
-﻿namespace FarmTypeManager.Serialization
+﻿using FarmTypeManager.Utilities;
+
+namespace FarmTypeManager.Serialization
 {
     public static class SerializerEvents
     {

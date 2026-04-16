@@ -1,4 +1,5 @@
 ﻿using FarmTypeManager.Monsters;
+using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;

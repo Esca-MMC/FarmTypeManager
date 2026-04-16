@@ -1,4 +1,5 @@
 ﻿using FarmTypeManager.Serialization;
+using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Delegates;

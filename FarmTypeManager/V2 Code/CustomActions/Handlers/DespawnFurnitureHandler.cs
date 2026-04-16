@@ -1,4 +1,5 @@
 ﻿using FarmTypeManager.TileQueries;
+using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Delegates;

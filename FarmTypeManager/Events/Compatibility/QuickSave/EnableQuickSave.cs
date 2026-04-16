@@ -1,4 +1,5 @@
-﻿using QuickSave.API;
+﻿using FarmTypeManager.Utilities;
+using QuickSave.API;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 

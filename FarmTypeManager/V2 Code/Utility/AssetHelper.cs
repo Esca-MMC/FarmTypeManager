@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.Utilities
 {
     /// <summary>A helper used to load assets from the content system. Provides caching, type handling, thread safety, etc.</summary>
     public static class AssetHelper
@@ -80,7 +80,7 @@ namespace FarmTypeManager
             }
             else //if this asset does NOT have a default to load
             {
-                defaultAsset = default(T); //return the given type's default value (e.g. null)
+                defaultAsset = default; //return the given type's default value (e.g. null)
                 return false; //failure
             }
         }

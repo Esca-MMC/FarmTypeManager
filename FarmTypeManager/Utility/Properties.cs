@@ -1,4 +1,5 @@
 ﻿using ContentPatcher;
+using FarmTypeManager.Utilities;
 using StardewModdingAPI;
 using System;
 using System.Collections.Generic;

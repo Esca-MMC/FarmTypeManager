@@ -1,4 +1,4 @@
-﻿namespace FarmTypeManager
+﻿namespace FarmTypeManager.Utilities
 {
     /// <summary>A pattern to use when selecting elements from a collection.</summary>
     public enum SelectionMode

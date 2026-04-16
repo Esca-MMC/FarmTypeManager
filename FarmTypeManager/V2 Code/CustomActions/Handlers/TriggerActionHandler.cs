@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using FarmTypeManager.Utilities;
+using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Triggers;
 using System;

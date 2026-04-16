@@ -1,4 +1,5 @@
-﻿using StardewValley;
+﻿using FarmTypeManager.Utilities;
+using StardewValley;
 using StardewValley.GameData;
 using System.Collections.Generic;
 

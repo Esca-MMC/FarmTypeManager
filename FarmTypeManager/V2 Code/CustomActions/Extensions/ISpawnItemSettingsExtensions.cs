@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+﻿using FarmTypeManager.Utilities;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Internal;

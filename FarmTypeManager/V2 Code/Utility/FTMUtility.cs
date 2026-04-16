@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace FarmTypeManager
+namespace FarmTypeManager.Utilities
 {
     /// <summary>A static class of general utilities for this mod.</summary>
     public static class FTMUtility
@@ -128,7 +128,7 @@ namespace FarmTypeManager
         {
             for (int index = list.Count - 1; index > 0; index--) //for each index except the first, looping backward
             {
-                int random = FTMUtility.Random.Next(index + 1); //get a random index between 0 and this tile's index
+                int random = Random.Next(index + 1); //get a random index between 0 and this tile's index
 
                 //swap the current element with the element at the random index
                 var temp = list[random];
@@ -152,7 +152,7 @@ namespace FarmTypeManager
                 case SelectionMode.Random:
                     {
                         for (int yieldCount = 0; yieldCount < timesToSelect; yieldCount++)
-                            yield return list[FTMUtility.Random.Next(list.Count)]; //return the requested number of random elements
+                            yield return list[Random.Next(list.Count)]; //return the requested number of random elements
                         yield break;
                     }
                 case SelectionMode.RandomOrder:
@@ -160,7 +160,7 @@ namespace FarmTypeManager
                         int returnCount = 0;
                         while (true)
                         {
-                            FTMUtility.RandomizeList(list);
+                            RandomizeList(list);
                             for (int index = 0; index < list.Count; index++) //for each element in randomized order
                             {
                                 yield return list[index];
@@ -353,7 +353,7 @@ namespace FarmTypeManager
                     switch (prefixSplit[0].ToLower())
                     {
                         case "contains":
-                            StardewValley.Utility.ForEachLocation((location) =>
+                            Utility.ForEachLocation((location) =>
                             {
                                 if (location.Name?.ContainsIgnoreCase(prefixSplit[1]) == true)
                                     locations.Add(location.Name);
@@ -362,7 +362,7 @@ namespace FarmTypeManager
                             continue;
 
                         case "prefix":
-                            StardewValley.Utility.ForEachLocation((location) =>
+                            Utility.ForEachLocation((location) =>
                             {
                                 if (location.Name?.StartsWithIgnoreCase(prefixSplit[1]) == true)
                                     locations.Add(location.Name);
@@ -371,7 +371,7 @@ namespace FarmTypeManager
                             continue;
 
                         case "suffix":
-                            StardewValley.Utility.ForEachLocation((location) =>
+                            Utility.ForEachLocation((location) =>
                             {
                                 if (location.Name?.EndsWithIgnoreCase(prefixSplit[1]) == true)
                                     locations.Add(location.Name);
@@ -386,7 +386,7 @@ namespace FarmTypeManager
                 (
                     name.StartsWithIgnoreCase("UndergroundMine") //if the name is a mine level (avoid preloading these due to possible errors)
                     || name.StartsWithIgnoreCase("VolcanoDungeon") //or if the name is a volcano level (avoid preloading these due to possible errors)
-                    || (Game1.getLocationFromName(name) != null) //or if the name is a basic, specific location that exists
+                    || Game1.getLocationFromName(name) != null //or if the name is a basic, specific location that exists
                 )
                 {
                     locations.Add(name);
@@ -395,7 +395,7 @@ namespace FarmTypeManager
 
                 //if no exact matches were found, try to add any buildings with a matching indoor location
                 int buildingsFound = 0;
-                StardewValley.Utility.ForEachBuilding((building) =>
+                Utility.ForEachBuilding((building) =>
                 {
                     if (string.Equals(name, building.indoors.Value?.Name, StringComparison.OrdinalIgnoreCase)) //if the indoor Name matches
                     {
@@ -425,7 +425,7 @@ namespace FarmTypeManager
             //loop through each location and search for one with a matching name
             Utility.ForEachLocation((location) =>
             {
-                if (string.Equals(location?.NameOrUniqueName, locationName, System.StringComparison.OrdinalIgnoreCase)) //if the location's name matches (case-insensitive)
+                if (string.Equals(location?.NameOrUniqueName, locationName, StringComparison.OrdinalIgnoreCase)) //if the location's name matches (case-insensitive)
                 {
                     if (location?.IsActiveLocation() == true)
                         matchingLocation = location; //get this location
@@ -444,7 +444,7 @@ namespace FarmTypeManager
         /*********************/
 
         /// <summary>Indicates whether Stardew normally allows a placed object with the given ID to be picked up by players.</summary>
-        /// <param name="unqualifiedObjectId">The <see cref="StardewValley.Item.ItemId"/> of a basic non-BC object, without the qualifier "(O)".</param>
+        /// <param name="unqualifiedObjectId">The <see cref="Item.ItemId"/> of a basic non-BC object, without the qualifier "(O)".</param>
         /// <returns>True if Stardew normally allows this object to be picked up.</returns>
         /// <remarks>This checks a hard-coded, manually tested set of values, and may not be accurate for every game/version and/or object.</remarks>
         public static bool CanPickUpByDefault(string unqualifiedObjectId)
@@ -556,7 +556,7 @@ namespace FarmTypeManager
         }
 
         /// <summary>Gets the typical health (a.k.a. durability) value used in the game's code for a given <see cref="Object"/> ID, or null if no such value is known.</summary>
-        /// <param name="unqualifiedObjectId">The <see cref="StardewValley.Item.ItemId"/> of a basic non-BC object, without the qualifier "(O)".</param>
+        /// <param name="unqualifiedObjectId">The <see cref="Item.ItemId"/> of a basic non-BC object, without the qualifier "(O)".</param>
         /// <returns>The value the game typically uses for this object's <see cref="StardewValley.Object.MinutesUntilReady"/>, also known as health or durability. Null if there is no known default value.</returns>
         /// <remarks>This checks a hard-coded, manually tested set of values, and may not be accurate for every game/version and/or ore type.</remarks>
         public static int? GetDefaultObjectHealth(string unqualifiedObjectId)
