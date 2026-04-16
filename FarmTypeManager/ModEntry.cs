@@ -16,10 +16,10 @@ namespace FarmTypeManager
             Utility.Helper = helper;
             Utility.Manifest = ModManifest;
 
-            //pass SMAPI utilities to the FTMUtility class for global use
-            FTMUtility.Monitor.IMonitor = Monitor;
-            FTMUtility.Helper = helper;
-            FTMUtility.Manifest = ModManifest;
+            //pass SMAPI utilities to the static class for global use
+            Properties.Monitor.IMonitor = Monitor;
+            Properties.Helper = helper;
+            Properties.Manifest = ModManifest;
 
             Utility.LoadModConfig(); //attempt to load the config.json ModConfig file
 

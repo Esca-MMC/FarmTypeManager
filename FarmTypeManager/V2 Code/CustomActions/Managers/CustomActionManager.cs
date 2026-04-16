@@ -41,8 +41,8 @@ namespace FarmTypeManager.CustomActions
         public static void RegisterCustomAction(string actionType, ICustomActionHandler handler)
         {
             Handlers[actionType] = handler;
-            if (FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.Log($"Custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". ActionType: \"{actionType}\".", LogLevel.Trace);
+            if (Properties.Monitor.IsVerbose)
+                Properties.Monitor.Log($"Custom action handler registered. Mod ID: \"{handler?.ProviderModId}\". ActionType: \"{actionType}\".", LogLevel.Trace);
         }
 
         /// <summary>Get the type of settings used by this custom action type, if it exists.</summary>
@@ -88,14 +88,14 @@ namespace FarmTypeManager.CustomActions
 
                     foreach (var action in GetActionsToPerform(asset.Item1, entry.Key, entry.Value, queryContext))
                     {
-                        if (FTMUtility.Monitor.IsVerbose)
-                            FTMUtility.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
+                        if (Properties.Monitor.IsVerbose)
+                            Properties.Monitor.Log($"Performing a triggered custom action. Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\". Trigger: \"{triggerContext.Trigger}\".", LogLevel.Trace);
 
                         if (!TryPerformAction(action.Value, queryContext, triggerContext, out string error))
                         {
-                            FTMUtility.Monitor.Log($"Failed to perform a custom action by trigger.", LogLevel.Warn);
-                            FTMUtility.Monitor.Log($"Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\".", LogLevel.Warn);
-                            FTMUtility.Monitor.Log($"Reason: {error}", LogLevel.Warn);
+                            Properties.Monitor.Log($"Failed to perform a custom action by trigger.", LogLevel.Warn);
+                            Properties.Monitor.Log($"Asset: \"{asset.Item1}\". Entry key: \"{entry.Key}\". Action key: \"{action.Key}\".", LogLevel.Warn);
+                            Properties.Monitor.Log($"Reason: {error}", LogLevel.Warn);
                         }
 
                         if (action.Value.MarkAppliedWithFlag != null)
@@ -121,7 +121,7 @@ namespace FarmTypeManager.CustomActions
 
             if (!asset.TryGetValue(entryId, out var entryData))
             {
-                FTMUtility.Monitor.Log($"Couldn't get custom actions from the asset \"{assetName}\". The entry key \"{entryId}\" was not found.", LogLevel.Warn);
+                Properties.Monitor.Log($"Couldn't get custom actions from the asset \"{assetName}\". The entry key \"{entryId}\" was not found.", LogLevel.Warn);
                 return;
             }
 
@@ -136,14 +136,14 @@ namespace FarmTypeManager.CustomActions
 
             foreach (var action in GetActionsToPerform(assetName, entryId, entryData, queryContext))
             {
-                if (FTMUtility.Monitor.IsVerbose)
-                    FTMUtility.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Trace);
+                if (Properties.Monitor.IsVerbose)
+                    Properties.Monitor.Log($"Performing a custom action by entry ID. Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Trace);
 
                 if (!TryPerformAction(action.Value, queryContext, triggerContext ?? new TriggerActionContext("Manual", [], null), out string error))
                 {
-                    FTMUtility.Monitor.Log($"Failed to perform a custom action action by entry.", LogLevel.Warn);
-                    FTMUtility.Monitor.Log($"Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Warn);
-                    FTMUtility.Monitor.Log($"Reason: {error}", LogLevel.Warn);
+                    Properties.Monitor.Log($"Failed to perform a custom action action by entry.", LogLevel.Warn);
+                    Properties.Monitor.Log($"Asset: \"{assetName}\". Entry key: \"{entryId}\". Action key: \"{action.Key}\".", LogLevel.Warn);
+                    Properties.Monitor.Log($"Reason: {error}", LogLevel.Warn);
                 }
 
                 if (action.Value.MarkAppliedWithFlag != null)
@@ -171,7 +171,7 @@ namespace FarmTypeManager.CustomActions
 
             if (data.MinTimes > data.MaxTimes)
             {
-                FTMUtility.Monitor.Log($"Couldn't get custom actions from the asset \"{assetId}\", entry key \"{entryId}\". MinTimes ({data.MinTimes}) is greater than MaxTimes ({data.MaxTimes}).", LogLevel.Warn);
+                Properties.Monitor.Log($"Couldn't get custom actions from the asset \"{assetId}\", entry key \"{entryId}\". MinTimes ({data.MinTimes}) is greater than MaxTimes ({data.MaxTimes}).", LogLevel.Warn);
                 yield break;
             }
 
@@ -212,8 +212,8 @@ namespace FarmTypeManager.CustomActions
                 return false;
             }
 
-            if (FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.Log($"Successfully performed the custom action \"{data.ActionType}\".", LogLevel.Trace);
+            if (Properties.Monitor.IsVerbose)
+                Properties.Monitor.Log($"Successfully performed the custom action \"{data.ActionType}\".", LogLevel.Trace);
 
             error = "";
             return true;

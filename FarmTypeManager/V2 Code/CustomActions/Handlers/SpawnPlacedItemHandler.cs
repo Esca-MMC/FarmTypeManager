@@ -19,8 +19,8 @@ namespace FarmTypeManager.CustomActions
         {
             PlacedItem placed = new(item);
 
-            if (item.modData.TryGetValue(FTMUtility.ModDataKeys.CanBePickedUp, out string val)) //if the contained item can't be picked up
-                placed.modData[FTMUtility.ModDataKeys.CanBePickedUp] = val; //copy that setting to the container
+            if (item.modData.TryGetValue(Properties.ModDataKeys.CanBePickedUp, out string val)) //if the contained item can't be picked up
+                placed.modData[Properties.ModDataKeys.CanBePickedUp] = val; //copy that setting to the container
 
             placementError = null;
             if (location.terrainFeatures.TryAdd(tile, placed))

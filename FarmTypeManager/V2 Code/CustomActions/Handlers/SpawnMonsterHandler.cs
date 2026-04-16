@@ -39,18 +39,18 @@ namespace FarmTypeManager.CustomActions
                 yield break;
 
             int? spawnLimit;
-            if (FTMUtility.MConfig?.MonsterLimitPerLocation.HasValue == true) //if the player has set a monster limit
+            if (Properties.MConfig?.MonsterLimitPerLocation.HasValue == true) //if the player has set a monster limit
             {
                 int monstersAtLocation = 0; //count any monsters in the query context location
                 foreach (var character in queryContext.Location?.characters ?? [])
                     if (character is Monster)
                         monstersAtLocation++;
 
-                spawnLimit = FTMUtility.MConfig.MonsterLimitPerLocation.Value - monstersAtLocation;
+                spawnLimit = Properties.MConfig.MonsterLimitPerLocation.Value - monstersAtLocation;
                 if (spawnLimit <= 0)
                 {
-                    if (FTMUtility.Monitor.IsVerbose)
-                        FTMUtility.Monitor.VerboseLog($"Skipping \"SpawnMonster\" custom action due to the player config's monster limit. Location \"{queryContext.Location?.NameOrUniqueName}\" has {monstersAtLocation} monsters; the limit is {FTMUtility.MConfig.MonsterLimitPerLocation.Value}.");
+                    if (Properties.Monitor.IsVerbose)
+                        Properties.Monitor.VerboseLog($"Skipping \"SpawnMonster\" custom action due to the player config's monster limit. Location \"{queryContext.Location?.NameOrUniqueName}\" has {monstersAtLocation} monsters; the limit is {Properties.MConfig.MonsterLimitPerLocation.Value}.");
                     yield break;
                 }
             }
@@ -59,7 +59,7 @@ namespace FarmTypeManager.CustomActions
 
             foreach (SpawnMonsterData entry in list.GetWeightedConditionalElements(settings.MonsterListMode, numberOfTimes, queryContext)) //get monster spawn data to use
             {
-                if (entry.ChanceToSkip > 0 && FTMUtility.Random.NextDouble() < entry.ChanceToSkip)
+                if (entry.ChanceToSkip > 0 && Properties.Random.NextDouble() < entry.ChanceToSkip)
                     continue;
 
                 foreach (MonsterData monsterData in entry.CreateMonsterData(queryContext)) //create data for specific monsters from this spawn data

@@ -16,16 +16,16 @@ namespace FarmTypeManager.CustomActions
             List<string> nameList = [];
 
             if (settings.Location != null)
-                nameList.AddRange(FTMUtility.GetAllLocationsFromName(settings.Location));
+                nameList.AddRange(Locations.GetAllLocationsFromName(settings.Location));
 
             if (settings.LocationList != null)
                 foreach (string name in settings.LocationList)
-                    nameList.AddRange(FTMUtility.GetAllLocationsFromName(name));
+                    nameList.AddRange(Locations.GetAllLocationsFromName(name));
 
             List<GameLocation> locationList = [];
 
             foreach (string name in nameList)
-                if (FTMUtility.GetLocationIfActive(name) is GameLocation location)
+                if (Locations.GetLocationIfActive(name) is GameLocation location)
                     locationList.Add(location);
 
             return locationList;
@@ -45,7 +45,7 @@ namespace FarmTypeManager.CustomActions
 
             List<int> timesToUseThisIndex = new(new int[activeLocations.Count]); //create a parallel list of "times to use" for each location list index (and initialize values to 0)
 
-            foreach (int index in FTMUtility.SelectElementsByMode(Enumerable.Range(0, activeLocations.Count).ToList(), settings.LocationListMode, timesToSelect)) //select indices to use
+            foreach (int index in Collections.SelectElementsByMode(Enumerable.Range(0, activeLocations.Count).ToList(), settings.LocationListMode, timesToSelect)) //select indices to use
                 timesToUseThisIndex[index]++; //increment each selected index's "times to use"
 
             for (int x = 0; x < activeLocations.Count; x++) //for each location index

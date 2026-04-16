@@ -52,8 +52,8 @@ namespace FarmTypeManager.CustomActions
                 if (TrySpawn(location, tile, instance, out string placementError))
                 {
                     totalSpawned++;
-                    if (FTMUtility.Monitor.IsVerbose)
-                        FTMUtility.Monitor.VerboseLog($"Spawned {LogTextForAnInstance}. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. ID: \"{GetId(instance)}\".");
+                    if (Properties.Monitor.IsVerbose)
+                        Properties.Monitor.VerboseLog($"Spawned {LogTextForAnInstance}. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. ID: \"{GetId(instance)}\".");
                 }
                 else if (placementError != null) //if placement failed and also returned error text
                 {
@@ -62,8 +62,8 @@ namespace FarmTypeManager.CustomActions
                 }
             }
 
-            if (totalSpawned > 0 || FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.Log($"Spawned {totalSpawned} {LogTextForInstances} at {location.NameOrUniqueName}.", LogLevel.Trace);
+            if (totalSpawned > 0 || Properties.Monitor.IsVerbose)
+                Properties.Monitor.Log($"Spawned {totalSpawned} {LogTextForInstances} at {location.NameOrUniqueName}.", LogLevel.Trace);
 
             error = null;
             return true;

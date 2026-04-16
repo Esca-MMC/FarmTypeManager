@@ -60,9 +60,9 @@ namespace FarmTypeManager.CustomActions
                     {
                         if (obj.HasContextTag("torch_item"))
                         {
-                            if (!obj.modData.TryGetValue(FTMUtility.ModDataKeys.IsOn, out string isOnText) || !bool.TryParse(isOnText, out bool isOn)) //try to get on/off state from mod data
+                            if (!obj.modData.TryGetValue(Properties.ModDataKeys.IsOn, out string isOnText) || !bool.TryParse(isOnText, out bool isOn)) //try to get on/off state from mod data
                                 isOn = true; //if not parsed, default to true
-                            obj.modData.Remove(FTMUtility.ModDataKeys.IsOn); //if applicable, remove mod data (NOTE: disable this if the data is needed after spawn, e.g. if a pseudo-serializer handles these items)
+                            obj.modData.Remove(Properties.ModDataKeys.IsOn); //if applicable, remove mod data (NOTE: disable this if the data is needed after spawn, e.g. if a pseudo-serializer handles these items)
 
                             Torch torch = new(obj.ItemId, true) { IsOn = isOn }; //recreate the item as a torch; BCs only use this class while placed
                             torch.modData.CopyFrom(obj.modData);

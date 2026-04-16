@@ -18,7 +18,7 @@ namespace FarmTypeManager.CustomActions
         /// <summary>The ID used to spawn this type of monster.</summary>
         /// <remarks>
         /// <para>These IDs are defined and recognized by <see cref="MonsterManager">. They don't necessarily match a monster's class or any built-in field.</para>
-        /// <para>This value should be stored in each monster's mod data for reference, using the key <see cref="FTMUtility.ModDataKeys.SpawnId"/>.</para>
+        /// <para>This value should be stored in each monster's mod data for reference, using the key <see cref="Properties.ModDataKeys.SpawnId"/>.</para>
         /// </remarks>
         public string SpawnId { get; set; } = null;
 
@@ -69,7 +69,7 @@ namespace FarmTypeManager.CustomActions
         /// <remarks>
         /// <para>FTM will disable <see cref="Monster.getExtraDropItems"/> using Harmony.</para>
         /// <para>However, if this setting is true and a custom monster type has its own unique item drop mechanisms, its handler should disable those too, if possible.</para>
-        /// <para>Handlers can check the monster's mod data for the key <see cref="FTMUtility.ModDataKeys.ExtraLoot"/> with the value "false".</para>
+        /// <para>Handlers can check the monster's mod data for the key <see cref="Properties.ModDataKeys.ExtraLoot"/> with the value "false".</para>
         /// </remarks>
         public bool DisableExtraLoot { get; set; } = false;
 
@@ -77,7 +77,7 @@ namespace FarmTypeManager.CustomActions
         /// <remarks>
         /// <para>FTM will attempt to disable these effects via Harmony.</para>
         /// <para>Custom monster types with other player-triggered "instant kill" effects should also be disabled by handlers, if possible.</para>
-        /// <para>Handlers can check the monster's mod data for the key <see cref="FTMUtility.ModDataKeys.InstantKillImmunity"/> with the value "true".</para>
+        /// <para>Handlers can check the monster's mod data for the key <see cref="Properties.ModDataKeys.InstantKillImmunity"/> with the value "true".</para>
         /// </remarks>
         public bool DisableInstantKill { get; set; } = false;
 
@@ -85,7 +85,7 @@ namespace FarmTypeManager.CustomActions
         /// <remarks>
         /// <para>FTM will attempt to disable these effects via Harmony.</para>
         /// <para>Custom monster types with other player-triggered stun effects should also be disabled by handlers, if possible.</para>
-        /// <para>Handlers can check the monster's mod data for the key <see cref="FTMUtility.ModDataKeys.StunImmunity"/> with the value "true".</para>
+        /// <para>Handlers can check the monster's mod data for the key <see cref="Properties.ModDataKeys.StunImmunity"/> with the value "true".</para>
         /// </remarks>
         public bool DisableStun { get; set; } = false;
 
@@ -165,7 +165,7 @@ namespace FarmTypeManager.CustomActions
             /*************************/
 
             if (SpawnId != null)
-                monster.modData[FTMUtility.ModDataKeys.SpawnId] = SpawnId;
+                monster.modData[Properties.ModDataKeys.SpawnId] = SpawnId;
 
             if (Sprite != null)
             {
@@ -173,7 +173,7 @@ namespace FarmTypeManager.CustomActions
                     throw new ArgumentException($"A monster's custom \"Sprite\" setting points to an asset that isn't currently loaded: \"{Sprite}\".");
 
                 monster.Sprite = monster.Sprite = new AnimatedSprite(Sprite, monster.Sprite.CurrentFrame, monster.Sprite.SpriteWidth, monster.Sprite.SpriteHeight); //create a new sprite with the existing values
-                monster.modData[FTMUtility.ModDataKeys.Sprite] = Sprite;
+                monster.modData[Properties.ModDataKeys.Sprite] = Sprite;
             }
 
             if (Scale.HasValue)
@@ -207,7 +207,7 @@ namespace FarmTypeManager.CustomActions
             if (SightRange.HasValue)
             {
                 monster.moveTowardPlayer(SightRange.Value); //note: currently (SDV v1.6.15), this method sets the "moveTowardPlayerThreshold" value and "isWalkingTowardPlayer" flag, which causes the intended behavior
-                monster.modData[FTMUtility.ModDataKeys.SightRange] = SightRange.Value.ToString();
+                monster.modData[Properties.ModDataKeys.SightRange] = SightRange.Value.ToString();
             }
 
             if (FocusedOnFarmers.HasValue)
@@ -220,29 +220,29 @@ namespace FarmTypeManager.CustomActions
                 monster.objectsToDrop?.Clear(); //clear any preset loot
 
             if (DisableExtraLoot)
-                monster.modData[FTMUtility.ModDataKeys.ExtraLoot] = "false";
+                monster.modData[Properties.ModDataKeys.ExtraLoot] = "false";
 
             if (DisableInstantKill)
-                monster.modData[FTMUtility.ModDataKeys.InstantKillImmunity] = "true";
+                monster.modData[Properties.ModDataKeys.InstantKillImmunity] = "true";
 
             if (DisableStun)
-                monster.modData[FTMUtility.ModDataKeys.StunImmunity] = "true";
+                monster.modData[Properties.ModDataKeys.StunImmunity] = "true";
 
             /*******************************/
             /* Type-specific customization */
             /*******************************/
 
             if (Color != null)
-                monster.modData[FTMUtility.ModDataKeys.Color] = Color;
+                monster.modData[Properties.ModDataKeys.Color] = Color;
 
             if (DisableRangedAttacks)
-                monster.modData[FTMUtility.ModDataKeys.DisableRangedAttacks] = "true";
+                monster.modData[Properties.ModDataKeys.DisableRangedAttacks] = "true";
 
             if (Gender != null)
-                monster.modData[FTMUtility.ModDataKeys.Gender] = Gender;
+                monster.modData[Properties.ModDataKeys.Gender] = Gender;
 
             if (Segments.HasValue)
-                monster.modData[FTMUtility.ModDataKeys.Segments] = Segments.Value.ToString();
+                monster.modData[Properties.ModDataKeys.Segments] = Segments.Value.ToString();
 
             /************************************/
             /* Placement and serialization info */
@@ -313,15 +313,15 @@ namespace FarmTypeManager.CustomActions
             /* Type-specific customization */
             /*******************************/
 
-            if (ModData.TryGetValue(FTMUtility.ModDataKeys.Color, out string color))
+            if (ModData.TryGetValue(Properties.ModDataKeys.Color, out string color))
                 Color = color;
 
             //skip "disable ranged attacks" (post-spawn changes not supported)
 
-            if (ModData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+            if (ModData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                 Gender = gender;
 
-            if (ModData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText) && int.TryParse(segmentsText, out int segments))
+            if (ModData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText) && int.TryParse(segmentsText, out int segments))
                 Segments = segments;
 
             /************************************/

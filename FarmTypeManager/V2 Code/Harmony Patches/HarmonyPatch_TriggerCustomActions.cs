@@ -16,7 +16,7 @@ namespace FarmTypeManager.HarmonyPatches
         /// <param name="harmony">This mod's Harmony instance.</param>
         public static void ApplyPatch(Harmony harmony)
         {
-            FTMUtility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_TriggerCustomActions)}\": postfixing SDV method \"TriggerActionManager.Raise\".", LogLevel.Trace);
+            Properties.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_TriggerCustomActions)}\": postfixing SDV method \"TriggerActionManager.Raise\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(TriggerActionManager), nameof(TriggerActionManager.Raise), [typeof(string), typeof(object[]), typeof(GameLocation), typeof(Farmer), typeof(Item), typeof(Item)]),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_TriggerCustomActions), nameof(Raise_Postfix))
@@ -36,7 +36,7 @@ namespace FarmTypeManager.HarmonyPatches
             }
             catch (Exception ex)
             {
-                FTMUtility.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_TriggerCustomActions)}\" has encountered an error. This mod's custom action system might stop working. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                Properties.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_TriggerCustomActions)}\" has encountered an error. This mod's custom action system might stop working. Full error message: \n{ex.ToString()}", LogLevel.Error);
             }
         }
     }

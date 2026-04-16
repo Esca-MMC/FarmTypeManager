@@ -7,7 +7,7 @@ namespace FarmTypeManager.Serialization
         /// <summary>Initalize serialization-related events.</summary>
         public static void Initialize()
         {
-            FTMUtility.Helper.Events.GameLoop.GameLaunched += (_, _) => GameLaunched_Initialize();
+            Properties.Helper.Events.GameLoop.GameLaunched += (_, _) => GameLaunched_Initialize();
         }
 
         private static void GameLaunched_Initialize()

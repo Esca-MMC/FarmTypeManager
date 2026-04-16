@@ -10,7 +10,7 @@ namespace FarmTypeManager.CustomActions
     /// <summary>The handler for a custom action that performs trigger actions.</summary>
     public class TriggerActionHandler : ICustomActionHandler
     {
-        public string ProviderModId => FTMUtility.Manifest?.UniqueID;
+        public string ProviderModId => Properties.Manifest?.UniqueID;
         public Type SettingsType => typeof(TriggerActionSettings);
         public bool TryPerform(string actionType, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {
@@ -29,7 +29,7 @@ namespace FarmTypeManager.CustomActions
             }
 
             //get a random number from min to max, apply modifiers, and round to the nearest integer
-            int times = (int)Math.Round(Utility.ApplyQuantityModifiers(FTMUtility.Random.Next(settings.MinTimes, settings.MaxTimes + 1), settings.TimesModifiers, settings.TimesModifierMode, queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, FTMUtility.Random));
+            int times = (int)Math.Round(Utility.ApplyQuantityModifiers(Properties.Random.Next(settings.MinTimes, settings.MaxTimes + 1), settings.TimesModifiers, settings.TimesModifierMode, queryContext.Location, queryContext.Player, queryContext.TargetItem, queryContext.InputItem, Properties.Random));
             if (times <= 0)
             {
                 error = null;
@@ -42,7 +42,7 @@ namespace FarmTypeManager.CustomActions
             if (settings.ActionList != null)
                 triggerActions.AddRange(settings.ActionList);
 
-            foreach (string action in FTMUtility.SelectElementsByMode(triggerActions, settings.ActionListMode, times)) //select actions to perform
+            foreach (string action in Collections.SelectElementsByMode(triggerActions, settings.ActionListMode, times)) //select actions to perform
                 if (!TriggerActionManager.TryRunAction(action, triggerContext.Trigger, triggerContext.TriggerArgs, out error, out _))
                     return false;
 

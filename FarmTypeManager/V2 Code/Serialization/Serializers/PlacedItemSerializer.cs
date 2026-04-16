@@ -73,19 +73,19 @@ namespace FarmTypeManager.Serialization
         /// </remarks>
         public static void Initialize()
         {
-            FTMUtility.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => InstancesByLocation.Clear(); //NOTE: this is equivalent to clearing before a load can begin
-            FTMUtility.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
+            Properties.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => InstancesByLocation.Clear(); //NOTE: this is equivalent to clearing before a load can begin
+            Properties.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
 
-            FTMUtility.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
-            FTMUtility.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
+            Properties.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
+            Properties.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
 
-            if (FTMUtility.ModAPIs.QuickSaveAPI != null)
+            if (Properties.ModAPIs.QuickSaveAPI != null)
             {
-                FTMUtility.ModAPIs.QuickSaveAPI.LoadingEvent += (_, _) => InstancesByLocation.Clear();
-                FTMUtility.ModAPIs.QuickSaveAPI.LoadedEvent += (_, _) => LoadAndAddToWorld();
+                Properties.ModAPIs.QuickSaveAPI.LoadingEvent += (_, _) => InstancesByLocation.Clear();
+                Properties.ModAPIs.QuickSaveAPI.LoadedEvent += (_, _) => LoadAndAddToWorld();
 
-                FTMUtility.ModAPIs.QuickSaveAPI.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
-                FTMUtility.ModAPIs.QuickSaveAPI.SavedEvent += (_, _) => LoadAndAddToWorld();
+                Properties.ModAPIs.QuickSaveAPI.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
+                Properties.ModAPIs.QuickSaveAPI.SavedEvent += (_, _) => LoadAndAddToWorld();
             }
         }
 
@@ -133,7 +133,7 @@ namespace FarmTypeManager.Serialization
             if (!Context.IsMainPlayer)
                 return;
 
-            if (FTMUtility.Helper.Data.ReadSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey) != null) //if unloaded save data already exists (NOTE: the load process should null the data afterward)
+            if (Properties.Helper.Data.ReadSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey) != null) //if unloaded save data already exists (NOTE: the load process should null the data afterward)
                 return;
 
             Dictionary<string, List<PlacedItemSaveData>> saveDataByLocation = [];
@@ -141,7 +141,7 @@ namespace FarmTypeManager.Serialization
             foreach (var entry in InstancesByLocation) //for each location with tracked instances
             {
                 string locationName = entry.Key;
-                GameLocation location = FTMUtility.GetLocationIfActive(locationName);
+                GameLocation location = Locations.GetLocationIfActive(locationName);
                 if (location == null)
                     continue;
 
@@ -165,7 +165,7 @@ namespace FarmTypeManager.Serialization
 
             InstancesByLocation.Clear(); //clear tracked instances
 
-            FTMUtility.Helper.Data.WriteSaveData(SaveDataKey, saveDataByLocation); //save updated data
+            Properties.Helper.Data.WriteSaveData(SaveDataKey, saveDataByLocation); //save updated data
         }
 
         /// <summary>Loads this serializer's save data, recreates each saved instance, and adds them to their previous in-game locations. This method should be called after a game session finishes loading or saving.</summary>
@@ -183,13 +183,13 @@ namespace FarmTypeManager.Serialization
             if (!Context.IsMainPlayer)
                 return;
 
-            var saveDataByLocation = FTMUtility.Helper.Data.ReadSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey); //read save data, if any
+            var saveDataByLocation = Properties.Helper.Data.ReadSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey); //read save data, if any
             if (saveDataByLocation == null) //if data is null (not just empty)
                 return;
 
             foreach (var entry in saveDataByLocation) //for each location with saved instances
             {
-                GameLocation location = FTMUtility.GetLocationIfActive(entry.Key);
+                GameLocation location = Locations.GetLocationIfActive(entry.Key);
                 if (location == null)
                     continue;
 
@@ -205,7 +205,7 @@ namespace FarmTypeManager.Serialization
                 }
             }
 
-            FTMUtility.Helper.Data.WriteSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey, null); //null the save data
+            Properties.Helper.Data.WriteSaveData<Dictionary<string, List<PlacedItemSaveData>>>(SaveDataKey, null); //null the save data
         }
     }
 }

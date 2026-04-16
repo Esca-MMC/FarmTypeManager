@@ -34,7 +34,7 @@ namespace FarmTypeManager.TileQueries
 
             StartingTilesQuery = TileCondition.ChooseStartingTilesSource(Queries);
 
-            CollisionTiles = FTMUtility.ParseCollisionMap(collisionMap); //parse the list of "impassable" tiles (e.g. 'X') in this map as offsets
+            CollisionTiles = CollisionMaps.Parse(collisionMap); //parse the list of "impassable" tiles (e.g. 'X') in this map as offsets
 
             AllowOverlap = allowOverlap;
         }

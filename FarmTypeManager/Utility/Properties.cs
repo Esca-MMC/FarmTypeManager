@@ -102,12 +102,12 @@ namespace FarmTypeManager
             {
                 get
                 {
-                    return FTMUtility.MConfig;
+                    return Properties.MConfig;
                 }
 
                 set
                 {
-                    FTMUtility.MConfig = value;
+                    Properties.MConfig = value;
                 }
             }
 

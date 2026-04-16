@@ -71,19 +71,19 @@ namespace FarmTypeManager.Serialization
         {
             //serialization
 
-            FTMUtility.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => Clear(); //NOTE: This event should clear tracking data before a "normal" load can begin. Mods that circumvent the title screen should be accounted for with other events.
-            FTMUtility.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
+            Properties.Helper.Events.GameLoop.ReturnedToTitle += (_, _) => Clear(); //NOTE: This event should clear tracking data before a "normal" load can begin. Mods that circumvent the title screen should be accounted for with other events.
+            Properties.Helper.Events.GameLoop.SaveLoaded += (_, _) => LoadAndAddToWorld();
 
-            FTMUtility.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
-            FTMUtility.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
+            Properties.Helper.Events.GameLoop.Saving += (_, _) => SaveAndRemoveFromWorld();
+            Properties.Helper.Events.GameLoop.Saved += (_, _) => LoadAndAddToWorld();
 
-            if (FTMUtility.ModAPIs.QuickSaveAPI != null)
+            if (Properties.ModAPIs.QuickSaveAPI != null)
             {
-                FTMUtility.ModAPIs.QuickSaveAPI.LoadingEvent += (_, _) => Clear();
-                FTMUtility.ModAPIs.QuickSaveAPI.LoadedEvent += (_, _) => LoadAndAddToWorld();
+                Properties.ModAPIs.QuickSaveAPI.LoadingEvent += (_, _) => Clear();
+                Properties.ModAPIs.QuickSaveAPI.LoadedEvent += (_, _) => LoadAndAddToWorld();
 
-                FTMUtility.ModAPIs.QuickSaveAPI.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
-                FTMUtility.ModAPIs.QuickSaveAPI.SavedEvent += (_, _) => LoadAndAddToWorld();
+                Properties.ModAPIs.QuickSaveAPI.SavingEvent += (_, _) => SaveAndRemoveFromWorld();
+                Properties.ModAPIs.QuickSaveAPI.SavedEvent += (_, _) => LoadAndAddToWorld();
             }
 
             //loot drops
@@ -104,18 +104,18 @@ namespace FarmTypeManager.Serialization
             else if (locationName == null)
                 throw new NullReferenceException($"Failed to register a monster with the serializer. The argument \"string locationName\" is null.");
 
-            if (!instance.modData.TryGetValue(FTMUtility.ModDataKeys.SerializerId, out string serializerId) || serializerId == null) //if this instance has no ID yet
+            if (!instance.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId) || serializerId == null) //if this instance has no ID yet
             {
                 //NOTE: reusing stored IDs is not strictly necessary, but provides a semi-permanent ID for each instance, which can be useful for debugging, other functions, other mods, etc
-                serializerId = FTMUtility.Random.NextInt64().ToString(); //generate a new ID
-                instance.modData[FTMUtility.ModDataKeys.SerializerId] = serializerId; //update it on the instance
+                serializerId = Properties.Random.NextInt64().ToString(); //generate a new ID
+                instance.modData[Properties.ModDataKeys.SerializerId] = serializerId; //update it on the instance
             }
 
             int collisions = 0;
             while (IDsAndData.ContainsKey(serializerId)) //while this ID matches another tracked ID
             {
-                serializerId = FTMUtility.Random.NextInt64().ToString();
-                instance.modData[FTMUtility.ModDataKeys.SerializerId] = serializerId;
+                serializerId = Properties.Random.NextInt64().ToString();
+                instance.modData[Properties.ModDataKeys.SerializerId] = serializerId;
 
                 collisions++;
                 if (collisions >= 1000)
@@ -131,7 +131,7 @@ namespace FarmTypeManager.Serialization
         /// <returns>This instance's stored data. Null if the instance is not being tracked by this serializer.</returns>
         public static MonsterData GetData(Monster instance)
         {
-            if (instance?.modData.TryGetValue(FTMUtility.ModDataKeys.SerializerId, out string serializerId) == true && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this instance exists and has serialized data
+            if (instance?.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId) == true && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this instance exists and has serialized data
                 return data;
 
             return null;
@@ -161,7 +161,7 @@ namespace FarmTypeManager.Serialization
         /// </remarks>
         public static void Remove(Monster instance)
         {
-            if (instance?.modData.TryGetValue(FTMUtility.ModDataKeys.SerializerId, out string serializerId) == true && IDsAndData.ContainsKey(serializerId)) //if this instance exists and has serialized data
+            if (instance?.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId) == true && IDsAndData.ContainsKey(serializerId)) //if this instance exists and has serialized data
                 IDsAndData.Remove(serializerId);
         }
 
@@ -195,14 +195,14 @@ namespace FarmTypeManager.Serialization
             if (!Context.IsMainPlayer)
                 return;
 
-            if (FTMUtility.Helper.Data.ReadSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey) != null) //if unloaded save data already exists (NOTE: the load process should null the data afterward)
+            if (Properties.Helper.Data.ReadSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey) != null) //if unloaded save data already exists (NOTE: the load process should null the data afterward)
                 return;
 
             Dictionary<string, List<MonsterData>> saveDataByLocation = [];
 
             foreach (string locationName in LocationNames) //for each location with tracked instances
             {
-                GameLocation location = FTMUtility.GetLocationIfActive(locationName);
+                GameLocation location = Locations.GetLocationIfActive(locationName);
                 if (location == null)
                     continue;
 
@@ -210,7 +210,7 @@ namespace FarmTypeManager.Serialization
 
                 for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for index-based removal)
                 {
-                    if (location.characters[x] is Monster monster && monster.modData.TryGetValue(FTMUtility.ModDataKeys.SerializerId, out string serializerId) && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this is a monster with serialization data
+                    if (location.characters[x] is Monster monster && monster.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId) && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this is a monster with serialization data
                     {
                         MonsterManager.UpdateData(monster, data);
                         location.characters.RemoveAt(x);
@@ -223,7 +223,7 @@ namespace FarmTypeManager.Serialization
 
             Clear();
 
-            FTMUtility.Helper.Data.WriteSaveData(SaveDataKey, saveDataByLocation); //save the updated data set
+            Properties.Helper.Data.WriteSaveData(SaveDataKey, saveDataByLocation); //save the updated data set
         }
 
         /// <summary>Loads this serializer's save data, recreates each saved instance, and adds them to their previous in-game locations. This method should be called after a game session finishes loading or saving.</summary>
@@ -241,7 +241,7 @@ namespace FarmTypeManager.Serialization
             if (!Context.IsMainPlayer)
                 return;
 
-            var saveDataByLocation = FTMUtility.Helper.Data.ReadSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey); //get save data, or null if it doesn't exist
+            var saveDataByLocation = Properties.Helper.Data.ReadSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey); //get save data, or null if it doesn't exist
             if (saveDataByLocation == null) //if data is null (not just empty)
                 return;
 
@@ -249,7 +249,7 @@ namespace FarmTypeManager.Serialization
 
             foreach (var entry in saveDataByLocation) //for each location with saved instances
             {
-                GameLocation location = FTMUtility.GetLocationIfActive(entry.Key);
+                GameLocation location = Locations.GetLocationIfActive(entry.Key);
                 if (location == null)
                     continue;
 
@@ -261,7 +261,7 @@ namespace FarmTypeManager.Serialization
                     Monster monster = MonsterManager.Create(saveData, location);
                     if (monster == null)
                     {
-                        FTMUtility.Monitor.LogOnce($"Failed to create and respawn a monster from save data (possibly due to removed mods). ID: \"{saveData?.SpawnId}\".", LogLevel.Trace);
+                        Properties.Monitor.LogOnce($"Failed to create and respawn a monster from save data (possibly due to removed mods). ID: \"{saveData?.SpawnId}\".", LogLevel.Trace);
                         continue;
                     }
 
@@ -271,7 +271,7 @@ namespace FarmTypeManager.Serialization
                 }
             }
 
-            FTMUtility.Helper.Data.WriteSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey, null); //null the save data
+            Properties.Helper.Data.WriteSaveData<Dictionary<string, List<MonsterData>>>(SaveDataKey, null); //null the save data
         }
     }
 }

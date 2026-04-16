@@ -30,10 +30,10 @@ namespace FarmTypeManager.CustomActions
                 return;
 
             if (data.PreventPickup == true)
-                item.modData[FTMUtility.ModDataKeys.CanBePickedUp] = "false";
+                item.modData[Properties.ModDataKeys.CanBePickedUp] = "false";
 
             if (data.IsOn.HasValue)
-                item.modData[FTMUtility.ModDataKeys.IsOn] = data.IsOn.Value.ToString();
+                item.modData[Properties.ModDataKeys.IsOn] = data.IsOn.Value.ToString();
 
             if (item is Object obj)
             {
@@ -48,12 +48,12 @@ namespace FarmTypeManager.CustomActions
                 else if (data.IsSpawnedObject.HasValue)
                     obj.IsSpawnedObject = data.IsSpawnedObject.Value;
                 else if (isBasicObject)
-                    obj.IsSpawnedObject = FTMUtility.CanPickUpByDefault(unqualifiedItemId);
+                    obj.IsSpawnedObject = Items.CanPickUpByDefault(unqualifiedItemId);
 
                 if (data.MinutesUntilReady.HasValue)
                     obj.MinutesUntilReady = data.MinutesUntilReady.Value;
                 else if (isBasicObject)
-                    obj.MinutesUntilReady = FTMUtility.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady; //use this mod's default if one exists
+                    obj.MinutesUntilReady = Items.GetDefaultObjectHealth(unqualifiedItemId) ?? obj.MinutesUntilReady; //use this mod's default if one exists
             }
         }
     }

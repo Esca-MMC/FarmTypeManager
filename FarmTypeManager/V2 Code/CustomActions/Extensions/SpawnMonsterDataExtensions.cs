@@ -41,7 +41,7 @@ namespace FarmTypeManager.CustomActions
                 colorsToUse = null;
             else
             {
-                colorsToUse = FTMUtility.SelectElementsByMode(colorStrings, spawnData.ColorListMode, times).GetEnumerator();
+                colorsToUse = Collections.SelectElementsByMode(colorStrings, spawnData.ColorListMode, times).GetEnumerator();
 
                 //move to the first color to use; if the enumerator is empty, don't use it
                 //NOTE: MoveNext must be called to reach the first item when using enumerators "manually"; before this, Current is null/default
@@ -49,7 +49,7 @@ namespace FarmTypeManager.CustomActions
                     colorsToUse = null;
             }
 
-            foreach (string monsterID in FTMUtility.SelectElementsByMode(monsterIDs, spawnData.IdListMode, times)) //for each monster to create
+            foreach (string monsterID in Collections.SelectElementsByMode(monsterIDs, spawnData.IdListMode, times)) //for each monster to create
             {
                 yield return new MonsterData()
                 {
@@ -81,7 +81,7 @@ namespace FarmTypeManager.CustomActions
                 };
 
                 if (colorsToUse != null && !colorsToUse.MoveNext()) //if out of colors
-                    colorsToUse = FTMUtility.SelectElementsByMode(colorStrings, spawnData.ColorListMode, times).GetEnumerator(); //get more with the same logic as above
+                    colorsToUse = Collections.SelectElementsByMode(colorStrings, spawnData.ColorListMode, times).GetEnumerator(); //get more with the same logic as above
             }
         }
     }

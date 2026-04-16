@@ -54,7 +54,7 @@ namespace FarmTypeManager.CustomActions
                 catch (Exception ex)
                 {
                     asset = null;
-                    FTMUtility.Monitor.LogOnce($"Failed to load a custom actions asset. Its custom actions will be disabled. Target: \"{assetName}\". Full error message:\n{ex}", LogLevel.Error);
+                    Properties.Monitor.LogOnce($"Failed to load a custom actions asset. Its custom actions will be disabled. Target: \"{assetName}\". Full error message:\n{ex}", LogLevel.Error);
                 }
                 if (asset != null)
                     yield return (assetName, asset);
@@ -75,7 +75,7 @@ namespace FarmTypeManager.CustomActions
             catch (Exception ex)
             {
                 asset = null;
-                FTMUtility.Monitor.LogOnce($"Failed to load a custom actions asset. Its custom actions will be disabled. Target: \"{assetName}\". Full error message:\n{ex}", LogLevel.Error);
+                Properties.Monitor.LogOnce($"Failed to load a custom actions asset. Its custom actions will be disabled. Target: \"{assetName}\". Full error message:\n{ex}", LogLevel.Error);
             }
             return asset;
         }
@@ -95,7 +95,7 @@ namespace FarmTypeManager.CustomActions
             }
             catch (Exception ex)
             {
-                FTMUtility.Monitor.LogOnce($"Failed to load the custom asset registry. All custom actions will be disabled. Target: \"{RegistryAssetName}\". Full error message:\n{ex}", LogLevel.Error);
+                Properties.Monitor.LogOnce($"Failed to load the custom asset registry. All custom actions will be disabled. Target: \"{RegistryAssetName}\". Full error message:\n{ex}", LogLevel.Error);
                 return;
             }
 

@@ -13,7 +13,7 @@ namespace FarmTypeManager.CustomActions
         /* ICustomActionHandler */
         /************************/
 
-        public string ProviderModId => FTMUtility.Manifest?.UniqueID;
+        public string ProviderModId => Properties.Manifest?.UniqueID;
         public Type SettingsType => typeof(TSettings);
         public virtual bool TryPerform(string actionType, object rawSettings, GameStateQueryContext queryContext, TriggerActionContext triggerContext, out string error)
         {

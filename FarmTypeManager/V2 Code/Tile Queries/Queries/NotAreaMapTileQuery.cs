@@ -32,7 +32,7 @@ namespace FarmTypeManager.TileQueries
                 || !ArgUtility.TryGet(queryArgs, 3, out string collisionMap, out error, false, "string \"collision map\" in argument 3"))
                 throw new ArgumentException($"The tile query '{string.Join(' ', queryArgs)}' couldn't be parsed. Reason: '{error}'.");
 
-            var collisionTiles = FTMUtility.ParseCollisionMap(collisionMap); //get coordinates for each valid tile of the map, relative to the target tile
+            var collisionTiles = CollisionMaps.Parse(collisionMap); //get coordinates for each valid tile of the map, relative to the target tile
 
             foreach (Vector2 offset in collisionTiles)
                 Tiles.Add(targetTile + offset); //add the actual tile represented by this map tile

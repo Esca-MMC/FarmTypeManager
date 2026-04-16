@@ -32,12 +32,12 @@ namespace FarmTypeManager.CustomActions
 
             foreach (var entry in list.GetWeightedConditionalElements(settings.ItemListMode, timesToRepeat, queryContext)) //for each item data entry to use
             {
-                if (entry.ChanceToSkip > 0 && FTMUtility.Random.NextDouble() < entry.ChanceToSkip)
+                if (entry.ChanceToSkip > 0 && Properties.Random.NextDouble() < entry.ChanceToSkip)
                     continue;
 
                 //generate one item from query data, if possible
                 var item = entry.TryResolveRandomItem(itemContext, inputItem: queryContext.InputItem,
-                    logError: (query, error) => FTMUtility.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
+                    logError: (query, error) => Properties.Monitor.Log($"Failed to parse an item query. Context: \"{itemContext.SourcePhrase}\". Query: \"{query}\". Error: \"{error}\".", LogLevel.Warn));
 
                 if (item != null)
                     yield return item;

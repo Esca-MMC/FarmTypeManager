@@ -21,7 +21,7 @@ namespace FarmTypeManager.CustomActions
             if (settings.TileCondition == null)
             {
                 List<int> indexList = new(Enumerable.Range(0, location.furniture.Count));
-                FTMUtility.RandomizeList(indexList);
+                Collections.RandomizeList(indexList);
 
                 List<int> indicesToRemove = new();
                 int count = location.furniture.Count;
@@ -39,8 +39,8 @@ namespace FarmTypeManager.CustomActions
                         indicesToRemove.Add(x);
                         times--;
 
-                        if (FTMUtility.Monitor.IsVerbose)
-                            FTMUtility.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {furniture.TileLocation.X},{furniture.TileLocation.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
+                        if (Properties.Monitor.IsVerbose)
+                            Properties.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {furniture.TileLocation.X},{furniture.TileLocation.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
                     }
                 }
 
@@ -65,8 +65,8 @@ namespace FarmTypeManager.CustomActions
                         location.furniture.Remove(furniture);
                         times--;
 
-                        if (FTMUtility.Monitor.IsVerbose)
-                            FTMUtility.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
+                        if (Properties.Monitor.IsVerbose)
+                            Properties.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
                     }
                 }
             }

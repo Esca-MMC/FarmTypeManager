@@ -23,7 +23,7 @@ namespace FarmTypeManager.CustomActions
             if (settings.TileCondition == null)
             {
                 List<Vector2> tileList = new(location.Objects.Keys);
-                FTMUtility.RandomizeList(tileList);
+                Collections.RandomizeList(tileList);
                 tiles = tileList;
             }
             else
@@ -45,8 +45,8 @@ namespace FarmTypeManager.CustomActions
                     location.Objects.Remove(tile);
                     times--;
 
-                    if (FTMUtility.Monitor.IsVerbose)
-                        FTMUtility.Monitor.VerboseLog($"{nameof(DespawnObjectHandler)}: Removing a placed object. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. Object ID: \"{obj.QualifiedItemId}\".  Display Name: \"{obj.DisplayName}\".");
+                    if (Properties.Monitor.IsVerbose)
+                        Properties.Monitor.VerboseLog($"{nameof(DespawnObjectHandler)}: Removing a placed object. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. Object ID: \"{obj.QualifiedItemId}\".  Display Name: \"{obj.DisplayName}\".");
                 }
             }
 

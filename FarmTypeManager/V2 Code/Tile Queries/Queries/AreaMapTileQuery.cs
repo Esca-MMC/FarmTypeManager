@@ -37,7 +37,7 @@ namespace FarmTypeManager.TileQueries
             float mapWidth = location.map.Layers[0].LayerWidth;
             float mapHeight = location.map.Layers[0].LayerHeight;
 
-            var collisionTiles = FTMUtility.ParseCollisionMap(collisionMap); //get coordinates for each valid tile of the map, relative to the target tile
+            var collisionTiles = CollisionMaps.Parse(collisionMap); //get coordinates for each valid tile of the map, relative to the target tile
 
             foreach (Vector2 offset in collisionTiles)
             {

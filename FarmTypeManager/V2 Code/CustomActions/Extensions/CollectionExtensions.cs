@@ -38,7 +38,7 @@ namespace FarmTypeManager.CustomActions
             if (parsedList.Count < 1) //if no pairs were active
                 yield break;
 
-            foreach (var output in FTMUtility.SelectElementsByMode(parsedList, mode, timesToSelect)) //yield pairs using the given mode
+            foreach (var output in Collections.SelectElementsByMode(parsedList, mode, timesToSelect)) //yield pairs using the given mode
             {
                 if (output.Value.MarkAppliedWithFlag != null)
                     Game1.player.mailReceived.Add(output.Value.MarkAppliedWithFlag); //add this entry's flag
@@ -74,7 +74,7 @@ namespace FarmTypeManager.CustomActions
             if (parsedList.Count < 1) //if no elements were active
                 yield break;
 
-            foreach (var output in FTMUtility.SelectElementsByMode(parsedList, mode, timesToSelect)) //yield elements using the given mode
+            foreach (var output in Collections.SelectElementsByMode(parsedList, mode, timesToSelect)) //yield elements using the given mode
             {
                 if (output.MarkAppliedWithFlag != null)
                     Game1.player.mailReceived.Add(output.MarkAppliedWithFlag); //add this entry's flag

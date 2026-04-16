@@ -101,19 +101,19 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new BigSlimeFTM(tile, 0),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
                             {
-                                if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                     slime.c.Value = color;
                                 else
-                                    FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigGreenSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                    Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigGreenSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                             }
                             return monster;
                         },
                         (monster) =>
                         {
                             if (monster is BigSlimeFTM slime)
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
                         },
                         new Vector2(2, 2)
                     )
@@ -124,19 +124,19 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new BigSlimeFTM(tile, 40),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
                             {
-                                if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                     slime.c.Value = color;
                                 else
-                                    FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigBlueSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                    Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigBlueSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                             }
                             return monster;
                         },
                         (monster) =>
                         {
                             if (monster is BigSlimeFTM slime)
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
                         },
                         new Vector2(2, 2)
                     )
@@ -147,19 +147,19 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new BigSlimeFTM(tile, 80),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
                             {
-                                if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                     slime.c.Value = color;
                                 else
-                                    FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigRedSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                    Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigRedSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                             }
                             return monster;
                         },
                         (monster) =>
                         {
                             if (monster is BigSlimeFTM slime)
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
                         },
                         new Vector2(2, 2)
                     )
@@ -170,19 +170,19 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new BigSlimeFTM(tile, 121),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText) && monster is BigSlimeFTM slime)
                             {
-                                if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                     slime.c.Value = color;
                                 else
-                                    FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigPurpleSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                    Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BigPurpleSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                             }
                             return monster;
                         },
                         (monster) =>
                         {
                             if (monster is BigSlimeFTM slime)
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.c.Value.R} {slime.c.Value.G} {slime.c.Value.B} {slime.c.Value.A}"; //save current color to mod data in "R G B A" format
                         },
                         new Vector2(2, 2)
                     )
@@ -304,15 +304,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: GreenSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: GreenSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -321,7 +321,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -329,7 +329,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: GreenSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: GreenSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -338,9 +338,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -354,15 +354,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BlueSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: BlueSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -371,7 +371,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -379,7 +379,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: BlueSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: BlueSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -388,9 +388,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -404,15 +404,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: RedSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: RedSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -421,7 +421,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -429,7 +429,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: RedSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: RedSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -438,9 +438,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -454,15 +454,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: PurpleSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: PurpleSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -471,7 +471,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -479,7 +479,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: PurpleSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: PurpleSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -488,9 +488,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -509,15 +509,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: TigerSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: TigerSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -526,7 +526,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -534,7 +534,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: TigerSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: TigerSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -543,9 +543,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -564,15 +564,15 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         slime.color.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: PrismaticSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: PrismaticSlime. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Gender, out string gender))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Gender, out string gender))
                                 {
                                     //apply known gender values to slimes' "cute" field, which is used in breeding code
                                     if (gender.StartsWith("M", StringComparison.OrdinalIgnoreCase))
@@ -581,7 +581,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.cute.Value = false;
                                 }
 
-                                if (slime.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText))
+                                if (slime.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText))
                                 {
                                     if (int.TryParse(segmentsText, out int segments))
                                     {
@@ -589,7 +589,7 @@ namespace FarmTypeManager.CustomActions
                                         slime.stackedSlimes.Value = segments;
                                     }
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: PrismaticSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: PrismaticSlime. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -598,9 +598,9 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is GreenSlime slime)
                             {
-                                slime.modData[FTMUtility.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
-                                slime.modData[FTMUtility.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
-                                slime.modData[FTMUtility.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
+                                slime.modData[Properties.ModDataKeys.Color] = $"{slime.color.Value.R} {slime.color.Value.G} {slime.color.Value.B} {slime.color.Value.A}"; //overwrite with current color in "R G B A" format
+                                slime.modData[Properties.ModDataKeys.Gender] = slime.cute.Value ? "M" : "F"; //overwrite with "cute" field: true = "M", false = "F"
+                                slime.modData[Properties.ModDataKeys.Segments] = slime.stackedSlimes.Value.ToString();
                             }
                         },
                         Vector2.One
@@ -658,12 +658,12 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is MetalHead metal)
                             {
-                                if (metal.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (metal.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         metal.c.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: MetalHead. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: MetalHead. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -671,7 +671,7 @@ namespace FarmTypeManager.CustomActions
                         (monster) =>
                         {
                             if (monster is MetalHead metal && metal.c.Value != Color.White) //if this isn't using the default color
-                                metal.modData[FTMUtility.ModDataKeys.Color] = $"{metal.c.Value.R} {metal.c.Value.G} {metal.c.Value.B} {metal.c.Value.A}"; //overwrite with current color in "R G B A" format
+                                metal.modData[Properties.ModDataKeys.Color] = $"{metal.c.Value.R} {metal.c.Value.G} {metal.c.Value.B} {metal.c.Value.A}"; //overwrite with current color in "R G B A" format
                         },
                         Vector2.One
                     )
@@ -684,12 +684,12 @@ namespace FarmTypeManager.CustomActions
                         {
                             if (monster is HotHead hot)
                             {
-                                if (hot.modData.TryGetValue(FTMUtility.ModDataKeys.Color, out string colorText))
+                                if (hot.modData.TryGetValue(Properties.ModDataKeys.Color, out string colorText))
                                 {
-                                    if (FTMUtility.TryParseColor(colorText, out Color color, out string colorError))
+                                    if (Colors.TryParseColor(colorText, out Color color, out string colorError))
                                         hot.c.Value = color;
                                     else
-                                        FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: HotHead. Parsing error message: \n{colorError}", LogLevel.Debug);
+                                        Properties.Monitor.LogOnce($"Couldn't parse a monster's custom color. Using default color instead. Monster type: HotHead. Parsing error message: \n{colorError}", LogLevel.Debug);
                                 }
                             }
                             return monster;
@@ -697,7 +697,7 @@ namespace FarmTypeManager.CustomActions
                         (monster) =>
                         {
                             if (monster is MetalHead hot && hot.c.Value != Color.White) //if this isn't using the default color
-                                hot.modData[FTMUtility.ModDataKeys.Color] = $"{hot.c.Value.R} {hot.c.Value.G} {hot.c.Value.B} {hot.c.Value.A}"; //overwrite with current color in "R G B A" format
+                                hot.modData[Properties.ModDataKeys.Color] = $"{hot.c.Value.R} {hot.c.Value.G} {hot.c.Value.B} {hot.c.Value.A}"; //overwrite with current color in "R G B A" format
                         },
                         Vector2.One
                     )
@@ -711,7 +711,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new LavaLurkFTM(tile),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string rangedText) && rangedText.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is LavaLurkFTM lava)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string rangedText) && rangedText.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is LavaLurkFTM lava)
                                 lava.RangedAttacks = false;
                             return monster;
                         },
@@ -740,7 +740,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new DinoMonster(tile),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is DinoMonster dino)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is DinoMonster dino)
                             {
                                 //disable ranged attacks by altering attack values
                                 dino.timeUntilNextAttack = int.MaxValue;
@@ -872,7 +872,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new SerpentFTM(tile, "Royal Serpent"),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.Segments, out string segmentsText) && monster is SerpentFTM serpent)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.Segments, out string segmentsText) && monster is SerpentFTM serpent)
                             {
                                 if (int.TryParse(segmentsText, out int segments))
                                 {
@@ -880,7 +880,7 @@ namespace FarmTypeManager.CustomActions
                                     serpent.segmentCount.Value = segments;
                                 }
                                 else
-                                    FTMUtility.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: RoyalSerpent. Unparsed text: \n{segmentsText}", LogLevel.Debug);
+                                    Properties.Monitor.LogOnce($"Couldn't parse a monster's custom \"segments\" number. Using default segments instead. Monster type: RoyalSerpent. Unparsed text: \n{segmentsText}", LogLevel.Debug);
                             }
 
                             return monster;
@@ -888,7 +888,7 @@ namespace FarmTypeManager.CustomActions
                         (monster) =>
                         {
                             if (monster is SerpentFTM serpent)
-                                serpent.modData[FTMUtility.ModDataKeys.Segments] = serpent.segmentCount.Value.ToString();
+                                serpent.modData[Properties.ModDataKeys.Segments] = serpent.segmentCount.Value.ToString();
                         },
                         new Vector2(2, 2)
                     )
@@ -914,7 +914,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new ShadowShaman(tile),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is ShadowShaman shaman)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is ShadowShaman shaman)
                                 shaman.coolDown = int.MaxValue; //disable ranged abilities with an unreachable cooldown
                             return monster;
                         },
@@ -931,7 +931,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new Shooter(tile),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is Shooter sniper)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is Shooter sniper)
                                 sniper.nextShot = float.MaxValue; //disable ranged attack with an unreachable cooldown
                             return monster;
                         },
@@ -957,7 +957,7 @@ namespace FarmTypeManager.CustomActions
                                     skeleton.IsWalkingTowardPlayer = true;
                                 }
 
-                                if (skeleton.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase))
+                                if (skeleton.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase))
                                     skeleton.rangedAttacks.Value = false;
                             }
                             return monster;
@@ -981,7 +981,7 @@ namespace FarmTypeManager.CustomActions
                                     skeleton.IsWalkingTowardPlayer = true;
                                 }
 
-                                if (skeleton.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase))
+                                if (skeleton.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase))
                                     skeleton.rangedAttacks.Value = false;
                             }
                             return monster;
@@ -1032,7 +1032,7 @@ namespace FarmTypeManager.CustomActions
                         (tile) => new SquidKidFTM(tile),
                         (monster) =>
                         {
-                            if (monster.modData.TryGetValue(FTMUtility.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is SquidKid squid)
+                            if (monster.modData.TryGetValue(Properties.ModDataKeys.DisableRangedAttacks, out string disableRanged) && disableRanged.StartsWith("t", StringComparison.OrdinalIgnoreCase) && monster is SquidKid squid)
                                 squid.lastFireball = float.MaxValue; //disable ranged attack with an unreachable cooldown
                             return monster;
                         },

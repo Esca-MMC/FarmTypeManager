@@ -89,7 +89,7 @@ namespace FarmTypeManager.TileQueries
             {
                 tiles = startingQuery.GetStartingTiles();
                 if (randomizeOrder)
-                    FTMUtility.RandomizeList(tiles);
+                    Collections.RandomizeList(tiles);
             }
             else //if the default starting list should be generated
                 tiles = GetAllTilesFromLocation(true);
@@ -156,7 +156,7 @@ namespace FarmTypeManager.TileQueries
                     tiles.Add(new Vector2(x, y));
 
             if (randomizeOrder)
-                FTMUtility.RandomizeList(tiles);
+                Collections.RandomizeList(tiles);
 
             return tiles;
         }

@@ -23,9 +23,9 @@ namespace FarmTypeManager.HarmonyPatches
         /// <param name="harmony">This mod's Harmony instance.</param>
         public static void ApplyPatch(Harmony harmony)
         {
-            FTMUtility.Helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived_DropFarmhandLoot;
+            Properties.Helper.Events.Multiplayer.ModMessageReceived += ModMessageReceived_DropFarmhandLoot;
 
-            FTMUtility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\": postfixing SDV method \"GameLocation.monsterDrop\".", LogLevel.Trace);
+            Properties.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\": postfixing SDV method \"GameLocation.monsterDrop\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.monsterDrop), [typeof(Monster), typeof(int), typeof(int), typeof(Farmer)]),
                 postfix: new HarmonyMethod(typeof(HarmonyPatch_DropMonsterLoot), nameof(monsterDrop_Postfix))
@@ -37,7 +37,7 @@ namespace FarmTypeManager.HarmonyPatches
         {
             try
             {
-                if (monster == null || !monster.modData.TryGetValue(FTMUtility.ModDataKeys.SerializerId, out string serializerId)) //if this monster doesn't have an ID used to get custom loot
+                if (monster == null || !monster.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId)) //if this monster doesn't have an ID used to get custom loot
                     return;
 
                 if (Context.IsMainPlayer)
@@ -49,12 +49,12 @@ namespace FarmTypeManager.HarmonyPatches
                 {
                     //send a message with necessary data to the host
                     ModMessageData message = new(__instance.NameOrUniqueName, serializerId, x, y, who?.UniqueMultiplayerID ?? Game1.player.UniqueMultiplayerID);
-                    FTMUtility.Helper.Multiplayer.SendMessage(message, nameof(HarmonyPatch_DropMonsterLoot), [FTMUtility.Manifest.UniqueID], [Game1.MasterPlayer.UniqueMultiplayerID]);
+                    Properties.Helper.Multiplayer.SendMessage(message, nameof(HarmonyPatch_DropMonsterLoot), [Properties.Manifest.UniqueID], [Game1.MasterPlayer.UniqueMultiplayerID]);
                 }
             }
             catch (Exception ex)
             {
-                FTMUtility.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\" has encountered an error in method \"{nameof(monsterDrop_Postfix)}\". Monsters with custom loot might not drop items. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                Properties.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\" has encountered an error in method \"{nameof(monsterDrop_Postfix)}\". Monsters with custom loot might not drop items. Full error message: \n{ex.ToString()}", LogLevel.Error);
             }
         }
 
@@ -67,14 +67,14 @@ namespace FarmTypeManager.HarmonyPatches
         {
             try
             {
-                if (!Context.IsMainPlayer || e.FromModID != FTMUtility.Manifest.UniqueID || e.Type != nameof(HarmonyPatch_DropMonsterLoot)) //if the current player isn't the host, or the message is unrelated
+                if (!Context.IsMainPlayer || e.FromModID != Properties.Manifest.UniqueID || e.Type != nameof(HarmonyPatch_DropMonsterLoot)) //if the current player isn't the host, or the message is unrelated
                     return;
 
                 var message = e.ReadAs<ModMessageData>();
 
                 if (MonsterSerializer.GetData(message.SerializerId)?.LootData is ItemSpawnField lootData && lootData != null) //if the received monster ID has loot data
                 {
-                    GameLocation location = FTMUtility.GetLocationIfActive(message.LocationName);
+                    GameLocation location = Locations.GetLocationIfActive(message.LocationName);
                     if (location == null)
                         return;
 
@@ -84,7 +84,7 @@ namespace FarmTypeManager.HarmonyPatches
             }
             catch (Exception ex)
             {
-                FTMUtility.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\" has encountered an error in method \"{nameof(ModMessageReceived_DropFarmhandLoot)}\". Monsters with custom loot might not drop items. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                Properties.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_DropMonsterLoot)}\" has encountered an error in method \"{nameof(ModMessageReceived_DropFarmhandLoot)}\". Monsters with custom loot might not drop items. Full error message: \n{ex.ToString()}", LogLevel.Error);
             }
         }
 
@@ -103,8 +103,8 @@ namespace FarmTypeManager.HarmonyPatches
             if (times <= 0)
                 return;
 
-            if (FTMUtility.Monitor.IsVerbose)
-                FTMUtility.Monitor.VerboseLog($"Dropping custom monster loot. Location: \"{location.NameOrUniqueName}\". Drop position: {x},{y}.");
+            if (Properties.Monitor.IsVerbose)
+                Properties.Monitor.VerboseLog($"Dropping custom monster loot. Location: \"{location.NameOrUniqueName}\". Drop position: {x},{y}.");
 
             foreach (var item in lootData.CreateItems(queryContext, itemContext, times)) //generate items to drop
                 Game1.createItemDebris(item, new Vector2(x, y), Game1.random.Next(4), queryContext.Location);
