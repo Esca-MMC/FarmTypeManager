@@ -38,7 +38,7 @@ namespace FarmTypeManager
                             Utility.Monitor.VerboseLog($"Checking monster settings for this area: \"{area.UniqueAreaID}\" ({area.MapName})");
 
                             //validate the map name for the area
-                            List<string> locations = Utility.GetAllLocationsFromName(area.MapName); //get all locations for this map name
+                            List<string> locations = Utilities.Locations.GetLocationNames(area.MapName); //get all locations for this map name
                             if (locations.Count == 0) //if no locations were found
                             {
                                 Utility.Monitor.VerboseLog($"No map named \"{area.MapName}\" could be found. Skipping this area.");

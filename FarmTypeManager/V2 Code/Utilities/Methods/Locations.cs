@@ -1,4 +1,5 @@
 ﻿using StardewValley;
+using StardewValley.Delegates;
 using StardewValley.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,14 @@ namespace FarmTypeManager.Utilities
     /// <summary>Static methods used with <see cref="GameLocation"/> instances and their names.</summary>
     public static class Locations
     {
-        /// <summary>Creates a list of all known game location names matching the provided string.</summary>
-        /// <param name="locationNames">The name(s) of the location(s) to be listed. Multiple names may be separated by commas. Case-insensitive.</param>
-        /// <param name="removeDuplicates">If true, any duplicate names that match exactly will be removed from the final list.</param>
+        /// <summary>Parses a string into a set of recognized location names.</summary>
+        /// <param name="locationString">A comma-separated string of location names or other identifiers (see method remarks). Case-insensitive.</param>
+        /// <param name="contextLocationName">The unique name of <see cref="GameStateQueryContext.Location"/>. Null if query context is unavailable.</param>
+        /// <param name="removeDuplicates">If true, only one of each unique location name may be included in the output. For example, an input string of "Forest, Forest" will output a set of only one string, "Forest".</param>
         /// <returns>A list of <see cref="GameLocation.NameOrUniqueName"/>s for all locations matching the provided string.</returns>
         /// <remarks>
-        /// <para>Each name in <paramref name="locationNames"/> may start with one of the prefixes below. Currently, prefixes do not include building interior locations.</para>
+        /// <para>This method will search for location names using the following methods, in order from top to bottom:</para>
+        /// <para>Each name may start with one of these prefixes. Currently, prefixes do not include building interior locations.</para>
         /// <list type="bullet">
         ///     <item>
         ///         <term>"Contains:"</term>
@@ -29,14 +32,19 @@ namespace FarmTypeManager.Utilities
         ///         <description>Any non-instanced locations whose names end with the remaining text will be returned. For example, "Suffix:House" will return Farmhouse, Greenhouse, ScienceHouse, HaleyHouse, etc.</description>
         ///     </item>
         /// </list>
-        /// <para>Non-prefixed names will search for exact matches first, then building interiors (matched by building name), then any mod-specific location types.</para>
+        /// <para>The keyword "<b>Target</b>" refers to <see cref="GameStateQueryContext.Location"/>, e.g. as a trigger action's target location; if unavailable, "Target" is equivalent to "Here".</para>
+        /// <para>The keyword "<b>Here</b>" refers to the local player's current location.</para>
+        /// <para>If none of the above applies, this method will check for known temporary location names (e.g. UndergroundMine or VolcanoDungeon levels).</para>
+        /// <para>Next, it will use <see cref="Game1.getLocationFromName(string)"/> to search for a location with an exact name match.</para>
+        /// <para>Next, it will search for any buildings whose IDs match the name (e.g. "Barn") and add all of those buildings' interior locations, if applicable.</para>
         /// </remarks>
-        public static List<string> GetAllLocationsFromName(string locationNames, bool removeDuplicates = false)
+        public static List<string> GetLocationNames(string locationString, string contextLocationName = null, bool removeDuplicates = false)
         {
             List<string> locations = [];
-            if (locationNames == null) return locations;
+            if (locationString == null)
+                return locations;
 
-            foreach (string name in locationNames.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) //split names into separate strings around commas, then check each one
+            foreach (string name in locationString.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)) //split names into separate strings around commas, then check each one
             {
                 string[] prefixSplit = name.Split(':', 2); //split this name into prefix and suffix strings, if applicable
 
@@ -48,8 +56,8 @@ namespace FarmTypeManager.Utilities
                         case "contains":
                             Utility.ForEachLocation((location) =>
                             {
-                                if (location.Name?.ContainsIgnoreCase(prefixSplit[1]) == true)
-                                    locations.Add(location.Name);
+                                if (location.NameOrUniqueName?.ContainsIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.NameOrUniqueName);
                                 return true;
                             }, false, false);
                             continue;
@@ -57,8 +65,8 @@ namespace FarmTypeManager.Utilities
                         case "prefix":
                             Utility.ForEachLocation((location) =>
                             {
-                                if (location.Name?.StartsWithIgnoreCase(prefixSplit[1]) == true)
-                                    locations.Add(location.Name);
+                                if (location.NameOrUniqueName?.StartsWithIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.NameOrUniqueName);
                                 return true;
                             }, false, false);
                             continue;
@@ -66,12 +74,24 @@ namespace FarmTypeManager.Utilities
                         case "suffix":
                             Utility.ForEachLocation((location) =>
                             {
-                                if (location.Name?.EndsWithIgnoreCase(prefixSplit[1]) == true)
-                                    locations.Add(location.Name);
+                                if (location.NameOrUniqueName?.EndsWithIgnoreCase(prefixSplit[1]) == true)
+                                    locations.Add(location.NameOrUniqueName);
                                 return true;
                             }, false, false);
                             continue;
                     }
+                }
+
+                if (name.EqualsIgnoreCase("Target"))
+                {
+                    locations.Add(contextLocationName ?? Game1.currentLocation.NameOrUniqueName); //mimic GSQ "Target" location: use contextual location if provided, otherwise use local player location
+                    continue;
+                }
+
+                if (name.EqualsIgnoreCase("Here"))
+                {
+                    locations.Add(Game1.currentLocation.NameOrUniqueName); //mimic GSQ "Here" location: use local player
+                    continue;
                 }
 
                 //if this name did not have a prefix OR its prefix was unrecognized, treat it as a normal location name

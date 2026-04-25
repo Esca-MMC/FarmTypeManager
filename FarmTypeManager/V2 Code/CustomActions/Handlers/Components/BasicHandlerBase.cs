@@ -43,7 +43,7 @@ namespace FarmTypeManager.CustomActions
                 return true;
             }
 
-            foreach ((GameLocation, int) result in settings.GetActiveLocationsAndTimes(times)) //get active locations, and the number of times each location should be used
+            foreach ((GameLocation, int) result in settings.GetActiveLocationsAndTimes(times, queryContext.Location.NameOrUniqueName)) //get active locations, and the number of times each location should be used
                 if (!TryActionAtLocation(result.Item1, settings, queryContext, triggerContext, result.Item2, out error))
                     return false;
 
