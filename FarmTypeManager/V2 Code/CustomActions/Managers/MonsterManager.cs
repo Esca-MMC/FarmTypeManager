@@ -1,6 +1,5 @@
 ﻿using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 using System;
@@ -89,7 +88,7 @@ namespace FarmTypeManager.CustomActions
         /*******************/
         /* Private methods */
         /*******************/
-        
+
         /// <summary>Gets the handler for a monster type.</summary>
         /// <param name="spawnId">The spawn ID registered with this handler.</param>
         /// <returns>The handler for the monster type. Null if the ID has no registered handler.</returns>
@@ -99,7 +98,7 @@ namespace FarmTypeManager.CustomActions
                 return null;
 
             if (Handlers.TryGetValue(spawnId, out var handler))
-                return handler; 
+                return handler;
 
             if (!AddedReflectionHandlers) //if a handler was not found, and reflection handlers have not been generated yet
             {
