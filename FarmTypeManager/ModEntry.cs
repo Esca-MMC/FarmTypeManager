@@ -11,7 +11,7 @@ namespace FarmTypeManager
         ///<summary>Tasks performed when the mod initially loads.</summary>
         public override void Entry(IModHelper helper)
         {
-            //pass SMAPI utilities to the Utility class for use throughout ModEntry (deprecated)
+            //pass SMAPI utilities to the Utility class for use throughout ModEntry (deprecated in 2.0+)
             Utility.Monitor.IMonitor = Monitor;
             Utility.Helper = helper;
             Utility.Manifest = ModManifest;

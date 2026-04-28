@@ -17,7 +17,7 @@ namespace FarmTypeManager.CustomActions
 
         /// <summary>The ID used to spawn this type of monster.</summary>
         /// <remarks>
-        /// <para>These IDs are defined and recognized by <see cref="MonsterManager">. They don't necessarily match a monster's class or any built-in field.</para>
+        /// <para>These IDs are defined and recognized by this mod's monster handling system. They don't necessarily match a monster's class or any built-in field.</para>
         /// <para>This value should be stored in each monster's mod data for reference, using the key <see cref="Properties.ModDataKeys.SpawnId"/>.</para>
         /// </remarks>
         public string SpawnId { get; set; } = null;
