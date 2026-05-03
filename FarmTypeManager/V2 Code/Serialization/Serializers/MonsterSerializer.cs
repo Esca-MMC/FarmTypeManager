@@ -209,11 +209,14 @@ namespace FarmTypeManager.Serialization
 
                 for (int x = location.characters.Count - 1; x >= 0; x--) //for each character at this location (looping backward for index-based removal)
                 {
-                    if (location.characters[x] is Monster monster && monster.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId) && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this is a monster with serialization data
+                    if (location.characters[x] is Monster monster && monster.modData.TryGetValue(Properties.ModDataKeys.SerializerId, out string serializerId)) //if this is a monster with a serializer ID
                     {
-                        MonsterManager.UpdateData(monster, data);
-                        location.characters.RemoveAt(x);
-                        saveData.Add(data); //add it to this location's save data   
+                        if (serializerId != null && IDsAndData.TryGetValue(serializerId, out MonsterData data)) //if this monster is still tracked by the serializer
+                        {
+                            MonsterManager.UpdateData(monster, data);
+                            saveData.Add(data); //add it to this location's save data   
+                        }
+                        location.characters.RemoveAt(x); //remove it from the location (even if it's not tracked for some reason)
                     }
                 }
 
