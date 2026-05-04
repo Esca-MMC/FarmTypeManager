@@ -63,7 +63,7 @@ namespace FarmTypeManager.CustomActions
         public int? FacingDirection { get; set; } = null;
 
         /// <summary>A data model for item creation. If not null, this generates items that replace the monster's normal item drops when defeated.</summary>
-        public ItemSpawnField LootData { get; set; }
+        public ItemSpawnField LootData { get; set; } = null;
 
         /// <summary>If true, the monster's hard-coded drops should be disabled where possible, e.g. <see cref="Monster.getExtraDropItems"/>.</summary>
         /// <remarks>
