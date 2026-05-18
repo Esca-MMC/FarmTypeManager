@@ -63,66 +63,47 @@ namespace FarmTypeManager
             }
 
             //this override fixes the following BigSlime behavioral bugs:
-            // * small slimes not spawning when the big slime dies
+            //* spawned small slimes using "current mine level" even outside the mines
+            //* spawned small slimes breeding in non-temporary locations
             public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
             {
-                int num1 = Math.Max(1, damage - resilience.Value);
+                int actualDamage = Math.Max(1, damage - resilience.Value);
                 if (Game1.random.NextDouble() < missChance.Value - missChance.Value * addedPrecision)
                 {
-                    num1 = -1;
+                    actualDamage = -1;
                 }
                 else
                 {
-                    this.Slipperiness = 3;
-                    this.Health -= num1;
-                    this.setTrajectory(xTrajectory, yTrajectory);
-                    this.currentLocation.playSound("hitEnemy");
-                    this.IsWalkingTowardPlayer = true;
-                    if (this.Health <= 0)
+                    Slipperiness = 3;
+                    Health -= actualDamage;
+                    setTrajectory(xTrajectory, yTrajectory);
+                    currentLocation.playSound("hitEnemy");
+                    IsWalkingTowardPlayer = true;
+                    if (Health <= 0)
                     {
-                        this.deathAnimation();
-                        ++Game1.stats.SlimesKilled;
-                        if (Game1.gameMode == (byte)3 && Game1.random.NextDouble() < 0.75)
+                        deathAnimation();
+                        if (Game1.gameMode == 3 && Game1.random.NextDouble() < 0.75)
                         {
-                            int num2 = Game1.random.Next(2, 5);
-                            for (int index = 0; index < num2; ++index)
+                            int toCreate = Game1.random.Next(2, 5);
+                            for (int i = 0; i < toCreate; i++)
                             {
-                                GreenSlime spawnSlime = new GreenSlime(this.Position, MineLevelOfDeathSpawns); //use MineLevelOfDeathSpawns instead of checking the game state
-                                spawnSlime.readyToMate = -35000; //disable slime mating (-35000 or less should prevent related behavior)
-
-                                int ID = Utility.MonsterTracker.AddMonster(spawnSlime) ?? Utility.RNG.Next(int.MinValue, -1); //add the new slime to the tracker and get an ID for it (or randomly generate one if this fails)
-                                spawnSlime.id = ID; //assign the ID to this slime
-
-                                this.currentLocation.characters.Add(spawnSlime);
-                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
-                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].willDestroyObjectsUnderfoot = false;
-                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].moveTowardPlayer(4);
-                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].Scale = (float)(0.75 + (double)Game1.random.Next(-5, 10) / 100.0);
-                                this.currentLocation.characters[this.currentLocation.characters.Count - 1].currentLocation = this.currentLocation;
-
-                                SavedObject save = new SavedObject() //create save data for this slime (set to expire overnight) 
+                                GreenSlime slime = new(Position, MineLevelOfDeathSpawns) //use MineLevelOfDeathSpawns instead of checking the game state
                                 {
-                                    MapName = currentLocation.Name,
-                                    Tile = Position,
-                                    Type = SavedObject.ObjectType.Monster,
-                                    ID = ID,
-                                    DaysUntilExpire = 1
-                                };
+                                    IsEphemeral = true,
+                                    readyToMate = int.MaxValue //disable slime mating
+                                }; 
 
-                                if (Context.IsMainPlayer) //if this method was run by the host player
-                                {
-                                    Utility.FarmDataList[0].Save.SavedObjects.Add(save); //store the save data in the first listed FarmData
-                                }
-                                else //if this method was run by a client player (farmhand)
-                                {
-                                    //send a message to the host player to process this save data
-                                    Utility.Helper.Multiplayer.SendMessage<SavedObject>(save, "SavedObject", new string[] { Utility.Helper.ModRegistry.ModID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
-                                }
+                                currentLocation.characters.Add(slime);
+                                slime.setTrajectory(xTrajectory / 8 + Game1.random.Next(-2, 3), yTrajectory / 8 + Game1.random.Next(-2, 3));
+                                slime.willDestroyObjectsUnderfoot = false;
+                                slime.moveTowardPlayer(4);
+                                slime.Scale = 0.75f + Game1.random.Next(-5, 10) / 100f;
+                                slime.currentLocation = currentLocation;
                             }
                         }
                     }
                 }
-                return num1;
+                return actualDamage;
             }
         }
     }
