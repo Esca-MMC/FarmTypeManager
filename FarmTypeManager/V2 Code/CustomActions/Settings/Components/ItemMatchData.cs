@@ -63,7 +63,7 @@ namespace FarmTypeManager.CustomActions
         public bool Match(Item item, GameLocation location, GameStateQueryContext queryContext)
         {
             //NOTE: Return data.InvertResults instead of false, and !data.InvertResults instead of true. When that setting is true, it should correctly invert the results.
-            
+
             //item properties
 
             if (Id != null && !string.Equals(item.QualifiedItemId, Id, StringComparison.OrdinalIgnoreCase))
@@ -130,9 +130,11 @@ namespace FarmTypeManager.CustomActions
             {
                 foreach (var entry in ModData)
                 {
-                    if (!item.modData.TryGetValue(entry.Key, out string value)) //if the item doesn't have the specified key
-                        return InvertResults;
-                    if (value != null && !string.Equals(entry.Value, value, StringComparison.OrdinalIgnoreCase)) //if the specified value isn't null and doesn't match the item value
+                    //NOTE: Keys with null values should be considered equal to keys that don't exist.
+                    //      For example, if this match data specifies {"Key1": null}, and the instance's data has {"Key1": null} OR doesn't have a "Key1" entry at all, then it matches.
+
+                    item.modData.TryGetValue(entry.Key, out string instanceValue); //get this entry from the instance's mod data, or null if it doesn't exist
+                    if (!string.Equals(entry.Value, instanceValue, StringComparison.OrdinalIgnoreCase))
                         return InvertResults;
                 }
             }
@@ -153,9 +155,7 @@ namespace FarmTypeManager.CustomActions
             if (MaxMinutesUntilReady != null && (obj == null || MaxMinutesUntilReady < obj.MinutesUntilReady))
                 return InvertResults;
 
-            //if this is reached, everything matched
-
-            return !InvertResults;
+            return !InvertResults; //everything matched
         }
     }
 }
