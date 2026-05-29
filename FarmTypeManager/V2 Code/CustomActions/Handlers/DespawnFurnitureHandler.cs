@@ -3,6 +3,7 @@ using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Delegates;
+using StardewValley.Monsters;
 using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +30,12 @@ namespace FarmTypeManager.CustomActions
             else
                 tilesToCheck = null;
 
-            List<int> furnitureIndices = new(Enumerable.Range(0, location.furniture.Count));
-            Collections.RandomizeList(furnitureIndices);
+            List<int> indices = new(Enumerable.Range(0, location.furniture.Count));
+            Collections.RandomizeList(indices);
             
             List<int> indicesToRemove = [];
 
-            foreach (int index in furnitureIndices)
+            foreach (int index in indices)
             {
                 if (times <= 0) //if enough instances matched already, stop looking for more
                     break;
@@ -43,9 +44,8 @@ namespace FarmTypeManager.CustomActions
                 if (furniture == null)
                     continue;
 
-                foreach (var data in matchData)
-                    if (!data.Match(furniture, location, queryContext)) //if this instance does NOT match all data
-                        continue;
+                if (matchData.Count > 0 && matchData.Any(data => !data.Match(furniture, location, queryContext))) //if any data does NOT match this instance
+                    continue;
 
                 if (tilesToCheck != null && !SetContainsInstance(tilesToCheck, furniture)) //if this instance does NOT match the tile condition
                     continue;

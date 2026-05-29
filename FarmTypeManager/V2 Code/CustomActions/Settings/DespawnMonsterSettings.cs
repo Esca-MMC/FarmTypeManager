@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 namespace FarmTypeManager.CustomActions
 {
-    /// <summary>Settings used by handlers that despawn (remove) items, e.g. <see cref="DespawnObjectHandler"/>.</summary>
-    public class DespawnItemSettings : ILocationSettings, ITileSettings, ITimesToPerformSettings
+    /// <summary>Settings used by handlers that despawn (remove) monsters.</summary>
+    public class DespawnMonsterSettings : ILocationSettings, ITileSettings, ITimesToPerformSettings
     {
         /*********************/
         /* ILocationSettings */
@@ -34,10 +34,10 @@ namespace FarmTypeManager.CustomActions
         /* Other properties */
         /********************/
 
-        /// <summary>An item matching data entry.</summary>
-        public ItemMatchData ItemMatchData { get; set; } = null;
+        /// <summary>An monster matching data entry.</summary>
+        public MonsterMatchData MonsterMatchData { get; set; } = null;
 
-        /// <summary>A list of item matching data entries.</summary>
-        public List<ItemMatchData> ItemMatchDataList { get; set; } = null;
+        /// <summary>A list of monster matching data entries.</summary>
+        public List<MonsterMatchData> MonsterMatchDataList { get; set; } = null;
     }
 }

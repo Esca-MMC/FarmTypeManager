@@ -20,6 +20,7 @@ namespace FarmTypeManager.CustomActions
         {
             { "DespawnFurniture", new DespawnFurnitureHandler() },
             { "DespawnObject", new DespawnObjectHandler() },
+            { "DespawnMonster", new DespawnMonsterHandler() },
             { "SpawnFurniture", new SpawnFurnitureHandler() },
             { "SpawnObject", new SpawnObjectHandler() },
             { "SpawnMonster", new SpawnMonsterHandler() },
