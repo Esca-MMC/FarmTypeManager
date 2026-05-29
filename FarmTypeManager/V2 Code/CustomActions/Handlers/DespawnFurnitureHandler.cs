@@ -18,61 +18,80 @@ namespace FarmTypeManager.CustomActions
             if (settings.ItemMatchData != null)
                 matchData.Insert(0, settings.ItemMatchData);
 
-            if (settings.TileCondition == null)
+            HashSet<Vector2> tilesToCheck; //a set of tiles matching the tile condition; null if no condition was used
+            if (settings.TileCondition != null)
             {
-                List<int> indexList = new(Enumerable.Range(0, location.furniture.Count));
-                Collections.RandomizeList(indexList);
-
-                List<int> indicesToRemove = new();
-                int count = location.furniture.Count;
-
-                for (int x = 0; x < count; x++)
-                {
-                    if (times <= 0)
-                        break;
-
-                    if (location.furniture[x] is not Furniture furniture)
-                        continue;
-
-                    if (matchData.Count < 1 || matchData.Any((data) => data.Match(furniture, location, queryContext))) //if no match data was provided (i.e. everything matches) or if any data matches
-                    {
-                        indicesToRemove.Add(x);
-                        times--;
-
-                        if (Properties.Monitor.IsVerbose)
-                            Properties.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {furniture.TileLocation.X},{furniture.TileLocation.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
-                    }
-                }
-
-                for (int x = count - 1; x >= 0; x--) //loop backward (highest to lowest index numbers)
-                    location.furniture.RemoveAt(x);
+                tilesToCheck = [];
+                TileCondition tileCondition = new(location, settings.TileCondition); //NOTE: it'd be slower to add extra conditions for this type
+                foreach (Vector2 tile in tileCondition.GetTiles())
+                    tilesToCheck.Add(tile);
             }
             else
+                tilesToCheck = null;
+
+            List<int> furnitureIndices = new(Enumerable.Range(0, location.furniture.Count));
+            Collections.RandomizeList(furnitureIndices);
+            
+            List<int> indicesToRemove = [];
+
+            foreach (int index in furnitureIndices)
             {
-                TileCondition tileCondition = new(location, $"HAS_FURNITURE, {settings.TileCondition}"); //create tile condition, limit it to tiles with objects
-                var tiles = tileCondition.GetTiles();
+                if (times <= 0) //if enough instances matched already, stop looking for more
+                    break;
 
-                foreach (Vector2 tile in tiles)
-                {
-                    if (times <= 0)
-                        break;
+                Furniture furniture = location.furniture[index];
+                if (furniture == null)
+                    continue;
 
-                    if (location.GetFurnitureAt(tile) is not Furniture furniture)
+                foreach (var data in matchData)
+                    if (!data.Match(furniture, location, queryContext)) //if this instance does NOT match all data
                         continue;
 
-                    if (matchData.Count < 1 || matchData.Any((data) => data.Match(furniture, location, queryContext))) //if no match data was provided (i.e. everything matches) or if any data matches
-                    {
-                        location.furniture.Remove(furniture);
-                        times--;
+                if (tilesToCheck != null && !SetContainsInstance(tilesToCheck, furniture)) //if this instance does NOT match the tile condition
+                    continue;
 
-                        if (Properties.Monitor.IsVerbose)
-                            Properties.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {tile.X},{tile.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
-                    }
+                indicesToRemove.Add(index); //this instance matches, so mark it for removal
+                times--;
+            }
+
+            indicesToRemove.Sort();
+            for (int x = indicesToRemove.Count - 1; x >= 0; x--) //for each index to remove, looping backward to allow removal
+            {
+                int index = indicesToRemove[x];
+
+                if (Properties.Monitor.IsVerbose)
+                {
+                    Furniture furniture = location.furniture[index];
+                    if (furniture != null)
+                        Properties.Monitor.VerboseLog($"{nameof(DespawnFurnitureHandler)}: Removing furniture. Location: \"{location.NameOrUniqueName}\". Tile: {furniture.TileLocation.X},{furniture.TileLocation.Y}. ID: \"{furniture.QualifiedItemId}\". Display Name: \"{furniture.DisplayName}\".");
                 }
+
+                location.furniture.RemoveAt(index);
             }
 
             error = null;
             return true;
+        }
+
+        /// <summary>Checks whether a set of tiles contains an in-game instance, based on its placement tile and size.</summary>
+        /// <param name="tiles">The set of tiles to check.</param>
+        /// <param name="instance">The instance to check.</param>
+        /// <returns>True if the instance occupies any of the tiles in the set.</returns>
+        private static bool SetContainsInstance(HashSet<Vector2> tiles, Furniture instance)
+        {
+            Vector2 placementTile = instance.TileLocation;
+            int width = instance.getTilesWide();
+            int height = instance.getTilesHigh();
+
+            if (width <= 1 && height <= 1) //if this instance only occupies 1 tile
+                return tiles.Contains(placementTile);
+
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
+                    if (tiles.Contains(new Vector2(placementTile.X + x, placementTile.Y + y))) //if the set contains any tile occupied by the instance
+                        return true;
+
+            return false;
         }
     }
 }

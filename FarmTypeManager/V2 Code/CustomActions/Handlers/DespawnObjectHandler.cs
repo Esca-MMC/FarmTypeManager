@@ -40,7 +40,7 @@ namespace FarmTypeManager.CustomActions
                 if (!location.Objects.TryGetValue(tile, out Object obj) || obj == null)
                     continue;
 
-                if (matchData.Count < 1 || matchData.Any((data) => data.Match(obj, location, queryContext))) //if no match data was provided (i.e. everything matches) or if any data matches
+                if (matchData.Count < 1 || matchData.All((data) => data.Match(obj, location, queryContext))) //if no match data was provided, or if all data matches
                 {
                     location.Objects.Remove(tile);
                     times--;
