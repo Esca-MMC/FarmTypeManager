@@ -3,7 +3,6 @@ using FarmTypeManager.Utilities;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Delegates;
-using StardewValley.Monsters;
 using StardewValley.Objects;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,7 @@ namespace FarmTypeManager.CustomActions
 
             List<int> indices = new(Enumerable.Range(0, location.furniture.Count));
             Collections.RandomizeList(indices);
-            
+
             List<int> indicesToRemove = [];
 
             foreach (int index in indices)
